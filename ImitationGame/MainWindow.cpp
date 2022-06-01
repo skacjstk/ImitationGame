@@ -50,7 +50,7 @@ void MainWindow::CreateInstance(HINSTANCE hInstance, int width, int height)
 		if (width == 0 && height == 0)	// 풀스크린에서 메뉴바 없어야 함.
 			wcex.lpszMenuName = NULL;
 		else
-			wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_IMITATIONGAME);	//오류 이유: IDC와 IDI 헷갈림 참고로 리소스 뷰에서 이름이 IDC_BLOCKGAME 임
+			wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_IMITATIONGAME);
 		wcex.lpszClassName = className.c_str();	//wcjar_t 확장 문자열 세트(16비트)
 		wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
@@ -245,7 +245,7 @@ LRESULT MainWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 
 void MainWindow::Update()
 {
-//	SCENEMANAGER->Update();
+	SCENEMANAGER->Update();
 }
 
 void MainWindow::Render()
@@ -283,7 +283,7 @@ void MainWindow::Render()
 	DeviceContext->ClearRenderTargetView(RTV, (float*)bgColor);	//-> 이게 없으면 이전에 그렸던 게 계속 유지되겠지?
 
 	// Scene을 통해 Rendering 될 수 있게
-//	SCENEMANAGER->Render();
+	SCENEMANAGER->Render();
 	SwapChain->Present(0, 0);	//스왑체인 표시 옵션 정수 SyncInterval, DXGI_PRESENT
 }
 

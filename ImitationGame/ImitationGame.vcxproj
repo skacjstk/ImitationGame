@@ -149,6 +149,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Base\Scene.h" />
+    <ClInclude Include="..\Base\SceneManager.h" />
     <ClInclude Include="..\ImGUI\imconfig.h" />
     <ClInclude Include="..\ImGUI\imgui.h" />
     <ClInclude Include="..\ImGUI\imgui_impl_dx11.h" />
@@ -157,6 +159,7 @@
     <ClInclude Include="..\ImGUI\imstb_rectpack.h" />
     <ClInclude Include="..\ImGUI\imstb_textedit.h" />
     <ClInclude Include="..\ImGUI\imstb_truetype.h" />
+    <ClInclude Include="..\S01_DXLine.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImitationGame.h" />
     <ClInclude Include="MainWindow.h" />
@@ -164,12 +167,15 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Base\Scene.cpp" />
+    <ClCompile Include="..\Base\SceneManager.cpp" />
     <ClCompile Include="..\ImGUI\imgui.cpp" />
     <ClCompile Include="..\ImGUI\imgui_draw.cpp" />
     <ClCompile Include="..\ImGUI\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\ImGUI\imgui_impl_win32.cpp" />
     <ClCompile Include="..\ImGUI\imgui_tables.cpp" />
     <ClCompile Include="..\ImGUI\imgui_widgets.cpp" />
+    <ClCompile Include="..\S01_DXLine.cpp" />
     <ClCompile Include="ImitationGame.cpp" />
     <ClCompile Include="MainWindow.cpp" />
   </ItemGroup>
@@ -179,6 +185,20 @@
   <ItemGroup>
     <Image Include="ImitationGame.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Shader\Color.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\Shader\Effect.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\Shader\Texture.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\Shader\TextureColor.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

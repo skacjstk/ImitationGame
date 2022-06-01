@@ -19,6 +19,15 @@
     <Filter Include="소스 파일\IMGUI">
       <UniqueIdentifier>{6ceebfcd-db30-4778-a30c-5d945ca13cbc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{2c8b1e84-2ec2-440d-ad00-6d58d31bc3d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestScene">
+      <UniqueIdentifier>{e2798566-5657-47e1-a510-c121c2713954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{3ee83dba-e245-4a36-be79-f66bda1187f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -60,6 +69,15 @@
     <ClInclude Include="MainWindow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="..\Base\SceneManager.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\Scene.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\S01_DXLine.h">
+      <Filter>TestScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -86,6 +104,15 @@
     <ClCompile Include="MainWindow.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="..\Base\SceneManager.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\Scene.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\S01_DXLine.cpp">
+      <Filter>TestScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ImitationGame.rc">
@@ -99,5 +126,19 @@
     <Image Include="ImitationGame.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Shader\Color.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Shader\Effect.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Shader\Texture.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Shader\TextureColor.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

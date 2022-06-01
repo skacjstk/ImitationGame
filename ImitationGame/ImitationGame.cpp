@@ -35,7 +35,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
         else
         {
-            // Update
+            MAIN->Update();
+            MAIN->Render();
         }
     }
 
