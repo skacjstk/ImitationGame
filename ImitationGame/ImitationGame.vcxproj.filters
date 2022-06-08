@@ -28,6 +28,12 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{3ee83dba-e245-4a36-be79-f66bda1187f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{99b2fb30-4a36-40d8-a642-45eadb6c4206}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{0a7aaea4-de34-4349-a805-3c28181eaf3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -78,6 +84,48 @@
     <ClInclude Include="..\S01_DXLine.h">
       <Filter>TestScene</Filter>
     </ClInclude>
+    <ClInclude Include="..\Base\Camera.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\GameObject.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\ObjectManager.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\SRVManager.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\Animation.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\AnimationClip.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\DirectWrite.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\Graphic2D.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\Texture.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\TextureShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\ColorShader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\GameTime.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Keyboard.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Mouse.h">
+      <Filter>System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -112,6 +160,48 @@
     </ClCompile>
     <ClCompile Include="..\S01_DXLine.cpp">
       <Filter>TestScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\Camera.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\GameObject.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\ObjectManager.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\SRVManager.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\Animation.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\AnimationClip.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\DirectWrite.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\Graphic2D.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\Texture.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\TextureShader.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\ColorShader.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\GameTime.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Keyboard.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Mouse.cpp">
+      <Filter>System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

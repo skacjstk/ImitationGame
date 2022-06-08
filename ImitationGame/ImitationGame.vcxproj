@@ -81,7 +81,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DH);</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath);$(DL);</LibraryPath>
     <PublicIncludeDirectories>
     </PublicIncludeDirectories>
   </PropertyGroup>
@@ -150,8 +150,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Base\Camera.h" />
+    <ClInclude Include="..\Base\GameObject.h" />
+    <ClInclude Include="..\Base\ObjectManager.h" />
     <ClInclude Include="..\Base\Scene.h" />
     <ClInclude Include="..\Base\SceneManager.h" />
+    <ClInclude Include="..\Base\SRVManager.h" />
     <ClInclude Include="..\ImGUI\imconfig.h" />
     <ClInclude Include="..\ImGUI\imgui.h" />
     <ClInclude Include="..\ImGUI\imgui_impl_dx11.h" />
@@ -160,7 +164,17 @@
     <ClInclude Include="..\ImGUI\imstb_rectpack.h" />
     <ClInclude Include="..\ImGUI\imstb_textedit.h" />
     <ClInclude Include="..\ImGUI\imstb_truetype.h" />
+    <ClInclude Include="..\Render\Animation.h" />
+    <ClInclude Include="..\Render\AnimationClip.h" />
+    <ClInclude Include="..\Render\ColorShader.h" />
+    <ClInclude Include="..\Render\DirectWrite.h" />
+    <ClInclude Include="..\Render\Graphic2D.h" />
+    <ClInclude Include="..\Render\Texture.h" />
+    <ClInclude Include="..\Render\TextureShader.h" />
     <ClInclude Include="..\S01_DXLine.h" />
+    <ClInclude Include="..\System\GameTime.h" />
+    <ClInclude Include="..\System\Keyboard.h" />
+    <ClInclude Include="..\System\Mouse.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImitationGame.h" />
     <ClInclude Include="MainWindow.h" />
@@ -168,15 +182,29 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Base\Camera.cpp" />
+    <ClCompile Include="..\Base\GameObject.cpp" />
+    <ClCompile Include="..\Base\ObjectManager.cpp" />
     <ClCompile Include="..\Base\Scene.cpp" />
     <ClCompile Include="..\Base\SceneManager.cpp" />
+    <ClCompile Include="..\Base\SRVManager.cpp" />
     <ClCompile Include="..\ImGUI\imgui.cpp" />
     <ClCompile Include="..\ImGUI\imgui_draw.cpp" />
     <ClCompile Include="..\ImGUI\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\ImGUI\imgui_impl_win32.cpp" />
     <ClCompile Include="..\ImGUI\imgui_tables.cpp" />
     <ClCompile Include="..\ImGUI\imgui_widgets.cpp" />
+    <ClCompile Include="..\Render\Animation.cpp" />
+    <ClCompile Include="..\Render\AnimationClip.cpp" />
+    <ClCompile Include="..\Render\ColorShader.cpp" />
+    <ClCompile Include="..\Render\DirectWrite.cpp" />
+    <ClCompile Include="..\Render\Graphic2D.cpp" />
+    <ClCompile Include="..\Render\Texture.cpp" />
+    <ClCompile Include="..\Render\TextureShader.cpp" />
     <ClCompile Include="..\S01_DXLine.cpp" />
+    <ClCompile Include="..\System\GameTime.cpp" />
+    <ClCompile Include="..\System\Keyboard.cpp" />
+    <ClCompile Include="..\System\Mouse.cpp" />
     <ClCompile Include="ImitationGame.cpp" />
     <ClCompile Include="MainWindow.cpp" />
   </ItemGroup>

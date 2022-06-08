@@ -1,5 +1,5 @@
-#include "framework.h"
-#include "MainWindow.h"
+#include "ImitationGame/framework.h"
+#include "ImitationGame/MainWindow.h"
 #include "Resource.h"
 
 //DX Cominterface นื Global
