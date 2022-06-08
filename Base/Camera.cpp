@@ -65,10 +65,7 @@ void Camera::PreUpdate()
 
 	// Limit Check
 
-
 	SetPosition(position);
-
-
 }
 
 void Camera::Update()

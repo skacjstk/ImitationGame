@@ -175,6 +175,7 @@
     <ClInclude Include="..\System\GameTime.h" />
     <ClInclude Include="..\System\Keyboard.h" />
     <ClInclude Include="..\System\Mouse.h" />
+    <ClInclude Include="..\TestScene.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImitationGame.h" />
     <ClInclude Include="MainWindow.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="..\System\GameTime.cpp" />
     <ClCompile Include="..\System\Keyboard.cpp" />
     <ClCompile Include="..\System\Mouse.cpp" />
+    <ClCompile Include="..\TestScene.cpp" />
     <ClCompile Include="ImitationGame.cpp" />
     <ClCompile Include="MainWindow.cpp" />
   </ItemGroup>

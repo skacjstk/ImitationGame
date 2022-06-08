@@ -126,6 +126,9 @@
     <ClInclude Include="..\System\Mouse.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="..\TestScene.h">
+      <Filter>TestScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -202,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="..\System\Mouse.cpp">
       <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TestScene.cpp">
+      <Filter>TestScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,13 +3,15 @@
 
 // Include Scene
 #include "S01_DXLine.h"
+#include "TestScene.h"
 
 SceneManager::SceneManager()
 {
 //	CreateGameObject();
-	m_cvScenes.push_back(new S01_DXLine());
+	m_cvScenes.push_back(new TestScene());
 	//스레드를 이용하여 여러 씬을 Loading한다.
 	printf("SceneManager 생성자 호출\n");
+	return;
 	//WndProc --> 콜백함수 처럼 
 	thread t(bind(&SceneManager::ThreadStart, this));
 	t.detach(); //wait 없이 쓰레드 동작
@@ -26,7 +28,7 @@ SceneManager::~SceneManager()
 
 void SceneManager::Update()
 {
-//	CAMERA->Update();	// 카메라의 위치를 고치는 것 Update(V P) 는 카메라의 Texture 좌표를 업데이트 Next
+	CAMERA->Update();	// 카메라의 위치를 고치는 것 Update(V P) 는 카메라의 Texture 좌표를 업데이트 Next
 	for (UINT i = 0; i < m_cvScenes.size(); ++i) {
 		if (m_cvScenes[i]->IsActive()) {
 			currentScene = m_cvScenes[i];	//현재 재생중신 Scene
@@ -42,7 +44,7 @@ void SceneManager::Render()
 			m_cvScenes[i]->Render();
 		}
 	}
-//	Display();
+	Display();
 }
 /*
 앞으로 만들 오브젝트는 여기서
@@ -96,7 +98,7 @@ Scene * SceneManager::GetScene(string name)
 // Next
 void SceneManager::Display()
 {
-	/*
+	
 	// FPS Display
 	DirectWrite::BeginDraw();
 	{
@@ -118,7 +120,7 @@ void SceneManager::Display()
 		DirectWrite::RenderText(str, rect);
 	}
 	DirectWrite::EndDraw();
-		
+	/*
 	if (SCENEMANAGER->GetCurrentScene()->IsDisplay())	// 각 Scene에서 Display값이 참이면 이거 보여줌.
 	{
 		// HP Display를 HS01에 따로 빼려고 시도중. 0526
@@ -193,7 +195,7 @@ void SceneManager::DisPlayHPandSceneID()
 void SceneManager::ThreadStart()
 {
 	printf("쓰레드 Start\n");
-//	m_cvScenes.push_back(new S02_LoadingScene());
+//	m_cvScenes.push_back(new ());
 	printf("현재 쓰레드 개수: %zd\n", m_cvScenes.size());
 
 	printf("쓰레드 End\n");

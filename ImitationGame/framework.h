@@ -33,7 +33,7 @@
 #include <memory.h>
 #include <tchar.h>
 #include <stdio.h>
-
+#include <fstream>
 // C++ Header
 #include <iostream>
 #include <vector>
@@ -69,9 +69,9 @@ using namespace std;
 #define SAFE_DELETE_ARRAY(p) {  if(p) {delete[] (p); (p) = NULL ;} }
 #define SAFE_RELEASE(p) { if(p) {(p)->Release(); (p) = NULL ;} }
 #define PI 3.141592f
-#define SHADER_FOLDER	L"./Shader/"
-#define IMAGE_FOLDER	L"./Resources/Image/"
-#define SOUND_FOLDER	L"./Resources/Sound/"
+#define SHADER_FOLDER	L"../Shader/"
+#define IMAGE_FOLDER	L"../Resources/Image/"
+#define SOUND_FOLDER	L"../Resources/Sound/"
 
 //typedef		
 typedef D3DXVECTOR2 Vector2;
