@@ -22,7 +22,7 @@
 
 #include "targetver.h"
 #define WIN32_LEAN_AND_MEAN             // 거의 사용되지 않는 내용을 Windows 헤더에서 제외합니다.
-#define _HAS_STD_BYTE 0		// C++17 std::byte를 활성화 해제 https://blog.cxx.kr/archives/390
+// #define _HAS_STD_BYTE 0		// C++17 std::byte를 활성화 해제 https://blog.cxx.kr/archives/390
 // Windows 헤더 파일
 #include <windows.h>
 #include <shellapi.h>		// Drag, explorer 등등
@@ -43,7 +43,18 @@
 #include <map>
 #include <functional>
 #include <mutex>
-using namespace std;
+// using std 
+using std::string;
+using std::wstring;
+using std::vector;
+using std::map;
+using std::bitset;
+using std::thread;
+
+// using std Function
+using std::bind;
+using std::to_wstring;
+using std::to_string;
 
 //DX Library
 #include <d3d11.h>	
