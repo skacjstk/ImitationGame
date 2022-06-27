@@ -410,6 +410,7 @@ FodyWeavers.xsd
 /ImGUI/실험용/*
 /Base/Base/*
 /Render/백업
+/dungreedImage/*
 
 
 ### VisualStudio Patch ###
