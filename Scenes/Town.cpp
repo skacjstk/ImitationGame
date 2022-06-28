@@ -3,17 +3,21 @@
 
 Town::Town()
 {
-	m_strSceneName = SCENEMANAGER->sceneNames_[1];	// Town
-	wstring strImage = IMAGE_FOLDER; strImage += L"Intro/Title.png";
+	SetActive(false);
+	m_strSceneName = "Town";	// Town
+	wstring strImage = IMAGE_FOLDER; strImage += L"Town/Map_Tiles.png";
 	wstring strShader = SHADER_FOLDER; strShader += L"Texture.hlsl";
-	wstring strHoverImage;
-	titleImage_ = new Texture(strImage, strShader);
-	titleImage_->SetPosition(0.0f, 200.0f);
+	
+	// 317, 181
+	backGround_ = new Texture(strImage, strShader,0, 520, 318, 702);
+	backGround_->SetScale(6.056782f * WSCALEX, 5.9668508f * WSCALEY);
+	backGround_->SetPosition(0.0f, 0.0f);
+	printf("%f %f\n", backGround_->GetTextureRealSize().x, backGround_->GetTextureRealSize().y);
 }
 
 Town::~Town()
 {
-	SAFE_DELETE(titleImage_);
+	SAFE_DELETE(backGround_);
 }
 
 void Town::Update()
@@ -24,15 +28,16 @@ void Town::Update()
 
 	CAMERA->Update(V, P);
 
-	titleImage_->Update(V, P);
+	backGround_->Update(V, P);
 }
 
 void Town::Render()
 {
-	titleImage_->Render();
+	backGround_->Render();
 }
 
 void Town::ChangeScene()
 {
+	SetActive(true);
 }
 

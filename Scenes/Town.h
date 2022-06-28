@@ -8,7 +8,7 @@ VS, RS, PS = Shader Language
 class Town : public Scene
 {
 private:	//private instance variable
-	Texture* titleImage_ = nullptr;
+	Texture* backGround_ = nullptr;
 public:	//»ý ¼Ò
 	Town();
 	~Town();

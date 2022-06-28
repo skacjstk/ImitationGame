@@ -3,7 +3,7 @@
 
 Intro::Intro()
 {
-	m_strSceneName = SCENEMANAGER->sceneNames_[0];	// Intro
+	m_strSceneName = "Intro";//SCENEMANAGER->sceneNames_[0];	// Intro
 	wstring strImage = IMAGE_FOLDER; strImage += L"Intro/Title.png";
 	wstring strShader = SHADER_FOLDER; strShader += L"Texture.hlsl";
 	wstring strHoverImage;
@@ -92,6 +92,7 @@ void Intro::Render()
 
 void Intro::ChangeScene()
 {
+	SetActive(true);
 }
 
 void Intro::OnButton(int id)
