@@ -26,6 +26,9 @@ public:
 	void CreateGameObject();
 	void ChangeScene(string name);
 	Scene* GetScene(string name);
+	vector<string> sceneNames_ = {
+		"Intro", "Town"
+	};
 public:		//Getter
 	Scene* GetCurrentScene() { return currentScene; }
 private:

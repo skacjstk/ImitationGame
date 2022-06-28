@@ -2,16 +2,14 @@
 #include "SceneManager.h"
 
 // Include Scene
-#include "S01_DXLine.h"
-#include "TestScene.h"
-
+#include "Scenes/Intro.h"
+#include "Scenes/Town.h"
 SceneManager::SceneManager()
 {
-//	CreateGameObject();
-	m_cvScenes.push_back(new TestScene());
+	m_cvScenes.push_back(new Intro());
 	//스레드를 이용하여 여러 씬을 Loading한다.
 	printf("SceneManager 생성자 호출\n");
-	return;
+
 	//WndProc --> 콜백함수 처럼 
 	thread t(bind(&SceneManager::ThreadStart, this));
 	t.detach(); //wait 없이 쓰레드 동작
@@ -195,7 +193,7 @@ void SceneManager::DisPlayHPandSceneID()
 void SceneManager::ThreadStart()
 {
 	printf("쓰레드 Start\n");
-//	m_cvScenes.push_back(new ());
+	m_cvScenes.push_back(new Town());
 	printf("현재 쓰레드 개수: %zd\n", m_cvScenes.size());
 
 	printf("쓰레드 End\n");
