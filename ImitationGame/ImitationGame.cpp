@@ -27,7 +27,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
-    MAIN->CreateInstance(hInstance, 1920, 1080);
+    MAIN->CreateInstance(hInstance, 0, 0);
     // IMGui Setting
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();

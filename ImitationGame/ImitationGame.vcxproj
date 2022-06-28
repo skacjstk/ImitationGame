@@ -164,6 +164,8 @@
     <ClInclude Include="..\ImGUI\imstb_rectpack.h" />
     <ClInclude Include="..\ImGUI\imstb_textedit.h" />
     <ClInclude Include="..\ImGUI\imstb_truetype.h" />
+    <ClInclude Include="..\Physics\clipper.hpp" />
+    <ClInclude Include="..\Physics\Collider.h" />
     <ClInclude Include="..\Render\Animation.h" />
     <ClInclude Include="..\Render\AnimationClip.h" />
     <ClInclude Include="..\Render\ColorShader.h" />
@@ -195,6 +197,8 @@
     <ClCompile Include="..\ImGUI\imgui_impl_win32.cpp" />
     <ClCompile Include="..\ImGUI\imgui_tables.cpp" />
     <ClCompile Include="..\ImGUI\imgui_widgets.cpp" />
+    <ClCompile Include="..\Physics\clipper.cpp" />
+    <ClCompile Include="..\Physics\Collider.cpp" />
     <ClCompile Include="..\Render\Animation.cpp" />
     <ClCompile Include="..\Render\AnimationClip.cpp" />
     <ClCompile Include="..\Render\ColorShader.cpp" />

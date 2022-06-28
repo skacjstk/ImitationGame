@@ -34,6 +34,9 @@
     <Filter Include="System">
       <UniqueIdentifier>{0a7aaea4-de34-4349-a805-3c28181eaf3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{e8633c6f-fa82-4c3a-a338-242c810937d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -129,6 +132,12 @@
     <ClInclude Include="..\TestScene.h">
       <Filter>TestScene</Filter>
     </ClInclude>
+    <ClInclude Include="..\Physics\clipper.hpp">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Physics\Collider.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -208,6 +217,12 @@
     </ClCompile>
     <ClCompile Include="..\TestScene.cpp">
       <Filter>TestScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Physics\clipper.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Physics\Collider.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
