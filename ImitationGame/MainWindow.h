@@ -14,6 +14,7 @@ private:	//비공개 인스턴스 변수
 	HINSTANCE _hInstnace = nullptr;
 	HWND _hWnd = nullptr;
 
+
 private:	//생성자와 소멸자
 	MainWindow();
 	~MainWindow();

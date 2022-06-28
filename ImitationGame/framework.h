@@ -83,7 +83,7 @@ using std::to_string;
 #define PI 3.141592f
 #define SHADER_FOLDER	L"../Shader/"
 #define IMAGE_FOLDER	L"../Resources/Image/"
-#define SOUND_FOLDER	L"../Resources/Sound/"
+#define AUDIO_FOLDER	L"../Resources/AudioClip/"
 
 //typedef		
 typedef D3DXVECTOR2 Vector2;
@@ -122,7 +122,8 @@ typedef D3DXCOLOR	Color;
 #include "./Render/Animation.h"
 //#include "./Base/Terrain.h"
 #include "./Base/GameObject.h"
-//#include "./Base/UIObject.h"
+#include "./Base/UIObject.h"
+#include "./Object/Button.h"
 //#include "./Object/Tile.h"
 #include "./Render/DirectWrite.h"
 
@@ -133,9 +134,6 @@ extern ID3D11DeviceContext* DeviceContext;
 extern IDXGISwapChain* SwapChain;
 extern ID3D11RenderTargetView* RTV;		//실제로 보는 영역
 extern CMouse* Mouse;
-
-
-
-/*
-
-*/
+extern bool g_bVisibleCollisionCheck;
+extern float WSCALEX;	// 오프셋 배율 계산용
+extern float WSCALEY;	// 오프셋 배율 계산용

@@ -7,6 +7,11 @@ ID3D11Device*			Device = NULL;
 ID3D11DeviceContext*	DeviceContext = NULL;
 IDXGISwapChain*			SwapChain = NULL;
 ID3D11RenderTargetView*	RTV = NULL;		//실제로 보는 영역
+bool g_bVisibleCollisionCheck = false;
+
+float WSCALEX = 1.0f;	// 오프셋 배율 계산용
+float WSCALEY = 1.0f;	// 오프셋 배율 계산용
+
 // ImGui 변수(WndProc)
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -125,6 +130,11 @@ void MainWindow::CreateInstance(HINSTANCE hInstance, int width, int height)
 	DragAcceptFiles(_hWnd, TRUE);	// <shellapi.h> 필요
 
 	ShowWindow(_hWnd, SW_SHOWDEFAULT); //윈도우 핸들, 상태 flag (정수)
+
+	// FHD 기준 Scale 값 구하기.
+	WSCALEX = _width / 1920.0f;
+	WSCALEY = _height / 1080.0f;
+
 	UpdateWindow(_hWnd);	//InvalidateRect()는 처리 지연될 수 있음.
 
 }

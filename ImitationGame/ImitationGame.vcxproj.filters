@@ -19,23 +19,44 @@
     <Filter Include="소스 파일\IMGUI">
       <UniqueIdentifier>{6ceebfcd-db30-4778-a30c-5d945ca13cbc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Base">
-      <UniqueIdentifier>{2c8b1e84-2ec2-440d-ad00-6d58d31bc3d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="TestScene">
-      <UniqueIdentifier>{e2798566-5657-47e1-a510-c121c2713954}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader">
       <UniqueIdentifier>{3ee83dba-e245-4a36-be79-f66bda1187f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Render">
-      <UniqueIdentifier>{99b2fb30-4a36-40d8-a642-45eadb6c4206}</UniqueIdentifier>
+    <Filter Include="소스 파일\Base">
+      <UniqueIdentifier>{13c6be1c-bbcf-4c1f-b2f5-336b8b5b25d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="System">
-      <UniqueIdentifier>{0a7aaea4-de34-4349-a805-3c28181eaf3f}</UniqueIdentifier>
+    <Filter Include="소스 파일\Physics">
+      <UniqueIdentifier>{8586e0d2-070d-421f-85b4-d159f34a9fa7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Physics">
-      <UniqueIdentifier>{e8633c6f-fa82-4c3a-a338-242c810937d9}</UniqueIdentifier>
+    <Filter Include="소스 파일\Render">
+      <UniqueIdentifier>{4ef3d1e3-1ead-4f3a-99ce-083bf53165a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Render">
+      <UniqueIdentifier>{ecc00ace-4c18-42fa-a746-f9262b4efff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Scenes">
+      <UniqueIdentifier>{b092443f-a5a3-4b42-a7f6-077c5598217f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Scenes">
+      <UniqueIdentifier>{7f1818e4-d513-41be-bd7c-c6c2006ab98b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Base">
+      <UniqueIdentifier>{cf42b831-47f5-4e04-ab0c-93060d484e94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Physics">
+      <UniqueIdentifier>{131fffb5-5d29-4f9b-8c6b-4c99be606bd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\System">
+      <UniqueIdentifier>{ee4e35e2-e82d-4ff6-8d93-4a435211a3bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\System">
+      <UniqueIdentifier>{d9f42774-d62d-4436-89af-9ed123eb0ee8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Object">
+      <UniqueIdentifier>{35b5bc64-567a-42ff-8cc7-3a5ff30ea897}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Object">
+      <UniqueIdentifier>{05a01a54-c479-4268-bd57-4a0730ee22bb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,65 +99,71 @@
     <ClInclude Include="MainWindow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="..\Base\SceneManager.h">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Base\Scene.h">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\S01_DXLine.h">
-      <Filter>TestScene</Filter>
-    </ClInclude>
     <ClInclude Include="..\Base\Camera.h">
-      <Filter>Base</Filter>
+      <Filter>헤더 파일\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\Base\GameObject.h">
-      <Filter>Base</Filter>
+      <Filter>헤더 파일\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\Base\ObjectManager.h">
-      <Filter>Base</Filter>
+      <Filter>헤더 파일\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\Scene.h">
+      <Filter>헤더 파일\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\SceneManager.h">
+      <Filter>헤더 파일\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\Base\SRVManager.h">
-      <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Render\Animation.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Render\AnimationClip.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Render\DirectWrite.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Render\Graphic2D.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Render\Texture.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Render\TextureShader.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Render\ColorShader.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\System\GameTime.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\System\Keyboard.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\System\Mouse.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\TestScene.h">
-      <Filter>TestScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Physics\clipper.hpp">
-      <Filter>Physics</Filter>
+      <Filter>헤더 파일\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\Physics\Collider.h">
-      <Filter>Physics</Filter>
+      <Filter>헤더 파일\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Physics\clipper.hpp">
+      <Filter>헤더 파일\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\GameTime.h">
+      <Filter>헤더 파일\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Keyboard.h">
+      <Filter>헤더 파일\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Mouse.h">
+      <Filter>헤더 파일\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\TextureShader.h">
+      <Filter>헤더 파일\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\Texture.h">
+      <Filter>헤더 파일\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\Graphic2D.h">
+      <Filter>헤더 파일\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\DirectWrite.h">
+      <Filter>헤더 파일\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\ColorShader.h">
+      <Filter>헤더 파일\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\AnimationClip.h">
+      <Filter>헤더 파일\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\Animation.h">
+      <Filter>헤더 파일\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Scenes\Intro.h">
+      <Filter>헤더 파일\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\Button.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Scenes\Town.h">
+      <Filter>헤더 파일\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\UIObject.h">
+      <Filter>헤더 파일\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -164,65 +191,71 @@
     <ClCompile Include="MainWindow.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="..\Base\SceneManager.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Base\Scene.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\S01_DXLine.cpp">
-      <Filter>TestScene</Filter>
-    </ClCompile>
     <ClCompile Include="..\Base\Camera.cpp">
-      <Filter>Base</Filter>
+      <Filter>소스 파일\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\Base\GameObject.cpp">
-      <Filter>Base</Filter>
+      <Filter>소스 파일\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\Base\ObjectManager.cpp">
-      <Filter>Base</Filter>
+      <Filter>소스 파일\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\Scene.cpp">
+      <Filter>소스 파일\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\SceneManager.cpp">
+      <Filter>소스 파일\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\Base\SRVManager.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Render\Animation.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Render\AnimationClip.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Render\DirectWrite.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Render\Graphic2D.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Render\Texture.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Render\TextureShader.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Render\ColorShader.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\System\GameTime.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\System\Keyboard.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\System\Mouse.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\TestScene.cpp">
-      <Filter>TestScene</Filter>
+      <Filter>소스 파일\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\Physics\clipper.cpp">
-      <Filter>Physics</Filter>
+      <Filter>소스 파일\Physics</Filter>
     </ClCompile>
     <ClCompile Include="..\Physics\Collider.cpp">
-      <Filter>Physics</Filter>
+      <Filter>소스 파일\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\GameTime.cpp">
+      <Filter>소스 파일\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Keyboard.cpp">
+      <Filter>소스 파일\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Mouse.cpp">
+      <Filter>소스 파일\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\TextureShader.cpp">
+      <Filter>소스 파일\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\Animation.cpp">
+      <Filter>소스 파일\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\AnimationClip.cpp">
+      <Filter>소스 파일\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\ColorShader.cpp">
+      <Filter>소스 파일\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\DirectWrite.cpp">
+      <Filter>소스 파일\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\Graphic2D.cpp">
+      <Filter>소스 파일\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\Texture.cpp">
+      <Filter>소스 파일\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Scenes\Intro.cpp">
+      <Filter>소스 파일\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Button.cpp">
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Scenes\Town.cpp">
+      <Filter>소스 파일\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\UIObject.cpp">
+      <Filter>소스 파일\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@
 
 TestScene::TestScene()
 {
-	wstring strImage = IMAGE_FOLDER; strImage += L"mod_idle.png";
+	wstring strImage = IMAGE_FOLDER; strImage += L"testTitle.png";
 	wstring strShader = SHADER_FOLDER; strShader += L"Texture.hlsl";
 	_texture = new Texture(strImage, strShader);
 }

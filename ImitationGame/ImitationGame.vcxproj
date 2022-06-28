@@ -156,6 +156,7 @@
     <ClInclude Include="..\Base\Scene.h" />
     <ClInclude Include="..\Base\SceneManager.h" />
     <ClInclude Include="..\Base\SRVManager.h" />
+    <ClInclude Include="..\Base\UIObject.h" />
     <ClInclude Include="..\ImGUI\imconfig.h" />
     <ClInclude Include="..\ImGUI\imgui.h" />
     <ClInclude Include="..\ImGUI\imgui_impl_dx11.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="..\ImGUI\imstb_rectpack.h" />
     <ClInclude Include="..\ImGUI\imstb_textedit.h" />
     <ClInclude Include="..\ImGUI\imstb_truetype.h" />
+    <ClInclude Include="..\Object\Button.h" />
     <ClInclude Include="..\Physics\clipper.hpp" />
     <ClInclude Include="..\Physics\Collider.h" />
     <ClInclude Include="..\Render\Animation.h" />
@@ -173,11 +175,11 @@
     <ClInclude Include="..\Render\Graphic2D.h" />
     <ClInclude Include="..\Render\Texture.h" />
     <ClInclude Include="..\Render\TextureShader.h" />
-    <ClInclude Include="..\S01_DXLine.h" />
+    <ClInclude Include="..\Scenes\Intro.h" />
+    <ClInclude Include="..\Scenes\Town.h" />
     <ClInclude Include="..\System\GameTime.h" />
     <ClInclude Include="..\System\Keyboard.h" />
     <ClInclude Include="..\System\Mouse.h" />
-    <ClInclude Include="..\TestScene.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImitationGame.h" />
     <ClInclude Include="MainWindow.h" />
@@ -191,12 +193,14 @@
     <ClCompile Include="..\Base\Scene.cpp" />
     <ClCompile Include="..\Base\SceneManager.cpp" />
     <ClCompile Include="..\Base\SRVManager.cpp" />
+    <ClCompile Include="..\Base\UIObject.cpp" />
     <ClCompile Include="..\ImGUI\imgui.cpp" />
     <ClCompile Include="..\ImGUI\imgui_draw.cpp" />
     <ClCompile Include="..\ImGUI\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\ImGUI\imgui_impl_win32.cpp" />
     <ClCompile Include="..\ImGUI\imgui_tables.cpp" />
     <ClCompile Include="..\ImGUI\imgui_widgets.cpp" />
+    <ClCompile Include="..\Object\Button.cpp" />
     <ClCompile Include="..\Physics\clipper.cpp" />
     <ClCompile Include="..\Physics\Collider.cpp" />
     <ClCompile Include="..\Render\Animation.cpp" />
@@ -206,11 +210,11 @@
     <ClCompile Include="..\Render\Graphic2D.cpp" />
     <ClCompile Include="..\Render\Texture.cpp" />
     <ClCompile Include="..\Render\TextureShader.cpp" />
-    <ClCompile Include="..\S01_DXLine.cpp" />
+    <ClCompile Include="..\Scenes\Intro.cpp" />
+    <ClCompile Include="..\Scenes\Town.cpp" />
     <ClCompile Include="..\System\GameTime.cpp" />
     <ClCompile Include="..\System\Keyboard.cpp" />
     <ClCompile Include="..\System\Mouse.cpp" />
-    <ClCompile Include="..\TestScene.cpp" />
     <ClCompile Include="ImitationGame.cpp" />
     <ClCompile Include="MainWindow.cpp" />
   </ItemGroup>

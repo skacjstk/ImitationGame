@@ -35,7 +35,7 @@ cbuffer ColorBuffer : register(b1)
 }
 
 
-Texture2D sourc_texture1 : register(t0); // 테스쳐자원이라는 의미 : 128개
+Texture2D sourc_texture[2] : register(t0); // 테스쳐자원이라는 의미 : 128개
 Texture2D sourc_texture2 : register(t1); // 테스쳐자원이라는 의미
 
 SamplerState samp : register(s0);  //샘플링을 할 상태 정보 0-15
@@ -59,11 +59,12 @@ PixelInput VS(VertexInput input)
 //////////////////////////////////////////////////////////
 float4 PS(PixelInput input) : SV_Target // 현재세팅된 메인렌더 타깃을 사용하라고 알려준다
 {
-	float4 color = sourc_texture1.Sample(samp, input.uv);
+    float4 color = sourc_texture[0].Sample(samp, input.uv); // 원본 텍스쳐의 픽셀값.
+	float4 color2 = sourc_texture[1].Sample(samp, input.uv);
 	float4 returnColor = color;
 	float4 alpha  = float4(color.rgb, 0);
 	float4 alpha2 = color;
-	
+	// TextColor 는 내가 memcpy 해가며 메모리에 덮어써버린 픽셀값.
 	[forcecase]
 	
 	switch (Path)
@@ -72,6 +73,8 @@ float4 PS(PixelInput input) : SV_Target // 현재세팅된 메인렌더 타깃을 사용하라고
 			returnColor = color;
 			break;
 		case  1:
+			if(color.a < 0.1f)
+                discard;
 			returnColor = float4(TextColor.r, TextColor.g, TextColor.b, color.a);
 			break;
 		case  2:
@@ -95,7 +98,16 @@ float4 PS(PixelInput input) : SV_Target // 현재세팅된 메인렌더 타깃을 사용하라고
 		
 			returnColor = lerp(alpha, alpha2, Time); // 기존 Alpha ~ 0 
 			break;
-		
-	}
+		case 10:	// 멀티 텍스쳐
+			returnColor = color2 * 0.5 + color * 0.5;
+			returnColor = saturate(returnColor);
+			returnColor.a = color.a;
+			break;
+		case 11:	// 알파값만 적용되는 셰이더 ( texture 값에 뭘 넣던 TextColor로 적용 안한다 )
+			if(color.a < 0.1f)
+                discard;
+            returnColor.a = TextColor.a;
+            break;
+    }
 	return returnColor;
 }
