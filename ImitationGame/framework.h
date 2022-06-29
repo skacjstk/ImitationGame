@@ -122,6 +122,7 @@ typedef D3DXCOLOR	Color;
 #include "./Render/Animation.h"
 //#include "./Base/Terrain.h"
 #include "./Base/GameObject.h"
+#include "./Base/GameActor.h"
 #include "./Base/UIObject.h"
 #include "./Object/Button.h"
 //#include "./Object/Tile.h"

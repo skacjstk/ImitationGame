@@ -20,7 +20,8 @@ PolyFillType PFT = pftNonZero;
 /////////////////////////////////////////////////////////////////////
 Collider::Collider()
 {
-	wstring strShader = L"./Shader/Color.hlsl";
+	wstring strShader = SHADER_FOLDER;
+	strShader += L"Color.hlsl";
 
 	m_pShader = new ColorShader(strShader);
 	CreateBuffer();

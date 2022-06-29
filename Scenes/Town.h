@@ -9,6 +9,7 @@ class Town : public Scene
 {
 private:	//private instance variable
 	Texture* backGround_ = nullptr;
+	class Player* tempPlayer_ = nullptr;
 public:	//»ý ¼Ò
 	Town();
 	~Town();

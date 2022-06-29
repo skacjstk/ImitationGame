@@ -1,4 +1,5 @@
 #include "./ImitationGame/framework.h"
+#include "./Object/Player.h"
 #include "Town.h"
 
 Town::Town()
@@ -13,6 +14,8 @@ Town::Town()
 	backGround_->SetScale(6.056782f * WSCALEX, 5.9668508f * WSCALEY);
 	backGround_->SetPosition(0.0f, 0.0f);
 	printf("%f %f\n", backGround_->GetTextureRealSize().x, backGround_->GetTextureRealSize().y);
+
+	tempPlayer_ = new Player();
 }
 
 Town::~Town()
@@ -29,15 +32,18 @@ void Town::Update()
 	CAMERA->Update(V, P);
 
 	backGround_->Update(V, P);
+	tempPlayer_->Update(V, P);
 }
 
 void Town::Render()
 {
 	backGround_->Render();
+	tempPlayer_->Render();
 }
 
 void Town::ChangeScene()
 {
 	SetActive(true);
+	// 임시 코드
 }
 

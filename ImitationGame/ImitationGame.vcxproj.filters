@@ -58,6 +58,12 @@
     <Filter Include="헤더 파일\Object">
       <UniqueIdentifier>{05a01a54-c479-4268-bd57-4a0730ee22bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Command">
+      <UniqueIdentifier>{0a491578-8912-4524-9175-6b4d03bba103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Command">
+      <UniqueIdentifier>{f4a8bcee-1c79-454f-8cd2-e227fc423283}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -165,6 +171,27 @@
     <ClInclude Include="..\Base\UIObject.h">
       <Filter>헤더 파일\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\Base\GameActor.h">
+      <Filter>헤더 파일\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\InputHandler.h">
+      <Filter>헤더 파일\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Command\Command.h">
+      <Filter>헤더 파일\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Command\LeftMoveCommand.h">
+      <Filter>헤더 파일\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\Player.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Command\JumpCommand.h">
+      <Filter>헤더 파일\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Command\RightMoveCommand.h">
+      <Filter>헤더 파일\Command</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -256,6 +283,27 @@
     </ClCompile>
     <ClCompile Include="..\Base\UIObject.cpp">
       <Filter>소스 파일\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\GameActor.cpp">
+      <Filter>소스 파일\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\InputHandler.cpp">
+      <Filter>소스 파일\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Command\Command.cpp">
+      <Filter>소스 파일\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Command\LeftMoveCommand.cpp">
+      <Filter>소스 파일\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Player.cpp">
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Command\JumpCommand.cpp">
+      <Filter>소스 파일\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Command\RightMoveCommand.cpp">
+      <Filter>소스 파일\Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
