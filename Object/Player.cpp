@@ -164,11 +164,12 @@ void Player::Jump()
 		isGround_ = false;
 		longJumpCount_ = 0.0f;
 	}
-	else if (isLongJump_ == false) {
+	else if (isLongJump_ == false && isCanlongJump_ == true) {
 		longJumpCount_ += TIMEMANAGER->Delta();
 		if (longJumpCount_ > 0.11f){
 			gravity_ += playerData_.baseLongJumpSpeed * 0.05f;
 			isLongJump_ = true;
+			isCanlongJump_ = false;
 		}
 	}
 }
