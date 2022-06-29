@@ -4,7 +4,7 @@ class InputHandler
 {
 public:
 	InputHandler();
-	Command* handleInput();
+	vector<class Command*> handleInput();
 	virtual ~InputHandler() {};
 public:	// ¸í·É bind ¿ë 
 	void BindActorInput();
@@ -14,4 +14,5 @@ private:
 	Command* buttonS_;
 	Command* buttonS_SPACE;
 	Command* buttonW_;
+	Command* idleCommand_;
 };
