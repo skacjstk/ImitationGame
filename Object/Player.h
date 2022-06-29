@@ -6,10 +6,10 @@ public:		// 공개 인스턴스 변수
 	enum State
 	{
 		IDLE = 0,
-		WALK,
+		RUN,
+		JUMP,
 		ATTACK,
-		GOAL,
-		SLATE
+		DIE
 	};
 	// 던그리드 캐릭터 변경할때 사용할 것
 	enum objectType
@@ -22,6 +22,8 @@ public:		// 공개 인스턴스 변수
 	{
 		int charCode = 0;
 		float baseSpeed = 300.0f;
+		float baseJumpSpeed = 200.0f;
+		float baseLongJumpSpeed = 60.0f;	// 추가 점프용량임
 	};
 private:	// 비공개 인스턴스 변수
 	InputHandler inputHandler;
@@ -29,6 +31,10 @@ private:	// 비공개 인스턴스 변수
 	State _currentState = State::IDLE;
 	objectType _heroType = objectType::EXPLORER;	// 던그리드 캐릭터 변경할때 사용할 것
 	Vector2 _movePosition = Vector2(0.0f, 0.0f);	// lerp 하게 움직힐 거야
+	bool isCanlongJump_ = true;	// 롱점프를 할 수 있느냐?
+	bool isLongJump_ = false;	// 롱점프를 했느냐?
+	float longJumpCount_ = 0.0f;
+	class Collider* pCollider_ = nullptr;
 	int _moveCount = 0;
 	bool _moveAble = true;
 	float _Time = 0.0f;
@@ -43,6 +49,8 @@ public:
 	void Render() override;
 	void Reset() override;
 	void Reset(objectType playerType = objectType::EXPLORER);
+	void GroundCheck();
+	void GravityUpdate();
 public:
 	// Setter
 	void SetHP(int hp) { _HP = hp; }
@@ -50,14 +58,14 @@ public:
 	void SetMoveAble(bool moveable) { _moveAble = moveable; }
 	// Getter
 	int GetHP() { return _HP; }
-	bool IsGoal() { if (_currentState == State::GOAL) return true; else return false; }
 	bool IsPlay() { return _animation->IsPlay(); }	
 public:	// 움직임 관련 Command 함수
 	void LeftMove() override;
 	void RightMove() override;
-private: void Move(Vector2 & position);	// 해당 위치로 움직이려고 시도함(
-public:
 	void Jump() override;
+	void Idle() override;
 	void Attack();
+private: 
+	void Move(Vector2& position);	// 해당 위치로 움직이려고 시도함
 
 };
