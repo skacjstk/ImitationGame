@@ -1,7 +1,7 @@
 #include "ImitationGame/framework.h"
+#include "Animation.h"
 #include "Render/AnimationClip.h"
 #include "Render/Texture.h"
-#include "Animation.h"
 //////////////////////////////////////////////////////////
 // 생성자
 /////////////////////////////////////////////////////////
@@ -28,7 +28,7 @@ void Animation::AddClip(AnimationClip* pClip)
 //////////////////////////////////////////////////////////////////
 //  Player의 Update()에서 무조건 Call
 //////////////////////////////////////////////////////////////////
-void Animation::SetPlay(UINT PlayNo)
+void Animation::SetPlay(UINT PlayNo, bool IsInitialize)
 {
 	// 기존에 Play된 Number랑 바뀌지 않게 할 필요가 있음
 
@@ -39,8 +39,11 @@ void Animation::SetPlay(UINT PlayNo)
 
 	pClip = m_cvAnimationClips[m_nCurrentClip];
 
-	if (pClip->IsPlay() && PlayNo == m_nCurrentClip)
-		return;
+	if (!IsInitialize) {
+		if ((pClip->IsPlay() && PlayNo == m_nCurrentClip))
+			return;
+	}
+	
 	m_nCurrentClip = PlayNo;
 	pClip->SetPlay();    // PlayTime, Image의 순서를 0로 바꾸어 놓는다
 }

@@ -14,7 +14,7 @@ public: // Setter
 	void  SetRotation(float x, float y, float z) { _texture->SetRotation(x, y, z); }
 	void  SetRotation(Vector3 rotation)          { _texture->SetRotation(rotation); }
 	void  AddClip(class AnimationClip *pClip);
-	void  SetPlay(UINT PlayNo);                 // AnimationClip의 index를 변경
+	void  SetPlay(UINT PlayNo, bool IsInitialize = false);                 // AnimationClip의 index를 변경
 	void  SetStop();                            // 강제적으로 Stop하고 싶을때
 
 public: // Getter
@@ -26,6 +26,7 @@ public: // Getter
 	Vector3  GetRotation()                        { return _texture->GetRotation(); }
 	Vector2  GetTextureRealSize()                 { return _texture->GetTextureRealSize(); }
 	UINT     GetClipNo()                          { return m_nCurrentClip; }
+	AnimationClip* GetAnimationClip(int clipNo)   { return m_cvAnimationClips[clipNo]; }
 private:
 	class Texture *_texture = nullptr;
 	vector<class AnimationClip*> m_cvAnimationClips;
