@@ -1,7 +1,7 @@
 #include  "ImitationGame/framework.h"
-#include  "Collider.h"
 #include  "Physics/clipper.hpp"
 #include  "./Render/ColorShader.h"
+#include  "Collider.h"
 
 #define MAX(x,y) ( ( ((x) >= (y)) ? (x):(y)) )
 #define MIN(x,y) ( ( ((x) <  (y)) ? (x):(y)) )

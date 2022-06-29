@@ -192,6 +192,9 @@
     <ClInclude Include="..\Command\RightMoveCommand.h">
       <Filter>헤더 파일\Command</Filter>
     </ClInclude>
+    <ClInclude Include="..\Command\IdleCommand.h">
+      <Filter>헤더 파일\Command</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -290,19 +293,22 @@
     <ClCompile Include="..\Base\InputHandler.cpp">
       <Filter>소스 파일\Base</Filter>
     </ClCompile>
+    <ClCompile Include="..\Object\Player.cpp">
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
     <ClCompile Include="..\Command\Command.cpp">
+      <Filter>소스 파일\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Command\JumpCommand.cpp">
       <Filter>소스 파일\Command</Filter>
     </ClCompile>
     <ClCompile Include="..\Command\LeftMoveCommand.cpp">
       <Filter>소스 파일\Command</Filter>
     </ClCompile>
-    <ClCompile Include="..\Object\Player.cpp">
-      <Filter>소스 파일\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Command\JumpCommand.cpp">
+    <ClCompile Include="..\Command\RightMoveCommand.cpp">
       <Filter>소스 파일\Command</Filter>
     </ClCompile>
-    <ClCompile Include="..\Command\RightMoveCommand.cpp">
+    <ClCompile Include="..\Command\IdleCommand.cpp">
       <Filter>소스 파일\Command</Filter>
     </ClCompile>
   </ItemGroup>

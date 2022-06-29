@@ -160,6 +160,7 @@
     <ClInclude Include="..\Base\SRVManager.h" />
     <ClInclude Include="..\Base\UIObject.h" />
     <ClInclude Include="..\Command\Command.h" />
+    <ClInclude Include="..\Command\IdleCommand.h" />
     <ClInclude Include="..\Command\JumpCommand.h" />
     <ClInclude Include="..\Command\LeftMoveCommand.h" />
     <ClInclude Include="..\Command\RightMoveCommand.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="..\Base\SRVManager.cpp" />
     <ClCompile Include="..\Base\UIObject.cpp" />
     <ClCompile Include="..\Command\Command.cpp" />
+    <ClCompile Include="..\Command\IdleCommand.cpp" />
     <ClCompile Include="..\Command\JumpCommand.cpp" />
     <ClCompile Include="..\Command\LeftMoveCommand.cpp" />
     <ClCompile Include="..\Command\RightMoveCommand.cpp" />
