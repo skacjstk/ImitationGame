@@ -17,6 +17,24 @@ AnimationClip::~AnimationClip()
 	m_cvFrames.erase(m_cvFrames.begin(), m_cvFrames.end());
 
 }
+// 자체 제작해본 endXY 없는 AddFrame ( 더 오래걸림 )
+void AnimationClip::AddFrame(Texture * pTexture, wstring strImageFile, float startX, float startY, float delta)
+{
+	Frame *pFrame = new Frame();
+
+	pFrame->m_strImageFile = strImageFile;	// 왜 IMAGE_FOLDER 가 없었지? 어쨋든 이 시점에서 완전한 Path 여야 함.
+	pFrame->m_Offset = Vector2(startX, startY);
+	pFrame->m_Time = delta;
+	pTexture->CreateShaderResourceView(strImageFile); // 이름이 만약 같으면 단 1
+
+	D3DX11_IMAGE_INFO ImageInfo;
+	HRESULT hr = D3DX11GetImageInfoFromFile(strImageFile.c_str(), NULL, &ImageInfo, NULL);
+	assert(SUCCEEDED(hr));
+
+	pFrame->m_OffsetSize = Vector2(ImageInfo.Width, ImageInfo.Height);
+	m_cvFrames.push_back(pFrame);
+	m_ptrTexture = pTexture;
+}
 void AnimationClip::AddFrame(Texture * pTexture, wstring strImageFile, float startX, float startY, float endX, float endY, float delta)
 {
 	Frame *pFrame = new Frame();

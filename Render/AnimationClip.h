@@ -18,10 +18,12 @@ public:
 	void  Render();
 public: // Getter
 	bool  IsPlay()                     { return m_bPlay; }
+	Vector2 GetCurrentFrameRealSize()  { return m_ptrTexture->GetTextureRealSize(); }	// 0622 신규추가, 로딩 애니메이션 용
 
 public: // Setter	Texture 에서 템플릿 써보도록 하자 
 	void  AddFrame(class Texture *pTexture, wstring strImageFile, float startX, float startY, float endX, float endY, float delta);
 	void  AddFrame(wstring strImageFile, float startX, float startY, float endX, float endY, float delta);
+	void  AddFrame(Texture * pTexture, wstring strImageFile, float startX, float startY, float delta); //자체제작
 	void  SetPosition(float x, float y) { m_ptrTexture->SetPosition(x, y); }
 //	void  SetPosition(Vector2 position) { m_ptrTexture->SetPosition(position); }
 	void  SetScale(float sx, float sy)  { m_ptrTexture->SetScale(sx, sy); }
@@ -41,7 +43,7 @@ private:
 	};
 
 	vector<Frame*>   m_cvFrames; 
-	class  Texture  *m_ptrTexture = nullptr;   // 여기서 생성하지 않음
+	class  Texture  *m_ptrTexture = nullptr;   // 여기서 생성하지 않음 ( 여기 저장되는건 맞음 )
 	eState  m_State = eState::Loop;
 	UINT    m_nCurrentFrame = 0;  
 	float   m_PlayTime = 0.0f;
