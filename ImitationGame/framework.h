@@ -136,5 +136,6 @@ extern IDXGISwapChain* SwapChain;
 extern ID3D11RenderTargetView* RTV;		//실제로 보는 영역
 extern CMouse* Mouse;
 extern bool g_bVisibleCollisionCheck;
+extern const float G;
 extern float WSCALEX;	// 오프셋 배율 계산용
 extern float WSCALEY;	// 오프셋 배율 계산용

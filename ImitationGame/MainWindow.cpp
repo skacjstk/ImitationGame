@@ -7,10 +7,11 @@ ID3D11Device*			Device = NULL;
 ID3D11DeviceContext*	DeviceContext = NULL;
 IDXGISwapChain*			SwapChain = NULL;
 ID3D11RenderTargetView*	RTV = NULL;		//실제로 보는 영역
-bool g_bVisibleCollisionCheck = false;
+bool g_bVisibleCollisionCheck = true;
 
 float WSCALEX = 1.0f;	// 오프셋 배율 계산용
 float WSCALEY = 1.0f;	// 오프셋 배율 계산용
+const float G = 9.81f;	// 중력상수
 
 // ImGui 변수(WndProc)
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
