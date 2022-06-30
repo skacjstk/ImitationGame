@@ -3,6 +3,7 @@
 #include "./Command/RightMoveCommand.h"
 #include "./Command/JumpCommand.h"
 #include "./Command/IdleCommand.h"
+#include "./Command/AttackCommand.h"
 #include "InputHandler.h"
 
 InputHandler::InputHandler()
@@ -22,6 +23,7 @@ vector<class Command*> InputHandler::handleInput()
 	//		else
 	//			return buttonS_;
 	//	}
+	if (Mouse->Down(0)) tempCommand.push_back(mouse0_);	// Next: UI 형태에 따라 바뀌어야 할 수 있음.
 	if (tempCommand.size() == 0)
 		tempCommand.push_back(idleCommand_);
 	return tempCommand;
@@ -33,6 +35,7 @@ void InputHandler::BindActorInput()
 	buttonD_ = (Command*)new RightMoveCommand();
 	buttonW_ = (Command*)new JumpCommand();
 	idleCommand_ = (Command*)new IdleCommand();
+	mouse0_ = (Command*)new AttackCommand();
 //	buttonS_;
 //	buttonS_SPACE;
 }

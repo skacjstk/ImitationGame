@@ -15,4 +15,5 @@ private:
 	Command* buttonS_SPACE;
 	Command* buttonW_;
 	Command* idleCommand_;
+	Command* mouse0_;
 };
