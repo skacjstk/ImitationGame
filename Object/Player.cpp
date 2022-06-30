@@ -118,7 +118,7 @@ void Player::GravityUpdate()
 {
 	Vector2 position = GetPosition();
 	if (isGround_ == false)
-		gravity_ -= G * TIMEMANAGER->Delta() * 2.5f;
+		gravity_ -= G * TIMEMANAGER->Delta() * 1.5f;
 	else
 		gravity_ = 0.0f;
 	position.y += gravity_;
@@ -166,7 +166,7 @@ void Player::Jump()
 	}
 	else if (isLongJump_ == false && isCanlongJump_ == true) {
 		longJumpCount_ += TIMEMANAGER->Delta();
-		if (longJumpCount_ > 0.11f){
+		if (longJumpCount_ > 0.16f) {
 			gravity_ += playerData_.baseLongJumpSpeed * 0.05f;
 			isLongJump_ = true;
 			isCanlongJump_ = false;
@@ -178,4 +178,9 @@ void Player::Idle()
 {
 	if(_currentState != State::JUMP)
 	_currentState = State::IDLE;
+}
+
+void Player::Attack()
+{
+	MessageBoxW(nullptr, L"", L"", MB_OK);
 }

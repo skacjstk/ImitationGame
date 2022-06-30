@@ -22,8 +22,8 @@ public:		// 공개 인스턴스 변수
 	{
 		int charCode = 0;
 		float baseSpeed = 300.0f;
-		float baseJumpSpeed = 200.0f;
-		float baseLongJumpSpeed = 60.0f;	// 추가 점프용량임
+		float baseJumpSpeed = 150.0f;
+		float baseLongJumpSpeed = 40.0f;	// 추가 점프용량임
 	};
 private:	// 비공개 인스턴스 변수
 	InputHandler inputHandler;
@@ -34,7 +34,6 @@ private:	// 비공개 인스턴스 변수
 	bool isCanlongJump_ = true;	// 롱점프를 할 수 있느냐?
 	bool isLongJump_ = false;	// 롱점프를 했느냐?
 	float longJumpCount_ = 0.0f;
-	class Collider* pCollider_ = nullptr;
 	int _moveCount = 0;
 	bool _moveAble = true;
 	float _Time = 0.0f;
@@ -64,7 +63,7 @@ public:	// 움직임 관련 Command 함수
 	void RightMove() override;
 	void Jump() override;
 	void Idle() override;
-	void Attack();
+	void Attack() override;
 private: 
 	void Move(Vector2& position);	// 해당 위치로 움직이려고 시도함
 

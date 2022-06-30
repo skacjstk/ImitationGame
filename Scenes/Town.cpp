@@ -38,6 +38,12 @@ void Town::Update()
 	backGround_->Update(V, P);
 	tempPlayer_->Update(V, P);
 	_tempFloor->Update(V, P);
+	if (Collider::IntersectAABB(_tempFloor, tempPlayer_->GetCollider()) == true) {
+		printf("두 직사각형이 충돌했\n");
+	}
+	else {
+		printf("충돌 안함\n");
+	}
 }
 
 void Town::Render()
