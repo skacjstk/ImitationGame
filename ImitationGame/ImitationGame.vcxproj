@@ -159,6 +159,7 @@
     <ClInclude Include="..\Base\SceneManager.h" />
     <ClInclude Include="..\Base\SRVManager.h" />
     <ClInclude Include="..\Base\UIObject.h" />
+    <ClInclude Include="..\Command\AttackCommand.h" />
     <ClInclude Include="..\Command\Command.h" />
     <ClInclude Include="..\Command\IdleCommand.h" />
     <ClInclude Include="..\Command\JumpCommand.h" />
@@ -174,6 +175,9 @@
     <ClInclude Include="..\ImGUI\imstb_truetype.h" />
     <ClInclude Include="..\Object\Button.h" />
     <ClInclude Include="..\Object\Player.h" />
+    <ClInclude Include="..\Object\Weapons\MeleeWeapons\MeleeWeapon.h" />
+    <ClInclude Include="..\Object\Weapons\MeleeWeapons\ShortSword.h" />
+    <ClInclude Include="..\Object\Weapons\Weapon.h" />
     <ClInclude Include="..\Physics\clipper.hpp" />
     <ClInclude Include="..\Physics\Collider.h" />
     <ClInclude Include="..\Render\Animation.h" />
@@ -204,6 +208,7 @@
     <ClCompile Include="..\Base\SceneManager.cpp" />
     <ClCompile Include="..\Base\SRVManager.cpp" />
     <ClCompile Include="..\Base\UIObject.cpp" />
+    <ClCompile Include="..\Command\AttackCommand.cpp" />
     <ClCompile Include="..\Command\Command.cpp" />
     <ClCompile Include="..\Command\IdleCommand.cpp" />
     <ClCompile Include="..\Command\JumpCommand.cpp" />
@@ -217,6 +222,9 @@
     <ClCompile Include="..\ImGUI\imgui_widgets.cpp" />
     <ClCompile Include="..\Object\Button.cpp" />
     <ClCompile Include="..\Object\Player.cpp" />
+    <ClCompile Include="..\Object\Weapons\MeleeWeapons\MeleeWeapon.cpp" />
+    <ClCompile Include="..\Object\Weapons\MeleeWeapons\ShortSword.cpp" />
+    <ClCompile Include="..\Object\Weapons\Weapon.cpp" />
     <ClCompile Include="..\Physics\clipper.cpp" />
     <ClCompile Include="..\Physics\Collider.cpp" />
     <ClCompile Include="..\Render\Animation.cpp" />

@@ -64,6 +64,12 @@
     <Filter Include="헤더 파일\Command">
       <UniqueIdentifier>{f4a8bcee-1c79-454f-8cd2-e227fc423283}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Object\Weapon">
+      <UniqueIdentifier>{4dd5898d-c96b-4169-946d-ba3eb86cf98f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Object\Weapon\MeleeWeapon">
+      <UniqueIdentifier>{8d5278b7-ceb1-4f0d-8bb7-bdf13ce55ef2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -195,6 +201,18 @@
     <ClInclude Include="..\Command\IdleCommand.h">
       <Filter>헤더 파일\Command</Filter>
     </ClInclude>
+    <ClInclude Include="..\Command\AttackCommand.h">
+      <Filter>헤더 파일\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\Weapons\Weapon.h">
+      <Filter>소스 파일\Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\Weapons\MeleeWeapons\MeleeWeapon.h">
+      <Filter>소스 파일\Object\Weapon\MeleeWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\Weapons\MeleeWeapons\ShortSword.h">
+      <Filter>소스 파일\Object\Weapon\MeleeWeapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -310,6 +328,18 @@
     </ClCompile>
     <ClCompile Include="..\Command\IdleCommand.cpp">
       <Filter>소스 파일\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Command\AttackCommand.cpp">
+      <Filter>소스 파일\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Weapons\Weapon.cpp">
+      <Filter>소스 파일\Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Weapons\MeleeWeapons\MeleeWeapon.cpp">
+      <Filter>소스 파일\Object\Weapon\MeleeWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Weapons\MeleeWeapons\ShortSword.cpp">
+      <Filter>소스 파일\Object\Weapon\MeleeWeapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

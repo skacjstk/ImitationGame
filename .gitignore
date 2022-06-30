@@ -418,3 +418,5 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio
 
+/Object/Weapons/MeleeWeapons/ShortSword_1.h
+/Object/Weapons/MeleeWeapons/ShortSword_1.cpp
