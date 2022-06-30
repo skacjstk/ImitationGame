@@ -6,7 +6,7 @@ ShortSword::ShortSword()
 {
 	minDamage_ = 8;
 	maxDamage_ = 10;
-	weaponText_ = "가볍고 휘두르기 편한 검";
+	ItemText_ = "가볍고 휘두르기 편한 검";
 	handedType_ = Weapon::HandedType::ONEHANDED;
 	if (static_cast<int>(handedType_) == 1)
 		printf("static cast 한손무기\n");

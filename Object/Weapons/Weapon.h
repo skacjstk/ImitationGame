@@ -1,5 +1,6 @@
 #pragma once
-class Weapon : public GameObject
+#include "./Object/Item.h"
+class Weapon : public Item
 {
 public:
 	enum class WeaponType
@@ -16,12 +17,12 @@ public:
 		TWOHANDED = 2,
 	};
 protected:
-	Texture* pTexture_ = nullptr;
+//	Texture* pTexture_ = nullptr;	// Item에 frontImage_ 로 이동
+	Animation* weapon_ = nullptr;
 	Vector2 LeftHandPoint_[2];	// 이 무기를 장착했을 때, PlayerHand 가 가있어야 할 위치, (휙 휙 해서 두번(왼손)
 	Vector2 RightHandPoint_[2];	// 오른손 위치 포인트
 	float minDamage_ = 1.0f;
 	float maxDamage_ = 1.0f;
-	string weaponText_ = "";
 	float attackSpeed_ = 1.0f;
 	enum class WeaponType weaponType_ = WeaponType::NONE;
 	enum class HandedType handedType_ = HandedType::NONE;

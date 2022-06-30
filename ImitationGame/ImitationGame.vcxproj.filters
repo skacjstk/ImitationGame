@@ -213,6 +213,9 @@
     <ClInclude Include="..\Object\Weapons\MeleeWeapons\ShortSword.h">
       <Filter>소스 파일\Object\Weapon\MeleeWeapon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Object\Item.h">
+      <Filter>소스 파일\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -340,6 +343,9 @@
     </ClCompile>
     <ClCompile Include="..\Object\Weapons\MeleeWeapons\ShortSword.cpp">
       <Filter>소스 파일\Object\Weapon\MeleeWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Item.cpp">
+      <Filter>소스 파일\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

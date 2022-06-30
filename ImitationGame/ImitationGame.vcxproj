@@ -174,6 +174,7 @@
     <ClInclude Include="..\ImGUI\imstb_textedit.h" />
     <ClInclude Include="..\ImGUI\imstb_truetype.h" />
     <ClInclude Include="..\Object\Button.h" />
+    <ClInclude Include="..\Object\Item.h" />
     <ClInclude Include="..\Object\Player.h" />
     <ClInclude Include="..\Object\Weapons\MeleeWeapons\MeleeWeapon.h" />
     <ClInclude Include="..\Object\Weapons\MeleeWeapons\ShortSword.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="..\ImGUI\imgui_tables.cpp" />
     <ClCompile Include="..\ImGUI\imgui_widgets.cpp" />
     <ClCompile Include="..\Object\Button.cpp" />
+    <ClCompile Include="..\Object\Item.cpp" />
     <ClCompile Include="..\Object\Player.cpp" />
     <ClCompile Include="..\Object\Weapons\MeleeWeapons\MeleeWeapon.cpp" />
     <ClCompile Include="..\Object\Weapons\MeleeWeapons\ShortSword.cpp" />
