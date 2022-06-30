@@ -1,6 +1,7 @@
 #include "./ImitationGame/framework.h"
 #include "./Object/Player.h"
 #include "./Physics/Collider.h"
+#include "./Object/Weapons/MeleeWeapons/ShortSword.h"	// Next: 지울 예정( 무기와 Player 관계에 대한 고민 )
 #include "Town.h"
 
 Town::Town()
@@ -20,6 +21,8 @@ Town::Town()
 	_tempFloor = new Collider();
 	_tempFloor->SetScale(800.0f, 1.0f);
 	_tempFloor->SetPosition(0.0f, -300.0f);
+
+	_tempWeapon = (Weapon*)new ShortSword();	// Next:  지울 예정
 }
 
 Town::~Town()
@@ -38,12 +41,6 @@ void Town::Update()
 	backGround_->Update(V, P);
 	tempPlayer_->Update(V, P);
 	_tempFloor->Update(V, P);
-	if (Collider::IntersectAABB(_tempFloor, tempPlayer_->GetCollider()) == true) {
-		printf("두 직사각형이 충돌했\n");
-	}
-	else {
-		printf("충돌 안함\n");
-	}
 }
 
 void Town::Render()
