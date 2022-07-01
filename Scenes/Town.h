@@ -10,7 +10,6 @@ class Town : public Scene
 private:	//private instance variable
 	Texture* backGround_ = nullptr;
 	class Player* tempPlayer_ = nullptr;
-	class Collider* _tempFloor = nullptr;
 	class Weapon* _tempWeapon = nullptr;
 public:	//»ý ¼Ò
 	Town();

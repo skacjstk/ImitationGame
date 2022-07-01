@@ -120,12 +120,12 @@ typedef D3DXCOLOR	Color;
 #include "./Base/ObjectManager.h"
 #include "./Render/AnimationClip.h"
 #include "./Render/Animation.h"
-//#include "./Base/Terrain.h"
+#include "./Base/Terrain.h"
 #include "./Base/GameObject.h"
 #include "./Base/GameActor.h"
 #include "./Base/UIObject.h"
 #include "./Object/Button.h"
-//#include "./Object/Tile.h"
+#include "./Object/Tile.h"
 #include "./Render/DirectWrite.h"
 
 //DX Cominterface 및 Global
@@ -139,3 +139,6 @@ extern bool g_bVisibleCollisionCheck;
 extern const float G;
 extern float WSCALEX;	// 오프셋 배율 계산용
 extern float WSCALEY;	// 오프셋 배율 계산용
+
+constexpr int MAPX = 30;
+constexpr int MAPY = 30;

@@ -28,7 +28,7 @@ protected:
 	enum class HandedType handedType_ = HandedType::NONE;
 public:
 	Weapon() {};
-	~Weapon() {};
+	~Weapon();
 public:
 	virtual void Update(Matrix V, Matrix P) = 0;  // 순수가상함수
 	virtual void Render() = 0;                    // 순수가상함수

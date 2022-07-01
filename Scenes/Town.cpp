@@ -17,12 +17,11 @@ Town::Town()
 	backGround_->SetPosition(0.0f, 0.0f);
 	printf("%f %f\n", backGround_->GetTextureRealSize().x, backGround_->GetTextureRealSize().y);
 
+	// 테스트코드
 	tempPlayer_ = new Player();
-	_tempFloor = new Collider();
-	_tempFloor->SetScale(800.0f, 1.0f);
-	_tempFloor->SetPosition(0.0f, -300.0f);
 
 	_tempWeapon = (Weapon*)new ShortSword();	// Next:  지울 예정
+	CAMERA->SetObject(tempPlayer_);
 }
 
 Town::~Town()
@@ -40,19 +39,20 @@ void Town::Update()
 	CAMERA->Update(V, P);
 	backGround_->Update(V, P);
 	tempPlayer_->Update(V, P);
-	_tempFloor->Update(V, P);
+	_tempWeapon->Update(V, P);
 }
 
 void Town::Render()
 {
 	backGround_->Render();
 	tempPlayer_->Render();
-	_tempFloor->Render();
+	_tempWeapon->Render();
 }
 
 void Town::ChangeScene()
 {
 	SetActive(true);
 	// 임시 코드
+	// 카메라의 최대, 최소값 잡아주기 (MoMoDora Camera 참조) Next0701
 }
 

@@ -70,6 +70,12 @@
     <Filter Include="소스 파일\Object\Weapon\MeleeWeapon">
       <UniqueIdentifier>{8d5278b7-ceb1-4f0d-8bb7-bdf13ce55ef2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\Object\Weapon">
+      <UniqueIdentifier>{04be3a49-1c7f-4788-8714-6aafed0d6859}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Object\Weapon\MeleeWeapon">
+      <UniqueIdentifier>{f7459dc2-c8a4-4303-84ef-0b07af88b0f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -204,17 +210,29 @@
     <ClInclude Include="..\Command\AttackCommand.h">
       <Filter>헤더 파일\Command</Filter>
     </ClInclude>
-    <ClInclude Include="..\Object\Weapons\Weapon.h">
-      <Filter>소스 파일\Object\Weapon</Filter>
-    </ClInclude>
     <ClInclude Include="..\Object\Weapons\MeleeWeapons\MeleeWeapon.h">
-      <Filter>소스 파일\Object\Weapon\MeleeWeapon</Filter>
+      <Filter>헤더 파일\Object\Weapon\MeleeWeapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Object\Weapons\MeleeWeapons\ShortSword.h">
-      <Filter>소스 파일\Object\Weapon\MeleeWeapon</Filter>
+      <Filter>헤더 파일\Object\Weapon\MeleeWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\Weapons\Weapon.h">
+      <Filter>헤더 파일\Object\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Object\Item.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\Terrain.h">
+      <Filter>소스 파일\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\Line.h">
       <Filter>소스 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\Tile.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Scenes\S04_Extra01.h">
+      <Filter>소스 파일\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -346,6 +364,18 @@
     </ClCompile>
     <ClCompile Include="..\Object\Item.cpp">
       <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\Terrain.cpp">
+      <Filter>소스 파일\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Line.cpp">
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Tile.cpp">
+      <Filter>헤더 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Scenes\S04_Extra01.cpp">
+      <Filter>소스 파일\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

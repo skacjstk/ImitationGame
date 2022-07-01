@@ -158,6 +158,7 @@
     <ClInclude Include="..\Base\Scene.h" />
     <ClInclude Include="..\Base\SceneManager.h" />
     <ClInclude Include="..\Base\SRVManager.h" />
+    <ClInclude Include="..\Base\Terrain.h" />
     <ClInclude Include="..\Base\UIObject.h" />
     <ClInclude Include="..\Command\AttackCommand.h" />
     <ClInclude Include="..\Command\Command.h" />
@@ -175,7 +176,9 @@
     <ClInclude Include="..\ImGUI\imstb_truetype.h" />
     <ClInclude Include="..\Object\Button.h" />
     <ClInclude Include="..\Object\Item.h" />
+    <ClInclude Include="..\Object\Line.h" />
     <ClInclude Include="..\Object\Player.h" />
+    <ClInclude Include="..\Object\Tile.h" />
     <ClInclude Include="..\Object\Weapons\MeleeWeapons\MeleeWeapon.h" />
     <ClInclude Include="..\Object\Weapons\MeleeWeapons\ShortSword.h" />
     <ClInclude Include="..\Object\Weapons\Weapon.h" />
@@ -189,6 +192,7 @@
     <ClInclude Include="..\Render\Texture.h" />
     <ClInclude Include="..\Render\TextureShader.h" />
     <ClInclude Include="..\Scenes\Intro.h" />
+    <ClInclude Include="..\Scenes\S04_Extra01.h" />
     <ClInclude Include="..\Scenes\Town.h" />
     <ClInclude Include="..\System\GameTime.h" />
     <ClInclude Include="..\System\Keyboard.h" />
@@ -208,6 +212,7 @@
     <ClCompile Include="..\Base\Scene.cpp" />
     <ClCompile Include="..\Base\SceneManager.cpp" />
     <ClCompile Include="..\Base\SRVManager.cpp" />
+    <ClCompile Include="..\Base\Terrain.cpp" />
     <ClCompile Include="..\Base\UIObject.cpp" />
     <ClCompile Include="..\Command\AttackCommand.cpp" />
     <ClCompile Include="..\Command\Command.cpp" />
@@ -223,7 +228,9 @@
     <ClCompile Include="..\ImGUI\imgui_widgets.cpp" />
     <ClCompile Include="..\Object\Button.cpp" />
     <ClCompile Include="..\Object\Item.cpp" />
+    <ClCompile Include="..\Object\Line.cpp" />
     <ClCompile Include="..\Object\Player.cpp" />
+    <ClCompile Include="..\Object\Tile.cpp" />
     <ClCompile Include="..\Object\Weapons\MeleeWeapons\MeleeWeapon.cpp" />
     <ClCompile Include="..\Object\Weapons\MeleeWeapons\ShortSword.cpp" />
     <ClCompile Include="..\Object\Weapons\Weapon.cpp" />
@@ -237,6 +244,7 @@
     <ClCompile Include="..\Render\Texture.cpp" />
     <ClCompile Include="..\Render\TextureShader.cpp" />
     <ClCompile Include="..\Scenes\Intro.cpp" />
+    <ClCompile Include="..\Scenes\S04_Extra01.cpp" />
     <ClCompile Include="..\Scenes\Town.cpp" />
     <ClCompile Include="..\System\GameTime.cpp" />
     <ClCompile Include="..\System\Keyboard.cpp" />
