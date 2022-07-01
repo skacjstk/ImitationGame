@@ -418,5 +418,7 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio
 
+/ImitationGame/testcoord.txt
+/잠깐만
 /Object/Weapons/MeleeWeapons/ShortSword_1.h
 /Object/Weapons/MeleeWeapons/ShortSword_1.cpp
