@@ -73,6 +73,11 @@ void Intro::Update()
 	V = CAMERA->GetViewMatrix();
 	P = CAMERA->GetProjectionMatrix();
 
+	if (KEYBOARD->Down(VK_NUMPAD9))
+	{
+		SCENEMANAGER->ChangeScene("MapEditor");
+		return;
+	}
 	CAMERA->Update(V, P);
 
 	backGround_->Update(V, P);
