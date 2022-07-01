@@ -224,7 +224,7 @@ LRESULT MainWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 	HDROP hDrop;
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
 		return true;	// 여기서 일어난 이벤트는 아래로 보내지 않겠다. 
-//	Mouse->WndProc(message, wParam, lParam);
+	Mouse->WndProc(message, wParam, lParam);
 	switch (message)
 	{
 	case WM_DESTROY:
