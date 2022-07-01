@@ -13,7 +13,7 @@ protected:
 	string ItemText_ = "";
 public:
 	Item() {};
-	~Item() {};
+	~Item();
 public:
 	virtual void Update(Matrix V, Matrix P) = 0;  // 순수가상함수
 	virtual void Render() = 0;                    // 순수가상함수
