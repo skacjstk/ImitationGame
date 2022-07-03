@@ -422,3 +422,5 @@ FodyWeavers.xsd
 /잠깐만
 /Object/Weapons/MeleeWeapons/ShortSword_1.h
 /Object/Weapons/MeleeWeapons/ShortSword_1.cpp
+/Object/AObject.h
+/Object/AObject.cpp

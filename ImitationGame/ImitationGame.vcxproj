@@ -165,6 +165,7 @@
     <ClInclude Include="..\Command\IdleCommand.h" />
     <ClInclude Include="..\Command\JumpCommand.h" />
     <ClInclude Include="..\Command\LeftMoveCommand.h" />
+    <ClInclude Include="..\Command\Player\InventoryToggleCommand.h" />
     <ClInclude Include="..\Command\RightMoveCommand.h" />
     <ClInclude Include="..\ImGUI\imconfig.h" />
     <ClInclude Include="..\ImGUI\imgui.h" />
@@ -175,9 +176,11 @@
     <ClInclude Include="..\ImGUI\imstb_textedit.h" />
     <ClInclude Include="..\ImGUI\imstb_truetype.h" />
     <ClInclude Include="..\Object\Button.h" />
+    <ClInclude Include="..\Object\Inventory.h" />
     <ClInclude Include="..\Object\Item.h" />
     <ClInclude Include="..\Object\Line.h" />
     <ClInclude Include="..\Object\Player.h" />
+    <ClInclude Include="..\Object\Slot.h" />
     <ClInclude Include="..\Object\Tile.h" />
     <ClInclude Include="..\Object\Weapons\MeleeWeapons\MeleeWeapon.h" />
     <ClInclude Include="..\Object\Weapons\MeleeWeapons\ShortSword.h" />
@@ -219,6 +222,7 @@
     <ClCompile Include="..\Command\IdleCommand.cpp" />
     <ClCompile Include="..\Command\JumpCommand.cpp" />
     <ClCompile Include="..\Command\LeftMoveCommand.cpp" />
+    <ClCompile Include="..\Command\Player\InventoryToggleCommand.cpp" />
     <ClCompile Include="..\Command\RightMoveCommand.cpp" />
     <ClCompile Include="..\ImGUI\imgui.cpp" />
     <ClCompile Include="..\ImGUI\imgui_draw.cpp" />
@@ -227,9 +231,11 @@
     <ClCompile Include="..\ImGUI\imgui_tables.cpp" />
     <ClCompile Include="..\ImGUI\imgui_widgets.cpp" />
     <ClCompile Include="..\Object\Button.cpp" />
+    <ClCompile Include="..\Object\Inventory.cpp" />
     <ClCompile Include="..\Object\Item.cpp" />
     <ClCompile Include="..\Object\Line.cpp" />
     <ClCompile Include="..\Object\Player.cpp" />
+    <ClCompile Include="..\Object\Slot.cpp" />
     <ClCompile Include="..\Object\Tile.cpp" />
     <ClCompile Include="..\Object\Weapons\MeleeWeapons\MeleeWeapon.cpp" />
     <ClCompile Include="..\Object\Weapons\MeleeWeapons\ShortSword.cpp" />
