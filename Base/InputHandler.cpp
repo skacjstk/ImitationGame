@@ -4,6 +4,7 @@
 #include "./Command/JumpCommand.h"
 #include "./Command/IdleCommand.h"
 #include "./Command/AttackCommand.h"
+#include "./Command/Player/InventoryToggleCommand.h"
 #include "InputHandler.h"
 
 InputHandler::InputHandler()
@@ -17,6 +18,7 @@ vector<class Command*> InputHandler::handleInput()
 	if (KEYBOARD->Press('A')) tempCommand.push_back(buttonA_);
 	if (KEYBOARD->Press('D')) tempCommand.push_back(buttonD_);
 	if (KEYBOARD->Press('W')) tempCommand.push_back(buttonW_);
+	if (KEYBOARD->Down('V')) tempCommand.push_back(buttonV_);
 	//	if (KEYBOARD->Press('S')) {
 	//		if (KEYBOARD->Press(VK_SPACE))
 	//			return buttonS_SPACE;
@@ -34,8 +36,10 @@ void InputHandler::BindActorInput()
 	buttonA_ = (Command*)new LeftMoveCommand();
 	buttonD_ = (Command*)new RightMoveCommand();
 	buttonW_ = (Command*)new JumpCommand();
+	buttonV_ = (Command*)new InventoryToggleCommand();
 	idleCommand_ = (Command*)new IdleCommand();
 	mouse0_ = (Command*)new AttackCommand();
+
 //	buttonS_;
 //	buttonS_SPACE;
 }
