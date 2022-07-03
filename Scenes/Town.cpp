@@ -20,7 +20,6 @@ Town::Town()
 	// 테스트코드
 	tempPlayer_ = new Player();
 
-	_tempWeapon = (Weapon*)new ShortSword();	// Next:  지울 예정
 	CAMERA->SetObject(tempPlayer_);
 }
 
@@ -39,14 +38,12 @@ void Town::Update()
 	CAMERA->Update(V, P);
 	backGround_->Update(V, P);
 	tempPlayer_->Update(V, P);
-	_tempWeapon->Update(V, P);
 }
 
 void Town::Render()
 {
 	backGround_->Render();
 	tempPlayer_->Render();
-	_tempWeapon->Render();
 }
 
 void Town::ChangeScene()
