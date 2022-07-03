@@ -16,28 +16,33 @@ public:
 	void   Render();
 
 	void   VCtoWC(Vector2& posotion);   // View   -> Window(2D용)
+	void   AbsoluteVCtoWC(Vector2& position);	// 절대좌표 View -> Window 변환 ( 주로 UI 용)
 	void   WCtoVC(Vector2& posotion);   // Window -> View
 
 
 
 public:   // Setter
-	void   SetPosition(float x, float y)  { m_Position = Vector2(x, y); }
-	void   SetPosition(Vector2 position)  { m_Position = position; }
-	void   SetObject(class GameObject *pObject) { m_pGameObject = pObject; }
+	void   SetPosition(float x, float y) { m_Position = Vector2(x, y); }
+	void   SetPosition(Vector2 position) { m_Position = position; }
+	void   SetObject(class GameObject* pObject) { m_pGameObject = pObject; }
+	void   SetCenterXLock(int Value) { CenterXLock = Value; }
+	void   SetOffset(float x, float y) { m_Offset = Vector2(x, y); }
 public:   // Getter
 	Matrix GetViewMatrix() { return m_View; }
+	Matrix GetAbsoluteViewMatrix() { return m_abView; }
 	Matrix GetProjectionMatrix() { return m_Projection; }
 	Vector2 GetPosition() { return m_Position; }
 
 
 
 private:
-	Vector2 m_Position  = Vector2(0.0f, 0.0f);
+	Vector2 m_Position = Vector2(0.0f, 0.0f);
 	Vector2 m_MoveSpeed = Vector2(200.0f, 200.0f);
 	Matrix  m_Projection;
 	Matrix  m_View;
-	class   Texture     *m_pTexture  = nullptr;
-	class   GameObject  *m_pGameObject    = nullptr;
+	Matrix m_abView;
+	class   Texture* m_pTexture = nullptr;
+	class   GameObject* m_pGameObject = nullptr;
 	Vector2 m_Offset = Vector2(0.0f, 0.0f);
 	int     CenterXLock = 1;
 
