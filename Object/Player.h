@@ -29,6 +29,7 @@ private:	// 비공개 인스턴스 변수
 	InputHandler inputHandler;
 	Animation* _animation = nullptr;
 	State _currentState = State::IDLE;
+	class Inventory* Inventory_ = nullptr;
 	objectType _heroType = objectType::EXPLORER;	// 던그리드 캐릭터 변경할때 사용할 것
 	Vector2 _movePosition = Vector2(0.0f, 0.0f);	// lerp 하게 움직힐 거야
 	bool isCanlongJump_ = true;	// 롱점프를 할 수 있느냐?
@@ -38,6 +39,8 @@ private:	// 비공개 인스턴스 변수
 	bool _moveAble = true;
 	float _Time = 0.0f;
 	int _HP = 0;
+	float gravity_ = 0.0f;	// Actor들에게 적용되는 매 프레임마다 아래로 떨어지는 변화량
+	bool isGround_ = false;	// Actor 자신이 땅에 닿았는지 확인할 변수
 	struct PlayerData playerData_;
 public:
 	Player(int AnimationID = 0);
@@ -64,6 +67,7 @@ public:	// 움직임 관련 Command 함수
 	void Jump() override;
 	void Idle() override;
 	void Attack() override;
+	void InventoryToggle() override;
 private: 
 	void Move(Vector2& position);	// 해당 위치로 움직이려고 시도함
 

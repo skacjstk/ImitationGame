@@ -2,6 +2,7 @@
 #include "./Base/InputHandler.h"
 #include "./Command/Command.h"
 #include "./Physics/Collider.h"
+#include "./Object/Inventory.h"
 #include "Player.h"
 
 Player::Player(int AnimationID)
@@ -45,6 +46,7 @@ Player::Player(int AnimationID)
 	}
 	SetScale(5.0f, 5.0f);
 	pCollider_ = new Collider();
+	Inventory_ = new Inventory();
 }
 
 Player::~Player()
@@ -71,13 +73,14 @@ void Player::Update(Matrix V, Matrix P)
 	pCollider_->SetPosition(GetPosition());
 	pCollider_->Update(V, P);
 	CAMERA->Update(V, P);
-
+	Inventory_->Update(P);	// UI 계열은 절대좌표가 필요하다.
 }
 
 void Player::Render()
 {
 	_animation->Render();
 	pCollider_->Render();
+	Inventory_->Render();
 }
 
 void Player::Reset()
@@ -182,5 +185,13 @@ void Player::Idle()
 
 void Player::Attack()
 {
-	MessageBoxW(nullptr, L"", L"", MB_OK);
+	MessageBoxW(nullptr, L"공격", L"", MB_OK);
+}
+
+void Player::InventoryToggle()
+{
+	if(Inventory_->IsActive())
+		Inventory_->SetActive(false);
+	else
+		Inventory_->SetActive(true);	
 }
