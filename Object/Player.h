@@ -1,5 +1,4 @@
 #pragma once
-#include "./Base/InputHandler.h"
 class Player : public GameActor
 {
 public:		// 공개 인스턴스 변수
@@ -26,10 +25,10 @@ public:		// 공개 인스턴스 변수
 		float baseLongJumpSpeed = 40.0f;	// 추가 점프용량임
 	};
 private:	// 비공개 인스턴스 변수
-	InputHandler inputHandler;
+	class InputHandler* inputHandler_;
+	class Inventory* Inventory_ = nullptr;
 	Animation* _animation = nullptr;
 	State _currentState = State::IDLE;
-	class Inventory* Inventory_ = nullptr;
 	objectType _heroType = objectType::EXPLORER;	// 던그리드 캐릭터 변경할때 사용할 것
 	Vector2 _movePosition = Vector2(0.0f, 0.0f);	// lerp 하게 움직힐 거야
 	bool isCanlongJump_ = true;	// 롱점프를 할 수 있느냐?

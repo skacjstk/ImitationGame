@@ -17,8 +17,8 @@ private:
 	int slotY_ = 3;	// 세로 슬롯의 갯수
 	struct swapIndex dragIndex_ = { 0,0 };
 	struct swapIndex dropIndex_ = { 0,0 };
-	class Slot* dragSlot_ = nullptr;
-	class Slot* dropSlot_ = nullptr;
+	class Slot** dragSlot_ = nullptr;
+	class Slot** dropSlot_ = nullptr;
 public: // 생성자 & 소멸자
 	Inventory();
 	~Inventory();

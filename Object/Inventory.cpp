@@ -1,5 +1,6 @@
 #include "ImitationGame/framework.h"
 #include "Object/Slot.h"
+#include "./Command/Command.h"	// ¾Æ´Ñ°¡
 #include "./Object/Weapons/MeleeWeapons/ShortSword.h"
 #include "./InputHandler/InventoryInputHandler.h"
 #include "./InputHandler/InputHandler.h"

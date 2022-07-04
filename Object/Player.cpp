@@ -1,5 +1,5 @@
 #include "ImitationGame/framework.h"
-#include "./Base/InputHandler.h"
+#include "./InputHandler/InputHandler.h"
 #include "./Command/Command.h"
 #include "./Physics/Collider.h"
 #include "./Object/Inventory.h"
@@ -47,6 +47,7 @@ Player::Player(int AnimationID)
 	SetScale(5.0f, 5.0f);
 	pCollider_ = new Collider();
 	Inventory_ = new Inventory();
+	inputHandler_ = (InputHandler*) new PlayerInputHandler();
 }
 
 Player::~Player()
@@ -110,7 +111,7 @@ void Player::GroundCheck()
 
 void Player::InputUpdate()
 {
-	vector<Command*> commandQueue = inputHandler.handleInput();	// 진짜로 큐는 아니야
+	vector<Command*> commandQueue = inputHandler_->handleInput();	// 진짜로 큐는 아니야
 	for (Command* command : commandQueue) {
 		GameActor* tempActor = this;
 		command->execute(*tempActor);
