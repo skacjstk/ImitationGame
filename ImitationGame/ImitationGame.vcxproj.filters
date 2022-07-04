@@ -255,14 +255,14 @@
     <ClInclude Include="..\Command\Inventory\DragAndDropCommand.h">
       <Filter>소스 파일\Command</Filter>
     </ClInclude>
-    <ClInclude Include="..\InputHandler\InputHandler.h">
-      <Filter>헤더 파일\InputHandler</Filter>
-    </ClInclude>
     <ClInclude Include="..\InputHandler\InventoryInputHandler.h">
       <Filter>헤더 파일\InputHandler</Filter>
     </ClInclude>
     <ClInclude Include="..\InputHandler\PlayerInputHandler.h">
       <Filter>헤더 파일\InputHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\InputHandler\InputHandler.h">
+      <Filter>소스 파일\InputHandler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 #pragma once
-#include "./Command/Command.h"
 class InputHandler
 {
 public:
-	virtual vector<Command*> handleInput() = 0;
+	virtual vector<class Command*> handleInput() = 0;
+	~InputHandler() {};
 };

@@ -1,9 +1,10 @@
 #pragma once
+#include "InputHandler/InputHandler.h"	
 class PlayerInputHandler : public InputHandler
 {
 public:
 	PlayerInputHandler();
-	vector<class Command*> handleInput() override;
+	vector<Command*> handleInput() override;
 	virtual ~PlayerInputHandler() {};
 public:	// ¸í·É bind ¿ë 
 	void BindActorInput();

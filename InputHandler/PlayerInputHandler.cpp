@@ -1,5 +1,4 @@
 #include "ImitationGame/framework.h"
-#include "InputHandler/InputHandler.h"
 #include "./Command/LeftMoveCommand.h"
 #include "./Command/RightMoveCommand.h"
 #include "./Command/JumpCommand.h"
