@@ -28,8 +28,8 @@ private:
 	void     Replace(wstring& str, wstring comp, wstring rep);
 	int      m_nMousePick = -1;
 	void     EditLine();
-	class    Line*  m_pLine2 = nullptr;
-	class    Line*  m_pRubberBand = nullptr;
+	class    Line*  m_pLine2 = nullptr;		// 최종적으로 Line 데이터가 저장되는 곳
+	class    Line*  m_pRubberBand = nullptr; // 마우스를 떼기 전까지 존재하는 라인 데이터(가장 마지막에 그린 선이기도 함)
 
 
 public: // 생성자 & 소멸자

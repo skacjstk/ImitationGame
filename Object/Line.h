@@ -13,11 +13,18 @@ public:
 	Vector2  GetEndPoint(int no);
 	bool     LoadLine(string fileName);
 	bool     SaveLine(string fileName);
+	void     EraseLine(Vector2 pos, float gap = 1.0f);    // 마우스가 Click된 위치
+	void     SetColor(Color color) { m_Color = color; }
 
 public:
-	void  AddLine(float x1, float y1, float x2, float y2);
+	void        AddLine(float x1, float y1, float x2, float y2);
 	static bool IntersectionLine(Vector2 S1S, Vector2 S1E, Vector2 S2S, Vector2 S2E, Vector2 & I0, Vector2 & I1); //교차점 
 	static bool IntersectionLine(Vector2 AP1, Vector2 AP2, Vector2 BP1, Vector2 BP2, Vector2 & result); //교차점 
+
+	static bool Clipping(Vector2 & start, Vector2 & end, Vector2 AreaMin, Vector2 AreaMax);
+private:
+	static int    OutCode(Vector2 pt, Vector2 AreaMin, Vector2 AreaMax);
+
 
 private:
 	struct Vertex
@@ -37,6 +44,7 @@ private:
 													  // 입력데이터를 어떤식으로 처리?
 	int   m_nVerexCount = 0;
 	class  ColorShader  *m_pShader = nullptr;
+	Color   m_Color = Color(1.0f, 1.0f, 0.0f, 0.0f);
 
 public: // 생성자 & 소멸자
 	Line();

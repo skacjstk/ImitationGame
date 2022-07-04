@@ -95,18 +95,56 @@ bool Line::SaveLine(string fileName)
 
 }
 
+void Line::EraseLine(Vector2 pos, float gap)
+{
+	Vector2 AreaMin = Vector2(pos.x - gap, pos.y - gap);
+	Vector2 AreaMax = Vector2(pos.x + gap, pos.y + gap);
+	bool    bClipping = false;
+
+
+	for (int i = 0; i < this->GetCountLine(); i++)
+	{
+		Vector2 start = GetStartPoint(i);
+		Vector2 end = GetEndPoint(i);
+		if (Clipping(start, end, AreaMin, AreaMax))
+		{
+			bClipping = true;
+			delete m_cvLines[i * 2];
+			delete m_cvLines[i * 2+1];
+			m_cvLines.erase(m_cvLines.begin() + (i * 2), m_cvLines.begin() + (i * 2) + 2);
+			m_cvLines.shrink_to_fit();
+		}
+	}
+	if (!bClipping)
+		return;
+	this->ClearVertexBuffer();
+	this->EndLine();
+
+}
+
 void Line::Update(Matrix V, Matrix P)
 {
 	if (m_cvLines.size() == 0)
 		return;
+
+	Vertex *vertices = new Vertex[m_cvLines.size()];
+
+	for (UINT i = 0; i < m_cvLines.size(); i++)
+	{
+		Vector2 *p = m_cvLines[i];
+		vertices[i].Position = Vector3(p->x, p->y, 0.0f);
+		vertices[i].Color    = m_Color;
+	}
+
+
 	// GPU에 vertex내용을 Update
 	// MAP -> UNMAP사이에서 수정
-//	D3D11_MAPPED_SUBRESOURCE  subResource;
-//	DeviceContext->Map(m_pVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
-//	{
-//		memcpy(subResource.pData, vertices, sizeof(Vertex) * m_cvLines.size());
-//	}
-//	DeviceContext->Unmap(m_pVertexBuffer, 0);
+	D3D11_MAPPED_SUBRESOURCE  subResource;
+	DeviceContext->Map(m_pVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	{
+		memcpy(subResource.pData, vertices, sizeof(Vertex) * m_cvLines.size());
+	}
+	DeviceContext->Unmap(m_pVertexBuffer, 0);
 
 	// 자기자신에 대한 Matrix
 
@@ -285,6 +323,103 @@ void Line::CreateVertexBuffer()
 	assert(SUCCEEDED(hr));
 }
 
+int Line::OutCode(Vector2 pt, Vector2 AreaMin, Vector2 AreaMax)
+{
+	const int LEFT = 1;
+	const int RIGHT = 2;
+	const int TOP = 8;
+	const int BOTTOM = 4;
+
+	int Code = 0;
+
+	if (pt.x < AreaMin.x)
+		Code |= LEFT;
+	else if (pt.x > AreaMax.x)
+		Code |= RIGHT;
+	if (pt.y < AreaMin.y)
+		Code |= BOTTOM;
+	else if (pt.y > AreaMax.y)
+		Code |= TOP;
+	return Code;
+}
+
+//////////////////////////////////////////////////////////////
+// 코헨-서덜랜드 클립핑  알고리즘
+//
+//   ------------------------
+//    1001 |  1001 | 1010
+//   ------------------------ 
+//    0001 |  0000 | 0010
+//   ------------------------
+//    0101 |  0100  | 0110
+//   ------------------------
+
+bool Line::Clipping(Vector2 & start, Vector2 & end, Vector2 AreaMin, Vector2 AreaMax)
+{
+	const int LEFT = 1;
+	const int RIGHT = 2;
+	const int TOP = 8;
+	const int BOTTOM = 4;
+
+	bool  Value = false;
+	int   C1, C2, C;
+	float tmpx, tmpy;
+
+	while (1)
+	{
+		// Bit연산
+		C1 = OutCode(start, AreaMin, AreaMax);
+		C2 = OutCode(end, AreaMin, AreaMax);
+
+		// 2점이 사각형 내부에 있는 것을 Check
+		if (C1 == 0 && C2 == 0)
+		{
+			Value = true;
+			break;
+		}
+		// 사각형 외부에 데이터 있는것을 Check
+		if (C1 & C2)
+			break;
+		// C1,C2중 하나를 선택하여 Clipping
+		if (C1 == 0)
+			C = C2;
+		else
+			C = C1;
+
+		// LEFT -> RIGHT -> BOTTOM -> TOP
+		// y = mx+c         한점을 알고 있을때의 방정식
+		// y = y1 + m(x-x1) 두점을 알고 있을때의 방정식
+		if (C & LEFT)
+		{
+			tmpx = AreaMin.x;
+			tmpy = start.y + ((end.y - start.y) / (end.x - start.x))*(AreaMin.x - start.x);
+		}
+		if (C & RIGHT)
+		{
+			tmpx = AreaMax.x;
+			tmpy = start.y + ((end.y - start.y) / (end.x - start.x))*(AreaMax.x - start.x);
+		}
+		if (C & BOTTOM)
+		{
+			tmpx = start.x + ((end.x - start.x) / (end.y - start.y))*(AreaMin.y - start.y);
+			tmpy = AreaMin.y;
+		}
+		if (C & TOP)
+		{
+			tmpx = start.x + ((end.x - start.x) / (end.y - start.y))*(AreaMax.y - start.y);
+			tmpy = AreaMax.y;
+		}
+
+		// C가 변경 되었는지 Check
+		if (C == C1)
+			start = Vector2(tmpx, tmpy);
+		else
+			end = Vector2(tmpx, tmpy);
+
+	}
+
+	return Value;
+}
 
 
 

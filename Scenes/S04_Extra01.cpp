@@ -7,7 +7,7 @@
 #include <commdlg.h>
 //#include <codecvt>
 
- #define   MAPEDITOR
+bool IsDrawingLine = false;
 
 void S04_Extra01::Replace(wstring & str, wstring comp, wstring rep)
 {
@@ -119,64 +119,77 @@ void S04_Extra01::Update()
 	CAMERA->Update(V, P);
 	TRNMANAGER->Update(V, P);
 
-#ifdef MAPEDITOR
+	if (KEYBOARD->Down(VK_TAB)) {
+		IsDrawingLine = !IsDrawingLine;
+	}
 
+	if(IsDrawingLine == false){
 
 	// Mouse Move
 
-	if (m_bImGuiWindow == false)
-	{
-		Vector2 pos = Mouse->GetPosition();  // Window
-		CAMERA->WCtoVC(pos);                 // Widow coord --> DirectX coord
-		m_pMoveTexture->SetPosition(pos);
-	}
-	if ((m_bImGuiWindow == false) && Mouse->Down(0)) // 1번튼이 눌려진 경우
-	{
-		Vector2 pos = Mouse->GetPosition();  // Window
-		CAMERA->WCtoVC(pos);                 // Widow coord --> DirectX coord
-		int x = -1;
-		int y = -1;
-		if (TRNMANAGER->GetMapXY(x, y, pos))
+		if (m_bImGuiWindow == false)
 		{
-			wstring strImageFile = m_pMoveTexture->GetImageFile();
-			Vector2 offset    = m_pMoveTexture->GetOffset();
-			Vector2 offsetSize = m_pMoveTexture->GetOffsetSize();
-			TRNMANAGER->AddTile(x, y, m_nDisplayOrder, m_nTileType, m_nObjectType,
-				strImageFile, offset, offsetSize);
-			m_nSelectMapX = x;
-			m_nSelectMapY = y;
+			Vector2 pos = Mouse->GetPosition();  // Window
+			CAMERA->WCtoVC(pos);                 // Widow coord --> DirectX coord
+			m_pMoveTexture->SetPosition(pos);
+		}
+		if ((m_bImGuiWindow == false) && Mouse->Down(0)) // 1번튼이 눌려진 경우
+		{
+			Vector2 pos = Mouse->GetPosition();  // Window
+			CAMERA->WCtoVC(pos);                 // Widow coord --> DirectX coord
+			int x = -1;
+			int y = -1;
+			if (TRNMANAGER->GetMapXY(x, y, pos))
+			{
+				wstring strImageFile = m_pMoveTexture->GetImageFile();
+				Vector2 offset    = m_pMoveTexture->GetOffset();
+				Vector2 offsetSize = m_pMoveTexture->GetOffsetSize();
+				TRNMANAGER->AddTile(x, y, m_nDisplayOrder, m_nTileType, m_nObjectType,
+					strImageFile, offset, offsetSize);
+				m_nSelectMapX = x;
+				m_nSelectMapY = y;
+			}
+		}
+		if ((m_bImGuiWindow == false) && Mouse->Press(0)) // 1버튼이튼이 지속적 눌려진 경우
+		{
+			Vector2 pos = Mouse->GetPosition();  // Window
+			CAMERA->WCtoVC(pos);                 // Widow coord --> DirectX coord
+			int x = -1;
+			int y = -1;
+			if (TRNMANAGER->GetMapXY(x, y, pos))
+			{
+				wstring strImageFile = m_pMoveTexture->GetImageFile();
+				Vector2 offset = m_pMoveTexture->GetOffset();
+				Vector2 offsetSize = m_pMoveTexture->GetOffsetSize();
+				TRNMANAGER->AddTile(x, y, m_nDisplayOrder, m_nTileType, m_nObjectType,
+					strImageFile, offset, offsetSize);
+				m_nSelectMapX = x;
+				m_nSelectMapY = y;
+			}
+		}
+		if ((!m_bImGuiWindow) && Mouse->Press(2))	// 우클릭(3번) 버튼이 계속 눌리는 경우
+		{
+			Vector2 pos = Mouse->GetPosition();
+			CAMERA->WCtoVC(pos);		// W좌표 -> V(DX)좌표 
+			int x = -1;
+			int y = -1;
+			if (TRNMANAGER->GetMapXY(x, y, pos)) {
+				TRNMANAGER->EraseTile(x, y);
+				printf("우클릭으로 타일 지우기. %d %d\n", x, y);
+			}
 		}
 	}
-	if ((m_bImGuiWindow == false) && Mouse->Press(0)) // 1버튼이튼이 지속적 눌려진 경우
-	{
-		Vector2 pos = Mouse->GetPosition();  // Window
-		CAMERA->WCtoVC(pos);                 // Widow coord --> DirectX coord
-		int x = -1;
-		int y = -1;
-		if (TRNMANAGER->GetMapXY(x, y, pos))
+	else if (IsDrawingLine == true) {
+		if ((!m_bImGuiWindow) && Mouse->Press(2))	// 우클릭(3번) 버튼이 계속 눌리는 경우
 		{
-			wstring strImageFile = m_pMoveTexture->GetImageFile();
-			Vector2 offset = m_pMoveTexture->GetOffset();
-			Vector2 offsetSize = m_pMoveTexture->GetOffsetSize();
-			TRNMANAGER->AddTile(x, y, m_nDisplayOrder, m_nTileType, m_nObjectType,
-				strImageFile, offset, offsetSize);
-			m_nSelectMapX = x;
-			m_nSelectMapY = y;
-		}
-	}
-	if ((!m_bImGuiWindow) && Mouse->Press(2))	// 우클릭(3번) 버튼이 계속 눌리는 경우
-	{
-		Vector2 pos = Mouse->GetPosition();
-		CAMERA->WCtoVC(pos);		// W좌표 -> V(DX)좌표 
-		int x = -1;
-		int y = -1;
-		if (TRNMANAGER->GetMapXY(x, y, pos)) {
-			TRNMANAGER->EraseTile(x, y);
-			printf("우클릭으로 타일 지우기. %d %d\n", x, y);
+			Vector2 pos = Mouse->GetPosition();
+			CAMERA->WCtoVC(pos);		// W좌표 -> V(DX)좌표 
+
+			m_pLine2->EraseLine(pos, 2.0f);
+			m_pRubberBand->ClearLine();
 		}
 	}
 
-#endif
 	m_pMoveTexture->Update(V, P);
 	m_pLine->Update(V, P);
 	m_pLine2->Update(V, P);;
