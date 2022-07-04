@@ -21,8 +21,8 @@ void Button::Update(Matrix V, Matrix P)
 		_button[i]->SetScale(GetScale());
 		_button[i]->UpdateColorBuffer(_Default, _shaderInputType);
 	}
+	// Next: 마우스 위치 받아와서, 자기 자신이랑 비교해서, 충돌했으면 Activate(true)
 	_button[1]->UpdateColorBuffer(_Hover, _shaderInputType);
-
 	_button[0]->Update(V,P);
 	_button[1]->Update(V,P);
 }

@@ -20,7 +20,6 @@ public:
 //	void Create(){
 //		m_pInstance = new SceneManager();
 //	}
-
 	void Update();
 	void Render();
 	void CreateGameObject();

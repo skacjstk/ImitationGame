@@ -153,7 +153,6 @@
     <ClInclude Include="..\Base\Camera.h" />
     <ClInclude Include="..\Base\GameActor.h" />
     <ClInclude Include="..\Base\GameObject.h" />
-    <ClInclude Include="..\Base\InputHandler.h" />
     <ClInclude Include="..\Base\ObjectManager.h" />
     <ClInclude Include="..\Base\Scene.h" />
     <ClInclude Include="..\Base\SceneManager.h" />
@@ -163,6 +162,7 @@
     <ClInclude Include="..\Command\AttackCommand.h" />
     <ClInclude Include="..\Command\Command.h" />
     <ClInclude Include="..\Command\IdleCommand.h" />
+    <ClInclude Include="..\Command\Inventory\DragAndDropCommand.h" />
     <ClInclude Include="..\Command\JumpCommand.h" />
     <ClInclude Include="..\Command\LeftMoveCommand.h" />
     <ClInclude Include="..\Command\Player\InventoryToggleCommand.h" />
@@ -175,6 +175,9 @@
     <ClInclude Include="..\ImGUI\imstb_rectpack.h" />
     <ClInclude Include="..\ImGUI\imstb_textedit.h" />
     <ClInclude Include="..\ImGUI\imstb_truetype.h" />
+    <ClInclude Include="..\InputHandler\InputHandler.h" />
+    <ClInclude Include="..\InputHandler\InventoryInputHandler.h" />
+    <ClInclude Include="..\InputHandler\PlayerInputHandler.h" />
     <ClInclude Include="..\Object\Button.h" />
     <ClInclude Include="..\Object\Inventory.h" />
     <ClInclude Include="..\Object\Item.h" />
@@ -210,7 +213,6 @@
     <ClCompile Include="..\Base\Camera.cpp" />
     <ClCompile Include="..\Base\GameActor.cpp" />
     <ClCompile Include="..\Base\GameObject.cpp" />
-    <ClCompile Include="..\Base\InputHandler.cpp" />
     <ClCompile Include="..\Base\ObjectManager.cpp" />
     <ClCompile Include="..\Base\Scene.cpp" />
     <ClCompile Include="..\Base\SceneManager.cpp" />
@@ -220,6 +222,7 @@
     <ClCompile Include="..\Command\AttackCommand.cpp" />
     <ClCompile Include="..\Command\Command.cpp" />
     <ClCompile Include="..\Command\IdleCommand.cpp" />
+    <ClCompile Include="..\Command\Inventory\DragAndDropCommand.cpp" />
     <ClCompile Include="..\Command\JumpCommand.cpp" />
     <ClCompile Include="..\Command\LeftMoveCommand.cpp" />
     <ClCompile Include="..\Command\Player\InventoryToggleCommand.cpp" />
@@ -230,6 +233,9 @@
     <ClCompile Include="..\ImGUI\imgui_impl_win32.cpp" />
     <ClCompile Include="..\ImGUI\imgui_tables.cpp" />
     <ClCompile Include="..\ImGUI\imgui_widgets.cpp" />
+    <ClCompile Include="..\InputHandler\InputHandler.cpp" />
+    <ClCompile Include="..\InputHandler\InventoryInputHandler.cpp" />
+    <ClCompile Include="..\InputHandler\PlayerInputHandler.cpp" />
     <ClCompile Include="..\Object\Button.cpp" />
     <ClCompile Include="..\Object\Inventory.cpp" />
     <ClCompile Include="..\Object\Item.cpp" />

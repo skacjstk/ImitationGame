@@ -82,6 +82,12 @@
     <Filter Include="헤더 파일\Command\Player">
       <UniqueIdentifier>{61b16c59-de0e-404c-a27f-5243ae80e8b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\InputHandler">
+      <UniqueIdentifier>{db8c6e8e-5176-4503-94f8-bde76ce154d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\InputHandler">
+      <UniqueIdentifier>{ee4d36fb-7073-4dfd-9d2f-123dfd494fac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -192,9 +198,6 @@
     <ClInclude Include="..\Base\GameActor.h">
       <Filter>헤더 파일\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Base\InputHandler.h">
-      <Filter>헤더 파일\Base</Filter>
-    </ClInclude>
     <ClInclude Include="..\Command\Command.h">
       <Filter>헤더 파일\Command</Filter>
     </ClInclude>
@@ -248,6 +251,18 @@
     </ClInclude>
     <ClInclude Include="..\Scenes\S04_Extra01.h">
       <Filter>헤더 파일\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Command\Inventory\DragAndDropCommand.h">
+      <Filter>소스 파일\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\InputHandler\InputHandler.h">
+      <Filter>헤더 파일\InputHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\InputHandler\InventoryInputHandler.h">
+      <Filter>헤더 파일\InputHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\InputHandler\PlayerInputHandler.h">
+      <Filter>헤더 파일\InputHandler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -344,9 +359,6 @@
     <ClCompile Include="..\Base\GameActor.cpp">
       <Filter>소스 파일\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Base\InputHandler.cpp">
-      <Filter>소스 파일\Base</Filter>
-    </ClCompile>
     <ClCompile Include="..\Object\Player.cpp">
       <Filter>소스 파일\Object</Filter>
     </ClCompile>
@@ -389,9 +401,6 @@
     <ClCompile Include="..\Scenes\S04_Extra01.cpp">
       <Filter>소스 파일\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Object\Inventory.cpp">
-      <Filter>헤더 파일\Object</Filter>
-    </ClCompile>
     <ClCompile Include="..\Command\Player\InventoryToggleCommand.cpp">
       <Filter>소스 파일\Command\Player</Filter>
     </ClCompile>
@@ -400,6 +409,21 @@
     </ClCompile>
     <ClCompile Include="..\Object\Tile.cpp">
       <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Inventory.cpp">
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\InputHandler\InventoryInputHandler.cpp">
+      <Filter>소스 파일\InputHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Command\Inventory\DragAndDropCommand.cpp">
+      <Filter>소스 파일\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\InputHandler\PlayerInputHandler.cpp">
+      <Filter>소스 파일\InputHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\InputHandler\InputHandler.cpp">
+      <Filter>소스 파일\InputHandler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
