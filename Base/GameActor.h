@@ -15,6 +15,8 @@ public:
 	virtual void Idle() {};		// IDLE과 Attack은 꼭 있어야 함.
 	virtual void Attack() {};
 	virtual void InventoryToggle() {};
+	virtual void EquipChange(int index) {};	// 장비아이템 교체
+	virtual void ItemDragAndDrop() {};	// 아이템 드래그앤 드롭 ( 장비교체의 조건 )
 public:
 	Collider* GetCollider() { return pCollider_; }
 };

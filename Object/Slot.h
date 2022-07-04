@@ -15,6 +15,8 @@ private:
 	class Item* slotItem_ = nullptr;
 public: // 생성자 & 소멸자
 	Slot(SlotType type = SlotType::OTHER);
+//	Slot(Slot& slot);	// 복사 생성자
+//	Slot(Slot&& slot) noexcept;// 이동 생성자
 	~Slot();
 public:	// 공개 인스턴스 변수 
 	void Update(Matrix V, Matrix P);
@@ -28,4 +30,5 @@ public:
 public:
 	SlotType GetSlotType() { return slotType_; }
 	auto GetItem() { return slotItem_; }	// Item*
+	auto GetSlotButton() { return slot_; }
 };

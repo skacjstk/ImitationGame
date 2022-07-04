@@ -38,6 +38,16 @@ Slot::Slot(SlotType type)
 	// 슬롯 아이템은 nullptr 맞긴 함.( inventory에서 데이터 읽어 포인팅할 예정 )
 }
 
+// Slot::Slot(Slot& slot)
+// {
+// 	printf("Slot 복사 생성자 호출\n");
+// }
+// 
+// Slot::Slot(Slot&& slot) noexcept
+// {
+// 	printf("Slot 이동 생성자 호출\n");
+// }
+
 Slot::~Slot()
 {
 	SAFE_DELETE(slot_);
