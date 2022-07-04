@@ -174,7 +174,7 @@ void Inventory::SetInvenTabGroup()
 // 클릭한 아이템이 없으면 드래그, 있으면 드롭 후 SlotChange 호출. Next: 이 무식한 방법을 해결하기
 void Inventory::ItemDragAndDrop()
 {
-	if (dragIndex_.slotType == 0)
+	if (dragSlot_ == nullptr)
 		Drag();	
 	else 
 		Drop();
@@ -186,15 +186,13 @@ void Inventory::Drag()
 	
 	for (int i = 0; i < itemCount; ++i) {
 		if (itemSlots_[i]->GetSlotButton()->IsActivate()) {
-			dragIndex_.slotType = 3;
-			dragIndex_.slotIndex = i;
+			dragSlot_ = &itemSlots_[i];
 			return;
 		}
 	}
 	for (int i = 0; i < equipCount; ++i) {
 		if (equipSlots_[i]->GetSlotButton()->IsActivate()) {
-			dragIndex_.slotType = 2;
-			dragIndex_.slotIndex = i;
+			dragSlot_ = &equipSlots_[i];
 			return;
 		}
 	}
@@ -202,43 +200,49 @@ void Inventory::Drag()
 }
 void Inventory::Drop()
 {
-	bool isUpdateItem = false;
-	if (dragIndex_.slotType != 3 || dropIndex_.slotType != 3)	// 둘중 하나라도 장비된거 변경한거면 UpdateEquip 하기
-		isUpdateItem = true;
+	// Next: Drop 시점에 교체가 유효한지 검사해야함. ( 각종 무기와 악세서리를 만들었을 때 하자 )
+	bool dropUpdate = false;
+	bool dragUpdate = false;
+	bool isCheck = false;
+
+	// 기존에 있었던 위치가 장비칸이라면 활성화됨.
+	if ((*dragSlot_)->GetSlotType() != Slot::SlotType::OTHER)	// 둘중 하나라도 장비된거 변경한거면 UpdateEquip 하기
+		dragUpdate = true;
+	if ((*dropSlot_)->GetSlotType() != Slot::SlotType::OTHER)
+		dropUpdate = true;
 
 	int itemCount = _countof(itemSlots_);
 	int equipCount = _countof(equipSlots_);
 
-	bool isCheck = false;
 	for (int i = 0; i < itemCount; ++i) {
 		if (itemSlots_[i]->GetSlotButton()->IsActivate()) {
-			dropIndex_.slotType = 3;
-			dropIndex_.slotIndex = i;
+			dropSlot_ = &itemSlots_[i];
 			isCheck = true;
 			break;
 		}
 	}
+	// item칸에서 Drop 시점에서 dropSlot을 찾았으면 이곳은 생략함.
 	for (int i = 0; i < equipCount; ++i) {
 		if (isCheck == true)
 			break;
 		if (equipSlots_[i]->GetSlotButton()->IsActivate()) {
-			dropIndex_.slotType = 2;
-			dropIndex_.slotIndex = i;
+			dropSlot_ = &equipSlots_[i];
 			break;
 		}
 	}
+	ChangeSlot(dragSlot_, dropSlot_);
 
-	// 일단 아이템칸 옮기기 해보자 장비칸 신경쓰지말고
-	ChangeSlot(&itemSlots_[dragIndex_.slotIndex], &itemSlots_[dropIndex_.slotIndex]);
-//	std::swap(itemSlots_[dragIndex_.slotIndex], itemSlots_[dropIndex_.slotIndex]);
+ 	if (dragUpdate){
+		UpdateEquip(dropSlot_);
+	}
+	if(dropUpdate){
+		UpdateEquip(dragSlot_);
+	}
 
-
- 	if (isUpdateItem)
-	//	UpdateEquip();
-
-	dropIndex_ = dragIndex_ = { 0,0 };
+	dragSlot_ = dropSlot_ = nullptr;	// 교체 다했으니 
 }
-void Inventory::UpdateEquip(Slot* changedSlot, int slotIndex)
+// 해당 아이템이 장비칸에 들어갔으면 장비 정보를 반영하기. Next: 이게 맞는지 모르겠어
+void Inventory::UpdateEquip(Slot** UpdateSlot)
 {
-
+	MessageBoxW(MAIN->GetWindowHandler(), L"장비칸을 업데이트 해야해요", L"Inventory::UpdateEquip", MB_OK);
 }

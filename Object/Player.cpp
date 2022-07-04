@@ -1,5 +1,6 @@
 #include "ImitationGame/framework.h"
 #include "./InputHandler/InputHandler.h"
+#include "./InputHandler/PlayerInputHandler.h"
 #include "./Command/Command.h"
 #include "./Physics/Collider.h"
 #include "./Object/Inventory.h"
