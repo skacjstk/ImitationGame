@@ -17,4 +17,5 @@ private:
 	Command* buttonV_;
 	Command* idleCommand_;
 	Command* mouse0_;
+	Command* buttonVK_OEM_3_;	// ` ¹öÆ° 
 };
