@@ -190,39 +190,6 @@ void Line::AddLine(float x1, float y1, float x2, float y2)
 	pPoint = new Vector2(x2, y2);
 	m_cvLines.push_back(pPoint);
 }
-
-bool Line::IntersectionLine(Vector2 S1S, Vector2 S1E, Vector2 S2S, Vector2 S2E, Vector2 & I0, Vector2 & I1)
-{
-	//두개의 Line 교차점
-
-   //Line AB represented as a1x + b1y = c1
-
-   double a1 = S1E.y - S1S.y;
-   double b1 = S1S.x - S1E.x;
-   double c1 = a1 * (S1S.x) + b1 * (S1S.y);
-   
-   // Line CD represented as a2x + b2y = c2
-   double a2 =S2E.y - S2S.y;
-   double b2 = S2S.x - S2E.x;
-   double c2 = a2 * (S2S.x) + b2 * (S2S.y);
-   
-   double determinant = a1 * b2 - a2 * b1;
-   
-   if (determinant == 0)
-   {
-      return false;
-   }
-   else
-   {
-      double x = (b2*c1 - b1 * c2) / determinant;
-      double y = (a1*c2 - a2 * c1) / determinant;
-   
-      I0 = Vector2(x, y);
-	  return true;
-   }
-   
-	return false;
-}
 ////////////////////////////////////////////////////////////////////////////////
 // Vector를 이용하여 계산하는 법
 // http://www.gisdeveloper.co.kr/?p=89 
@@ -235,6 +202,9 @@ bool Line::IntersectionLine(Vector2 AP1, Vector2 AP2, Vector2 BP1, Vector2 BP2, 
 	// cross
 	double under = (BP2.y - BP1.y)*(AP2.x - AP1.x) - 
 		           (BP2.x - BP1.x)*(AP2.y - AP1.y);
+
+	if (!CheckInterSectionLine(AP1, AP2, BP1, BP2))
+		return false;
 
 	// 동일한 선인지 확인하는 Check
 	if (under == 0)
@@ -419,6 +389,78 @@ bool Line::Clipping(Vector2 & start, Vector2 & end, Vector2 AreaMin, Vector2 Are
 	}
 
 	return Value;
+}
+
+// right가 left 보다 크면 true를 반환합니다.
+// if right is greater than left, it is true
+int Line::IsLeft(Vector2 left, Vector2 right)
+{
+	int ret;
+	if (left.x == right.x) {
+		ret = (left.y <= right.y);
+	}
+	else {
+		ret = (left.x <= right.x);
+	}
+	return ret;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CCW를 이용한 Line Itersection Check
+// https://gaussian37.github.io/math-algorithm-line_intersection/
+//////////////////////////////////////////////////////////////////////////
+bool Line::CheckInterSectionLine(Vector2 A, Vector2 B, Vector2 C, Vector2 D)
+{
+	int ret;
+	// l1(A-B)을 기준으로 l2(C-D)가 교차하는 지 확인한다.
+	// Check if l2 intersects based on l1.
+	int l1_l2 = CCW(A, B, C) * CCW(A, B, D);
+	// l2를 기준으로 l1이 교차하는 지 확인한다.
+	// Check if l1 intersects based on l2.
+	int l2_l1 = CCW(C, D, A) * CCW(C, D, B);
+
+
+	// l1 과 l2가 일직선 상에 있는 경우
+	// l1 and l2 are in same line.
+	if (l1_l2 == 0 && l2_l1 == 0)
+	{
+		// Line1의 점의 크기 순서를 p1 < p2 순서로 맞춘다.
+		// Set the order of the points on Line1 in the order p1 < p2.
+		if (IsLeft(B, A)) std::swap(A, B);
+		// Line2의 점의 크기 순서를 p1 < p2 순서로 맞춘다.
+		// Set the order of the points on Line2 in the order p1 < p2.
+		if (IsLeft(D, C)) std::swap(C, D);
+
+		// A -----------B
+		//         C -----------D
+		// 위 조건을 만족하는 지 살펴본다.
+		// See if the above conditions are met.
+		ret = (IsLeft(C, B)) && (IsLeft(A, D));
+	}
+	// l1과 l2가 일직선 상에 있지 않는 경우
+	// l1 and l2 are not in same line.
+	else {
+		ret = (l1_l2 <= 0) && (l2_l1 <= 0);
+	}
+	return ret;
+
+}
+/*
+- input : p1 = (p1.x, p1.y), p2 = (p2.x, p2.y), p3 = (p3.x, p3.y)
+- output : 1 (counter clockwise), 0 (collinear), -1 (clockwise)
+※ vector v1 = (p2 - p1), vector v2 = (p3 - p1)
+*/
+int Line::CCW(Vector2 p1, Vector2 p2, Vector2 p3)
+{
+	float cross_product = (p2.x - p1.x)*(p3.y - p1.y) - (p3.x - p1.x)*(p2.y - p1.y);
+
+	if (cross_product > 0)
+		return 1;
+
+	else if (cross_product < 0)
+		return -1;
+	else
+		return 0;
 }
 
 

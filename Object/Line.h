@@ -17,13 +17,14 @@ public:
 	void     SetColor(Color color) { m_Color = color; }
 
 public:
-	void        AddLine(float x1, float y1, float x2, float y2);
-	static bool IntersectionLine(Vector2 S1S, Vector2 S1E, Vector2 S2S, Vector2 S2E, Vector2 & I0, Vector2 & I1); //교차점 
-	static bool IntersectionLine(Vector2 AP1, Vector2 AP2, Vector2 BP1, Vector2 BP2, Vector2 & result); //교차점 
-
-	static bool Clipping(Vector2 & start, Vector2 & end, Vector2 AreaMin, Vector2 AreaMax);
+	void         AddLine(float x1, float y1, float x2, float y2);
+	static bool  IntersectionLine(Vector2 AP1, Vector2 AP2, Vector2 BP1, Vector2 BP2, Vector2 & result); //교차점 
+	static bool  Clipping(Vector2 & start, Vector2 & end, Vector2 AreaMin, Vector2 AreaMax);
 private:
-	static int    OutCode(Vector2 pt, Vector2 AreaMin, Vector2 AreaMax);
+	static  int  IsLeft(Vector2 left, Vector2 right);
+	static  bool CheckInterSectionLine(Vector2 A, Vector2 B, Vector2 C, Vector2 D);
+	static 	int  CCW(Vector2 p1, Vector2 p2, Vector2 p3);
+	static int   OutCode(Vector2 pt, Vector2 AreaMin, Vector2 AreaMax);
 
 
 private:
