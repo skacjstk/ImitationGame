@@ -28,7 +28,8 @@ ShortSword::ShortSword()
 		pClip->AddFrame(weapon_->GetTexture(), strImage, 0, 0, 0.1f);
 		weapon_->AddClip(pClip);
 	}
-	
+	// 기본 배율은 6배
+	weapon_->SetScale(6.0f * WSCALEY, 6.0f * WSCALEY);
 }
 
 ShortSword::~ShortSword()
@@ -37,10 +38,11 @@ ShortSword::~ShortSword()
 
 void ShortSword::Update(Matrix V, Matrix P)
 {
+	// AnimationUpdate
 	weapon_->SetPlay(0);
-	weapon_->SetPosition(0.0f, 0.0f);
-	weapon_->SetRotation(0.0f, 0.0f, 0.0f);
-	weapon_->SetScale(1.0f, 1.0f);
+//	weapon_->SetPosition(GetPosition());
+//	weapon_->SetRotation(GetRotation());
+	//	weapon_->SetScale(6.0f * WSCALEY, 6.0f * WSCALEY);
 	weapon_->Update(V, P);
 }
 
@@ -50,5 +52,9 @@ void ShortSword::Render()
 }
 
 void ShortSword::Reset()
+{
+}
+
+void ShortSword::Fire()
 {
 }

@@ -4,6 +4,7 @@
 #include "./Object/Weapons/MeleeWeapons/ShortSword.h"
 #include "./InputHandler/InventoryInputHandler.h"
 #include "./InputHandler/InputHandler.h"
+#include "./Object/Player.h"
 #include "Inventory.h"
 
 Inventory::Inventory()
@@ -12,6 +13,10 @@ Inventory::Inventory()
 	wstring strImage = IMAGE_FOLDER;	strImage += L"Inventory/InventoryBase_2.png";
 	wstring strShader = SHADER_FOLDER;	strShader += L"Texture.hlsl";
 	invenBaseImage_ = new Texture(strImage, strShader);
+
+	//focusHandImage 생성
+	strImage = IMAGE_FOLDER;	strImage += L"Inventory/focusHand.png";
+	focusHandImage_ = new Texture(strImage, strShader);
 
 	for (int i = 0; i < _countof(itemSlots_); ++i) {
 		itemSlots_[i] = new Slot();
@@ -26,7 +31,7 @@ Inventory::Inventory()
 
 	SetPosition(MAIN->GetWidth() * 0.5f - (int)invenBaseImage_->GetTextureRealSize().x * 0.5f, 0.0f);
 	invenBaseImage_->SetPosition(this->GetPosition());
-
+	focusHandImage_->SetPosition(this->GetPosition());
 	// equipSlot 위치크기 초기화
 	// equipSlots_ 는 01은 1번칸, 23은 2번칸 4567은 악세칸으로 고정할 예정.
 	// Slot 위치크기 초기화
@@ -63,7 +68,9 @@ Inventory::Inventory()
 			(-50.0f * WSCALEY) - (slotgap_ * (i / slotX_)) - numY * (i / slotX_));
 	}
 	// (-295.0f * WSCALEY) + (slotgap_ * (i / slotX_)) + numY * (i / slotX_)
+	focusHandImage_->SetScale(5.74468f * WSCALEX, 5.74468f * WSCALEY);
 	SetInvenTabGroup();
+	SetFocusPosition();
 	// 테스트코드
 	equipSlots_[0]->SetItem(new ShortSword());
 	itemSlots_[0]->SetItem(new ShortSword());
@@ -78,6 +85,7 @@ Inventory::~Inventory()
 	for (int i = 0; i < _countof(equipSlots_); ++i)
 		SAFE_DELETE(equipSlots_[i]);
 	SAFE_DELETE(inputHandler_);
+	SAFE_DELETE(focusHandImage_);
 }
 
 void Inventory::Update(Matrix V, Matrix P)
@@ -93,6 +101,7 @@ void Inventory::Update(Matrix P)
 	invenBaseImage_->Update(V, P);
 
 	InputUpdate();
+	FocusImageUpdate(V,P);
 	
 	for (int i = 0; i < _countof(itemSlots_); ++i) {
 		itemSlots_[i]->Update(V, P);
@@ -113,11 +122,11 @@ void Inventory::Render()
 	for (int i = 0; i < _countof(equipSlots_); ++i) {
 		equipSlots_[i]->Render();
 	}
+	focusHandImage_->Render();
 }
 
 void Inventory::Reset()
 {
-
 }
 // 슬롯 간 교체가 일어났을 때 수행함.
 void Inventory::ChangeSlot(Slot** dragSlot, Slot** dropSlot)
@@ -125,13 +134,26 @@ void Inventory::ChangeSlot(Slot** dragSlot, Slot** dropSlot)
 	Item* temp = (*dragSlot)->GetItem();
 	(*dragSlot)->SetItem((*dropSlot)->GetItem());
 	(*dropSlot)->SetItem(temp);
-
-//	Slot* temp = new Slot();
-//	temp->SetItem((*dragSlot)->GetItem());
-//	(*dragSlot)->SetItem((*dropSlot)->GetItem());
-//	(*dropSlot)->SetItem(temp->GetItem());
+}
+void Inventory::FocusImageUpdate(Matrix V, Matrix P)
+{
+	focusHandImage_->Update(V, P);
 }
 //void Inventory::UpdateEquip(){} 는 맨아래에
+
+// 변경된 currentFocusHand_ 의 값을 기반으로 Image ( 하얀 다각형 ) 의 위치값을 바꿔줌.
+void Inventory::SetFocusPosition()
+{
+	if (currentFocusHand_ == 0)
+		focusHandImage_->SetPosition(463.0f * WSCALEX, 302.0f * WSCALEY);
+	else if (currentFocusHand_ == 1)
+		focusHandImage_->SetPosition(773.0f * WSCALEX, 302.0f * WSCALEY);
+}
+
+Item * Inventory::GetEquipItem(int index)
+{
+	return equipSlots_[index]->GetItem();
+}
 
 void Inventory::InputUpdate()
 {
@@ -204,13 +226,7 @@ void Inventory::Drop()
 	bool dropUpdate = false;
 	bool dragUpdate = false;
 	bool isCheck = false;
-
-	// 기존에 있었던 위치가 장비칸이라면 활성화됨.
-	if ((*dragSlot_)->GetSlotType() != Slot::SlotType::OTHER)	// 둘중 하나라도 장비된거 변경한거면 UpdateEquip 하기
-		dragUpdate = true;
-	if ((*dropSlot_)->GetSlotType() != Slot::SlotType::OTHER)
-		dropUpdate = true;
-
+	
 	int itemCount = _countof(itemSlots_);
 	int equipCount = _countof(equipSlots_);
 
@@ -230,19 +246,16 @@ void Inventory::Drop()
 			break;
 		}
 	}
-	ChangeSlot(dragSlot_, dropSlot_);
 
- 	if (dragUpdate){
-		UpdateEquip(dropSlot_);
-	}
-	if(dropUpdate){
-		UpdateEquip(dragSlot_);
-	}
+	// 기존에 있었던 위치가 장비칸이라면 활성화됨.
+	if ((*dragSlot_)->GetSlotType() != Slot::SlotType::OTHER)	// 둘중 하나라도 장비된거 변경한거면 UpdateEquip 하기
+		dragUpdate = true;
+	if ((*dropSlot_)->GetSlotType() != Slot::SlotType::OTHER)
+		dropUpdate = true;
+
+	ChangeSlot(dragSlot_, dropSlot_);
+	if (dragUpdate || dropUpdate)
+		inventoryOwner_->UpdateHandedWeapon();
 
 	dragSlot_ = dropSlot_ = nullptr;	// 교체 다했으니 
-}
-// 해당 아이템이 장비칸에 들어갔으면 장비 정보를 반영하기. Next: 이게 맞는지 모르겠어
-void Inventory::UpdateEquip(Slot** UpdateSlot)
-{
-	MessageBoxW(MAIN->GetWindowHandler(), L"장비칸을 업데이트 해야해요", L"Inventory::UpdateEquip", MB_OK);
 }

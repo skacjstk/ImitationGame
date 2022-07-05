@@ -38,6 +38,9 @@ private:	// 비공개 인스턴스 변수
 	bool _moveAble = true;
 	float _Time = 0.0f;
 	int _HP = 0;
+	int currentFocusHand_ = 0;	// 0, 1 
+	class Weapon* handedWeapon_[4] = { nullptr, };
+
 	float gravity_ = 0.0f;	// Actor들에게 적용되는 매 프레임마다 아래로 떨어지는 변화량
 	bool isGround_ = false;	// Actor 자신이 땅에 닿았는지 확인할 변수
 	struct PlayerData playerData_;
@@ -52,14 +55,18 @@ public:
 	void Reset(objectType playerType = objectType::EXPLORER);
 	void GroundCheck();
 	void GravityUpdate();
+	void UpdateHandedWeapon() override;
 public:
 	// Setter
 	void SetHP(int hp) { _HP = hp; }
 	void SetState(Player::State state) { _currentState = state; }
 	void SetMoveAble(bool moveable) { _moveAble = moveable; }
+	void SetHandedWeapon(Weapon* item, int index);
 	// Getter
 	int GetHP() { return _HP; }
 	bool IsPlay() { return _animation->IsPlay(); }	
+	auto GetHandedWeapon(int index);
+	int GetFocusHand() { return currentFocusHand_; }
 public:	// 움직임 관련 Command 함수
 	void LeftMove() override;
 	void RightMove() override;
@@ -67,6 +74,7 @@ public:	// 움직임 관련 Command 함수
 	void Idle() override;
 	void Attack() override;
 	void InventoryToggle() override;
+	void SwapHandFocus() override;
 private: 
 	void Move(Vector2& position);	// 해당 위치로 움직이려고 시도함
 

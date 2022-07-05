@@ -4,6 +4,8 @@
 #include "./Command/Command.h"
 #include "./Physics/Collider.h"
 #include "./Object/Inventory.h"
+#include "./Object/Item.h"
+#include "./Object/Weapons/Weapon.h"
 #include "Player.h"
 
 Player::Player(int AnimationID)
@@ -45,10 +47,13 @@ Player::Player(int AnimationID)
 		}
 		_animation->AddClip(pClip);
 	}
-	SetScale(5.0f, 5.0f);
+	SetScale(6.0f * WSCALEX, 6.0f * WSCALEY);
 	pCollider_ = new Collider();
 	Inventory_ = new Inventory();
 	inputHandler_ = (InputHandler*) new PlayerInputHandler();
+	
+	UpdateHandedWeapon();
+	Inventory_->SetInventoryOwner(this);	// 해당 인벤토리의 소유자를 Player로 함.
 }
 
 Player::~Player()
@@ -76,6 +81,15 @@ void Player::Update(Matrix V, Matrix P)
 	pCollider_->Update(V, P);
 	CAMERA->Update(V, P);
 	Inventory_->Update(P);	// UI 계열은 절대좌표가 필요하다.
+
+	if (handedWeapon_[currentFocusHand_ * 2] != nullptr) {
+		handedWeapon_[currentFocusHand_ * 2]->SetWeaponPosition(GetPosition());
+		handedWeapon_[currentFocusHand_ * 2]->Update(V, P);
+	}
+	if (handedWeapon_[(currentFocusHand_ * 2) + 1 ] != nullptr) {
+		handedWeapon_[currentFocusHand_ * 2]->SetWeaponPosition(GetPosition());
+		handedWeapon_[currentFocusHand_ * 2]->Update(V, P);
+	}
 }
 
 void Player::Render()
@@ -83,6 +97,14 @@ void Player::Render()
 	_animation->Render();
 	pCollider_->Render();
 	Inventory_->Render();
+
+	for (int i = 0; i < _countof(handedWeapon_); ++i)
+	{
+		if (handedWeapon_[currentFocusHand_ * 2] != nullptr)
+			handedWeapon_[currentFocusHand_ * 2]->Render();
+		if (handedWeapon_[currentFocusHand_ * 2 + 1] != nullptr)
+			handedWeapon_[currentFocusHand_ * 2 + 1]->Render();
+	}	// 손에 든 무기만 Update 및 Render
 }
 
 void Player::Reset()
@@ -106,8 +128,7 @@ void Player::GroundCheck()
 	}
 	else {
 		isGround_ = false;
-	}
-		
+	}		
 }
 
 void Player::InputUpdate()
@@ -130,6 +151,32 @@ void Player::GravityUpdate()
 	SetPosition(position);
 }
 
+void Player::UpdateHandedWeapon()
+{
+	// 무기의 소유자 표시해주기
+	for (int i = 0; i < _countof(handedWeapon_); ++i)
+		handedWeapon_[i] = nullptr;
+
+	for (int i = 0; i < _countof(handedWeapon_); ++i) {
+		handedWeapon_[i] = (Weapon*)Inventory_->GetEquipItem(i);
+		if (handedWeapon_[i] != nullptr) {
+			handedWeapon_[i]->SetOwner((GameActor**)this);	// 될지모르겠다
+		}
+	}
+}
+
+// 0 1 2 3  01은 1번, 23은 2번
+void Player::SetHandedWeapon(Weapon * item, int index)
+{
+	int newIndex = min(index, (int)_countof(handedWeapon_) - 1);
+	handedWeapon_[newIndex] = item;
+}
+// 0 1 2 3  01은 1번, 23은 2번
+auto Player::GetHandedWeapon(int index)
+{
+	int newIndex = min(index, ((int)sizeof(handedWeapon_) / (int)sizeof(handedWeapon_[0])) - 1);
+	return handedWeapon_[newIndex];
+}
 
 // 왼쪽이 x 음수 moveSpeed x speed xy 만큼 이동하는 함수
 void Player::LeftMove()
@@ -187,13 +234,28 @@ void Player::Idle()
 
 void Player::Attack()
 {
-	MessageBoxW(nullptr, L"공격", L"", MB_OK);
+
 }
 
 void Player::InventoryToggle()
 {
 	if(Inventory_->IsActive())
 		Inventory_->SetActive(false);
+	else{
+		Inventory_->SetActive(true);
+	}
+}
+
+void Player::SwapHandFocus()
+{
+	if (currentFocusHand_ == 0)
+		currentFocusHand_ = 1;
+	else if (currentFocusHand_ == 1)
+		currentFocusHand_ = 0;
 	else
-		Inventory_->SetActive(true);	
+		MessageBoxW(MAIN->GetWindowHandler(), L"handFocus는 0과 1밖에 없습니다.", L"Player::SwapHandFocus()", MB_OK);
+	Inventory_->SetFocusHand(currentFocusHand_);
+	Inventory_->SetFocusPosition();
+
+	UpdateHandedWeapon();
 }
