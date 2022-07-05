@@ -43,6 +43,7 @@
 #include <map>
 #include <functional>
 #include <mutex>
+#include <algorithm>
 // using std 
 using std::string;
 using std::wstring;
