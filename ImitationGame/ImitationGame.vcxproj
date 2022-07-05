@@ -166,6 +166,7 @@
     <ClInclude Include="..\Command\JumpCommand.h" />
     <ClInclude Include="..\Command\LeftMoveCommand.h" />
     <ClInclude Include="..\Command\Player\InventoryToggleCommand.h" />
+    <ClInclude Include="..\Command\Player\SwapHandFocusCommand.h" />
     <ClInclude Include="..\Command\RightMoveCommand.h" />
     <ClInclude Include="..\ImGUI\imconfig.h" />
     <ClInclude Include="..\ImGUI\imgui.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="..\Command\JumpCommand.cpp" />
     <ClCompile Include="..\Command\LeftMoveCommand.cpp" />
     <ClCompile Include="..\Command\Player\InventoryToggleCommand.cpp" />
+    <ClCompile Include="..\Command\Player\SwapHandFocusCommand.cpp" />
     <ClCompile Include="..\Command\RightMoveCommand.cpp" />
     <ClCompile Include="..\ImGUI\imgui.cpp" />
     <ClCompile Include="..\ImGUI\imgui_draw.cpp" />

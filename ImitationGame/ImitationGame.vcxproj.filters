@@ -264,6 +264,9 @@
     <ClInclude Include="..\InputHandler\InputHandler.h">
       <Filter>소스 파일\InputHandler</Filter>
     </ClInclude>
+    <ClInclude Include="..\Command\Player\SwapHandFocusCommand.h">
+      <Filter>헤더 파일\Command</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -424,6 +427,9 @@
     </ClCompile>
     <ClCompile Include="..\InputHandler\InputHandler.cpp">
       <Filter>소스 파일\InputHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Command\Player\SwapHandFocusCommand.cpp">
+      <Filter>소스 파일\Command\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
