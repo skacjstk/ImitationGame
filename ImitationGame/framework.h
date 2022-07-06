@@ -73,7 +73,7 @@ using std::to_string;
 #include <d3d11.h>	
 #include <D3DX11.h>
 #include <D3DX10.h>	
-#include <D3DX10math.h>
+#include <directxmath.h> // #include <D3DX10math.h>	 대용, 이제는 쓰지말라해서
 // #include <d3dx11effect.h>	// 32bit 용(그래서 x86을 썻었음)  --> 64bit로 변경 예정
 #include <d3dcompiler.h>
 

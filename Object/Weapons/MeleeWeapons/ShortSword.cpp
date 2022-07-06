@@ -67,6 +67,7 @@ void ShortSword::Fire()
 // 주의사항: Player의 위치를 업데이트하고, Player가 WeaponPosition을 자신의 위치로 바꾼 직후에 AniUp을 수행해야 함.
 void ShortSword::AnimationUpdate()
 {
+	/*
 	Vector2 beforePosition = GetWeaponPosition();
 	Vector3 beforeRotation = GetWeaponRotation();
 	Vector3 afterRotation;
@@ -80,13 +81,21 @@ void ShortSword::AnimationUpdate()
 
 	float dRad = atan2f(fdY, fdX);
 	fAngle = (dRad * 180.0f) / PI;
-//	afterRotation = Vector3(0.0f, 0.0f, fAngle + 90.0f * attackCycle_);
-	afterRotation = Vector3((attackCycle_ -1) * 90.0f, 0.0f, 90.0f);
-	printf("%f\n", fAngle);
+	afterRotation = Vector3(0.0f, 0.0f, fAngle + 90.0f);
+
 	SetWeaponRotation(afterRotation);
-	
-	// 이에 따른 위치값 교정하기
-	beforePosition.y += 50.0f;
+		
+//	// 이에 따른 위치값 교정하기
+	beforePosition.x += 50.0f * WSCALEX;
+	beforePosition.y += 30.0f * WSCALEY;
+	float axisX = cosf(dRad) * 50.0f * WSCALEX;
+	float axisY = sinf(dRad) * 50.0f * WSCALEY;
+	weapon_->SetAxis(axisX, axisY,1.0f);
+
+	printf("%f %f\n", sinf(fAngle), cosf(fAngle));
 
 	SetWeaponPosition(beforePosition);
+
+	*/
+
 }
