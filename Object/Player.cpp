@@ -83,12 +83,19 @@ void Player::Update(Matrix V, Matrix P)
 	Inventory_->Update(P);	// UI 계열은 절대좌표가 필요하다.
 
 	if (handedWeapon_[currentFocusHand_ * 2] != nullptr) {
-		handedWeapon_[currentFocusHand_ * 2]->SetWeaponPosition(GetPosition());
+		// 마우스 각도 관련은 모두 weapon을 상속받아 구현한 무기 인스턴스에서 관리
+		// 무기는 자체적인 배율을 생성자 시점에서 초기화함.
+
+		handedWeapon_[currentFocusHand_ * 2]->SetWeaponPosition(_position);
+//		handedWeapon_[currentFocusHand_ * 2]->SetWeaponScale(_scale);
+		handedWeapon_[currentFocusHand_ * 2]->SetWeaponRotation(_rotation);
 		handedWeapon_[currentFocusHand_ * 2]->Update(V, P);
 	}
 	if (handedWeapon_[(currentFocusHand_ * 2) + 1 ] != nullptr) {
-		handedWeapon_[currentFocusHand_ * 2]->SetWeaponPosition(GetPosition());
-		handedWeapon_[currentFocusHand_ * 2]->Update(V, P);
+		handedWeapon_[(currentFocusHand_ * 2) + 1]->SetWeaponPosition(_position);
+//		handedWeapon_[(currentFocusHand_ * 2) + 1]->SetWeaponScale(_scale);
+		handedWeapon_[(currentFocusHand_ * 2) + 1]->SetWeaponRotation(_rotation);
+		handedWeapon_[(currentFocusHand_ * 2) + 1]->Update(V, P);
 	}
 }
 

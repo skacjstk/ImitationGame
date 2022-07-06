@@ -20,4 +20,5 @@ public:	//override
 	void ChangeScene() override;
 
 public:	//public instance method
+	void TestGroundCheck();
 };

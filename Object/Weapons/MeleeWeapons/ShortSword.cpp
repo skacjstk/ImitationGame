@@ -29,7 +29,7 @@ ShortSword::ShortSword()
 		weapon_->AddClip(pClip);
 	}
 	// 기본 배율은 6배
-	weapon_->SetScale(6.0f * WSCALEY, 6.0f * WSCALEY);
+	SetWeaponScale(6.0f * WSCALEY, 6.0f * WSCALEY);
 }
 
 ShortSword::~ShortSword()
@@ -40,9 +40,12 @@ void ShortSword::Update(Matrix V, Matrix P)
 {
 	// AnimationUpdate
 	weapon_->SetPlay(0);
-//	weapon_->SetPosition(GetPosition());
-//	weapon_->SetRotation(GetRotation());
-	//	weapon_->SetScale(6.0f * WSCALEY, 6.0f * WSCALEY);
+
+	// 여기서 실질적으로 휘두르는 애니메이션을 관리하게 할 것. (마우스 위치점 기반.. 등등)
+
+	weapon_->SetPosition(GetWeaponPosition());
+	weapon_->SetRotation(GetWeaponRotation());
+	weapon_->SetScale(GetWeaponScale());
 	weapon_->Update(V, P);
 }
 
@@ -57,4 +60,6 @@ void ShortSword::Reset()
 
 void ShortSword::Fire()
 {
+	// 무기의 공격 
+	// 무기 애니메이션의 위치값 조정 
 }

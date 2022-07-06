@@ -16,6 +16,11 @@ public:
 		ONEHANDED = 1,
 		TWOHANDED = 2,
 	};
+	struct weaponTransform {
+		Vector2 scale = Vector2(1.0f, 1.0f);
+		Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f);
+		Vector2 position = Vector2(0.0f, 0.0f);
+	};
 protected:
 //	Texture* pTexture_ = nullptr;	// Item에 frontImage_ 로 이동
 	Animation* weapon_ = nullptr;
@@ -27,6 +32,7 @@ protected:
 	float attackSpeed_ = 1.0f;
 	enum class WeaponType weaponType_ = WeaponType::NONE;
 	enum class HandedType handedType_ = HandedType::NONE;
+	struct weaponTransform weaponTransform_;
 public:
 	Weapon() {};
 	~Weapon();
@@ -38,11 +44,14 @@ public:
 public:
 	//Setter
 	void SetOwner(GameActor** owner) { owner_ = owner; }
-	void SetWeaponPosition(Vector2 position) { weapon_->SetPosition(position); }
-	void SetWeaponRotation(float x, float y, float z) { weapon_->SetRotation(x, y, z); }
-	void SetWeaponScale(Vector2 scale) { weapon_->SetScale(scale); }
+	void SetWeaponPosition(Vector2 position) { weaponTransform_.position = position; }
+	void SetWeaponRotation(float x, float y, float z) { weaponTransform_.rotation = Vector3(x, y, z); }
+	void SetWeaponRotation(Vector3 rotation) { weaponTransform_.rotation = rotation; }
+	void SetWeaponScale(Vector2 scale) { weaponTransform_.scale = scale; }
+	void SetWeaponScale(float x, float y) { weaponTransform_.scale = Vector2(x,y); }
 	// Getter
-	auto GetWeaponPosition() { return weapon_->GetPosition(); }
-	auto GetWeaponRotation() { return weapon_->GetRotation(); }
-	auto GetWeaponScale()	{ return weapon_->GetScale(); }
+	auto GetWeaponPosition() { return weaponTransform_.position; }
+	auto GetWeaponRotation() { return weaponTransform_.rotation; }
+	auto GetWeaponScale()	{ return weaponTransform_.scale; }
+	auto GetWeaponTransform() { return weaponTransform_; }
 };

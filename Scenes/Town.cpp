@@ -61,3 +61,46 @@ void Town::ChangeScene()
 	// 카메라의 최대, 최소값 잡아주기 (MoMoDora Camera 참조) Next0701
 }
 
+void Town::TestGroundCheck()
+{
+	/*
+	vector<class Line*> lines;
+	Scene* currentScene = SCENEMANAGER->GetCurrentScene();
+	//Scene 번호(문자열) 에 따라서 바닥 정보 가져오기	
+	//printf("%s\n", currentScene->GetName().c_str()); 
+	if (currentScene->GetName() == "S05_MoModoraDemo1")
+	{
+		S05_MoModoraDemo1* Scene1 = (S05_MoModoraDemo1*)currentScene;
+		lines = Scene1->GetLines();
+	}
+	if (currentScene->GetName() == "S06_MoModoraDemo2")
+	{
+		S06_MoModoraDemo2* Scene2 = (S06_MoModoraDemo2*)currentScene;
+		lines = Scene2->GetLines();
+	}
+	Vector2 size = animation->GetTexture()->GetRealTextureSize();
+	Vector2 vertical = Vector2(position.x, position.y - (size.y * 0.5f));
+	Vector2 result;
+	bool Check = false;
+	_isGround = false;
+	for (UINT i = 0; i < lines.size(); ++i) {
+		Line* line = lines.at(i);
+		for (UINT j = 0; j < line->GetSize() - 1; ++j) {
+			Vector2 start = line->GetPosition(j);
+			Vector2 end = line->GetPosition(j + 1);
+			Check = Collider::InterSectionLine(start, end, position, vertical, result);
+			if (Check)
+				break;
+		}//end for
+		if (Check)
+			break;
+	}//end for
+
+	if (Check)
+	{
+		_isGround = true;
+		position.y = result.y + size.y * 0.5f;
+	}
+	*/
+}
+
