@@ -18,6 +18,7 @@ public:	//override
 	void Update() override;
 	void Render() override;
 	void ChangeScene() override;
+	void ExitScene() override;
 
 public:	//public instance method
 private:

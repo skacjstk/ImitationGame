@@ -31,6 +31,8 @@ void MainWindow::Delete()
 	SAFE_RELEASE(DeviceContext);
 	SAFE_RELEASE(SwapChain);
 	SAFE_RELEASE(RTV);
+	SAFE_DELETE(Mouse);
+	SAFE_DELETE(Audio);
 }
 
 void MainWindow::CreateInstance(HINSTANCE hInstance, int width, int height)
@@ -130,6 +132,9 @@ void MainWindow::CreateInstance(HINSTANCE hInstance, int width, int height)
 	// Callback 을 통해 (WndProc)
 	DragAcceptFiles(_hWnd, TRUE);	// <shellapi.h> 필요
 
+	// 동영상. 필요가 없다.
+//	CreateMCIWindow();
+
 	ShowWindow(_hWnd, SW_SHOWDEFAULT); //윈도우 핸들, 상태 flag (정수)
 
 	// FHD 기준 Scale 값 구하기.
@@ -137,6 +142,7 @@ void MainWindow::CreateInstance(HINSTANCE hInstance, int width, int height)
 	WSCALEY = _height / 1080.0f;
 
 	UpdateWindow(_hWnd);	//InvalidateRect()는 처리 지연될 수 있음.
+
 
 }
 /////////////////////////////////////////////////////////////////
@@ -261,6 +267,23 @@ void MainWindow::Update()
 
 void MainWindow::Render()
 {
+	// 동영상 Render Next 
+	/*
+	if (_stopVideo == false)
+	{
+		WPARAM lp = 0;
+		long mode = 0;
+		mode = MCIWndGetMode(_introVideo, lp, sizeof(WPARAM));
+		if (mode == MCI_MODE_STOP)	// 영상멈춤 ( 525 ) 
+		{
+			_stopVideo = true;
+			MCIWndDestroy(_introVideo);
+		}
+		else
+			return;
+	}
+	*/
+
 	D3D11_VIEWPORT Viewport;
 	{
 		ZeroMemory(&Viewport, sizeof(D3D11_VIEWPORT));
@@ -390,4 +413,16 @@ void MainWindow::Init3D()
 	SCENEMANAGER->GetInstance();
 	*/
 	CreateBackBuffer();
+}
+
+void MainWindow::CreateMCIWindow()
+{
+	// 1. Window를 Create하고 
+	_introVideo = MCIWndCreate(_hWnd,
+		_hInstnace,
+		MCIWNDF_NOTIFYANSI | MCIWNDF_NOMENU | MCIWNDF_NOTIFYALL | MCIWNDF_NOPLAYBAR,
+		L"../sample.wmv"); // 초기화
+	MoveWindow(_introVideo, 0, 0, _width, _height, NULL);
+	// 2. 동영상을 Play
+	MCIWndPlay(_introVideo);
 }

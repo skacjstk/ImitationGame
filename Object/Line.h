@@ -20,6 +20,9 @@ public:
 	void         AddLine(float x1, float y1, float x2, float y2);
 	static bool  IntersectionLine(Vector2 AP1, Vector2 AP2, Vector2 BP1, Vector2 BP2, Vector2 & result); //교차점 
 	static bool  Clipping(Vector2 & start, Vector2 & end, Vector2 AreaMin, Vector2 AreaMax);
+	static bool  IntersectionLine(Vector2 start, Vector2 end, class Collider* pCollider);	// Clipping 기반으로
+	static bool  IntersectionColliderToLine(class Collider* pCollider,  Vector2& start, Vector2& end);
+	static float GetDistancePointToline(LONG& x, LONG& y, FLOAT& l, FLOAT& t, FLOAT& r, FLOAT& b);
 private:
 	static  int  IsLeft(Vector2 left, Vector2 right);
 	static  bool CheckInterSectionLine(Vector2 A, Vector2 B, Vector2 C, Vector2 D);

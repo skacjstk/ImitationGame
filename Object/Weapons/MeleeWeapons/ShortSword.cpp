@@ -1,4 +1,4 @@
-#include "ImitationGame/framework.h"
+ï»¿#include "ImitationGame/framework.h"
 #include "./Object/Weapons/MeleeWeapons/MeleeWeapon.h"
 #include "ShortSword.h"
 
@@ -6,14 +6,14 @@ ShortSword::ShortSword()
 {
 	minDamage_ = 8;
 	maxDamage_ = 10;
-	ItemText_ = "°¡º±°í ÈÖµÎ¸£±â ÆíÇÑ °Ë";
+	ItemText_ = "ê°€ë³ê³  íœ˜ë‘ë¥´ê¸° í¸í•œ ê²€";
 	handedType_ = Weapon::HandedType::ONEHANDED;
 	if (static_cast<int>(handedType_) == 1)
-		printf("static cast ÇÑ¼Õ¹«±â\n");
+		printf("static cast í•œì†ë¬´ê¸°\n");
 	if (handedType_ == Weapon::HandedType::ONEHANDED)
-			printf("ÇÑ¼Õ¹«±â\n");
-	printf("¹«±âÅ¸ÀÔ: %d\n", static_cast<int>(weaponType_));
-	attackDelay_ = 1 / attackSpeed_;	// ¿¹¸¦ µé¾î, speed°¡2 ¸é attackdelay´Â 0.5°¡ µÇ¾î. 0.5ÃÊ¸¶´Ù 1¹ø¾¿ °ø°İÇÏ´Â°ÅÀÓ.
+			printf("í•œì†ë¬´ê¸°\n");
+	printf("ë¬´ê¸°íƒ€ì…: %d\n", static_cast<int>(weaponType_));
+	attackDelay_ = 1 / attackSpeed_;	// ì˜ˆë¥¼ ë“¤ì–´, speedê°€2 ë©´ attackdelayëŠ” 0.5ê°€ ë˜ì–´. 0.5ì´ˆë§ˆë‹¤ 1ë²ˆì”© ê³µê²©í•˜ëŠ”ê±°ì„.
 
 	wstring strImage = IMAGE_FOLDER;
 	strImage += L"Weapon/OneHanded/Melee/ShortSword/ShortSword.png";
@@ -28,7 +28,7 @@ ShortSword::ShortSword()
 		pClip->AddFrame(weapon_->GetTexture(), strImage, 0, 0, 0.1f);
 		weapon_->AddClip(pClip);
 	}
-	// ±âº» ¹èÀ²Àº 6¹è
+	// ê¸°ë³¸ ë°°ìœ¨ì€ 6ë°°
 	SetWeaponScale(6.0f * WSCALEY, 6.0f * WSCALEY);
 }
 
@@ -41,8 +41,8 @@ void ShortSword::Update(Matrix V, Matrix P)
 	// AnimationUpdate
 	weapon_->SetPlay(0);
 
-	// ¿©±â¼­ ½ÇÁúÀûÀ¸·Î ÈÖµÎ¸£´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀ» °ü¸®ÇÏ°Ô ÇÒ °Í. (¸¶¿ì½º À§Ä¡Á¡ ±â¹İ.. µîµî)
-
+	// ì—¬ê¸°ì„œ ì‹¤ì§ˆì ìœ¼ë¡œ íœ˜ë‘ë¥´ëŠ” ì• ë‹ˆë©”ì´ì…˜ì„ ê´€ë¦¬í•˜ê²Œ í•  ê²ƒ. (ë§ˆìš°ìŠ¤ ìœ„ì¹˜ì  ê¸°ë°˜.. ë“±ë“±)
+	AnimationUpdate();
 	weapon_->SetPosition(GetWeaponPosition());
 	weapon_->SetRotation(GetWeaponRotation());
 	weapon_->SetScale(GetWeaponScale());
@@ -60,6 +60,33 @@ void ShortSword::Reset()
 
 void ShortSword::Fire()
 {
-	// ¹«±âÀÇ °ø°İ 
-	// ¹«±â ¾Ö´Ï¸ŞÀÌ¼ÇÀÇ À§Ä¡°ª Á¶Á¤ 
+	// ë¬´ê¸°ì˜ ê³µê²© 
+	// ë¬´ê¸° ì• ë‹ˆë©”ì´ì…˜ì˜ ìœ„ì¹˜ê°’ ì¡°ì • 
+}
+
+// ì£¼ì˜ì‚¬í•­: Playerì˜ ìœ„ì¹˜ë¥¼ ì—…ë°ì´íŠ¸í•˜ê³ , Playerê°€ WeaponPositionì„ ìì‹ ì˜ ìœ„ì¹˜ë¡œ ë°”ê¾¼ ì§í›„ì— AniUpì„ ìˆ˜í–‰í•´ì•¼ í•¨.
+void ShortSword::AnimationUpdate()
+{
+	Vector2 beforePosition = GetWeaponPosition();
+	Vector3 beforeRotation = GetWeaponRotation();
+	Vector3 afterRotation;
+	Vector2 mousePosition = Mouse->GetPosition();
+	CAMERA->WCtoVC(mousePosition);
+
+	// ê³µê²©ì— ë”°ë¥¸ ê°ë„ ì¡°ì ˆí•˜ê¸°
+	float fAngle;
+	float fdX = mousePosition.x - beforePosition.x;
+	float fdY = mousePosition.y - beforePosition.y;
+
+	float dRad = atan2f(fdY, fdX);
+	fAngle = (dRad * 180.0f) / PI;
+//	afterRotation = Vector3(0.0f, 0.0f, fAngle + 90.0f * attackCycle_);
+	afterRotation = Vector3((attackCycle_ -1) * 90.0f, 0.0f, 90.0f);
+	printf("%f\n", fAngle);
+	SetWeaponRotation(afterRotation);
+	
+	// ì´ì— ë”°ë¥¸ ìœ„ì¹˜ê°’ êµì •í•˜ê¸°
+	beforePosition.y += 50.0f;
+
+	SetWeaponPosition(beforePosition);
 }

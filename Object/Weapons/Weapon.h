@@ -25,6 +25,7 @@ protected:
 //	Texture* pTexture_ = nullptr;	// Item에 frontImage_ 로 이동
 	Animation* weapon_ = nullptr;
 	GameActor** owner_ = nullptr;
+	float attackDelay_ = 1.0f;	// Weapon에 공격속도를 기반으로 계산되는 공격 딜레이
 	Vector2 LeftHandPoint_[2];	// 이 무기를 장착했을 때, PlayerHand 가 가있어야 할 위치, (휙 휙 해서 두번(왼손)
 	Vector2 RightHandPoint_[2];	// 오른손 위치 포인트
 	float minDamage_ = 1.0f;
@@ -32,7 +33,9 @@ protected:
 	float attackSpeed_ = 1.0f;
 	enum class WeaponType weaponType_ = WeaponType::NONE;
 	enum class HandedType handedType_ = HandedType::NONE;
-	struct weaponTransform weaponTransform_;
+	struct weaponTransform weaponTransform_;	
+public:
+	int attackCycle_ = 1;	// - 1 과 1 을 반복
 public:
 	Weapon() {};
 	~Weapon();

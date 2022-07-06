@@ -20,11 +20,12 @@ Town::Town()
 
 	// 테스트코드
 	tempPlayer_ = new Player();
-	tempLine_ = new Line();
 
 //	CAMERA->SetObject(tempPlayer_);
-	tempLine_->AddLine(-500.0f, -200.0f, 500.0f, -200.0f);
-	tempLine_->EndLine();
+
+	wstring introBGM = AUDIO_FOLDER;
+	introBGM += L"0.Town.wav";
+	Audio->AddSound("TownBGM", introBGM, true);
 }
 
 Town::~Town()
@@ -38,27 +39,30 @@ void Town::Update()
 	Matrix V, P;
 	V = CAMERA->GetViewMatrix();
 	P = CAMERA->GetProjectionMatrix();
-	// Next: 충돌법좀 물어봅시다.
-//	tempLine_->InterSectionLine(tempPlayer_->GetCollider(),);
+	// Next: 충돌법/ 객체 안으로 넣음.
 
 	CAMERA->Update(V, P);
 	backGround_->Update(V, P);
 	tempPlayer_->Update(V, P);
-	tempLine_->Update(V, P);
 }
 
 void Town::Render()
 {
 	backGround_->Render();
 	tempPlayer_->Render();
-	tempLine_->Render();
 }
 
 void Town::ChangeScene()
 {
 	SetActive(true);
+	Audio->Play("TownBGM", 1.0f);
 	// 임시 코드
 	// 카메라의 최대, 최소값 잡아주기 (MoMoDora Camera 참조) Next0701
+}
+
+void Town::ExitScene()
+{
+	Audio->Stop("TownBGM");
 }
 
 void Town::TestGroundCheck()

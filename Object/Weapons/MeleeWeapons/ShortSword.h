@@ -5,7 +5,6 @@
 class ShortSword : public MeleeWeapon
 {
 private:
-	float attackDelay_ = 1.0f;	// Weapon에 공격속도를 기반으로 계산되는 공격 딜레이
 public:
 	ShortSword();
 	~ShortSword();
@@ -17,4 +16,6 @@ public:
 public:
 	Weapon::WeaponType GetWeaponType() { return weaponType_; };
 	// Setter
+private:
+	void AnimationUpdate();
 };

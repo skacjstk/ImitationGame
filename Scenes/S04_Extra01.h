@@ -5,6 +5,7 @@ public: // override
 	void  Update()  override;
 	void  Render()  override;
 	void  ChangeScene() override;
+	void  ExitScene() override;
 	void  AddDrops(HDROP hDrop);
 
 private:

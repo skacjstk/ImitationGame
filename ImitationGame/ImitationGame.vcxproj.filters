@@ -88,6 +88,9 @@
     <Filter Include="헤더 파일\InputHandler">
       <UniqueIdentifier>{ee4d36fb-7073-4dfd-9d2f-123dfd494fac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\FMOD">
+      <UniqueIdentifier>{c0dc88f7-df85-448f-a96f-d28bb0308966}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -267,6 +270,12 @@
     <ClInclude Include="..\Command\Player\SwapHandFocusCommand.h">
       <Filter>헤더 파일\Command</Filter>
     </ClInclude>
+    <ClInclude Include="..\System\Audio.h">
+      <Filter>헤더 파일\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\FMOD\fmod.hpp">
+      <Filter>소스 파일\FMOD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -430,6 +439,9 @@
     </ClCompile>
     <ClCompile Include="..\Command\Player\SwapHandFocusCommand.cpp">
       <Filter>소스 파일\Command\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Audio.cpp">
+      <Filter>소스 파일\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

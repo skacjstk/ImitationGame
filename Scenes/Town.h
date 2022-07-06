@@ -10,7 +10,6 @@ class Town : public Scene
 private:	//private instance variable
 	Texture* backGround_ = nullptr;
 	class Player* tempPlayer_ = nullptr;
-	class Line* tempLine_ = nullptr;
 public:	//»ý ¼Ò
 	Town();
 	~Town();
@@ -18,6 +17,7 @@ public:	//override
 	void Update() override;
 	void Render() override;
 	void ChangeScene() override;
+	void ExitScene() override;
 
 public:	//public instance method
 	void TestGroundCheck();

@@ -227,6 +227,11 @@ void S04_Extra01::ChangeScene()
 	SetActive(true);
 }
 
+void S04_Extra01::ExitScene()
+{
+	SetActive(false);
+}
+
 void S04_Extra01::AddDrops(HDROP hDrop)
 {
 	//printf("AAAAAAAAAAAAAAAAAAAA\n");

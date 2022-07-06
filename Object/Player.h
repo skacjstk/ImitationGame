@@ -41,6 +41,8 @@ private:	// 비공개 인스턴스 변수
 	int currentFocusHand_ = 0;	// 0, 1 
 	class Weapon* handedWeapon_[4] = { nullptr, };
 
+	class Line* tempLine_ = nullptr;
+
 	float gravity_ = 0.0f;	// Actor들에게 적용되는 매 프레임마다 아래로 떨어지는 변화량
 	bool isGround_ = false;	// Actor 자신이 땅에 닿았는지 확인할 변수
 	struct PlayerData playerData_;

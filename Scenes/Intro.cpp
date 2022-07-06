@@ -60,6 +60,12 @@ Intro::Intro()
 
 	for (int i = 0; i < _countof(introButton_); ++i)
 		introButton_[i]->SetShaderInputType(11);	// alpha값만 받게
+
+	// 오디오 추가
+	wstring introBGM = AUDIO_FOLDER;
+	introBGM += L"title.wav";
+	Audio->AddSound("IntroBGM", introBGM, true);
+	Audio->Play("IntroBGM", 1.0f);
 }
 
 Intro::~Intro()
@@ -98,6 +104,12 @@ void Intro::Render()
 void Intro::ChangeScene()
 {
 	SetActive(true);
+	Audio->Play("IntroBGM", 1.0f);
+}
+
+void Intro::ExitScene()
+{
+	Audio->Stop("IntroBGM");
 }
 
 void Intro::OnButton(int id)
@@ -106,6 +118,7 @@ void Intro::OnButton(int id)
 	{
 	case 0:	// 게임 시작 ( 저장 슬롯 3개 ) ( 현재는 바로 씬 바꿔보자 )
 		this->setNextName(SCENEMANAGER->sceneNames_[1]);	// Town
+		ExitScene();
 		SCENEMANAGER->ChangeScene(this->GetNextName());
 		
 		break;

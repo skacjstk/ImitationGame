@@ -57,6 +57,18 @@ using std::bind;
 using std::to_wstring;
 using std::to_string;
 
+// 동영상 
+#include <Vfw.h>
+#pragma comment(lib, "vfw32.lib")
+
+// 오디오 음원
+#include "./FMOD/fmod.hpp"
+#if _WIN64
+	#pragma comment(lib, "../FMOD/fmodex64_vc.lib")
+#else 
+	#pragma comment(lib, "FMOD/fmodex_vc.lib")
+#endif
+
 //DX Library
 #include <d3d11.h>	
 #include <D3DX11.h>
@@ -112,6 +124,7 @@ typedef D3DXCOLOR	Color;
 #include "Base/Scene.h"
 #include "Base/SceneManager.h"
 #include "MainWindow.h"
+#include "System/Audio.h"
 #include "System/GameTime.h"
 #include "System/Keyboard.h"
 #include "System/Mouse.h"
@@ -136,10 +149,10 @@ extern ID3D11DeviceContext* DeviceContext;
 extern IDXGISwapChain* SwapChain;
 extern ID3D11RenderTargetView* RTV;		//실제로 보는 영역
 extern CMouse* Mouse;
+extern CAudio* Audio;
 extern bool g_bVisibleCollisionCheck;
 extern const float G;
 extern float WSCALEX;	// 오프셋 배율 계산용
 extern float WSCALEY;	// 오프셋 배율 계산용
-
 constexpr int MAPX = 30;
 constexpr int MAPY = 30;

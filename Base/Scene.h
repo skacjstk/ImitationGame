@@ -23,6 +23,7 @@ public:
 	virtual void Update() = 0;	// 상속받은 클래스에서 구현하라는 뜻
 	virtual void Render() = 0;	// 순수 가상함수 : java의 인터페이스와 비슷한데 
 	virtual void ChangeScene() = 0; // Scene 변경시 변경할 대상 Scene에 이 함수가 호출됨
+	virtual void ExitScene() = 0;	// 씬 나올 때 따로 설정해야 할 함수
 
 	//Setter
 	void SetActive(bool active)			{ _Active = active; };	//옜날에는 inline 함수는 인라인 붙였어야 했음

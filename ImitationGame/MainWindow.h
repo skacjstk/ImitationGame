@@ -13,7 +13,8 @@ private:	//비공개 인스턴스 변수
 	int _height = 0;
 	HINSTANCE _hInstnace = nullptr;
 	HWND _hWnd = nullptr;
-
+	HWND _introVideo = nullptr;
+	bool _stopVideo = false;	// 영상재생 여부 결정
 
 private:	//생성자와 소멸자
 	MainWindow();
@@ -34,6 +35,7 @@ public:	//공개	인스턴스	함수
 	HWND	GetWindowHandler() { return _hWnd; }
 private://비공개	인스턴스	함수
 	void Init3D();
+	void CreateMCIWindow();
 
 };
 

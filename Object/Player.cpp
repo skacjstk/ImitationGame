@@ -6,6 +6,7 @@
 #include "./Object/Inventory.h"
 #include "./Object/Item.h"
 #include "./Object/Weapons/Weapon.h"
+#include "./Object/Line.h"
 #include "Player.h"
 
 Player::Player(int AnimationID)
@@ -50,6 +51,11 @@ Player::Player(int AnimationID)
 	SetScale(6.0f * WSCALEX, 6.0f * WSCALEY);
 	pCollider_ = new Collider();
 	Inventory_ = new Inventory();
+	tempLine_ = new Line();
+
+	tempLine_->AddLine(-500.0f, -200.0f, 500.0f, -200.0f);
+	tempLine_->AddLine(500.0f, -200.0f, 700.0f, -300.0f);
+	tempLine_->EndLine();
 	inputHandler_ = (InputHandler*) new PlayerInputHandler();
 	
 	UpdateHandedWeapon();
@@ -97,6 +103,8 @@ void Player::Update(Matrix V, Matrix P)
 		handedWeapon_[(currentFocusHand_ * 2) + 1]->SetWeaponRotation(_rotation);
 		handedWeapon_[(currentFocusHand_ * 2) + 1]->Update(V, P);
 	}
+
+	tempLine_->Update(V, P);
 }
 
 void Player::Render()
@@ -104,6 +112,7 @@ void Player::Render()
 	_animation->Render();
 	pCollider_->Render();
 	Inventory_->Render();
+	tempLine_->Render();
 
 	for (int i = 0; i < _countof(handedWeapon_); ++i)
 	{
@@ -125,17 +134,23 @@ void Player::Reset(objectType playerType)
 
 void Player::GroundCheck()
 {
-	// Test 코드
-	if (this->GetPosition().y <= -300.0f) {
-		isGround_ = true;
-		_currentState = State::IDLE;
-		longJumpCount_ = 0.0f;
-		isCanlongJump_ = true;
-		isLongJump_ = false;
+	bool flag = false;
+	// 테스트코드: 어쩌면 얘도 Collider를 Line으로 바꿔야 할지도 모름, 필요한 것: 대각선 Line 따라 걸어가는 거 Next
+	for (int i = 0; i < tempLine_->GetCountLine(); ++i) {
+		Vector2 start = tempLine_->GetStartPoint(i);
+		Vector2 end = tempLine_->GetEndPoint(i);
+		if (Line::IntersectionLine(start, end, this->GetCollider()))
+		{
+	//		isGround_ = true;
+			flag = true;
+			_currentState = State::IDLE;
+			longJumpCount_ = 0.0f;
+			isCanlongJump_ = true;
+			isLongJump_ = false;
+			break;
+		}			
 	}
-	else {
-		isGround_ = false;
-	}		
+	isGround_ = flag;
 }
 
 void Player::InputUpdate()
@@ -242,6 +257,11 @@ void Player::Idle()
 void Player::Attack()
 {
 
+	// 애니메이션
+	if (handedWeapon_[currentFocusHand_ * 2] != nullptr)
+		handedWeapon_[currentFocusHand_ * 2]->attackCycle_ *= -1;
+	if (handedWeapon_[currentFocusHand_ * 2 + 1] != nullptr)
+		handedWeapon_[currentFocusHand_ * 2 + 1]->attackCycle_ *= -1;;
 }
 
 void Player::InventoryToggle()

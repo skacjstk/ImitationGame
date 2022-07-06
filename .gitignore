@@ -424,3 +424,19 @@ FodyWeavers.xsd
 /Object/Weapons/MeleeWeapons/ShortSword_1.cpp
 /Object/AObject.h
 /Object/AObject.cpp
+/FMOD/which library do I use.txt
+/FMOD/libfmodexL.a
+/FMOD/libfmodex.a
+/FMOD/fmod_output.h
+/FMOD/fmod_memoryinfo.h
+/FMOD/fmod_errors.h
+/FMOD/fmod_dsp.h
+/FMOD/fmod_codec.h
+/FMOD/fmodex_lcc.lib
+/FMOD/fmodex_bc.lib
+/FMOD/fmodexL_vc.lib
+/FMOD/fmodexL_lcc.lib
+/FMOD/fmodexL_bc.lib
+/FMOD/fmodexL64_vc.lib
+/FMOD/fmod.h
+/DLL

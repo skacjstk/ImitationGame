@@ -168,6 +168,7 @@
     <ClInclude Include="..\Command\Player\InventoryToggleCommand.h" />
     <ClInclude Include="..\Command\Player\SwapHandFocusCommand.h" />
     <ClInclude Include="..\Command\RightMoveCommand.h" />
+    <ClInclude Include="..\FMOD\fmod.hpp" />
     <ClInclude Include="..\ImGUI\imconfig.h" />
     <ClInclude Include="..\ImGUI\imgui.h" />
     <ClInclude Include="..\ImGUI\imgui_impl_dx11.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="..\Scenes\Intro.h" />
     <ClInclude Include="..\Scenes\S04_Extra01.h" />
     <ClInclude Include="..\Scenes\Town.h" />
+    <ClInclude Include="..\System\Audio.h" />
     <ClInclude Include="..\System\GameTime.h" />
     <ClInclude Include="..\System\Keyboard.h" />
     <ClInclude Include="..\System\Mouse.h" />
@@ -260,6 +262,7 @@
     <ClCompile Include="..\Scenes\Intro.cpp" />
     <ClCompile Include="..\Scenes\S04_Extra01.cpp" />
     <ClCompile Include="..\Scenes\Town.cpp" />
+    <ClCompile Include="..\System\Audio.cpp" />
     <ClCompile Include="..\System\GameTime.cpp" />
     <ClCompile Include="..\System\Keyboard.cpp" />
     <ClCompile Include="..\System\Mouse.cpp" />

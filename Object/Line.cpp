@@ -1,5 +1,6 @@
 #include "ImitationGame/framework.h"
 #include "Line.h"
+#include "./Physics/Collider.h"
 #include "./Render/ColorShader.h"
 
 #define   dot(u,v)   ( (u).x*(v).x + (u).y*(v).x)  // AdotB   = |A*B|cos() 내적
@@ -389,6 +390,145 @@ bool Line::Clipping(Vector2 & start, Vector2 & end, Vector2 AreaMin, Vector2 Are
 	}
 
 	return Value;
+}
+
+bool Line::IntersectionLine(Vector2 start, Vector2 end, Collider * pCollider)
+{	
+	const int LEFT = 1;
+	const int RIGHT = 2;
+	const int TOP = 8;
+	const int BOTTOM = 4;
+
+	bool  Value = false;
+	int   C1, C2, C;
+	float tmpx, tmpy;
+	tmpx = tmpy = 0.0f;	// 초기화 해달라고해서 초기화함.
+	Vector2 AreaMin = pCollider->GetPosition() - (pCollider->GetScale() * 0.5f);
+	Vector2 AreaMax = pCollider->GetPosition() + (pCollider->GetScale() * 0.5f);
+
+	while (1)
+	{
+		// Bit연산
+		C1 = OutCode(start, AreaMin, AreaMax);
+		C2 = OutCode(end, AreaMin, AreaMax);
+
+		// 2점이 사각형 내부에 있는 것을 Check
+		if (C1 == 0 && C2 == 0)
+		{
+			Value = true;
+			break;
+		}
+		// 사각형 외부에 데이터 있는것을 Check
+		if (C1 & C2)
+			break;
+		// C1,C2중 하나를 선택하여 Clipping
+		if (C1 == 0)
+			C = C2;
+		else
+			C = C1;
+
+		// LEFT -> RIGHT -> BOTTOM -> TOP
+		// y = mx+c         한점을 알고 있을때의 방정식
+		// y = y1 + m(x-x1) 두점을 알고 있을때의 방정식
+		if (C & LEFT)
+		{
+			tmpx = AreaMin.x;
+			tmpy = start.y + ((end.y - start.y) / (end.x - start.x)) * (AreaMin.x - start.x);
+		}
+		if (C & RIGHT)
+		{
+			tmpx = AreaMax.x;
+			tmpy = start.y + ((end.y - start.y) / (end.x - start.x)) * (AreaMax.x - start.x);
+		}
+		if (C & BOTTOM)
+		{
+			tmpx = start.x + ((end.x - start.x) / (end.y - start.y)) * (AreaMin.y - start.y);
+			tmpy = AreaMin.y;
+		}
+		if (C & TOP)
+		{
+			tmpx = start.x + ((end.x - start.x) / (end.y - start.y)) * (AreaMax.y - start.y);
+			tmpy = AreaMax.y;
+		}
+
+		// C가 변경 되었는지 Check
+		if (C == C1)
+			start = Vector2(tmpx, tmpy);
+		else
+			end = Vector2(tmpx, tmpy);
+
+	}
+	return Value;	
+}
+// https://blog.naver.com/japgo/40196455578 참조 ( 구현 실패, 선의 길이 관련이 없어짐)
+bool Line::IntersectionColliderToLine(Collider* pCollider, Vector2& start, Vector2& end)
+{
+	int count = 0;
+	bool Value = false;
+	Vector2 pos = pCollider->GetPosition();
+	Vector2 scale = pCollider->GetScale();
+
+	// 0~3 까지 상하좌우로 할꺼임.
+	RECT interRect;
+	interRect.top = pos.y + scale.y * 0.5f;		//상
+	interRect.bottom = pos.y - scale.y * 0.5f;	//하
+	interRect.left = pos.x - scale.x * 0.5f;	//좌
+	interRect.right = pos.x + scale.x * 0.5f;	//우
+
+//	LONG swapF = 0.0f;
+//	// Rotation 때문에 넣은거같은데(뒤집어져 있으면 바꾸게) 우린 현재 땡 사각형밖에 없어서 필요없음.
+//	if (interRect.left > interRect.right) {
+//		swapF = interRect.left;
+//		interRect.left = interRect.right;
+//		interRect.right = swapF;
+//	}
+//	if (interRect.bottom > interRect.top) {
+//		swapF = interRect.bottom;
+//		interRect.bottom = interRect.top;
+//		interRect.top = swapF;
+//	}
+
+
+
+	if (GetDistancePointToline(interRect.left, interRect.top, start.x, start.y, end.x, end.y) > 0.0f) {
+		++count;
+	}
+	else
+		--count;
+
+	if (GetDistancePointToline(interRect.right, interRect.top, start.x, start.y, end.x, end.y) > 0.0f) {
+		++count;
+	}
+	else
+		--count;
+
+	if (GetDistancePointToline(interRect.left, interRect.bottom, start.x, start.y, end.x, end.y) > 0.0f) {
+		++count;
+	}
+	else
+		--count;
+
+	if (GetDistancePointToline(interRect.right, interRect.bottom, start.x, start.y, end.x, end.y) > 0.0f) {
+		++count;
+	}
+	else
+		--count;
+
+
+	if (count == 4 || count == -4)
+		Value = false;
+	else
+		Value = true;
+
+	return Value;
+}
+// xy는 한 점, lt rb 는 선의 xy xy.
+float Line::GetDistancePointToline(LONG& x, LONG& y, FLOAT& l, FLOAT& t, FLOAT& r, FLOAT& b)
+{
+	float distance = 0.0f;
+	// 캐스팅 한 값을 저장한건 아닌데, 참조라서 이게 바뀌지 않나?
+	distance = ((b - t) * x + (l - r) * y + (t * r - l * b)) / (sqrt(pow((b - t), 2) + pow((l - r), 2)));
+	return distance;
 }
 
 // right가 left 보다 크면 true를 반환합니다.
