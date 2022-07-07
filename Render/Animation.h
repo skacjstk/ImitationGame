@@ -11,6 +11,7 @@ public: // Setter
 	void  SetPosition(Vector2 position)          { _texture->SetPosition(position); }
 	void  SetScale(float sx, float sy)           { _texture->SetScale(sx, sy); }
 	void  SetScale(Vector2 scale)                { _texture->SetScale(scale); }
+	void  SetPivot(Vector3 pivot)				 { _texture->_pivot = pivot; }
 	void  SetRotation(float x, float y, float z) { _texture->SetRotation(x, y, z); }
 	void  SetRotation(Vector3 rotation)          { _texture->SetRotation(rotation); }
 	void  AddClip(class AnimationClip *pClip);

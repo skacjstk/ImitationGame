@@ -1,6 +1,8 @@
 #pragma once
 class Texture
 {
+public:
+	Vector3			_pivot = Vector3(0.0f, 0.0f, 0.0f);
 private:	// General
 	Vector2			_position		= Vector2(0.0f, 0.0f);
 	Vector2			_scale			= Vector2(1.0f, 1.0f);

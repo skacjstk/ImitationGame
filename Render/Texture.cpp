@@ -50,7 +50,7 @@ void Texture::Update(Matrix V, Matrix P)
 //	}
 //	DeviceContext->Unmap(_vertexBuffer, 0);
 	// 자기 자신에 대한 Matrix
-	Matrix W, T, S, R;
+	Matrix W, T, S, R, Pv;
 	float gap = PI / 180.0f;
 	D3DXMatrixTranslation(&T, _position.x, _position.y, 0.0f);
 	D3DXMatrixScaling(&S, _scale.x*_spriteSize.x,
@@ -58,7 +58,9 @@ void Texture::Update(Matrix V, Matrix P)
 	D3DXMatrixRotationYawPitchRoll(&R, _rotation.y * gap,
 		_rotation.x * gap,
 		_rotation.z * gap);	//yaw pitch roll 순
-	W = S * R * T;
+	D3DXMatrixTranslation(&Pv, _pivot.x, _pivot.y, _pivot.z);
+	D3DXMatrixInverse(&Pv, NULL, &Pv);
+	W = S * Pv * R  * T;
 
 	// update 주기마다 Shader 에 SRV 세팅 
 	_SRV = SRVMANAGER->FindShaderResourceView(_strImageFile);

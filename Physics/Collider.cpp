@@ -43,19 +43,22 @@ Collider::~Collider()
 }
 void Collider::Update(Matrix V, Matrix P)
 {
-	Matrix W, S, T, R;
-
+	Matrix W, T, S, R, Pv;
 	D3DXMatrixIdentity(&S);
 	D3DXMatrixIdentity(&T);
 	D3DXMatrixIdentity(&R);
 
+	float gap = PI / 180.0f;
+
 	D3DXMatrixTranslation(&T, m_Position.x, m_Position.y, 0.0f);
 	D3DXMatrixScaling(&S, m_Scale.x, m_Scale.y, 0.0f);
-	D3DXMatrixRotationYawPitchRoll(&R, m_Rotation.y*PI / 180.0f, m_Rotation.x*PI / 180.0f, m_Rotation.z*PI / 180.0f);
-	W = S * R *  T;
-	m_World = S * R * T;
-	m_pShader->Update(W, V, P);
+	D3DXMatrixRotationYawPitchRoll(&R, m_Rotation.y* gap, m_Rotation.x* gap, m_Rotation.z* gap);
 
+	D3DXMatrixTranslation(&Pv, m_pivot.x, m_pivot.y, m_pivot.z);
+	D3DXMatrixInverse(&Pv, 0, &Pv);
+	W = S * Pv * R *  T;
+	m_World = W;
+	m_pShader->Update(W, V, P);
 }
 
 void Collider::Render()

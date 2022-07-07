@@ -44,6 +44,8 @@ public:
 	void		    SetScale(Vector2 size) { m_Scale = size; };
 	void		    SetRotation(float x, float y, float z) { m_Rotation = Vector3(x, y, z); };
 	void		    SetRotation(Vector3 rot) { m_Rotation = rot; };
+	void			SetPivot(Vector3 piv) { m_pivot = piv; }
+	void			SetPivot(float x, float y, float z) { m_pivot = Vector3(x,y,z); }
 	void            SetWorld(Matrix world) { m_World = world; }
 	void            SetCollisionCheck(bool collision) { m_bCollisionCheck = collision; }
 	
@@ -52,6 +54,7 @@ public:
 	Vector2				GetPosition() { return m_Position; }
 	Vector2				GetScale() { return m_Scale; }
 	Vector3				GetRotation() { return m_Rotation; }
+	Vector3				GetPivot() { return m_pivot; }	// 자체체작 Pivot
 	Matrix				GetWorld() { return m_World; }
 	vector<Vector2*>    GetAreas();
 	static Vector2             GetUpVector(SHAPE s);
@@ -67,6 +70,7 @@ private:
 	Vector2			   m_Position = Vector2(0.0f, 0.0f);          // GameObject 좌표
 	Vector2			   m_Scale = Vector2(1.0f, 1.0f);             // GameObject 크기
 	Vector3			   m_Rotation = Vector3(0.0f, 0.0f, 0.0f);    // GameObject 방향 
+	Vector3            m_pivot = Vector3(0.0f, 0.0f, 0.0f);			// 자체제작 Pivot
 	class  ColorShader  *m_pShader = nullptr;
 	ID3D11Buffer       *m_pVertexBuffer = nullptr;
 	Matrix             m_World;                                  // GameObject WorldMatrix  
