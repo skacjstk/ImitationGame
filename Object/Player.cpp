@@ -258,13 +258,10 @@ void Player::Attack()
 {
 	// 애니메이션
 	if (handedWeapon_[currentFocusHand_ * 2] != nullptr){
-		handedWeapon_[currentFocusHand_ * 2]->attackCycle_ *= -1;
 		handedWeapon_[currentFocusHand_ * 2]->Fire();
 	}
 	if (handedWeapon_[currentFocusHand_ * 2 + 1] != nullptr) {
-		handedWeapon_[currentFocusHand_ * 2 + 1]->attackCycle_ *= -1;
 		handedWeapon_[currentFocusHand_ * 2 + 1]->Fire();
-
 	}
 }
 

@@ -7,6 +7,7 @@ ShortSword::ShortSword()
 {
 	minDamage_ = 8;
 	maxDamage_ = 10;
+	attackPerSecond_ = 3.03f;	// 공식 공속
 	ItemText_ = "가볍고 휘두르기 편한 검";
 	handedType_ = Weapon::HandedType::ONEHANDED;
 //	if (static_cast<int>(handedType_) == 1)	// enum class 강제 형변환
@@ -14,9 +15,8 @@ ShortSword::ShortSword()
 //	if (handedType_ == Weapon::HandedType::ONEHANDED)
 //			printf("한손무기\n");
 //	printf("무기타입: %d\n", static_cast<int>(weaponType_));
-
 	currentAttackDelay_ = attackDelay_ = 1 / attackPerSecond_;	// 예를 들어, speed가2 면 attackdelay는 0.5가 되어. 0.5초마다 1번씩 공격하는거임.
-
+	printf("공속 딜레이%f\n", attackDelay_);
 	// 무기 대표이미지와 직접 사용할 애니메이션 생성
 	wstring strImage = IMAGE_FOLDER;
 	strImage += L"Weapon/OneHanded/Melee/ShortSword/ShortSword.png";
@@ -57,6 +57,7 @@ void ShortSword::Update(Matrix V, Matrix P)
 {
 	// AnimationUpdate
 	weapon_->SetPlay(0);
+	currentAttackDelay_ -= TIMEMANAGER->Delta();
 
 	// 여기서 실질적으로 휘두르는 애니메이션을 관리하게 할 것. (마우스 위치점 기반.. 등등)
 	AnimationUpdate();
@@ -81,7 +82,14 @@ void ShortSword::Reset()
 
 void ShortSword::Fire()
 {
-	// 무기의 공격 	// 손 위치 보정 : NExt: 0707 학원에서 용사 손 추가할예정	
+	if (!IsCanFire())
+		return;
+	// 공격 발사 성공시 아래 재생
+	currentAttackDelay_ = attackDelay_;
+
+	// Event: 공격 성공 이벤트
+	attackCycle_ = -attackCycle_;
+	// 무기의 공격 	// 손 위치 보정 : NExt: 0708 학원에서 용사 손 추가할예정	
 	Vector2 beforePosition = GetWeaponPosition();
 	Vector3 afterRotation;
 
