@@ -72,7 +72,7 @@ void CMouse::Update()
 	}
 
 	// 더블클릭
-	UINT currentTime = GetTickCount();
+	UINT currentTime = GetTickCount64();
 	for (UINT i = 0; i < 8; i++)
 	{
 		if (buttonMap[i] == Button::Down)
@@ -141,6 +141,20 @@ bool CMouse::Press(UINT button)
 bool CMouse::DoubleClick(UINT button)
 {
 	return buttonMap[button] == Button::DoubleClick;
+}
+// 0 은 DirectX, 나머지는 Window, 커플링: CAMERA->WCtoVC()
+float CMouse::GetAngleRelativeToMouse(float x, float y, int viewType)
+{
+	float fAngle = 0.0f;
+	Vector2 tempPosition = this->GetPosition();
+	CAMERA->WCtoVC(tempPosition);
+
+
+	float fdX = tempPosition.x - x;
+	float fdY = tempPosition.y - y;
+	float dRad = atan2f(fdY, fdX);
+	fAngle = (dRad * 180.0f) / PI;
+	return fAngle;
 }
 
 

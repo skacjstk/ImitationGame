@@ -17,6 +17,7 @@ public:
 	bool		Press(UINT button);
 	bool		DoubleClick(UINT button);
 	Vector2		GetPosition() { return m_Position; }
+	float		GetAngleRelativeToMouse(float x, float y, int viewType = 0);
 private:
 	HWND        handle;
 	Vector2     m_Position = Vector2(0.0f,0.0f);
