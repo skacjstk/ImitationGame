@@ -5,6 +5,8 @@
 class ShortSword : public MeleeWeapon
 {
 private:
+	Animation* attackFX_ = nullptr;
+	Collider* attackCollider_ = nullptr;
 public:
 	ShortSword();
 	~ShortSword();

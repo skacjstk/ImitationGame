@@ -1,5 +1,6 @@
 ﻿#include "ImitationGame/framework.h"
 #include "./Object/Weapons/MeleeWeapons/MeleeWeapon.h"
+#include "./Physics/Collider.h"
 #include "ShortSword.h"
 
 ShortSword::ShortSword()
@@ -8,13 +9,15 @@ ShortSword::ShortSword()
 	maxDamage_ = 10;
 	ItemText_ = "가볍고 휘두르기 편한 검";
 	handedType_ = Weapon::HandedType::ONEHANDED;
-	if (static_cast<int>(handedType_) == 1)
-		printf("static cast 한손무기\n");
-	if (handedType_ == Weapon::HandedType::ONEHANDED)
-			printf("한손무기\n");
-	printf("무기타입: %d\n", static_cast<int>(weaponType_));
-	attackDelay_ = 1 / attackSpeed_;	// 예를 들어, speed가2 면 attackdelay는 0.5가 되어. 0.5초마다 1번씩 공격하는거임.
+//	if (static_cast<int>(handedType_) == 1)	// enum class 강제 형변환
+//		printf("static cast 한손무기\n");
+//	if (handedType_ == Weapon::HandedType::ONEHANDED)
+//			printf("한손무기\n");
+//	printf("무기타입: %d\n", static_cast<int>(weaponType_));
 
+	currentAttackDelay_ = attackDelay_ = 1 / attackPerSecond_;	// 예를 들어, speed가2 면 attackdelay는 0.5가 되어. 0.5초마다 1번씩 공격하는거임.
+
+	// 무기 대표이미지와 직접 사용할 애니메이션 생성
 	wstring strImage = IMAGE_FOLDER;
 	strImage += L"Weapon/OneHanded/Melee/ShortSword/ShortSword.png";
 	wstring 	strShader = SHADER_FOLDER;
@@ -28,6 +31,20 @@ ShortSword::ShortSword()
 		pClip->AddFrame(weapon_->GetTexture(), strImage, 0, 0, 0.1f);
 		weapon_->AddClip(pClip);
 	}
+	strImage = IMAGE_FOLDER;	strImage += L"FX/SwingFX00.png";
+	strShader = SHADER_FOLDER;	strShader += L"TextureColor.hlsl";
+	attackFX_ = new Animation(strImage, strShader);
+	{
+		AnimationClip* pClip = new AnimationClip(AnimationClip::eState::End);
+		for (int i = 0; i < 3; ++i) {
+			strImage = IMAGE_FOLDER; strImage += L"FX/SwingFX0" + to_wstring(i) + L".png";
+			pClip->AddFrame(attackFX_->GetTexture(), strImage, 0, 0, 40, 28, 0.1f);
+		}
+		attackFX_->AddClip(pClip);
+	}
+	attackFX_->SetStop();
+	attackFX_->GetTexture()->UpdateColorBuffer(Color(0, 0, 0, 1),1);
+
 	// 기본 배율은 6배
 	SetWeaponScale(6.0f * WSCALEY, 6.0f * WSCALEY);
 }
@@ -46,12 +63,16 @@ void ShortSword::Update(Matrix V, Matrix P)
 	weapon_->SetPosition(GetWeaponPosition());
 	weapon_->SetRotation(GetWeaponRotation());
 	weapon_->SetScale(GetWeaponScale());
+	weapon_->SetPivot(GetWeaponPivot());
 	weapon_->Update(V, P);
+	attackFX_->Update(V, P);
 }
 
 void ShortSword::Render()
 {
 	weapon_->Render();
+	if(attackFX_->IsPlay())
+		attackFX_->Render();
 }
 
 void ShortSword::Reset()
@@ -60,42 +81,42 @@ void ShortSword::Reset()
 
 void ShortSword::Fire()
 {
-	// 무기의 공격 
-	// 무기 애니메이션의 위치값 조정 
+	// 무기의 공격 	// 손 위치 보정 : NExt: 0707 학원에서 용사 손 추가할예정	
+	Vector2 beforePosition = GetWeaponPosition();
+	Vector3 afterRotation;
+
+	float gap = 100.0f;
+	float fAngle = Mouse->GetAngleRelativeToMouse(beforePosition.x, beforePosition.y);
+	float dRad = (fAngle * PI) / 180.0f; 
+	beforePosition.x +=	cosf(dRad) * gap * WSCALEX;
+	beforePosition.y +=  sinf(dRad) * gap * WSCALEY;
+	afterRotation = Vector3(0.0f, 0.0f, fAngle -90.0f);
+	attackFX_->SetPosition(beforePosition);
+	attackFX_->SetScale(GetWeaponScale() * 0.8f);
+	attackFX_->SetRotation(afterRotation);
+	attackFX_->SetPlay(0, true);
 }
 
 // 주의사항: Player의 위치를 업데이트하고, Player가 WeaponPosition을 자신의 위치로 바꾼 직후에 AniUp을 수행해야 함.
 void ShortSword::AnimationUpdate()
-{
-	/*
+{	
 	Vector2 beforePosition = GetWeaponPosition();
 	Vector3 beforeRotation = GetWeaponRotation();
 	Vector3 afterRotation;
-	Vector2 mousePosition = Mouse->GetPosition();
-	CAMERA->WCtoVC(mousePosition);
 
 	// 공격에 따른 각도 조절하기
-	float fAngle;
-	float fdX = mousePosition.x - beforePosition.x;
-	float fdY = mousePosition.y - beforePosition.y;
+	float fAngle = Mouse->GetAngleRelativeToMouse(beforePosition.x, beforePosition.y);
+	afterRotation = Vector3(0.0f, 0.0f, fAngle + 90.0f * attackCycle_);
 
-	float dRad = atan2f(fdY, fdX);
-	fAngle = (dRad * 180.0f) / PI;
-	afterRotation = Vector3(0.0f, 0.0f, fAngle + 90.0f);
+	Vector3 pivot = Vector3(-50.0f * WSCALEX, +15.0f * WSCALEY, 0.0f);	// Next: 콜라이더도 Pivot 적용 할..까? (무기 자체에 콜라이더면 그럴예정)
+	SetWeaponPivot(pivot);
 
+	// 손 위치 보정 : NExt: 0707 학원에서 용사 손 추가할예정
+	beforePosition.x += 50.0f;
+	beforePosition.y -= 20.0f;
 	SetWeaponRotation(afterRotation);
-		
-//	// 이에 따른 위치값 교정하기
-	beforePosition.x += 50.0f * WSCALEX;
-	beforePosition.y += 30.0f * WSCALEY;
-	float axisX = cosf(dRad) * 50.0f * WSCALEX;
-	float axisY = sinf(dRad) * 50.0f * WSCALEY;
-	weapon_->SetAxis(axisX, axisY,1.0f);
-
-	printf("%f %f\n", sinf(fAngle), cosf(fAngle));
-
 	SetWeaponPosition(beforePosition);
 
-	*/
+	
 
 }
