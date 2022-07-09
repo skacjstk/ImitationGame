@@ -20,6 +20,9 @@
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #endif
 
+// 경고 무시
+#pragma warning(disable: 4244)	// _Elem -> const_Elem 변환 손실 경고 무시: wchar_t ->char assign 에서 
+
 #include "targetver.h"
 #define WIN32_LEAN_AND_MEAN             // 거의 사용되지 않는 내용을 Windows 헤더에서 제외합니다.
 // #define _HAS_STD_BYTE 0		// C++17 std::byte를 활성화 해제 https://blog.cxx.kr/archives/390
