@@ -47,6 +47,15 @@ ShortSword::ShortSword()
 
 	// 기본 배율은 6배
 	SetWeaponScale(6.0f * WSCALEY, 6.0f * WSCALEY);
+
+	wstring swing = AUDIO_FOLDER;
+	swing += L"swing.wav";
+	Audio->AddSound("swing", swing, false);
+
+	// 숏소드의 핸드 피벗은 이렇다. ( NEXT 만약 윈도우 크기가 변경된다면..? )
+	leftHandPivot_.x = -10.0f * WSCALEX;
+	leftHandPivot_.y = 15.0f * WSCALEY;
+	leftHandPivot_.z = 0.0f;
 }
 
 ShortSword::~ShortSword()
@@ -103,6 +112,8 @@ void ShortSword::Fire()
 	attackFX_->SetScale(GetWeaponScale() * 0.8f);
 	attackFX_->SetRotation(afterRotation);
 	attackFX_->SetPlay(0, true);
+
+	Audio->Play("swing", 1.0f);
 }
 
 // 주의사항: Player의 위치를 업데이트하고, Player가 WeaponPosition을 자신의 위치로 바꾼 직후에 AniUp을 수행해야 함.
@@ -114,17 +125,22 @@ void ShortSword::AnimationUpdate()
 
 	// 공격에 따른 각도 조절하기
 	float fAngle = Mouse->GetAngleRelativeToMouse(beforePosition.x, beforePosition.y);
-	afterRotation = Vector3(0.0f, 0.0f, fAngle + 90.0f * attackCycle_);
+
+	float vec = std::abs(owner_->GetRotation().y / 180.0f);	// 절대값을 주어야 180 , -180에 대해 자유로워짐.
+
+	vec *= 2.0f;
+	vec -= 1.0f;	// 정방 -1 역방 1 방향 검증용
+	afterRotation = Vector3(0.0f, 90.0f * (vec + 1), -vec * fAngle + 90.0f * attackCycle_);
 
 	Vector3 pivot = Vector3(-50.0f * WSCALEX, +15.0f * WSCALEY, 0.0f);	// Next: 콜라이더도 Pivot 적용 할..까? (무기 자체에 콜라이더면 그럴예정)
 	SetWeaponPivot(pivot);
 
-	// 손 위치 보정 : NExt: 0707 학원에서 용사 손 추가할예정
-	beforePosition.x += 50.0f;
-	beforePosition.y -= 20.0f;
+	beforePosition.x += 50.0f * WSCALEX * -vec;	// 좌우 위치값 보정
+	beforePosition.y -= 20.0f * WSCALEY;
 	SetWeaponRotation(afterRotation);
 	SetWeaponPosition(beforePosition);
+	LeftHandPoint_ = beforePosition;
+	leftHandRot_ = afterRotation;
 
-	
-
+	// pivot은 이 무기 고정이기에 생성자 부분으로 올림.
 }

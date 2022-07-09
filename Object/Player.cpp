@@ -17,6 +17,10 @@ Player::Player(int AnimationID)
 	Texture* pTexture = _animation->GetTexture();
 	pTexture->UpdateColorBuffer(0);
 
+	strImage = IMAGE_FOLDER;	strImage += L"char/Adventurer/CharHand.png";
+	hand_[0] = new Texture(strImage, shader);
+	hand_[1] = new Texture(strImage, shader);
+
 	// IDLE
 	{
 		AnimationClip* pClip = new AnimationClip(AnimationClip::eState::Loop);
@@ -60,6 +64,11 @@ Player::Player(int AnimationID)
 	
 	UpdateHandedWeapon();
 	Inventory_->SetInventoryOwner(this);	// 해당 인벤토리의 소유자를 Player로 함.
+
+	// Hand 위치 설정
+	for (auto hand : hand_) {
+		hand->SetScale(this->GetScale());
+	}
 }
 
 Player::~Player()
@@ -81,6 +90,8 @@ void Player::Update(Matrix V, Matrix P)
 	_animation->SetScale(GetScale());	 
 	_animation->Update(V, P);
 
+	// 손 업데이트 생각보다 복잡해서 분리
+	
 	pCollider_->SetScale(_animation->GetTexture()->GetTextureRealSize());
 	pCollider_->SetRotation(GetRotation());
 	pCollider_->SetPosition(GetPosition());
@@ -91,7 +102,6 @@ void Player::Update(Matrix V, Matrix P)
 	if (handedWeapon_[currentFocusHand_ * 2] != nullptr) {
 		// 마우스 각도 관련은 모두 weapon을 상속받아 구현한 무기 인스턴스에서 관리
 		// 무기는 자체적인 배율을 생성자 시점에서 초기화함.
-
 		handedWeapon_[currentFocusHand_ * 2]->SetWeaponPosition(_position);
 //		handedWeapon_[currentFocusHand_ * 2]->SetWeaponScale(_scale);
 		handedWeapon_[currentFocusHand_ * 2]->SetWeaponRotation(_rotation);
@@ -103,7 +113,7 @@ void Player::Update(Matrix V, Matrix P)
 		handedWeapon_[(currentFocusHand_ * 2) + 1]->SetWeaponRotation(_rotation);
 		handedWeapon_[(currentFocusHand_ * 2) + 1]->Update(V, P);
 	}
-
+	HandUpdate(V, P);
 	tempLine_->Update(V, P);
 }
 
@@ -121,6 +131,10 @@ void Player::Render()
 		if (handedWeapon_[currentFocusHand_ * 2 + 1] != nullptr)
 			handedWeapon_[currentFocusHand_ * 2 + 1]->Render();
 	}	// 손에 든 무기만 Update 및 Render
+	
+	// 무기 랜더 이후에 Render
+	hand_[0]->Render();
+	hand_[1]->Render();
 }
 
 void Player::Reset()
@@ -162,6 +176,36 @@ void Player::InputUpdate()
 	}
 }
 
+void Player::HandUpdate(Matrix V, Matrix P)
+{
+	Vector3 thisRotation = _animation->GetRotation();
+	// 무기 안든 오른손
+	float vec = std::abs(thisRotation.y / 180.0f);	// 절대값을 주어야 180 , -180에 대해 자유로워짐.
+	vec *= 2.0f;
+	vec -= 1.0f;	// 정방 -1 역방 1 방향 검증용
+	float gap = 35.0f;
+	hand_[1]->SetPosition(this->GetPosition().x + (vec * gap * WSCALEX), this->GetPosition().y - gap * WSCALEY);
+	hand_[1]->Update(V, P);
+
+	// 무기 든 왼손
+	Vector3 afterRotation;
+	Vector2 beforePosition;
+
+	if (handedWeapon_[currentFocusHand_ * 2] != nullptr) {
+		hand_[0]->SetPosition(handedWeapon_[currentFocusHand_ * 2]->GetLeftHandPoint());
+		hand_[0]->SetRotation(handedWeapon_[currentFocusHand_ * 2]->GetLeftHandRotation());
+		hand_[0]->_pivot = handedWeapon_[currentFocusHand_ * 2]->GetLeftHandPivot();
+	}
+	else	// 손 기본위치
+	{
+		hand_[0]->SetPosition(this->GetPosition().x - (vec * gap * 1.2f * WSCALEX), this->GetPosition().y - 20.0f * WSCALEY);
+		float angle = Mouse->GetAngleRelativeToMouse(hand_[0]->GetPosition().x, hand_[0]->GetPosition().y);
+		hand_[0]->SetRotation(0.0f, 0.0f, angle);
+		hand_[0]->_pivot = Vector3(0.0f, 0.0f, 0.0f);
+	}
+	hand_[0]->Update(V, P);
+}
+
 void Player::GravityUpdate()
 {
 	Vector2 position = GetPosition();
@@ -182,7 +226,7 @@ void Player::UpdateHandedWeapon()
 	for (int i = 0; i < _countof(handedWeapon_); ++i) {
 		handedWeapon_[i] = (Weapon*)Inventory_->GetEquipItem(i);
 		if (handedWeapon_[i] != nullptr) {
-			handedWeapon_[i]->SetOwner((GameActor**)this);	// 될지모르겠다
+			handedWeapon_[i]->SetOwner((GameActor*)this);	// 비정상 작동
 		}
 	}
 }

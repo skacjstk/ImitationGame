@@ -39,6 +39,7 @@ private:	// 비공개 인스턴스 변수
 	float _Time = 0.0f;
 	int _HP = 0;
 	int currentFocusHand_ = 0;	// 0, 1 
+	Texture* hand_[2] = { nullptr, };	// 무기에 장착되는건 왼손( 0번 )
 	class Weapon* handedWeapon_[4] = { nullptr, };
 
 	class Line* tempLine_ = nullptr;
@@ -52,6 +53,7 @@ public:
 public:
 	void Update(Matrix V, Matrix P) override;
 	void InputUpdate();
+	void HandUpdate(Matrix V, Matrix P);
 	void Render() override;
 	void Reset() override;
 	void Reset(objectType playerType = objectType::EXPLORER);
