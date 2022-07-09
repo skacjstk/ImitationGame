@@ -25,7 +25,7 @@ Town::Town()
 
 	wstring introBGM = AUDIO_FOLDER;
 	introBGM += L"0.Town.wav";
-	Audio->AddSound("TownBGM", introBGM, true);
+	Audio->AddSound("Town", introBGM, true);
 }
 
 Town::~Town()
@@ -55,14 +55,14 @@ void Town::Render()
 void Town::ChangeScene()
 {
 	SetActive(true);
-	Audio->Play("TownBGM", 1.0f);
+	Audio->Play("Town", 1.0f);
 	// 임시 코드
 	// 카메라의 최대, 최소값 잡아주기 (MoMoDora Camera 참조) Next0701
 }
 
 void Town::ExitScene()
 {
-	Audio->Stop("TownBGM");
+	Audio->Stop("Town");
 }
 
 void Town::TestGroundCheck()
