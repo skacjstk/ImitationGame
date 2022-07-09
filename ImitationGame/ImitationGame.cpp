@@ -63,11 +63,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         else
         {
             TIMEMANAGER->Update(144.0f);//144프레임: 6.94, 60프레임: 16 근데 여기 입력값이 프레임 단위 제한임.	   
-      //    TIMEMANAGER->Update(60.0f);		
        //   TIMEMANAGER->Update();    // 프레임 무제한 업데이트: 주로 최적화 테스트용( 둘중 하나만 쓸 것 )
             // Mouse position
             Mouse->Update();
-		//	Audio->Update();
             MAIN->Update();
 			Audio->Update();
             MAIN->Render();
