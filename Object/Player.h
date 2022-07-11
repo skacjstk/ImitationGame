@@ -33,6 +33,8 @@ private:	// 비공개 인스턴스 변수
 	Vector2 _movePosition = Vector2(0.0f, 0.0f);	// lerp 하게 움직힐 거야
 	bool isCanlongJump_ = true;	// 롱점프를 할 수 있느냐?
 	bool isLongJump_ = false;	// 롱점프를 했느냐?
+	bool isJump = false;
+	bool isFall = false;
 	float longJumpCount_ = 0.0f;
 	int _moveCount = 0;
 	bool _moveAble = true;
@@ -41,9 +43,7 @@ private:	// 비공개 인스턴스 변수
 	int currentFocusHand_ = 0;	// 0, 1 
 	Texture* hand_[2] = { nullptr, };	// 무기에 장착되는건 왼손( 0번 )
 	class Weapon* handedWeapon_[4] = { nullptr, };
-
-	class Line* tempLine_ = nullptr;
-
+	
 	float gravity_ = 0.0f;	// Actor들에게 적용되는 매 프레임마다 아래로 떨어지는 변화량
 	bool isGround_ = false;	// Actor 자신이 땅에 닿았는지 확인할 변수
 	struct PlayerData playerData_;
@@ -52,12 +52,14 @@ public:
 	~Player();
 public:
 	void Update(Matrix V, Matrix P) override;
+	void RotateToMouse();
 	void InputUpdate();
 	void HandUpdate(Matrix V, Matrix P);
 	void Render() override;
 	void Reset() override;
 	void Reset(objectType playerType = objectType::EXPLORER);
 	void GroundCheck();
+	void CollisionCheck();
 	void GravityUpdate();
 	void UpdateHandedWeapon() override;
 public:
@@ -66,11 +68,13 @@ public:
 	void SetState(Player::State state) { _currentState = state; }
 	void SetMoveAble(bool moveable) { _moveAble = moveable; }
 	void SetHandedWeapon(Weapon* item, int index);
+	void SetGroundCheck(bool value) { isGround_ = value; }
 	// Getter
 	int GetHP() { return _HP; }
 	bool IsPlay() { return _animation->IsPlay(); }	
 	auto GetHandedWeapon(int index);
 	int GetFocusHand() { return currentFocusHand_; }
+	bool IsGround() { return isGround_; }
 public:	// 움직임 관련 Command 함수
 	void LeftMove() override;
 	void RightMove() override;

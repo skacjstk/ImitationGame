@@ -55,11 +55,6 @@ Player::Player(int AnimationID)
 	SetScale(6.0f * WSCALEX, 6.0f * WSCALEY);
 	pCollider_ = new Collider();
 	Inventory_ = new Inventory();
-	tempLine_ = new Line();
-
-	tempLine_->AddLine(-500.0f, -200.0f, 500.0f, -200.0f);
-	tempLine_->AddLine(500.0f, -200.0f, 700.0f, -300.0f);
-	tempLine_->EndLine();
 	inputHandler_ = (InputHandler*) new PlayerInputHandler();
 	
 	UpdateHandedWeapon();
@@ -80,6 +75,7 @@ Player::~Player()
 
 void Player::Update(Matrix V, Matrix P)
 {	
+	RotateToMouse();
 	GroundCheck();
 	InputUpdate();
 	GravityUpdate();
@@ -89,9 +85,7 @@ void Player::Update(Matrix V, Matrix P)
 	_animation->SetPosition(GetPosition());
 	_animation->SetScale(GetScale());	 
 	_animation->Update(V, P);
-
-	// 손 업데이트 생각보다 복잡해서 분리
-	
+		
 	pCollider_->SetScale(_animation->GetTexture()->GetTextureRealSize());
 	pCollider_->SetRotation(GetRotation());
 	pCollider_->SetPosition(GetPosition());
@@ -113,8 +107,21 @@ void Player::Update(Matrix V, Matrix P)
 		handedWeapon_[(currentFocusHand_ * 2) + 1]->SetWeaponRotation(_rotation);
 		handedWeapon_[(currentFocusHand_ * 2) + 1]->Update(V, P);
 	}
+
+	// 손 업데이트 생각보다 복잡해서 분리
 	HandUpdate(V, P);
-	tempLine_->Update(V, P);
+}
+
+void Player::RotateToMouse()
+{
+	Vector2 mousePos = Mouse->GetPosition();
+	CAMERA->WCtoVC(mousePos);
+
+	float result = mousePos.x - _position.x;	
+	float sign = copysign(1, result);	// copysign 최초 사용
+	sign -= 1.0f;	// 양수 0, 음수 -2
+
+	SetRotation(0.0f, sign * 90.0f, 0.0f);
 }
 
 void Player::Render()
@@ -122,15 +129,12 @@ void Player::Render()
 	_animation->Render();
 	pCollider_->Render();
 	Inventory_->Render();
-	tempLine_->Render();
 
-	for (int i = 0; i < _countof(handedWeapon_); ++i)
-	{
-		if (handedWeapon_[currentFocusHand_ * 2] != nullptr)
-			handedWeapon_[currentFocusHand_ * 2]->Render();
-		if (handedWeapon_[currentFocusHand_ * 2 + 1] != nullptr)
-			handedWeapon_[currentFocusHand_ * 2 + 1]->Render();
-	}	// 손에 든 무기만 Update 및 Render
+	if (handedWeapon_[currentFocusHand_ * 2] != nullptr)
+		handedWeapon_[currentFocusHand_ * 2]->Render();
+	if (handedWeapon_[currentFocusHand_ * 2 + 1] != nullptr)
+		handedWeapon_[currentFocusHand_ * 2 + 1]->Render();
+		// 손에 든 무기만 Update 및 Render
 	
 	// 무기 랜더 이후에 Render
 	hand_[0]->Render();
@@ -148,23 +152,40 @@ void Player::Reset(objectType playerType)
 
 void Player::GroundCheck()
 {
+	Scene* tempScene = SCENEMANAGER->GetCurrentScene();
+	Line* m_pGroundLine = tempScene->GetLines();
 	bool flag = false;
-	// 테스트코드: 어쩌면 얘도 Collider를 Line으로 바꿔야 할지도 모름, 필요한 것: 대각선 Line 따라 걸어가는 거 Next
-	for (int i = 0; i < tempLine_->GetCountLine(); ++i) {
-		Vector2 start = tempLine_->GetStartPoint(i);
-		Vector2 end = tempLine_->GetEndPoint(i);
-		if (Line::IntersectionLine(start, end, this->GetCollider()))
+	for (UINT i = 0; i < m_pGroundLine->GetCountLine(); i++) {
+		Vector2 start = m_pGroundLine->GetStartPoint(i);
+		Vector2 end = m_pGroundLine->GetEndPoint(i);
+		Vector2 mStart = pCollider_->GetPosition();
+		Vector2 mEnd;
+		mEnd.x = mStart.x;
+		mEnd.y = mStart.y - pCollider_->GetScale().y * 0.5f;
+		Vector2 result;
+		if (!isJump && Line::IntersectionLine(start, end, mStart, mEnd, result))
 		{
-	//		isGround_ = true;
+			Vector2 charPos = GetPosition();
+			float fRad = atan2f(end.y - start.y, end.x - start.x);
+			float Slope = (end.y - start.y) / (end.x - start.x);
+			charPos.y = Slope * (charPos.x - start.x) + start.y + _animation->GetTextureRealSize().y* 0.5f;
+			SetY(charPos.y);
 			flag = true;
+			SetGroundCheck(true);
 			_currentState = State::IDLE;
 			longJumpCount_ = 0.0f;
 			isCanlongJump_ = true;
 			isLongJump_ = false;
-			break;
-		}			
+			isJump = false;
+			isFall = false;			
+		}
 	}
 	isGround_ = flag;
+	
+}
+
+void Player::CollisionCheck()
+{
 }
 
 void Player::InputUpdate()
@@ -215,6 +236,15 @@ void Player::GravityUpdate()
 		gravity_ = 0.0f;
 	position.y += gravity_;
 	SetPosition(position);
+
+	if (gravity_ > 0.0f) {
+		isJump = true;
+		isFall = false;
+	}
+	else if (gravity_ < 0.0f) {
+		isFall = true;
+		isJump = false;
+	}
 }
 
 void Player::UpdateHandedWeapon()
@@ -252,7 +282,7 @@ void Player::LeftMove()
 	position.x -= playerData_.baseSpeed * TIMEMANAGER->Delta();
 	if (_currentState != State::JUMP)
 		_currentState = State::RUN;
-	SetRotation(0.0f, 180.0f, 0.0f);
+
 	Move(position);
 }
 
@@ -261,7 +291,7 @@ void Player::RightMove()
 	Vector2 position = this->GetPosition();
 
 	position.x += playerData_.baseSpeed * TIMEMANAGER->Delta();
-	SetRotation(0.0f, 0.0f, 0.0f);
+
 	if(_currentState != State::JUMP)
 		_currentState = State::RUN;
 	Move(position);

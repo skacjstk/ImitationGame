@@ -17,21 +17,20 @@ Town::Town()
 	backGround_->SetScale(6.0377358f * WSCALEX, 5.9668508f * WSCALEY);
 	backGround_->SetPosition(0.0f, 0.0f);
 	printf("%f %f\n", backGround_->GetTextureRealSize().x, backGround_->GetTextureRealSize().y);
-
-	// 테스트코드
-	tempPlayer_ = new Player();
-
+	
 //	CAMERA->SetObject(tempPlayer_);
 
 	wstring introBGM = AUDIO_FOLDER;
 	introBGM += L"0.Town.wav";
 	Audio->AddSound("Town", introBGM, true);
+
+	m_pGroundLine = new Line();
+
 }
 
 Town::~Town()
 {
 	SAFE_DELETE(backGround_);
-	SAFE_DELETE(tempPlayer_);
 }
 
 void Town::Update()
@@ -39,17 +38,19 @@ void Town::Update()
 	Matrix V, P;
 	V = CAMERA->GetViewMatrix();
 	P = CAMERA->GetProjectionMatrix();
-	// Next: 충돌법/ 객체 안으로 넣음.
+	// Next: 충돌법
+	OBJECTMANAGER->UpdateAll(V, P);		
 
 	CAMERA->Update(V, P);
 	backGround_->Update(V, P);
-	tempPlayer_->Update(V, P);
+	m_pGroundLine->Update(V, P);
 }
 
 void Town::Render()
 {
 	backGround_->Render();
-	tempPlayer_->Render();
+	OBJECTMANAGER->RenderAll();
+	m_pGroundLine->Render();
 }
 
 void Town::ChangeScene()
@@ -57,6 +58,12 @@ void Town::ChangeScene()
 	SetActive(true);
 	Audio->Play("Town", 1.0f);
 	// 임시 코드
+	Player* tempPlayer = new Player();
+	OBJECTMANAGER->AddObject("player" , tempPlayer);
+	OBJECTMANAGER->AddObjectStrings("player");	// 이것도 추가해줘야 함.
+
+	m_pGroundLine->LoadLine("./testcoord.txt");
+
 	// 카메라의 최대, 최소값 잡아주기 (MoMoDora Camera 참조) Next0701
 }
 
