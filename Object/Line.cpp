@@ -392,8 +392,10 @@ bool Line::Clipping(Vector2 & start, Vector2 & end, Vector2 AreaMin, Vector2 Are
 	return Value;
 }
 
-bool Line::IntersectionLine(Vector2 start, Vector2 end, Collider * pCollider)
+
+bool Line::Clipping(Vector2 start, Vector2 end, Collider * pCollider)
 {	
+
 	const int LEFT = 1;
 	const int RIGHT = 2;
 	const int TOP = 8;
@@ -459,7 +461,10 @@ bool Line::IntersectionLine(Vector2 start, Vector2 end, Collider * pCollider)
 
 	}
 	return Value;	
+
+	
 }
+/*
 // https://blog.naver.com/japgo/40196455578 참조 ( 구현 실패, 선의 길이 관련이 없어짐)
 bool Line::IntersectionColliderToLine(Collider* pCollider, Vector2& start, Vector2& end)
 {
@@ -522,6 +527,7 @@ bool Line::IntersectionColliderToLine(Collider* pCollider, Vector2& start, Vecto
 
 	return Value;
 }
+*/
 // xy는 한 점, lt rb 는 선의 xy xy.
 float Line::GetDistancePointToline(LONG& x, LONG& y, FLOAT& l, FLOAT& t, FLOAT& r, FLOAT& b)
 {
