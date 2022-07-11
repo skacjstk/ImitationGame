@@ -29,7 +29,7 @@ public:
 
 private:
 	ID2D1Factory1* factory; //2D용 Device를 생성해주기 위함
-	static IDWriteFactory* writeFactory; //DirectWrite기능을 생성하기 위함
+	static IDWriteFactory5* writeFactory; //DirectWrite기능을 생성하기 위함
 
 	ID2D1Device* device;
 	static ID2D1DeviceContext* deviceContext;

@@ -3,7 +3,7 @@
 #include "DirectWrite.h"
 
 DirectWrite* DirectWrite::instance = NULL;
-IDWriteFactory* DirectWrite::writeFactory = NULL;
+IDWriteFactory5* DirectWrite::writeFactory = NULL;
 ID2D1DeviceContext* DirectWrite::deviceContext = NULL;
 ID2D1Bitmap1* DirectWrite::bitmap = NULL;
 IDXGISurface* DirectWrite::surface = NULL;
@@ -54,7 +54,7 @@ DirectWrite::DirectWrite()
 	hr = DWriteCreateFactory
 	(
 		DWRITE_FACTORY_TYPE_SHARED,
-		__uuidof(IDWriteFactory),
+		__uuidof(IDWriteFactory5),
 		(IUnknown**)&writeFactory
 	);
 	assert(SUCCEEDED(hr));
@@ -86,7 +86,6 @@ DirectWrite::~DirectWrite()
 	DeleteBackBuffer();
 }
 
-
 void DirectWrite::CreateBackBuffer()
 {
 	HRESULT hr;
@@ -110,11 +109,36 @@ void DirectWrite::CreateBackBuffer()
 	hr = deviceContext->CreateSolidColorBrush(D2D1::ColorF(1, 1, 1), &brush);
 	assert(SUCCEEDED(hr));
 
+	// 임의의 폰트 등록
+	//https://docs.microsoft.com/en-us/windows/win32/directwrite/custom-font-sets-win10#creating-a-font-set-using-arbitrary-fonts-in-the-local-file-system
+	// 1. 맨 위에 DWriteCreateFactory 인자 factory5
+	// 2 . 빌더 추가
+	IDWriteFontSetBuilder1* fontSetBuilder;
+	hr = writeFactory->CreateFontSetBuilder(&fontSetBuilder);
+
+	// 3. 로컬 파일 시스템의 각 글꼴 파일에 대해 이를 참조하는 파일 생성
+	IDWriteFontFile* fontFileReference;
+	hr = writeFactory->CreateFontFileReference(L"../TTF/DOSGothic.ttf", nullptr, &fontFileReference);
+	assert(SUCCEEDED(hr));
+
+	// 4. 개체 추가 ( 윈도우 10에서만 가능)
+	hr = fontSetBuilder->AddFontFile(fontFileReference);
+	assert(SUCCEEDED(hr));
+	IDWriteFontSet* customFontSet;
+	fontSetBuilder->CreateFontSet(&customFontSet);
+
+	IDWriteFontCollection1* fontCollection;
+	writeFactory->CreateFontCollectionFromFontSet(
+		customFontSet,
+		&fontCollection
+		);
+
+	// TTF 파일에 이름이 있음. 그거 넣으면 됨.
 	writeFactory->CreateTextFormat
 	(
-		L"돋움체",
-		NULL,
-		DWRITE_FONT_WEIGHT_SEMI_LIGHT,
+		L"DOSGothic",
+		fontCollection,
+		DWRITE_FONT_WEIGHT_LIGHT,
 	//	DWRITE_FONT_WEIGHT_SEMI_BOLD,
 		DWRITE_FONT_STYLE_NORMAL,
 		DWRITE_FONT_STRETCH_NORMAL,

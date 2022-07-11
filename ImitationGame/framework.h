@@ -38,6 +38,8 @@
 #include <tchar.h>
 #include <stdio.h>
 #include <fstream>
+#include <wrl.h>	// Microsoft::WRL::Comptr
+#include <dwrite_3.h>	// IDWriteFontSetBuilder*
 // C++ Header
 #include <iostream>
 #include <vector>
