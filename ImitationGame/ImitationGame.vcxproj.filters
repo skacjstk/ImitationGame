@@ -234,9 +234,6 @@
     <ClInclude Include="..\Object\Item.h">
       <Filter>헤더 파일\Object</Filter>
     </ClInclude>
-    <ClInclude Include="..\Base\Terrain.h">
-      <Filter>소스 파일\Base</Filter>
-    </ClInclude>
     <ClInclude Include="..\Object\Tile.h">
       <Filter>헤더 파일\Object</Filter>
     </ClInclude>
@@ -275,6 +272,9 @@
     </ClInclude>
     <ClInclude Include="..\FMOD\fmod.hpp">
       <Filter>소스 파일\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\Terrain.h">
+      <Filter>헤더 파일\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
