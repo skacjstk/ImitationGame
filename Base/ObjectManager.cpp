@@ -68,7 +68,7 @@ void ObjectManager::SetPosition(string name, float x, float y)
 ///////////////////////////////////////////////////////
 void ObjectManager::AddObject(string name, GameObject* obj)
 {
-	// 동잉한것을 1개이상 넣어도 insert안됨
+	// 동일한것을 1개이상 넣어도 insert안됨
 	m_cmObjects.insert(make_pair(name, obj));
 }
 ////////////////////////////////////////////////////////
