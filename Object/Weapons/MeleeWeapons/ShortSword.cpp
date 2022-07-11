@@ -52,7 +52,7 @@ ShortSword::ShortSword()
 	swing += L"swing.wav";
 	Audio->AddSound("swing", swing, false);
 
-	// 숏소드의 핸드 피벗은 이렇다. ( NEXT 만약 윈도우 크기가 변경된다면..? )
+	// 숏소드의 핸드 피벗은 이렇다. ( 만약 윈도우 크기가 변경된다면..? )
 	leftHandPivot_.x = -10.0f * WSCALEX;
 	leftHandPivot_.y = 15.0f * WSCALEY;
 	leftHandPivot_.z = 0.0f;
