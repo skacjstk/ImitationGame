@@ -39,6 +39,7 @@ public:
 	int	GetSceneID()	{ return _SceneID; }
 	string GetName()	{ return m_strSceneName; };
 	auto GetNextName()	{ return m_strNextSceneName; };
+	virtual class Line* GetLines() { return nullptr; };
 
 //	Scene();
 //	~Scene();
