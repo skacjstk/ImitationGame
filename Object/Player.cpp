@@ -37,7 +37,7 @@ Player::Player(int AnimationID)
 		AnimationClip* pClip = new AnimationClip(AnimationClip::eState::Loop);	
 		for (int i = 0; i <= 7; ++i) {
 			strImage = IMAGE_FOLDER; strImage += L"char/Adventurer/Run/CharRun" + to_wstring(i) + L".png";
-			pClip->AddFrame(pTexture, strImage, 0, 0, 0.075f);	// 끝모양이 다 달라서 이렇게 했음.
+			pClip->AddFrame(pTexture, strImage, 0, 0, 21, 0.075f);	// y 값 고정 ( IDLE 애니메이션인 21에 맞춤 )
 
 		}
 		_animation->AddClip(pClip);
@@ -47,7 +47,7 @@ Player::Player(int AnimationID)
 		AnimationClip* pClip = new AnimationClip(AnimationClip::eState::Loop);
 		for (int i = 0; i <= 0; ++i) {
 			strImage = IMAGE_FOLDER; strImage += L"char/Adventurer/Jump/CharJump" + to_wstring(i) + L".png";
-			pClip->AddFrame(pTexture, strImage, 0, 0, 0.1f);	// 끝모양이 다 달라서 이렇게 했음.
+			pClip->AddFrame(pTexture, strImage, 0, 0, 0.1f);
 
 		}
 		_animation->AddClip(pClip);
@@ -69,6 +69,8 @@ Player::Player(int AnimationID)
 Player::~Player()
 {
 	SAFE_DELETE(_animation);
+	SAFE_DELETE(inputHandler_);
+	SAFE_DELETE(Inventory_);
 	SAFE_DELETE(pCollider_);
 }
 
@@ -169,7 +171,7 @@ void Player::GroundCheck()
 			float fRad = atan2f(end.y - start.y, end.x - start.x);
 			float Slope = (end.y - start.y) / (end.x - start.x);
 			charPos.y = Slope * (charPos.x - start.x) + start.y + _animation->GetTextureRealSize().y* 0.5f;
-			SetY(charPos.y);
+			SetY(charPos.y - 1.0f * WSCALEY);
 			flag = true;
 			SetGroundCheck(true);
 			_currentState = State::IDLE;
@@ -229,22 +231,24 @@ void Player::HandUpdate(Matrix V, Matrix P)
 
 void Player::GravityUpdate()
 {
-	Vector2 position = GetPosition();
-	if (isGround_ == false)
-		gravity_ -= G * TIMEMANAGER->Delta() * 1.5f;
-	else
+	if (isGround_ == true)
 		gravity_ = 0.0f;
-	position.y += gravity_;
-	SetPosition(position);
+	else if (beforeGround_ != isGround_ && isJump == false)
+		gravity_ = -1.5f;
+	else
+		gravity_ -= G * TIMEMANAGER->Delta() * 1.5f;
+
+	ModifyPosition(0.0f, gravity_);
 
 	if (gravity_ > 0.0f) {
-		isJump = true;
 		isFall = false;
 	}
 	else if (gravity_ < 0.0f) {
 		isFall = true;
 		isJump = false;
 	}
+
+	beforeGround_ = isGround_;
 }
 
 void Player::UpdateHandedWeapon()
@@ -256,7 +260,7 @@ void Player::UpdateHandedWeapon()
 	for (int i = 0; i < _countof(handedWeapon_); ++i) {
 		handedWeapon_[i] = (Weapon*)Inventory_->GetEquipItem(i);
 		if (handedWeapon_[i] != nullptr) {
-			handedWeapon_[i]->SetOwner((GameActor*)this);	// 비정상 작동
+			handedWeapon_[i]->SetOwner((GameActor*)this);	// 이중 포인터 비정상 작동으로 일반 포인터로 변경
 		}
 	}
 }
@@ -307,9 +311,10 @@ void Player::Jump()
 {
 	// 점프 수행
 	if (isGround_ == true) {
+		isJump = true;
+		isGround_ = false;
 		_currentState = State::JUMP;
 		gravity_ = playerData_.baseJumpSpeed * 0.05f;
-		isGround_ = false;
 		longJumpCount_ = 0.0f;
 	}
 	else if (isLongJump_ == false && isCanlongJump_ == true) {

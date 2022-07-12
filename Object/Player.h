@@ -34,6 +34,7 @@ private:	// 비공개 인스턴스 변수
 	bool isCanlongJump_ = true;	// 롱점프를 할 수 있느냐?
 	bool isLongJump_ = false;	// 롱점프를 했느냐?
 	bool isJump = false;
+	bool beforeGround_ = false;
 	bool isFall = false;
 	float longJumpCount_ = 0.0f;
 	int _moveCount = 0;
