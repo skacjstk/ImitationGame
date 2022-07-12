@@ -24,6 +24,7 @@ public: // Setter	Texture 에서 템플릿 써보도록 하자
 	void  AddFrame(class Texture *pTexture, wstring strImageFile, float startX, float startY, float endX, float endY, float delta);
 	void  AddFrame(wstring strImageFile, float startX, float startY, float endX, float endY, float delta);
 	void  AddFrame(Texture * pTexture, wstring strImageFile, float startX, float startY, float delta); //자체제작
+	void  AddFrame(Texture * pTexture, wstring strImageFile, float startX, float startY, float endY, float delta); //자체제작
 	void  SetPosition(float x, float y) { m_ptrTexture->SetPosition(x, y); }
 //	void  SetPosition(Vector2 position) { m_ptrTexture->SetPosition(position); }
 	void  SetScale(float sx, float sy)  { m_ptrTexture->SetScale(sx, sy); }
