@@ -15,6 +15,7 @@ Tile::~Tile()
 // Tile이 가진 _order 로 Texture를 찾아 해당 Texture의 좌표를 설정하고 Update 해줌 
 void Tile::Update(Matrix V, Matrix P)
 {
+	return;
 	TileOrder* pTileOrder = FindTileOrder(_order);
 	if (!pTileOrder)
 		return;
@@ -52,7 +53,9 @@ void Tile::Render()
 		pTileOrder->offsetSize.y = size.y;
 	}
 	_pTexture->SetOffsetSize(pTileOrder->offsetSize);
-	_pTexture->SetPosition(GetPosition());
+	_pTexture->SetScale(pTileOrder->scale.x * TRNMANAGER->GetMapScale().x,
+		pTileOrder->scale.y * TRNMANAGER->GetMapScale().y);
+	_pTexture->SetPosition(GetPosition().x * TRNMANAGER->GetMapScale().x, GetPosition().y * TRNMANAGER->GetMapScale().y);
 	_pTexture->Update(V, P);
 	_pTexture->Render();
 
@@ -70,7 +73,7 @@ TileOrder* Tile::GetTile(UINT id)
 	return _orders[id];
 }
 
-void Tile::SetOrder(Texture* pTexture, int order, wstring strImageFile, Vector2 offset, Vector2 offsetSize, int Flip, float Angle)
+void Tile::SetOrder(Texture* pTexture, int order, wstring strImageFile, Vector2 offset, Vector2 offsetSize, int Flip, float Angle, Vector2 scale)
 {
 	_pTexture = pTexture;
 	TileOrder* pTileOrder = FindTileOrder(order);
@@ -83,6 +86,7 @@ void Tile::SetOrder(Texture* pTexture, int order, wstring strImageFile, Vector2 
 	pTileOrder->imageFile = strImageFile;
 	pTileOrder->offset = offset;
 	pTileOrder->offsetSize = offsetSize;
+	pTileOrder->scale = scale;
 	pTileOrder->Flip = Flip;
 	pTileOrder->Angle = Angle;
 }

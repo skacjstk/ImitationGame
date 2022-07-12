@@ -35,21 +35,24 @@ Town::~Town()
 
 void Town::Update()
 {
-	Matrix V, P;
+	Matrix V, P, abV;
 	V = CAMERA->GetViewMatrix();
+	abV = CAMERA->GetAbsoluteViewMatrix();
 	P = CAMERA->GetProjectionMatrix();
 	// Next: 충돌법
 	OBJECTMANAGER->UpdateAll(V, P);		
 
 	CAMERA->Update(V, P);
-	backGround_->Update(V, P);
+	backGround_->Update(abV, P);
 	m_pGroundLine->Update(V, P);
+//	TRNMANAGER->Update(V, P);	// 현재 TRN Update는 사실상 더미
 }
 
 void Town::Render()
 {
 	backGround_->Render();
 	OBJECTMANAGER->RenderAll();
+	TRNMANAGER->Render();
 	m_pGroundLine->Render();
 }
 
@@ -59,10 +62,13 @@ void Town::ChangeScene()
 	Audio->Play("Town", 1.0f);
 	// 임시 코드
 	Player* tempPlayer = new Player();
+	tempPlayer->SetPosition(0.0f, -300.0f);
 	OBJECTMANAGER->AddObject("player" , tempPlayer);
 	OBJECTMANAGER->AddObjectStrings("player");	// 이것도 추가해줘야 함.
 	CAMERA->SetObject(tempPlayer);
 	m_pGroundLine->LoadLine("./testcoord.txt");
+	TRNMANAGER->SetSceneMap("test");
+
 
 	// 카메라의 최대, 최소값 잡아주기 (MoMoDora Camera 참조) Next0701
 }

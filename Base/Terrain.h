@@ -17,9 +17,10 @@ public:
 		int      Type;
 		int      Flip;
 		float    angle;
+		Vector2  scale;
 	};
 
-
+	Vector2 TerrainMagnification_ = Vector2(1.0f, 1.0f);	// 기본은 1.0, Scene 따라 배율이 달라지게 하려고 함.
 public:
 	static  Terrain* GetInstance()
 	{
@@ -46,12 +47,14 @@ public:  // Setter
 	void    SavePNGFile(wstring strPNGFile);
 	void    SavePNGFitFile(wstring strPNGFile);
 	void    SetOrderMax(int order);
+	void    SetMapScale(float x, float y) { TerrainMagnification_.x = x, TerrainMagnification_.y = y;	}
 public:  // Getter
 	Vector2 GetOffset()					  { return m_Offset; }
 	Vector2 GetTileSize()                 { return m_Size; }
 	POINT   GetMapXY()                    { return m_MapXY; }
 	bool    GetMapXY(int& x, int&y, Vector2 position);  
 	int     GetOrderMax() { return m_nMaxDisplayOrder; }
+	Vector2 GetMapScale() { return TerrainMagnification_; }
 private:
 	class    Tile* FindTile(wstring strMap);
 	void     OpenFile(string strFileName);

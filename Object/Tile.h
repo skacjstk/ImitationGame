@@ -9,6 +9,7 @@ public:
 	wstring imageFile = L"";
 	Vector2 offset = Vector2(0.0f, 0.0f);
 	Vector2 offsetSize = Vector2(0.0f, 0.0f);
+	Vector2 scale = Vector2(1.0f, 1.0f);
 	int Flip = 0;	// X Flip, Y Flip (뒤집기 기준)
 	float Angle = 0.0f;	// 라디안 or Degree 
 };
@@ -27,7 +28,7 @@ public:	// Getter
 public:	// Setter
 	void SetOrder(int order) { _order = order; }
 	void SetOrder(Texture* pTexture, int order, wstring strImageFile,
-		Vector2 offset, Vector2 offsetSize, int Flip, float Angle);
+		Vector2 offset, Vector2 offsetSize, int Flip, float Angle, Vector2 scale);
 	TileOrder* FindTileOrder(int order);
 private:	// Fields
 	vector<TileOrder*> _orders;

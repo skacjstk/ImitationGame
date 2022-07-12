@@ -259,7 +259,7 @@ void S04_Extra01::ShowGUI()
 			ImGui::Separator();
 			if (ImGui::MenuItem("Save Map File"))
 			{
-				//this->FileOpenDialog();
+				//this->FileOpenDialog();				
 				TRNMANAGER->SaveFile("./test.txt");
 			}
 			if (ImGui::MenuItem("Save PNG File"))
@@ -308,6 +308,7 @@ void S04_Extra01::SettingMenu()
 	static Vector2  Origin = Vector2(100.0f, 100.0f);
 	static int PixelXY[2] = { 100,100 };
 	static int MapXY[4] = { 5,10,20,20 };
+	static float scaleXY[2] = { 1.0f, 1.0f };
 
 
 	sprintf(buf, "%s", u8"Setting");
@@ -328,8 +329,6 @@ void S04_Extra01::SettingMenu()
 	}
 	// MAP 크기
 	{
-
-
 		ImGui::Text(u8"MAP 크기");
 		ImGui::SameLine(120.0f, 0.0f);
 
@@ -346,13 +345,10 @@ void S04_Extra01::SettingMenu()
 	}
 	// Pixel 크기
 	{
-		
-
 		ImGui::Text(u8"Pixel 크기");
 		ImGui::SameLine(120.0f, 0.0f);
 
 		// 파일이나, 데이터베이스 읽어오는 것이 처리
-
 		ret = ImGui::InputInt2("##2", PixelXY);
 		if (ret)
 		{
@@ -360,25 +356,36 @@ void S04_Extra01::SettingMenu()
 				PixelXY[0] = 1;
 			if (PixelXY[1] < 1)
 				PixelXY[1] = 1;
-		}
-		
+		}		
 	}
 	// Offset
 	{
-
 		ImGui::Text(u8"원점");
 		ImGui::SameLine(120.0f, 0.0f);
 
 		// 파일이나, 데이터베이스 읽어오는 것이 처리
-
 		ret =  ImGui::InputFloat2("##3", Origin, "%0.2f",0);
 		if (ret)
 		{
 	
 		}
-
 	}
+	// 배율 크기
+	{
+		ImGui::Text(u8"맵 배율 설정");
+		ImGui::SameLine(120.0f, 0.0f);
 
+		// 파일이나, 데이터베이스 읽어오는 것이 처리
+		ret = ImGui::InputFloat2("##4", scaleXY);
+		if (ret)
+		{
+			if (scaleXY[0] < 0.0f)
+				scaleXY[0] = 0.0001f;
+			if (scaleXY[1] < 0.0f)
+				scaleXY[1] = 0.0001f;
+			TRNMANAGER->SetMapScale(scaleXY[0], scaleXY[1]);
+		}
+	}
 	// Button
 	{
 		ImGui::Text(u8"적용");
@@ -388,7 +395,7 @@ void S04_Extra01::SettingMenu()
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.6f, 0.6f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(1.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(1.0f, 0.8f, 0.7f));
-		ret = ImGui::Button(u8"Rest");
+		ret = ImGui::Button(u8"Reset");
 		ImGui::PopStyleColor(3);
 
 		if (ret)

@@ -20,7 +20,8 @@ Terrain::Terrain()
 	// Texture는 하나만 가지고도 사용가능
 
 	m_pTexture = new Texture(strImage, strShader);
-//	SetSceneMap("test");
+	SetSceneMap("test");
+
 }
 
 Terrain::~Terrain()
@@ -90,7 +91,7 @@ void Terrain::AddTile(int X, int Y, int nOrder, int nType, int nObjectType, wstr
 
 	SRVMANAGER->CreateShaderResourceView(strImageFile);
 	pTile->SetPosition(position);
-	pTile->SetOrder(m_pTexture, nOrder, strImageFile, offset, offsetSize, 0, 0.0f);
+	pTile->SetOrder(m_pTexture, nOrder, strImageFile, offset, offsetSize, 0, 0.0f, Vector2(1.0f,1.0f));
 }
 
 void Terrain::SetSceneMap(string sceneName)
@@ -115,8 +116,8 @@ void Terrain::SaveFile(string strFileName)
 	if (op == NULL) 
 		return;
 
-	fprintf(op, "#X  Y	IMG                        ORDER     OFFSETX  OFFSETY  FLIP  ROTATION\n");
-
+	fprintf(op, "#X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY\n");
+	fprintf(op, "MAGNIFICATION:%f %f\n", TerrainMagnification_.x, TerrainMagnification_.y);
 	for (auto v : m_cmTiles)
 	{
 		// map
@@ -150,8 +151,9 @@ void Terrain::SaveFile(string strFileName)
 			fprintf(op, "%.f %.f ", pOrder->offset.x, pOrder->offset.y);
 			// Offset Size
 			fprintf(op, "%.f %.f ", pOrder->offsetSize.x, pOrder->offsetSize.y);
-			fprintf(op, "\n");
-	
+			// SCALE
+			fprintf(op, "%.f %.f ", pOrder->scale.x, pOrder->scale.y );
+			fprintf(op, "\n");	
 		}
 	
 	}
@@ -184,8 +186,8 @@ void Terrain::SaveBinaryFile(string strFileName)
 	}
 
 	fwrite(&Count, sizeof(int), 1, op);
+	fwrite(&TerrainMagnification_, sizeof(Vector2), 1, op);
 	BinaryMAP tmp;
-
 	for (auto v : m_cmTiles)
 	{
 		// map
@@ -213,6 +215,7 @@ void Terrain::SaveBinaryFile(string strFileName)
 			tmp.offset = pOrder->offset;
 			tmp.offsetSize = pOrder->offsetSize;
 			tmp.order = pOrder->order;
+			tmp.scale = pOrder->scale;
 
 			string str;
 			str.assign(pOrder->imageFile.begin(), pOrder->imageFile.end());
@@ -235,7 +238,7 @@ void Terrain::OpenBinaryFile(string strFileName)
 	BinaryMAP tmp;
 
 	fread(&Count, sizeof(int), 1, fp);
-
+	fread(&TerrainMagnification_, sizeof(Vector2), 1, fp);
 	for (int i = 0; i < Count; i++)
 	{
 		fread(&tmp, sizeof(BinaryMAP), 1, fp);
@@ -260,7 +263,7 @@ void Terrain::OpenBinaryFile(string strFileName)
 		if (m_nMaxDisplayOrder < tmp.order)
 			m_nMaxDisplayOrder = tmp.order;
 		pTile->SetPosition(position);
-		pTile->SetOrder(m_pTexture, tmp.order, strImage, tmp.offset, tmp.offsetSize, tmp.Flip, tmp.angle);
+		pTile->SetOrder(m_pTexture, tmp.order, strImage, tmp.offset, tmp.offsetSize, tmp.Flip, tmp.angle, tmp.scale);
 
 	}
 	fclose(fp);
@@ -428,9 +431,8 @@ void Terrain::OpenFile(string strFileName)
 
 	// Texture값 Setting
 
-	OpenBinaryFile("./test.bi");
-	return;
-
+//	OpenBinaryFile("./test.bi");
+//	return;
 
 	printf("%s\n", strFileName.c_str());
 	fp = fopen(strFileName.c_str(), "r");
@@ -447,21 +449,29 @@ void Terrain::OpenFile(string strFileName)
 		int  nOrder =0;
 		Vector2 Offset = Vector2(0.0f,0.0f);
 		Vector2 OffsetSize = Vector2(0.0f, 0.0f);
+		Vector2 scale = Vector2(1.0f, 1.0f);
 		int   nFlip = 0;
-		float nAngle = 0.0f;
+		float nAngle = 0.0f;	
+		int success = 0;
 
 		if (!fgets(buf, 1024, fp)) 
 			break;
 	//	buf[strlen(buf) - 1] = '\0'; // NewLine데이터 삭제
-
+		if (strstr(buf, "MAGNIFICATION:")) {
+			success = sscanf_s(buf, "MAGNIFICATION:%f %f", &scale.x, &scale.y);
+			// 기본 타입이 아닐 때만 _s 에 해당 인자 뒤에 크기를 전달해주면 됨. ( char, float은 괜찮, string은 크기 전달 등등)
+			TerrainMagnification_ = scale;
+			continue;
+		}
 		if (strlen(buf) < 10)
 			continue;
 		if(strstr(buf,"#"))
 			continue;
+
 	//	0   10 -500.00 -200.00 | . / Image//Floor/Wall7.png|       1 0 0 100 112 
 		float FX, FY;
 
-		sscanf(buf, "%d %d %f %f", &X, &Y,&FX,&FY);
+		success = sscanf(buf, "%d %d %f %f", &X, &Y,&FX,&FY);
 		char *p = strstr(buf, "|");
 		p++;
 		strcpy(imgBuf, p);
@@ -480,7 +490,7 @@ void Terrain::OpenFile(string strFileName)
 
 		Vector2 offset;
 		Vector2 offsetSize;
-		sscanf(p, "%d %f %f %f %f", &nOrder, &offset.x, &offset.y, &offsetSize.x, &offsetSize.y);
+		success = sscanf(p, "%d %f %f %f %f %f %f", &nOrder, &offset.x, &offset.y, &offsetSize.x, &offsetSize.y, &scale.x, &scale.y);
 
 
 
@@ -509,7 +519,7 @@ void Terrain::OpenFile(string strFileName)
 			m_nMaxDisplayOrder = nOrder;
 
 		pTile->SetPosition(position);
-		pTile->SetOrder(m_pTexture, nOrder, strImage, offset, offsetSize, nFlip, nAngle);
+		pTile->SetOrder(m_pTexture, nOrder, strImage, offset, offsetSize, nFlip, nAngle, scale);
 	}
 	fclose(fp);
 }
