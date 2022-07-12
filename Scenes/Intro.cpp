@@ -81,6 +81,7 @@ void Intro::Update()
 
 	if (KEYBOARD->Down(VK_NUMPAD9))
 	{
+		ExitScene();
 		SCENEMANAGER->ChangeScene("MapEditor");
 		return;
 	}
