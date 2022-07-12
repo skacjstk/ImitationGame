@@ -18,6 +18,8 @@ public: // Setter
 	void  SetPosition(float x, float y)          { _position = Vector2(x, y); }
 	void  SetPosition(Vector2 position)          { _position = position; }
 	void  SetY(float Y) { _position.y = Y; }
+	void  ModifyPosition(Vector2 modifyPosition) { _position += modifyPosition; }
+	void  ModifyPosition(float x, float y)		 { _position += Vector2(x,y); }
 	void  SetScale(float sx, float sy)           { _scale = Vector2(sx, sy); }
 	void  SetScale(Vector2 scale)                { _scale = scale; }
 	void  SetRotation(float x, float y, float z) { _rotation = Vector3(x, y, z); }
