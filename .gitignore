@@ -443,3 +443,5 @@ FodyWeavers.xsd
 /sample.wmv
 /FMOD
 /TTF/DungGeunMo TTF.zip
+/Object/NPCDummy.h
+/Object/NPCDummy.cpp

@@ -184,6 +184,7 @@
     <ClInclude Include="..\Object\Inventory.h" />
     <ClInclude Include="..\Object\Item.h" />
     <ClInclude Include="..\Object\Line.h" />
+    <ClInclude Include="..\Object\NPC.h" />
     <ClInclude Include="..\Object\Player.h" />
     <ClInclude Include="..\Object\Slot.h" />
     <ClInclude Include="..\Object\Tile.h" />
@@ -244,6 +245,7 @@
     <ClCompile Include="..\Object\Inventory.cpp" />
     <ClCompile Include="..\Object\Item.cpp" />
     <ClCompile Include="..\Object\Line.cpp" />
+    <ClCompile Include="..\Object\NPC.cpp" />
     <ClCompile Include="..\Object\Player.cpp" />
     <ClCompile Include="..\Object\Slot.cpp" />
     <ClCompile Include="..\Object\Tile.cpp" />
