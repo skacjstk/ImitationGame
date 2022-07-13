@@ -83,13 +83,14 @@ void Graphic2D::DrawImage(wstring strImageName, Vector2 position, Vector2 offset
 
 	images = new Gdiplus::Image(strImageName.c_str());
 
-	REAL  x = ( position.x + images->GetWidth()*0.5f);
-	REAL  y = ( position.y - images->GetHeight()*0.5f);
+//	REAL  x = ( position.x + images->GetWidth()*0.5f);
+//	REAL  y = ( position.y - images->GetHeight()*0.5f);
 	// Update  Next 필요 
 	// 1. offset, offsetSize
 	// 2. Flip, Rotate
 	// 3. scale 처리 
-	memGC->DrawImage(images, x, y, (float)images->GetWidth(), (float)images->GetHeight());
+//	memGC->DrawImage(images, x, y, (float)images->GetWidth(), (float)images->GetHeight());	
+	memGC->DrawImage(images, position.x, position.y, images->GetWidth(), images->GetHeight());
 	SAFE_DELETE(images);
 }
 /*
