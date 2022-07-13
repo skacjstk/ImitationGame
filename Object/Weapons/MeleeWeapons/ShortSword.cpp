@@ -43,7 +43,6 @@ ShortSword::ShortSword()
 		attackFX_->AddClip(pClip);
 	}
 	attackFX_->SetStop();
-	attackFX_->GetTexture()->UpdateColorBuffer(Color(0, 0, 0, 1),1);
 
 	// 기본 배율은 6배
 	SetWeaponScale(6.0f * WSCALEY, 6.0f * WSCALEY);
