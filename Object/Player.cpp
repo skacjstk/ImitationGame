@@ -237,9 +237,7 @@ void Player::GravityUpdate()
 		gravity_ = -1.5f;
 	else
 		gravity_ -= G * TIMEMANAGER->Delta() * 1.5f;
-
 	ModifyPosition(0.0f, gravity_);
-
 	if (gravity_ > 0.0f) {
 		isFall = false;
 	}
@@ -247,7 +245,6 @@ void Player::GravityUpdate()
 		isFall = true;
 		isJump = false;
 	}
-
 	beforeGround_ = isGround_;
 }
 

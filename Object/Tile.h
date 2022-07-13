@@ -28,7 +28,7 @@ public:	// Getter
 public:	// Setter
 	void SetOrder(int order) { _order = order; }
 	void SetOrder(Texture* pTexture, int order, wstring strImageFile,
-		Vector2 offset, Vector2 offsetSize, int Flip, float Angle, Vector2 scale);
+	Vector2 offset, Vector2 offsetSize, int Flip, float Angle, Vector2 scale);
 	TileOrder* FindTileOrder(int order);
 private:	// Fields
 	vector<TileOrder*> _orders;

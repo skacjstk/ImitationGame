@@ -8,6 +8,7 @@
 //#include <codecvt>
 
 bool IsDrawingLine = false;
+bool saftyPress = false;
 
 void S04_Extra01::Replace(wstring & str, wstring comp, wstring rep)
 {
@@ -26,19 +27,20 @@ void S04_Extra01::Replace(wstring & str, wstring comp, wstring rep)
 void S04_Extra01::EditLine()
 {
 	// ImGUI윈도우에 마우스가 Capture되어 있으면 동작 안함
-//	if (ImGui::GetIO().WantCaptureMouse)  return;
+//	if (ImGui::GetIO().WantCaptureMouse)  
+//		return;
 
 	if (Mouse->Down(0))
 	{
 		m_nMousePick = 1;
 		m_pRubberBand->ClearLine();
-
+		
 		Vector2 line = Mouse->GetPosition();
 		CAMERA->WCtoVC(line);
 		m_pRubberBand->AddLine(line.x, line.y, line.x, line.y);
 		m_pRubberBand->EndLine();
 	}
-	if (Mouse->Up(0) )  // 데이터를 저장
+	if (Mouse->Up(0) && saftyPress)  // 데이터를 저장
 	{
 		m_pLine2->ClearVertexBuffer();
 		Vector2 start = m_pRubberBand->GetStartPoint(0);
@@ -114,7 +116,7 @@ void S04_Extra01::Update()
 	Matrix V, P;
 
 	// 신에 사용
-	
+
 	P = CAMERA->GetProjectionMatrix();
 	V = CAMERA->GetViewMatrix();
 
@@ -123,6 +125,9 @@ void S04_Extra01::Update()
 
 	if (KEYBOARD->Down(VK_TAB)) {
 		IsDrawingLine = !IsDrawingLine;
+	}
+	if (KEYBOARD->Down(VK_F1)) {
+		saftyPress = !saftyPress;
 	}
 
 	if(IsDrawingLine == false){
