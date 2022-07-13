@@ -68,7 +68,10 @@ bool Line::LoadLine(string fileName)
 		Vector2 pos2;
 		fread(&pos1, sizeof(Vector2), 1, fp);
 		fread(&pos2, sizeof(Vector2), 1, fp);
-		AddLine(pos1.x, pos1.y, pos2.x, pos2.y);
+		AddLine(pos1.x * TRNMANAGER->TerrainMagnification_.x, 
+			pos1.y* TRNMANAGER->TerrainMagnification_.y, 
+			pos2.x * TRNMANAGER->TerrainMagnification_.x, 
+			pos2.y * TRNMANAGER->TerrainMagnification_.y);
 	}
 	EndLine();
 	fclose(fp);

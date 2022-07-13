@@ -99,6 +99,8 @@ S04_Extra01::S04_Extra01()
 	m_pLine = new Line();
 	CreateGrid();
 
+	
+
 
 }
 

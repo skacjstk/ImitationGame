@@ -20,7 +20,7 @@ public:		// 공개 인스턴스 변수
 	struct PlayerData
 	{
 		int charCode = 0;
-		float baseSpeed = 300.0f;
+		float baseSpeed = 1000.0f;
 		float baseJumpSpeed = 150.0f;
 		float baseLongJumpSpeed = 40.0f;	// 추가 점프용량임
 	};

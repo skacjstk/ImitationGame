@@ -51,8 +51,8 @@ void Town::Update()
 void Town::Render()
 {
 	backGround_->Render();
-	OBJECTMANAGER->RenderAll();
 	TRNMANAGER->Render();
+	OBJECTMANAGER->RenderAll();
 	m_pGroundLine->Render();
 }
 
@@ -62,14 +62,14 @@ void Town::ChangeScene()
 	Audio->Play("Town", 1.0f);
 	// 임시 코드
 	Player* tempPlayer = new Player();
-	tempPlayer->SetPosition(0.0f, -300.0f);
 	OBJECTMANAGER->AddObject("player" , tempPlayer);
 	OBJECTMANAGER->AddObjectStrings("player");	// 이것도 추가해줘야 함.
 	CAMERA->SetObject(tempPlayer);
-	m_pGroundLine->LoadLine("./testcoord.txt");
-	TRNMANAGER->SetSceneMap("test");
-
-
+	CAMERA->SetCenterXLock(0);
+	TRNMANAGER->SetSceneMap("../MapData/GraphicData/Town");
+	TRNMANAGER->TerrainMagnification_.x *= WSCALEX;
+	TRNMANAGER->TerrainMagnification_.y *= WSCALEY;
+	m_pGroundLine->LoadLine("../MapData/LineData/testcoord.txt");
 	// 카메라의 최대, 최소값 잡아주기 (MoMoDora Camera 참조) Next0701
 }
 

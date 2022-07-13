@@ -184,8 +184,9 @@ void Terrain::SaveBinaryFile(string strFileName)
 		}
 
 	}
-
+	string tmpStr = "MAGNIFICATION:";
 	fwrite(&Count, sizeof(int), 1, op);
+	fwrite(&tmpStr, sizeof(tmpStr), 1, op);
 	fwrite(&TerrainMagnification_, sizeof(Vector2), 1, op);
 	BinaryMAP tmp;
 	for (auto v : m_cmTiles)
@@ -215,11 +216,11 @@ void Terrain::SaveBinaryFile(string strFileName)
 			tmp.offset = pOrder->offset;
 			tmp.offsetSize = pOrder->offsetSize;
 			tmp.order = pOrder->order;
+			tmp.objectType = 0;
 			tmp.scale = pOrder->scale;
 
 			string str;
 			str.assign(pOrder->imageFile.begin(), pOrder->imageFile.end());
-
 			strcpy(tmp.imgname, str.c_str());
 			fwrite(&tmp, sizeof(BinaryMAP), 1, op);
 		}
@@ -228,6 +229,7 @@ void Terrain::SaveBinaryFile(string strFileName)
 }
 void Terrain::OpenBinaryFile(string strFileName)
 {
+	// 바이너리 포인터 문제로 fclose 오류 발생 읽을 때와 쓸 때 전부 면밀이 봐야 한다 Next
 	FILE *fp = NULL;
 
 	fp = fopen(strFileName.c_str(), "rb");
@@ -237,7 +239,10 @@ void Terrain::OpenBinaryFile(string strFileName)
 	int   Count;
 	BinaryMAP tmp;
 
+	string tempStr;
+	string tempStr2 = "MAGNIFICATION:";
 	fread(&Count, sizeof(int), 1, fp);
+	fread(&tempStr, sizeof(tempStr2), 1, fp);
 	fread(&TerrainMagnification_, sizeof(Vector2), 1, fp);
 	for (int i = 0; i < Count; i++)
 	{
@@ -266,6 +271,7 @@ void Terrain::OpenBinaryFile(string strFileName)
 		pTile->SetOrder(m_pTexture, tmp.order, strImage, tmp.offset, tmp.offsetSize, tmp.Flip, tmp.angle, tmp.scale);
 
 	}
+
 	fclose(fp);
 
 }
