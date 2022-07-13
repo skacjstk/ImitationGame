@@ -21,7 +21,6 @@ Terrain::Terrain()
 
 	m_pTexture = new Texture(strImage, strShader);
 	SetSceneMap("test");
-
 }
 
 Terrain::~Terrain()
@@ -126,7 +125,7 @@ void Terrain::SaveFile(string strFileName)
 		strMap2.assign(strMap1.begin(), strMap1.end());
 		int x;
 		int y;
-		// scanf  : 입력( console)
+		// scanf  : 입력(console)
 		// sscanf : stearm  char buf[100];
 		//    sscanf(buf,"%d%*c......
 		sscanf(strMap2.c_str(), "%d%*c%d", &x, &y);
@@ -144,6 +143,7 @@ void Terrain::SaveFile(string strFileName)
 			// IMAGE
 			string tmp;
 			tmp.assign(pOrder->imageFile.begin(), pOrder->imageFile.end());
+			tmp = tmp.replace(0 , tmp.find("Resources"), "../");	// 상대경로 변경 완료
 			fprintf(op, "%s|", tmp.c_str());
 			// DIAPLAY ORDER
 			fprintf(op, "%3d ", pOrder->order);
