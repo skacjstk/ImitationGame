@@ -318,7 +318,7 @@ void MainWindow::Render()
 
 	// Scene을 통해 Rendering 될 수 있게
 	SCENEMANAGER->Render();
-	SwapChain->Present(0, 0);	//스왑체인 표시 옵션 정수 SyncInterval, DXGI_PRESENT
+	SwapChain->Present(1, 0);	//스왑체인 표시 옵션 정수 SyncInterval, DXGI_PRESENT
 }
 
 //
