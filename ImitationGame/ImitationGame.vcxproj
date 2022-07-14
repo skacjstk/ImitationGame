@@ -168,6 +168,8 @@
     <ClInclude Include="..\Command\Player\InventoryToggleCommand.h" />
     <ClInclude Include="..\Command\Player\SwapHandFocusCommand.h" />
     <ClInclude Include="..\Command\RightMoveCommand.h" />
+    <ClInclude Include="..\Event\EatEvent.h" />
+    <ClInclude Include="..\Event\Event.h" />
     <ClInclude Include="..\FMOD\fmod.hpp" />
     <ClInclude Include="..\ImGUI\imconfig.h" />
     <ClInclude Include="..\ImGUI\imgui.h" />
@@ -185,6 +187,8 @@
     <ClInclude Include="..\Object\Item.h" />
     <ClInclude Include="..\Object\Line.h" />
     <ClInclude Include="..\Object\NPC.h" />
+    <ClInclude Include="..\Object\NPCPool.h" />
+    <ClInclude Include="..\Object\NPC\Dungeon.h" />
     <ClInclude Include="..\Object\Player.h" />
     <ClInclude Include="..\Object\Slot.h" />
     <ClInclude Include="..\Object\Tile.h" />
@@ -203,7 +207,10 @@
     <ClInclude Include="..\Scenes\Intro.h" />
     <ClInclude Include="..\Scenes\S04_Extra01.h" />
     <ClInclude Include="..\Scenes\Town.h" />
+    <ClInclude Include="..\State\EatState.h" />
+    <ClInclude Include="..\State\State.h" />
     <ClInclude Include="..\System\Audio.h" />
+    <ClInclude Include="..\System\EventHandler.h" />
     <ClInclude Include="..\System\GameTime.h" />
     <ClInclude Include="..\System\Keyboard.h" />
     <ClInclude Include="..\System\Mouse.h" />
@@ -232,6 +239,8 @@
     <ClCompile Include="..\Command\Player\InventoryToggleCommand.cpp" />
     <ClCompile Include="..\Command\Player\SwapHandFocusCommand.cpp" />
     <ClCompile Include="..\Command\RightMoveCommand.cpp" />
+    <ClCompile Include="..\Event\EatEvent.cpp" />
+    <ClCompile Include="..\Event\Event.cpp" />
     <ClCompile Include="..\ImGUI\imgui.cpp" />
     <ClCompile Include="..\ImGUI\imgui_draw.cpp" />
     <ClCompile Include="..\ImGUI\imgui_impl_dx11.cpp" />
@@ -246,6 +255,8 @@
     <ClCompile Include="..\Object\Item.cpp" />
     <ClCompile Include="..\Object\Line.cpp" />
     <ClCompile Include="..\Object\NPC.cpp" />
+    <ClCompile Include="..\Object\NPCPool.cpp" />
+    <ClCompile Include="..\Object\NPC\Dungeon.cpp" />
     <ClCompile Include="..\Object\Player.cpp" />
     <ClCompile Include="..\Object\Slot.cpp" />
     <ClCompile Include="..\Object\Tile.cpp" />
@@ -264,7 +275,10 @@
     <ClCompile Include="..\Scenes\Intro.cpp" />
     <ClCompile Include="..\Scenes\S04_Extra01.cpp" />
     <ClCompile Include="..\Scenes\Town.cpp" />
+    <ClCompile Include="..\State\EatState.cpp" />
+    <ClCompile Include="..\State\State.cpp" />
     <ClCompile Include="..\System\Audio.cpp" />
+    <ClCompile Include="..\System\EventHandler.cpp" />
     <ClCompile Include="..\System\GameTime.cpp" />
     <ClCompile Include="..\System\Keyboard.cpp" />
     <ClCompile Include="..\System\Mouse.cpp" />

@@ -445,3 +445,5 @@ FodyWeavers.xsd
 /TTF/DungGeunMo TTF.zip
 /Object/NPCDummy.h
 /Object/NPCDummy.cpp
+/Object/NPC/NPCDummy.h
+/Object/NPC/NPCDummy.cpp

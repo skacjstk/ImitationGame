@@ -91,6 +91,24 @@
     <Filter Include="소스 파일\FMOD">
       <UniqueIdentifier>{c0dc88f7-df85-448f-a96f-d28bb0308966}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\State">
+      <UniqueIdentifier>{201f1dab-90a5-42a5-bb17-a42b3a1e0b32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\State">
+      <UniqueIdentifier>{35e04f4d-7697-44d5-ac77-e03cecb651c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Object\NPC">
+      <UniqueIdentifier>{7dc5a59f-193b-4614-94d4-a5afe920ce9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Object\NPC">
+      <UniqueIdentifier>{bf9298eb-7498-4286-9514-f728ba3cc163}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Event">
+      <UniqueIdentifier>{773faedf-11c9-4de8-95cc-69d804a88764}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Event">
+      <UniqueIdentifier>{4fa3938d-5146-4270-8821-cc6e2bf87964}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -261,9 +279,6 @@
     <ClInclude Include="..\InputHandler\PlayerInputHandler.h">
       <Filter>헤더 파일\InputHandler</Filter>
     </ClInclude>
-    <ClInclude Include="..\InputHandler\InputHandler.h">
-      <Filter>소스 파일\InputHandler</Filter>
-    </ClInclude>
     <ClInclude Include="..\Command\Player\SwapHandFocusCommand.h">
       <Filter>헤더 파일\Command</Filter>
     </ClInclude>
@@ -276,8 +291,32 @@
     <ClInclude Include="..\Base\Terrain.h">
       <Filter>헤더 파일\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\State\EatState.h">
+      <Filter>소스 파일\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\State.h">
+      <Filter>소스 파일\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\NPC\Dungeon.h">
+      <Filter>헤더 파일\Object\NPC</Filter>
+    </ClInclude>
     <ClInclude Include="..\Object\NPC.h">
+      <Filter>헤더 파일\Object\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\NPCPool.h">
       <Filter>소스 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\EventHandler.h">
+      <Filter>헤더 파일\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Event\Event.h">
+      <Filter>헤더 파일\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Event\EatEvent.h">
+      <Filter>헤더 파일\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\InputHandler\InputHandler.h">
+      <Filter>헤더 파일\InputHandler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -446,8 +485,29 @@
     <ClCompile Include="..\System\Audio.cpp">
       <Filter>소스 파일\System</Filter>
     </ClCompile>
+    <ClCompile Include="..\State\EatState.cpp">
+      <Filter>소스 파일\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\State.cpp">
+      <Filter>소스 파일\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\NPC\Dungeon.cpp">
+      <Filter>소스 파일\Object\NPC</Filter>
+    </ClCompile>
     <ClCompile Include="..\Object\NPC.cpp">
+      <Filter>소스 파일\Object\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\NPCPool.cpp">
       <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\EventHandler.cpp">
+      <Filter>소스 파일\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Event\Event.cpp">
+      <Filter>소스 파일\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Event\EatEvent.cpp">
+      <Filter>소스 파일\Event</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
