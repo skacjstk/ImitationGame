@@ -207,7 +207,6 @@
     <ClInclude Include="..\Scenes\Intro.h" />
     <ClInclude Include="..\Scenes\S04_Extra01.h" />
     <ClInclude Include="..\Scenes\Town.h" />
-    <ClInclude Include="..\State\EatState.h" />
     <ClInclude Include="..\State\State.h" />
     <ClInclude Include="..\System\Audio.h" />
     <ClInclude Include="..\System\EventHandler.h" />
@@ -275,7 +274,6 @@
     <ClCompile Include="..\Scenes\Intro.cpp" />
     <ClCompile Include="..\Scenes\S04_Extra01.cpp" />
     <ClCompile Include="..\Scenes\Town.cpp" />
-    <ClCompile Include="..\State\EatState.cpp" />
     <ClCompile Include="..\State\State.cpp" />
     <ClCompile Include="..\System\Audio.cpp" />
     <ClCompile Include="..\System\EventHandler.cpp" />

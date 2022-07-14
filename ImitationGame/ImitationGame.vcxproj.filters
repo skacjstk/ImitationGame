@@ -291,12 +291,6 @@
     <ClInclude Include="..\Base\Terrain.h">
       <Filter>헤더 파일\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\State\EatState.h">
-      <Filter>소스 파일\State</Filter>
-    </ClInclude>
-    <ClInclude Include="..\State\State.h">
-      <Filter>소스 파일\State</Filter>
-    </ClInclude>
     <ClInclude Include="..\Object\NPC\Dungeon.h">
       <Filter>헤더 파일\Object\NPC</Filter>
     </ClInclude>
@@ -317,6 +311,9 @@
     </ClInclude>
     <ClInclude Include="..\InputHandler\InputHandler.h">
       <Filter>헤더 파일\InputHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\State.h">
+      <Filter>헤더 파일\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -484,9 +481,6 @@
     </ClCompile>
     <ClCompile Include="..\System\Audio.cpp">
       <Filter>소스 파일\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\State\EatState.cpp">
-      <Filter>소스 파일\State</Filter>
     </ClCompile>
     <ClCompile Include="..\State\State.cpp">
       <Filter>소스 파일\State</Filter>
