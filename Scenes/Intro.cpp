@@ -120,8 +120,7 @@ void Intro::OnButton(int id)
 	case 0:	// 게임 시작 ( 저장 슬롯 3개 ) ( 현재는 바로 씬 바꿔보자 )
 		this->setNextName(SCENEMANAGER->sceneNames_[1]);	// Town
 		ExitScene();
-		SCENEMANAGER->ChangeScene(this->GetNextName());
-		
+		SCENEMANAGER->ChangeScene(this->GetNextName());		
 		break;
 	case 1:	// 옵션 창
 		break;
