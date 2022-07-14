@@ -19,7 +19,7 @@ AnimationClip::~AnimationClip()
 }
 // 자체 제작해본 endXY 없는 AddFrame ( 더 오래걸림 )
 
-void AnimationClip::AddFrame(Texture * pTexture, wstring strImageFile, float startX, float startY, float delta)
+void AnimationClip::AddFrame(Texture * pTexture, wstring strImageFile, float startX, float startY, float delta, int pivotOpt)
 {
 	Frame *pFrame = new Frame();
 
@@ -34,6 +34,18 @@ void AnimationClip::AddFrame(Texture * pTexture, wstring strImageFile, float sta
 
 	pFrame->m_OffsetSize = Vector2(ImageInfo.Width, ImageInfo.Height);
 	m_cvFrames.push_back(pFrame);
+
+	// 피벗 설정 봉인
+/*  switch (pivotOpt)
+	{
+	case 0x00:
+		break;
+	case 0x01:
+		break;
+	case 0x02:	// UnderBase
+		break;
+	}
+	*/
 	m_ptrTexture = pTexture;
 }
 // Y만 고정함.
