@@ -9,7 +9,9 @@ class Town : public Scene
 {
 private:	//private instance variable
 	Texture* backGround_ = nullptr;
+	Texture* townTerrain_ = nullptr;
 	class Line* m_pGroundLine = nullptr;
+	class NPC* npc = nullptr;
 public:	//»ý ¼Ò
 	Town();
 	~Town();
