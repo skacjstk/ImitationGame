@@ -3,6 +3,7 @@
 
 #include "ImitationGame/framework.h"
 #include "ImitationGame/MainWindow.h"
+#include "System/EventHandler.h"
 #include "ImitationGame.h"
 
 #define MAX_LOADSTRING 100
@@ -11,6 +12,7 @@
 
 CMouse* Mouse = NULL;	// 실패할 수 있음
 CAudio* Audio = NULL;
+EventHandler* eventHandler = nullptr;
 void LoadFont();
 //Window Create
 //1. 윈도우 클래스를 정의 레지스트리에 등록
@@ -31,6 +33,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MAIN->CreateInstance(hInstance, 0, 0);
 	// Audio Create
 	Audio = new CAudio();
+    // EventHandler 
+    eventHandler = new EventHandler();
     // IMGui Setting
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
@@ -67,6 +71,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             // Mouse position
             Mouse->Update();
             MAIN->Update();
+            eventHandler->Update();   
 			Audio->Update();
             MAIN->Render();
         }

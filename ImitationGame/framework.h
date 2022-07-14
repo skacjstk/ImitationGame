@@ -49,6 +49,7 @@
 #include <functional>
 #include <mutex>
 #include <algorithm>
+#include <queue>	// 이벤트 핸들러에서 사용
 // using std 
 using std::string;
 using std::wstring;
@@ -133,6 +134,7 @@ typedef D3DXCOLOR	Color;
 #include "System/GameTime.h"
 #include "System/Keyboard.h"
 #include "System/Mouse.h"
+#include "System/EventHandler.h"
 #include "./Base/SRVManager.h"
 #include "./Render/Texture.h"
 #include "./Base/Camera.h"
@@ -159,5 +161,6 @@ extern bool g_bVisibleCollisionCheck;
 extern const float G;
 extern float WSCALEX;	// 오프셋 배율 계산용
 extern float WSCALEY;	// 오프셋 배율 계산용
+extern EventHandler* eventHandler;
 constexpr int MAPX = 30;
 constexpr int MAPY = 30;
