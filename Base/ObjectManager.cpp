@@ -72,7 +72,7 @@ void ObjectManager::AddObject(string name, GameObject* obj)
 	m_cmObjects.insert(make_pair(name, obj));
 }
 ////////////////////////////////////////////////////////
-// Obhect의 이름을 넣으면 해당 class return
+// Object의 이름을 넣으면 해당 class return
 ///////////////////////////////////////////////////////
 GameObject* ObjectManager::FindObject(string name)
 {
