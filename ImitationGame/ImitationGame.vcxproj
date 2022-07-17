@@ -29,13 +29,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -48,7 +48,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -204,7 +204,10 @@
     <ClInclude Include="..\Render\Graphic2D.h" />
     <ClInclude Include="..\Render\Texture.h" />
     <ClInclude Include="..\Render\TextureShader.h" />
+    <ClInclude Include="..\Scenes\DungeonFactory.h" />
+    <ClInclude Include="..\Scenes\Floor_1.h" />
     <ClInclude Include="..\Scenes\Intro.h" />
+    <ClInclude Include="..\Scenes\Room.h" />
     <ClInclude Include="..\Scenes\S04_Extra01.h" />
     <ClInclude Include="..\Scenes\Town.h" />
     <ClInclude Include="..\State\State.h" />
@@ -271,7 +274,10 @@
     <ClCompile Include="..\Render\Graphic2D.cpp" />
     <ClCompile Include="..\Render\Texture.cpp" />
     <ClCompile Include="..\Render\TextureShader.cpp" />
+    <ClCompile Include="..\Scenes\DungeonFactory.cpp" />
+    <ClCompile Include="..\Scenes\Floor_1.cpp" />
     <ClCompile Include="..\Scenes\Intro.cpp" />
+    <ClCompile Include="..\Scenes\Room.cpp" />
     <ClCompile Include="..\Scenes\S04_Extra01.cpp" />
     <ClCompile Include="..\Scenes\Town.cpp" />
     <ClCompile Include="..\State\State.cpp" />

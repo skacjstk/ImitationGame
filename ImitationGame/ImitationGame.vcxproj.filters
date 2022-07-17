@@ -315,6 +315,15 @@
     <ClInclude Include="..\State\State.h">
       <Filter>헤더 파일\State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Scenes\Floor_1.h">
+      <Filter>헤더 파일\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Scenes\Room.h">
+      <Filter>헤더 파일\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Scenes\DungeonFactory.h">
+      <Filter>헤더 파일\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -502,6 +511,15 @@
     </ClCompile>
     <ClCompile Include="..\Event\EatEvent.cpp">
       <Filter>소스 파일\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Scenes\Floor_1.cpp">
+      <Filter>소스 파일\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Scenes\Room.cpp">
+      <Filter>소스 파일\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Scenes\DungeonFactory.cpp">
+      <Filter>소스 파일\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
