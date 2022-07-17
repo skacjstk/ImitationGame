@@ -73,7 +73,7 @@ void Town::ChangeScene()
 	Audio->Play("Town", 1.0f);
 	// 임시 코드
 	Player* tempPlayer = new Player();
-	tempPlayer->SetPosition(3000.0f, -2300.0f);
+	tempPlayer->SetPosition(2250.0F * WSCALEX, -1725.0f * WSCALEY);
 	OBJECTMANAGER->AddObject("player" , tempPlayer);
 	OBJECTMANAGER->AddObjectStrings("player");	// 이것도 추가해줘야 함.
 	npc->SetPosition(1885.5f * WSCALEX, -2085.0f * WSCALEY);
