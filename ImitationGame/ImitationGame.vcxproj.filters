@@ -306,9 +306,6 @@
     <ClInclude Include="..\Event\Event.h">
       <Filter>헤더 파일\Event</Filter>
     </ClInclude>
-    <ClInclude Include="..\Event\EatEvent.h">
-      <Filter>헤더 파일\Event</Filter>
-    </ClInclude>
     <ClInclude Include="..\InputHandler\InputHandler.h">
       <Filter>헤더 파일\InputHandler</Filter>
     </ClInclude>
@@ -323,6 +320,9 @@
     </ClInclude>
     <ClInclude Include="..\Scenes\DungeonFactory.h">
       <Filter>헤더 파일\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Event\EnterDungeonEvent.h">
+      <Filter>헤더 파일\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -509,9 +509,6 @@
     <ClCompile Include="..\Event\Event.cpp">
       <Filter>소스 파일\Event</Filter>
     </ClCompile>
-    <ClCompile Include="..\Event\EatEvent.cpp">
-      <Filter>소스 파일\Event</Filter>
-    </ClCompile>
     <ClCompile Include="..\Scenes\Floor_1.cpp">
       <Filter>소스 파일\Scenes</Filter>
     </ClCompile>
@@ -520,6 +517,9 @@
     </ClCompile>
     <ClCompile Include="..\Scenes\DungeonFactory.cpp">
       <Filter>소스 파일\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Event\EnterDungeonEvent.cpp">
+      <Filter>소스 파일\Event</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

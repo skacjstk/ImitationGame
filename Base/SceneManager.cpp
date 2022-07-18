@@ -4,6 +4,7 @@
 // Include Scene
 #include "Scenes/S04_Extra01.h"
 #include "Scenes/Intro.h"
+#include "Scenes/Floor_1.h"
 #include "Scenes/Town.h"
 
 SceneManager::SceneManager()
@@ -196,6 +197,7 @@ void SceneManager::ThreadStart()
 	printf("쓰레드 Start\n");
 	m_cvScenes.push_back(new Town());
 	m_cvScenes.push_back(new S04_Extra01());
+	m_cvScenes.push_back(new Floor_1());
 	printf("현재 쓰레드 개수: %zd\n", m_cvScenes.size());
 
 	printf("쓰레드 End\n");

@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -168,7 +168,7 @@
     <ClInclude Include="..\Command\Player\InventoryToggleCommand.h" />
     <ClInclude Include="..\Command\Player\SwapHandFocusCommand.h" />
     <ClInclude Include="..\Command\RightMoveCommand.h" />
-    <ClInclude Include="..\Event\EatEvent.h" />
+    <ClInclude Include="..\Event\EnterDungeonEvent.h" />
     <ClInclude Include="..\Event\Event.h" />
     <ClInclude Include="..\FMOD\fmod.hpp" />
     <ClInclude Include="..\ImGUI\imconfig.h" />
@@ -241,7 +241,7 @@
     <ClCompile Include="..\Command\Player\InventoryToggleCommand.cpp" />
     <ClCompile Include="..\Command\Player\SwapHandFocusCommand.cpp" />
     <ClCompile Include="..\Command\RightMoveCommand.cpp" />
-    <ClCompile Include="..\Event\EatEvent.cpp" />
+    <ClCompile Include="..\Event\EnterDungeonEvent.cpp" />
     <ClCompile Include="..\Event\Event.cpp" />
     <ClCompile Include="..\ImGUI\imgui.cpp" />
     <ClCompile Include="..\ImGUI\imgui_draw.cpp" />

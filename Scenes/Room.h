@@ -16,26 +16,34 @@ public:
 		SHOP = 8,
 		NORMAL = 16
 	};
+	enum LinkedRoom {
+		NONE = 0,	// 일반적으로는 가지면 안됨.
+		TOP = 1,
+		BOTTOM = 2,
+		LEFT = 4,
+		RIGHT = 8
+	};
+public:
+	LinkedRoom myLinkedRoom_ = LinkedRoom::NONE;
+	int myIndex[2] = { 0,0 };
 private:	//private instance variable
 	int currentFloor_ = 0;
-	int myIndex[2] = { 0,0 };
 	RoomType roomType_ = RoomType::DISABLE;
 	// 오브젝트 정보
 	Texture* terrainImage_ = nullptr;	// 지형 정보 
 	bool isCleared_ = false;
 
 public:	//생 소
-	Room();
-	Room(RoomType type);
+	Room() : roomType_(RoomType::DISABLE) {};
+	Room(RoomType type) : roomType_(type) {};
 	~Room();
 public:	//override
 	void Update() override;
 	void Render() override;
 	void ChangeScene() override;
 	void ExitScene() override;
-
+	bool InitializeRoom();	// 룸을 초기화한다 ( 실패시 false 반환)
 public:	//public instance method
 	RoomType GetRoomType() { return roomType_; }
-private:
-	void OnButton(int id);
+	void SetRoomType(RoomType type) { roomType_ = type; }
 };

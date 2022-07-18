@@ -1,17 +1,23 @@
 #pragma once
 
+#include "Scenes/Room.h"
 /*
 // Input Assembly 단계 -> Vertex Stage -> Resster Stage -> Pixel Stage -> Out merger 
 IA = 코딩
 VS, RS, PS = Shader Language
 */
-class Floor_1 : public Scene, Room
+const int maxX = 8;
+const int maxY = 4;
+class Floor_1 : public Scene
 {
+public:
 private:	//private instance variable
 	Texture* backGround_ = nullptr;
 
-	class Room* roomData_[8][4] = { nullptr, };
-	int tempRoom[8][4] = {0,};	// 룸을 확정짓기 전 데이터형을 저장하는 곳
+	class Room* roomData_[maxX][maxY] = { nullptr, };
+	int tempRoom[maxX][maxY] = {0,};	// 룸을 확정짓기 전 데이터형을 저장하는 곳
+	int tempLinkeRoom[maxX][maxY] = { 0, };
+	bool visitedRoom[maxX][maxY] = { false, };	// DFS 에서 사용할 방문여부 검사
 	int currentActiveRoom_[2] = { 0,0 };
 
 public:	//생 소
@@ -27,4 +33,6 @@ private:
 	void GenerateRoom();
 	void SetSRER(int& SX, int& SY, int& EX, int& EY);
 	void ConnectSRER(int& SX, int& SY, int& EX, int& EY);
+	void ConnectRoom(int x, int y);
+	void GenerateRoomData();	// 룸의 데이터를 넣어주는 작업
 };
