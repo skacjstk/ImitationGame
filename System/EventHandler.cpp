@@ -1,11 +1,11 @@
 #include "ImitationGame/framework.h"
-#include "Event/EatEvent.h"
+#include "Event/EnterDungeonEvent.h"
 //#include "Event/Event.h"
 #include "EventHandler.h"
 
 EventHandler::EventHandler()
 {
-	eventMap.insert(std::pair<wstring, Event*>(L"Eat", new EatEvent()));
+	eventMap.insert(std::make_pair<wstring, Event*>(L"EnterDungeon", new EnterDungeonEvent()));
 }
 
 void EventHandler::Update()

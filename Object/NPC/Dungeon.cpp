@@ -60,7 +60,7 @@ void Dungeon::Update(Matrix V, Matrix P)
 		_animation->Update(V, P);
 		// 애니메이션 종료시 던전 이동 호출
 		if (!_animation->IsPlay()) {
-			eventHandler->Push(L"Eat");	// EatEvent 호출
+			eventHandler->Push(L"EnterDungeon");	// EatEvent 호출
 			SetActive(false);
 		}
 	}
