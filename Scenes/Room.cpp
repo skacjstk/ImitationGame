@@ -1,5 +1,6 @@
 #include "./ImitationGame/framework.h"
 #include "./Object/Line.h"
+#include "./Object/Enemy/SkelDog.h"
 #include "Scenes/DungeonFactory.h"
 #include "Room.h"
 
@@ -10,7 +11,7 @@ Room::~Room()
 
 void Room::Update()
 {
-	printf("%d %d\n", myIndex[0], myIndex[1]);
+//	printf("%d %d\n", myIndex[0], myIndex[1]);
 	Matrix V, P;
 	V = CAMERA->GetViewMatrix();
 	P = CAMERA->GetProjectionMatrix();
@@ -38,9 +39,18 @@ void Room::ExitScene()
 bool Room::InitializeRoom()
 {
 	bool value = false;
+	
+	// 테스트룸은 시작부분에서
+	if (roomType_ != RoomType::START)
+		return false;
 
 	DungeonFactory::GenerateDungeon(this);
 	
+	// 임시 똥개 객체
+	SkelDog* obj = new SkelDog();
+	OBJECTMANAGER->AddObject("SkelDog", obj);
+	OBJECTMANAGER->AddObjectStrings("SkelDog");
+
 	//terrainImage_ 
 	wstring shader = SHADER_FOLDER;	shader += L"TextureColor.hlsl";
 	wstring strImage = L"../MapData/GraphicData/testMap.png";

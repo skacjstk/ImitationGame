@@ -35,7 +35,7 @@ private:	//private instance variable
 	bool isCleared_ = false;
 
 public:	//생 소
-	Room() : roomType_(RoomType::DISABLE) {};
+	Room() : roomType_(RoomType::DISABLE) {};	// 초기화 리스트
 	Room(RoomType type) : roomType_(type) {};
 	~Room();
 public:	//override
