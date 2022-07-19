@@ -109,6 +109,12 @@
     <Filter Include="헤더 파일\Event">
       <UniqueIdentifier>{4fa3938d-5146-4270-8821-cc6e2bf87964}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Object\Enemy">
+      <UniqueIdentifier>{9444fd53-75e4-4ddb-a053-cdb6fdc67266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Object\Enemy">
+      <UniqueIdentifier>{c7e3b2db-1dab-4182-a772-2c538f2fe3ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -324,6 +330,18 @@
     <ClInclude Include="..\Event\EnterDungeonEvent.h">
       <Filter>헤더 파일\Event</Filter>
     </ClInclude>
+    <ClInclude Include="..\Object\Enemy\SkelDog.h">
+      <Filter>헤더 파일\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\IdleState.h">
+      <Filter>헤더 파일\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\RunState.h">
+      <Filter>헤더 파일\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\SkelDogState.h">
+      <Filter>헤더 파일\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -520,6 +538,18 @@
     </ClCompile>
     <ClCompile Include="..\Event\EnterDungeonEvent.cpp">
       <Filter>소스 파일\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Enemy\SkelDog.cpp">
+      <Filter>소스 파일\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\IdleState.cpp">
+      <Filter>소스 파일\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\SkelDogState.cpp">
+      <Filter>소스 파일\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\RunState.cpp">
+      <Filter>소스 파일\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
