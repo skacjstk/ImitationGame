@@ -35,4 +35,5 @@ private:
 	void ConnectSRER(int& SX, int& SY, int& EX, int& EY);
 	void ConnectRoom(int x, int y);
 	void GenerateRoomData();	// 룸의 데이터를 넣어주는 작업
+	class Line* GetLines() override { return roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->GetLines(); }
 };

@@ -26,6 +26,7 @@ public:
 public:
 	LinkedRoom myLinkedRoom_ = LinkedRoom::NONE;
 	int myIndex[2] = { 0,0 };
+	class Line* pLine = nullptr;
 private:	//private instance variable
 	int currentFloor_ = 0;
 	RoomType roomType_ = RoomType::DISABLE;
@@ -46,4 +47,5 @@ public:	//override
 public:	//public instance method
 	RoomType GetRoomType() { return roomType_; }
 	void SetRoomType(RoomType type) { roomType_ = type; }
+	class Line* GetLines() override { return pLine; }
 };

@@ -20,7 +20,7 @@ Terrain::Terrain()
 	// Texture는 하나만 가지고도 사용가능
 
 	m_pTexture = new Texture(strImage, strShader);
-	SetSceneMap("test");
+//	SetSceneMap("test");
 }
 
 Terrain::~Terrain()

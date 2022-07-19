@@ -13,7 +13,7 @@ Floor_1::~Floor_1()
 {
 	SAFE_DELETE(backGround_);
 	for (int i = 0; i < 8; ++i) {
-		for (int j = 0; j = 4; ++j) {
+		for (int j = 0; j < 4; ++j) {
 			SAFE_DELETE(roomData_[i][j]);
 		}
 	}
@@ -200,7 +200,7 @@ void Floor_1::ConnectRoom(int x, int y)
 		}
 	}		
 }
-
+// 미완성: 위에처럼 탐색해가며 맵의 데이터를 바탕으로 이미지를 정해줘야함.
 void Floor_1::GenerateRoomData()
 {
 	// 일단 new 자체는 이전에 되어있음. 빈 깡통이라 그렇지
