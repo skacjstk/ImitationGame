@@ -7,7 +7,9 @@
 
 SkelDog::SkelDog()
 {
-	state_ = new IdleState();
+	state_[0] = new IdleState();
+	state_[1] = new RunState();
+	currentState_ = state_[0];
 	
 }
 
@@ -33,8 +35,8 @@ void SkelDog::Reset()
 
 void SkelDog::StateUpdate()
 {
-	state_->SwitchState(*this);
-	state_->Action(*this);
+	currentState_->SwitchState(*this);
+	currentState_->Action(*this);
 }
 
 void SkelDog::LeftMove()

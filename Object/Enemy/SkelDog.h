@@ -2,7 +2,8 @@
 class SkelDog : public GameActor
 {
 public:
-	class SkelDogState* state_ = nullptr;
+	class SkelDogState* currentState_ = nullptr;
+	class SkelDogState* state_[2] = { nullptr, };
 private:
 	Animation* _animation = nullptr;
 public: // 持失切 & 社瑚切

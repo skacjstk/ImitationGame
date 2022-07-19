@@ -8,10 +8,7 @@ void IdleState::SwitchState(SkelDog& actor)
 {
 	if (duringTime > 1.0f) {
 		duringTime = 0.0f;
-		if (actor.state_ != nullptr) {
-			delete actor.state_;
-		}
-		actor.state_ = new RunState();
+		actor.currentState_ = actor.state_[1];
 		//actor.state_->enter(*this);	// 책에 있던 내용
 	}
 }
