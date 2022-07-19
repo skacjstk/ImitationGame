@@ -447,3 +447,5 @@ FodyWeavers.xsd
 /Object/NPCDummy.cpp
 /Object/NPC/NPCDummy.h
 /Object/NPC/NPCDummy.cpp
+/Object/Enemy/AObject.h
+/Object/Enemy/AObject.cpp
