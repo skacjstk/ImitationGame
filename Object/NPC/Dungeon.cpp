@@ -27,7 +27,6 @@ Dungeon::Dungeon()
 		AnimationClip* pClip = new AnimationClip(AnimationClip::eState::End);
 		Texture* pTexture = _animation->GetTexture();
 		for (int i = 0; i <= 50; ++i) {
-			printf("%d %d\n", (int)(i * 0.1), (int)(i % 10));
 			strImage = IMAGE_FOLDER; strImage += L"NPC/Dungeon/Ingurgitate/DungeonIngurgitate" + to_wstring((int)(i * 0.1)) + to_wstring((int)(i % 10)) + L".png";
 			pClip->AddFrame(pTexture, strImage, 0, 0, 0.1f);
 		}
