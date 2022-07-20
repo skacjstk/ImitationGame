@@ -8,7 +8,7 @@
 //#include <codecvt>
 
 bool IsDrawingLine = false;
-bool saftyPress = false;
+bool saftyPress = false;		// F1 키
 
 void S04_Extra01::Replace(wstring & str, wstring comp, wstring rep)
 {
@@ -42,14 +42,56 @@ void S04_Extra01::EditLine()
 	}
 	if (Mouse->Up(0) && saftyPress)  // 데이터를 저장
 	{
-		m_pLine2->ClearVertexBuffer();
+		m_pGroundLine->ClearVertexBuffer();
 		Vector2 start = m_pRubberBand->GetStartPoint(0);
 		Vector2 end = m_pRubberBand->GetEndPoint(0);
 
-		m_pLine2->AddLine(start.x, start.y, end.x, end.y);
-		m_pLine2->EndLine();
+		m_pGroundLine->AddLine(start.x, start.y, end.x, end.y);
+		m_pGroundLine->EndLine();
 
 		m_nMousePick = -1;
+
+		m_pRubberBand->ClearLine();
+	}
+	// 마우스가 움직이는 상태
+	if (m_nMousePick == 1)
+	{
+		Vector2 start = m_pRubberBand->GetStartPoint(0);
+		Vector2 end = Mouse->GetPosition();
+		CAMERA->WCtoVC(end);
+		m_pRubberBand->ClearLine();
+		m_pRubberBand->AddLine(start.x, start.y, end.x, end.y);
+		m_pRubberBand->EndLine();
+	}
+}
+
+void S04_Extra01::EditCelingLine()
+{
+	// ImGUI윈도우에 마우스가 Capture되어 있으면 동작 안함
+//	if (ImGui::GetIO().WantCaptureMouse)  
+//		return;
+
+	if (Mouse->Down(0))
+	{
+		m_nMousePick = 1;
+		m_pRubberBand->ClearLine();
+
+		Vector2 line = Mouse->GetPosition();
+		CAMERA->WCtoVC(line);
+		m_pRubberBand->AddLine(line.x, line.y, line.x, line.y);
+		m_pRubberBand->EndLine();
+	}
+	if (Mouse->Up(0) && saftyPress)  // 데이터를 저장
+	{
+		m_pCeilingLine->ClearVertexBuffer();
+		Vector2 start = m_pRubberBand->GetStartPoint(0);
+		Vector2 end = m_pRubberBand->GetEndPoint(0);
+
+		m_pCeilingLine->AddLine(start.x, start.y, end.x, end.y);
+		m_pCeilingLine->EndLine();
+
+		m_nMousePick = -1;
+		m_pRubberBand->ClearLine();
 	}
 	// 마우스가 움직이는 상태
 	if (m_nMousePick == 1)
@@ -68,8 +110,12 @@ S04_Extra01::S04_Extra01()
 	m_strSceneName = "MapEditor";
 	SetActive(false);
 
-	m_pLine2 = new Line();
+	m_pGroundLine = new Line();
+	m_pCeilingLine = new Line();
 	m_pRubberBand = new Line();
+	m_pGroundLine->SetColor(Color(1.0f, 1.0f, 0.0f, 1.0f));
+	m_pCeilingLine->SetColor(Color(0.0f, 1.0f, 1.0f, 1.0f));
+	m_pRubberBand->SetColor(Color(1.0f,0.0f,1.0f, 1.0f));
 	/*
 
 	TRNMANAGER->SetSceneMap("SceneEX01");
@@ -192,14 +238,16 @@ void S04_Extra01::Update()
 			Vector2 pos = Mouse->GetPosition();
 			CAMERA->WCtoVC(pos);		// W좌표 -> V(DX)좌표 
 
-			m_pLine2->EraseLine(pos, 2.0f);
+			m_pGroundLine->EraseLine(pos, 2.0f);
+			m_pCeilingLine->EraseLine(pos, 2.0f);
 			m_pRubberBand->ClearLine();
 		}
 	}
 
 	m_pMoveTexture->Update(V, P);
 	m_pLine->Update(V, P);
-	m_pLine2->Update(V, P);;
+	m_pGroundLine->Update(V, P);
+	m_pCeilingLine->Update(V, P);
 	m_pRubberBand->Update(V, P);
 }
 
@@ -210,8 +258,12 @@ void S04_Extra01::Render()
 	m_pLine->Render();
 	m_pMoveTexture->Render();
 	CAMERA->Render();
-	m_pLine2->Render();
-	m_pRubberBand->Render();
+	if (m_pGroundLine->GetCountLine() > 0)	// 언젠가는
+		m_pGroundLine->Render();
+	if (m_pCeilingLine->GetCountLine() > 0)
+		m_pCeilingLine->Render();
+	if (m_pRubberBand->GetCountLine() > 0)
+		m_pRubberBand->Render();
 	
 	
 	// imGui Rendering
@@ -281,8 +333,6 @@ void S04_Extra01::ShowGUI()
 				if(saveFile!=L"")
 					TRNMANAGER->SavePNGFitFile(saveFile);
 			}
-
-
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();
@@ -454,7 +504,7 @@ void S04_Extra01::SettingMenu()
 	// Button
 // Combo
 	{
-		const char* items[] = { "None","Line" };
+		const char* items[] = { "None","GroundLine","CelingLine"};
 		static int combo;
 		int  oldcombo = combo;
 		ImGui::Combo("Background", &combo, items, ARRAYSIZE(items));
@@ -464,31 +514,52 @@ void S04_Extra01::SettingMenu()
 
 		if (combo == 1)
 			EditLine();
+		if (combo == 2)
+			EditCelingLine();
 
 	}
 
-	// Button
+	// Button LineButton
 	{
-		ImGui::SameLine();
-		ret = ImGui::Button(u8"저장하기");
+	//	ImGui::SameLine();
+		ret = ImGui::Button(u8"G: 저장하기");
 
 		if (ret)
 		{
-			m_pLine2->SaveLine("./testcoord.txt");
+			m_pGroundLine->SaveLine("./testcoord.txt");
 		}
 
 	}
-
 	// Button
 	{
 		ImGui::SameLine();
-		ret = ImGui::Button(u8"LOAD하기");
+		ret = ImGui::Button(u8"C: 저장하기");
 
 		if (ret)
 		{
-			m_pLine2->LoadLine("./testcoord.txt");
+			m_pCeilingLine->SaveLine("./testCeilingcoord.txt");
 		}
 
+	}
+	// Button
+	{
+		ImGui::SameLine();
+		ret = ImGui::Button(u8"G: LOAD하기");
+
+		if (ret)
+		{
+			m_pGroundLine->LoadLine("./testcoord.txt");
+		}
+	}
+	// Button
+	{
+		ImGui::SameLine();
+		ret = ImGui::Button(u8"C: LOAD하기");
+
+		if (ret)
+		{
+			m_pCeilingLine->LoadLine("./testCeilingcoord.txt");
+		}
 	}
 
 }
