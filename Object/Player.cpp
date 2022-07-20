@@ -64,6 +64,10 @@ Player::Player(int AnimationID)
 	for (auto hand : hand_) {
 		hand->SetScale(this->GetScale());
 	}
+
+	// actor 데이터 받아오기
+	actorData_.ImmuneTime = 1;
+	actorData_.HP = 10;
 }
 
 Player::~Player()
@@ -112,6 +116,8 @@ void Player::Update(Matrix V, Matrix P)
 
 	// 손 업데이트 생각보다 복잡해서 분리
 	HandUpdate(V, P);
+
+	ImmuneFrame_ = max(0, ImmuneFrame_ - 1);
 }
 
 void Player::RotateToMouse()
@@ -146,16 +152,85 @@ void Player::Render()
 void Player::Reset()
 {
 	_currentState = State::IDLE;
+	maxImmuneFrame_ = actorData_.ImmuneTime * TIMEMANAGER->GetFrame();
 }
 // 캐릭터를 바꾸려고 할 때 사용할
-void Player::Reset(objectType playerType)
+void Player::ChangeChar(objectType playerType)
 {
 }
 // GameActor에 옮김, 그러나 얘는 상태패턴을 안썻기에 재정의함.
 void Player::GroundCheck()
 {
 	Scene* tempScene = SCENEMANAGER->GetCurrentScene();
-	Line* m_pGroundLine = tempScene->GetLines();
+	Line* m_pGroundLine = tempScene->GetGroundLines();
+	Line* m_pCeilingLine = tempScene->GetCeilingLines();
+	bool flag = false;
+	isConflicted_ = false;
+	for (UINT i = 0; i < m_pGroundLine->GetCountLine(); i++) {
+		Vector2 start = m_pGroundLine->GetStartPoint(i);
+		Vector2 end = m_pGroundLine->GetEndPoint(i);
+		Vector2 mStart = pCollider_->GetPosition();
+		Vector2 mEnd;
+		mEnd.x = mStart.x;
+		mEnd.y = mStart.y - pCollider_->GetScale().y * 0.5f;
+		Vector2 result;
+		// 아래와 선 검사
+		if (!isJump && Line::IntersectionLine(start, end, mStart, mEnd, result))
+		{
+			Vector2 charPos = GetPosition();
+			float fRad = atan2f(end.y - start.y, end.x - start.x);
+			float Slope = (end.y - start.y) / (end.x - start.x);
+			charPos.y = Slope * (charPos.x - start.x) + start.y + _animation->GetTextureRealSize().y * 0.5f;
+			SetY(charPos.y - 1.0f * WSCALEY);
+			flag = true;
+			SetGroundCheck(true);
+			_currentState = State::IDLE;
+			longJumpCount_ = 0.0f;
+			isCanlongJump_ = true;
+			isLongJump_ = false;
+			isJump = false;
+			isFall = false;
+		}
+	}//end for
+	for (UINT i = 0; i < m_pCeilingLine->GetCountLine(); i++)
+	{
+		Vector2 start = m_pCeilingLine->GetStartPoint(i);
+		Vector2 end = m_pCeilingLine->GetEndPoint(i);
+
+		Vector2 charPos = GetPosition();
+		Vector2 size = pCollider_->GetScale();
+		Vector2 AreaMin = Vector2(pCollider_->GetPosition().x - size.x * 0.5f,
+			pCollider_->GetPosition().y - size.y * 0.5f);
+		Vector2 AreaMax = Vector2(pCollider_->GetPosition().x + size.x * 0.5f,
+			pCollider_->GetPosition().y + size.y * 0.5f);
+
+		if (Line::Clipping(start, end, AreaMin, AreaMax))
+		{
+			float fMinX = min(start.x, end.x);
+			float fMaxX = max(start.x, end.x);
+			float fMinY = min(start.y, end.y);
+			float fMaxY = max(start.y, end.y);
+
+			if (fMaxX < charPos.x && fMinX < charPos.x)
+				charPos.x = fMaxX + size.x * 0.5f;
+			else
+				charPos.x = fMinX - size.x * 0.5f;
+
+			if (fMaxY > charPos.y && fMinY > charPos.y)
+			{
+				float Slope = (end.y - start.y) / (end.x - start.x);
+				charPos.y = fMaxY - size.y * 0.5f;
+			}
+			SetPosition(charPos);
+			isConflicted_ = flag;
+			break;
+		}
+	}
+	isGround_ = flag;
+
+	/*
+	Scene* tempScene = SCENEMANAGER->GetCurrentScene();
+	Line* m_pGroundLine = tempScene->GetGroundLines();
 	bool flag = false;
 	for (UINT i = 0; i < m_pGroundLine->GetCountLine(); i++) {
 		Vector2 start = m_pGroundLine->GetStartPoint(i);
@@ -207,6 +282,7 @@ void Player::GroundCheck()
 		}
 	}
 	isGround_ = flag;	
+	*/
 }
 
 
@@ -285,6 +361,13 @@ void Player::UpdateHandedWeapon()
 			handedWeapon_[i]->SetOwner((GameActor*)this);	// 이중 포인터 비정상 작동으로 일반 포인터로 변경
 		}
 	}
+}
+
+void Player::Attacked()
+{
+//	eventHandler->Push(L"playerAttacked");	// 무기 구현같은거할때 필요하면 하자. 꼭 이벤트가 아닐수도 있다.
+	actorData_.HP -= 1;
+	ImmuneFrame_ = maxImmuneFrame_;
 }
 
 // 0 1 2 3  01은 1번, 23은 2번

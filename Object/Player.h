@@ -54,10 +54,11 @@ public:
 	void HandUpdate(Matrix V, Matrix P);
 	void Render() override;
 	void Reset() override;
-	void Reset(objectType playerType = objectType::EXPLORER);
+	void ChangeChar(objectType playerType = objectType::EXPLORER);
 	void CollisionCheck();
 //	void GravityUpdate();
 	void UpdateHandedWeapon() override;
+	void Attacked() override;
 public:
 	// Setter
 	void SetHP(int hp) { _HP = hp; }
