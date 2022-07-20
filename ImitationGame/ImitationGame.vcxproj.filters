@@ -348,6 +348,12 @@
     <ClInclude Include="..\State\AttackState.h">
       <Filter>헤더 파일\State</Filter>
     </ClInclude>
+    <ClInclude Include="..\State\JumpState.h">
+      <Filter>헤더 파일\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\WaitState.h">
+      <Filter>헤더 파일\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -561,6 +567,12 @@
       <Filter>소스 파일\Object\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="..\State\AttackState.cpp">
+      <Filter>소스 파일\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\JumpState.cpp">
+      <Filter>소스 파일\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\WaitState.cpp">
       <Filter>소스 파일\State</Filter>
     </ClCompile>
   </ItemGroup>

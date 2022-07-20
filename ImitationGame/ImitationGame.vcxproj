@@ -214,9 +214,11 @@
     <ClInclude Include="..\Scenes\Town.h" />
     <ClInclude Include="..\State\AttackState.h" />
     <ClInclude Include="..\State\IdleState.h" />
+    <ClInclude Include="..\State\JumpState.h" />
     <ClInclude Include="..\State\RunState.h" />
     <ClInclude Include="..\State\SkelDogState.h" />
     <ClInclude Include="..\State\State.h" />
+    <ClInclude Include="..\State\WaitState.h" />
     <ClInclude Include="..\System\Audio.h" />
     <ClInclude Include="..\System\EventHandler.h" />
     <ClInclude Include="..\System\GameTime.h" />
@@ -290,9 +292,11 @@
     <ClCompile Include="..\Scenes\Town.cpp" />
     <ClCompile Include="..\State\AttackState.cpp" />
     <ClCompile Include="..\State\IdleState.cpp" />
+    <ClCompile Include="..\State\JumpState.cpp" />
     <ClCompile Include="..\State\RunState.cpp" />
     <ClCompile Include="..\State\SkelDogState.cpp" />
     <ClCompile Include="..\State\State.cpp" />
+    <ClCompile Include="..\State\WaitState.cpp" />
     <ClCompile Include="..\System\Audio.cpp" />
     <ClCompile Include="..\System\EventHandler.cpp" />
     <ClCompile Include="..\System\GameTime.cpp" />
