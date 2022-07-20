@@ -38,6 +38,8 @@ public:	//setter
 	void SetPosition(Vector2 position) { _position = position; }
 	void SetRotation(float x, float y, float z) { _rotation = Vector3(x, y, z); }
 	void SetRotation(Vector3 rotation) { _rotation = rotation; }
+	void ModifyPosition(Vector2 modifyPosition) { _position += modifyPosition; }
+	void ModifyPosition(float x, float y) { _position += Vector2(x, y); }
 	void SetOffset(float x, float y) { _spriteOffset = Vector2(x, y); }
 	void SetOffset(Vector2 offset) { _spriteOffset = offset; }
 	void SetOffsetSize(float x, float y) { _spriteSize = Vector2(x, y); }

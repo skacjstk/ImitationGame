@@ -151,7 +151,7 @@ void Player::Reset()
 void Player::Reset(objectType playerType)
 {
 }
-
+// GameActor에 옮김, 그러나 얘는 상태패턴을 안썻기에 재정의함.
 void Player::GroundCheck()
 {
 	Scene* tempScene = SCENEMANAGER->GetCurrentScene();
@@ -179,12 +179,36 @@ void Player::GroundCheck()
 			isCanlongJump_ = true;
 			isLongJump_ = false;
 			isJump = false;
-			isFall = false;			
+			isFall = false;		
+		}
+		mEnd.x = mStart.x;
+		mEnd.y = mStart.y + pCollider_->GetScale().y * 0.5f;
+		if (Line::IntersectionLine(start, end, mStart, mEnd, result)) {
+			mStart.y = result.y - pCollider_->GetScale().y * 0.5f;
+			SetY(mStart.y);
+			break;
+
+		}
+		// 왼쪽과 선 검사
+		mEnd.x = mStart.x - pCollider_->GetScale().x * 0.5f;
+		mEnd.y = mStart.y;
+		if (Line::IntersectionLine(start, end, mStart, mEnd, result)) {
+			mStart.x = result.x + pCollider_->GetScale().x * 0.5f;
+			SetX(mStart.x);
+			break;
+		}
+		// 오른쪽과 선 검사
+		mEnd.x = mStart.x + pCollider_->GetScale().x * 0.5f;
+		mEnd.y = mStart.y;
+		if (Line::IntersectionLine(start, end, mStart, mEnd, result)) {
+			mStart.x = result.x - pCollider_->GetScale().x * 0.5f;
+			SetX(mStart.x);
+			break;
 		}
 	}
-	isGround_ = flag;
-	
+	isGround_ = flag;	
 }
+
 
 void Player::CollisionCheck()
 {
@@ -228,7 +252,8 @@ void Player::HandUpdate(Matrix V, Matrix P)
 	}
 	hand_[0]->Update(V, P);
 }
-
+// GameActor 멤버함수로 변경
+/*
 void Player::GravityUpdate()
 {
 	if (isGround_ == true)
@@ -247,7 +272,7 @@ void Player::GravityUpdate()
 	}
 	beforeGround_ = isGround_;
 }
-
+*/
 void Player::UpdateHandedWeapon()
 {
 	// 무기의 소유자 표시해주기

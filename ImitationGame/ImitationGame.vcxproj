@@ -183,6 +183,7 @@
     <ClInclude Include="..\InputHandler\InventoryInputHandler.h" />
     <ClInclude Include="..\InputHandler\PlayerInputHandler.h" />
     <ClInclude Include="..\Object\Button.h" />
+    <ClInclude Include="..\Object\Enemy\Enemy.h" />
     <ClInclude Include="..\Object\Enemy\SkelDog.h" />
     <ClInclude Include="..\Object\Inventory.h" />
     <ClInclude Include="..\Object\Item.h" />
@@ -211,6 +212,7 @@
     <ClInclude Include="..\Scenes\Room.h" />
     <ClInclude Include="..\Scenes\S04_Extra01.h" />
     <ClInclude Include="..\Scenes\Town.h" />
+    <ClInclude Include="..\State\AttackState.h" />
     <ClInclude Include="..\State\IdleState.h" />
     <ClInclude Include="..\State\RunState.h" />
     <ClInclude Include="..\State\SkelDogState.h" />
@@ -257,6 +259,7 @@
     <ClCompile Include="..\InputHandler\InventoryInputHandler.cpp" />
     <ClCompile Include="..\InputHandler\PlayerInputHandler.cpp" />
     <ClCompile Include="..\Object\Button.cpp" />
+    <ClCompile Include="..\Object\Enemy\Enemy.cpp" />
     <ClCompile Include="..\Object\Enemy\SkelDog.cpp" />
     <ClCompile Include="..\Object\Inventory.cpp" />
     <ClCompile Include="..\Object\Item.cpp" />
@@ -285,6 +288,7 @@
     <ClCompile Include="..\Scenes\Room.cpp" />
     <ClCompile Include="..\Scenes\S04_Extra01.cpp" />
     <ClCompile Include="..\Scenes\Town.cpp" />
+    <ClCompile Include="..\State\AttackState.cpp" />
     <ClCompile Include="..\State\IdleState.cpp" />
     <ClCompile Include="..\State\RunState.cpp" />
     <ClCompile Include="..\State\SkelDogState.cpp" />

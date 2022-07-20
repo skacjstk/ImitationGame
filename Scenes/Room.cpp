@@ -48,6 +48,7 @@ bool Room::InitializeRoom()
 	
 	// ÀÓ½Ã ¶Ë°³ °´Ã¼
 	SkelDog* obj = new SkelDog();
+	obj->Reset();
 	OBJECTMANAGER->AddObject("SkelDog", obj);
 	OBJECTMANAGER->AddObjectStrings("SkelDog");
 

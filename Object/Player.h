@@ -27,15 +27,12 @@ public:		// 공개 인스턴스 변수
 private:	// 비공개 인스턴스 변수
 	class InputHandler* inputHandler_;
 	class Inventory* Inventory_ = nullptr;
-	Animation* _animation = nullptr;
+//	Animation* _animation = nullptr;		 // GameActor에 일원화
 	State _currentState = State::IDLE;
 	objectType _heroType = objectType::EXPLORER;	// 던그리드 캐릭터 변경할때 사용할 것
 	Vector2 _movePosition = Vector2(0.0f, 0.0f);	// lerp 하게 움직힐 거야
 	bool isCanlongJump_ = true;	// 롱점프를 할 수 있느냐?
 	bool isLongJump_ = false;	// 롱점프를 했느냐?
-	bool isJump = false;
-	bool beforeGround_ = false;
-	bool isFall = false;
 	float longJumpCount_ = 0.0f;
 	int _moveCount = 0;
 	bool _moveAble = true;
@@ -45,23 +42,21 @@ private:	// 비공개 인스턴스 변수
 	Texture* hand_[2] = { nullptr, };	// 무기에 장착되는건 왼손( 0번 )
 	class Weapon* handedWeapon_[4] = { nullptr, };
 	
-	float gravity_ = 0.0f;	// Actor들에게 적용되는 매 프레임마다 아래로 떨어지는 변화량
-	bool isGround_ = false;	// Actor 자신이 땅에 닿았는지 확인할 변수
 	struct PlayerData playerData_;
 public:
 	Player(int AnimationID = 0);
 	~Player();
 public:
 	void Update(Matrix V, Matrix P) override;
+	void GroundCheck() override;
 	void RotateToMouse();
 	void InputUpdate();
 	void HandUpdate(Matrix V, Matrix P);
 	void Render() override;
 	void Reset() override;
 	void Reset(objectType playerType = objectType::EXPLORER);
-	void GroundCheck();
 	void CollisionCheck();
-	void GravityUpdate();
+//	void GravityUpdate();
 	void UpdateHandedWeapon() override;
 public:
 	// Setter

@@ -14,6 +14,8 @@ public: // Setter
 	void  SetPivot(Vector3 pivot)				 { _texture->_pivot = pivot; }
 	void  SetRotation(float x, float y, float z) { _texture->SetRotation(x, y, z); }
 	void  SetRotation(Vector3 rotation)          { _texture->SetRotation(rotation); }
+	void  ModifyPosition(Vector2 modifyPosition) { _texture->ModifyPosition(modifyPosition); }
+	void  ModifyPosition(float x, float y)		 { _texture->ModifyPosition(Vector2(x, y)); }
 	void  AddClip(class AnimationClip *pClip);
 	void  SetPlay(UINT PlayNo, bool IsInitialize = false);                 // AnimationClip의 index를 변경
 	void  SetStop();                            // 강제적으로 Stop하고 싶을때

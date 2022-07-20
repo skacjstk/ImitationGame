@@ -18,6 +18,7 @@ public: // Setter
 	void  SetPosition(float x, float y)          { _position = Vector2(x, y); }
 	void  SetPosition(Vector2 position)          { _position = position; }
 	void  SetY(float Y) { _position.y = Y; }
+	void  SetX(float X) { _position.x = X; }
 	void  ModifyPosition(Vector2 modifyPosition) { _position += modifyPosition; }
 	void  ModifyPosition(float x, float y)		 { _position += Vector2(x,y); }
 	void  SetScale(float sx, float sy)           { _scale = Vector2(sx, sy); }
