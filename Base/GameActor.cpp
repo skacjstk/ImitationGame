@@ -6,8 +6,10 @@
 void GameActor::GroundCheck()
 {
 	Scene* tempScene = SCENEMANAGER->GetCurrentScene();
-	Line* m_pGroundLine = tempScene->GetLines();
+	Line* m_pGroundLine = tempScene->GetGroundLines();
+	Line* m_pCeilingLine = tempScene->GetCeilingLines();
 	bool flag = false;
+	isConflicted_ = false;
 	for (UINT i = 0; i < m_pGroundLine->GetCountLine(); i++) {
 		Vector2 start = m_pGroundLine->GetStartPoint(i);
 		Vector2 end = m_pGroundLine->GetEndPoint(i);
@@ -29,30 +31,38 @@ void GameActor::GroundCheck()
 			isFall = false;
 			break;
 		}
-		// 머리와 선 검사
-		mEnd.x = mStart.x;
-		mEnd.y = mStart.y + pCollider_->GetScale().y * 0.5f;
-		if (Line::IntersectionLine(start, end, mStart, mEnd, result)) {
-			mStart.y = result.y - pCollider_->GetScale().y * 0.5f;
-			SetY(mStart.y);
-			isConflicted_ = true;
-			break;
+	}//end for
+	for (UINT i = 0; i < m_pCeilingLine->GetCountLine(); i++)
+	{
+		Vector2 start = m_pCeilingLine->GetStartPoint(i);
+		Vector2 end = m_pCeilingLine->GetEndPoint(i);
 
-		}
-		// 왼쪽과 선 검사
-		mEnd.x = mStart.x - pCollider_->GetScale().x * 0.5f;
-		mEnd.y = mStart.y;
-		if (Line::IntersectionLine(start, end, mStart, mEnd, result)) {
-			mStart.x = result.x - pCollider_->GetScale().x * 0.5f;
-			isConflicted_ = true;
-			break;
-		}
-		// 오른쪽과 선 검사
-		mEnd.x = mStart.x + pCollider_->GetScale().x * 0.5f;
-		mEnd.y = mStart.y;
-		if (Line::IntersectionLine(start, end, mStart, mEnd, result)) {
-			mStart.x = result.x - pCollider_->GetScale().x * 0.5f;
-			isConflicted_ = true;
+		Vector2 charPos = GetPosition();
+		Vector2 size = pCollider_->GetScale();
+		Vector2 AreaMin = Vector2(pCollider_->GetPosition().x - size.x * 0.5f, 
+			pCollider_->GetPosition().y - size.y * 0.5f);
+		Vector2 AreaMax = Vector2(pCollider_->GetPosition().x + size.x * 0.5f, 
+			pCollider_->GetPosition().y + size.y * 0.5f);
+
+		if (Line::Clipping(start, end, AreaMin, AreaMax))
+		{
+			float fMinX = min(start.x, end.x);
+			float fMaxX = max(start.x, end.x);
+			float fMinY = min(start.y, end.y);
+			float fMaxY = max(start.y, end.y);
+
+			if (fMaxX < charPos.x && fMinX < charPos.x)
+				charPos.x = fMaxX + size.x * 0.5f;
+			else
+				charPos.x = fMinX - size.x * 0.5f;
+
+			if (fMaxY > charPos.y && fMinY > charPos.y)
+			{
+				float Slope = (end.y - start.y) / (end.x - start.x);
+				charPos.y = fMaxY - size.y * 0.5f;
+			}
+			SetPosition(charPos);
+			isConflicted_ = flag;
 			break;
 		}
 	}
@@ -63,8 +73,6 @@ void GameActor::GravityUpdate()
 {
 	if (isGround_ == true)
 		gravity_ = 0.0f;
-//	else if (beforeGround_ != isGround_ && isJump == false)
-//		gravity_ = -1.5f;
 	else
 		gravity_ -= G * TIMEMANAGER->Delta() * 1.5f;
 	ModifyPosition(0.0f, gravity_);
@@ -76,4 +84,9 @@ void GameActor::GravityUpdate()
 		isJump = false;
 	}
 	beforeGround_ = isGround_;
+}
+// 임시코드
+void GameActor::Attacked()
+{
+	actorData_.HP -= 1;
 }
