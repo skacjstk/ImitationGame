@@ -21,7 +21,6 @@ void IdleState::SwitchState(SkelDog& actor)
 
 void IdleState::Action(SkelDog& actor)
 {
-	actor.GravityUpdate();
 	// 하는게 없는데, 움직이지도 않고...
 }
 
