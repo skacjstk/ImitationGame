@@ -6,6 +6,7 @@ class AttackState : public SkelDogState
 private:
 	Vector2 firstAttackPos = Vector2(0.0f,0.0f);
 	float time_ = 0.0f;
+	float dX = 0.0f;
 public: // 持失切 & 社瑚切
 	AttackState() {};
 	~AttackState() {};
