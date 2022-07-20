@@ -26,7 +26,7 @@ Town::Town()
 	Audio->AddSound("Town", introBGM, true);
 
 	m_pGroundLine = new Line();
-
+	m_pCeilingLine = new Line();
 	npc = NPCPOOL->GetNPC(0);
 
 	strImage = IMAGE_FOLDER; strImage += L"Town/townBase.png";
@@ -74,13 +74,14 @@ void Town::ChangeScene()
 	// 임시 코드
 	Player* tempPlayer = new Player();
 	tempPlayer->SetPosition(2250.0F * WSCALEX, -1725.0f * WSCALEY);
+	tempPlayer->Reset();
 	OBJECTMANAGER->AddObject("player" , tempPlayer);
 	OBJECTMANAGER->AddObjectStrings("player");	// 이것도 추가해줘야 함.
 	npc->SetPosition(1885.5f * WSCALEX, -2085.0f * WSCALEY);
 	npc->Reset();
 	CAMERA->SetObject(tempPlayer);
 	CAMERA->SetCenterXLock(0);
-	TRNMANAGER->SetSceneMap("../MapData/GraphicData/Town");
+	TRNMANAGER->SetSceneMap("../MapData/GraphicData/Town");	// 더미... 지금은 안씀
 	TRNMANAGER->TerrainMagnification_.x *= WSCALEX;
 	TRNMANAGER->TerrainMagnification_.y *= WSCALEY;
 	m_pGroundLine->LoadLine("../MapData/LineData/testcoord.txt");

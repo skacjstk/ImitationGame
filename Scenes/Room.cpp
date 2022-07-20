@@ -17,14 +17,16 @@ void Room::Update()
 	P = CAMERA->GetProjectionMatrix();
 
 	terrainImage_->Update(V, P);
-	pLine->Update(V, P);
+	GroundLine_->Update(V, P);
+	CeilingLine_->Update(V, P);
 	OBJECTMANAGER->UpdateAll(V, P);
 }
 
 void Room::Render()
 {
 	terrainImage_->Render();
-	pLine->Render();
+	GroundLine_->Render();
+	CeilingLine_->Render();
 	OBJECTMANAGER->RenderAll();
 }
 
@@ -62,8 +64,10 @@ bool Room::InitializeRoom()
 	terrainImage_->SetScale(6.0f * WSCALEX, 6.0f * WSCALEY);
 	// 최종적으로 이게 되어야함.
 
-	pLine = new Line();
-	pLine->LoadLine("../MapData/LineData/testMapLine.txt");
+	GroundLine_ = new Line();
+	GroundLine_->LoadLine("../MapData/LineData/testMapLine.txt");
+	CeilingLine_ = new Line();
+	CeilingLine_->LoadLine("../MapData/LineData/testMapCelingLine.txt");
 	value = true;
 	return value;
 }

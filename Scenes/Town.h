@@ -11,6 +11,7 @@ private:	//private instance variable
 	Texture* backGround_ = nullptr;
 	Texture* townTerrain_ = nullptr;
 	class Line* m_pGroundLine = nullptr;
+	class Line* m_pCeilingLine = nullptr;
 	class NPC* npc = nullptr;
 public:	//»ý ¼Ò
 	Town();
@@ -20,8 +21,7 @@ public:	//override
 	void Render() override;
 	void ChangeScene() override;
 	void ExitScene() override;
-	Line* GetLines() override { return m_pGroundLine; }
+	Line* GetGroundLines() override { return m_pGroundLine; }
+	Line* GetCeilingLines() override { return m_pCeilingLine; }
 
-public:	//public instance method
-	void TestGroundCheck();
 };
