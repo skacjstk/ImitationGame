@@ -4,8 +4,9 @@
 class RunState : public SkelDogState
 {
 private:
-	float distance;
-	float actorScale;
+	float distance = 0.0f;
+	float actorScale = 0.0f;
+	Vector2 beforePos = Vector2(0.0f, 0.0f);
 public: // 持失切 & 社瑚切
 	RunState() {};
 	~RunState() {};
