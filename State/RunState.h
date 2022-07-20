@@ -4,11 +4,13 @@
 class RunState : public SkelDogState
 {
 private:
-	float duringTime = 0.0f;
+	float distance;
+	float actorScale;
 public: // 持失切 & 社瑚切
 	RunState() {};
 	~RunState() {};
 public:
 	void SwitchState(class SkelDog& actor) override;
 	void Action(class SkelDog& actor) override;
+	void Enter(class SkelDog& actor) override;
 };
