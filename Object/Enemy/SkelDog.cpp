@@ -1,12 +1,12 @@
 #include "ImitationGame/framework.h"
 #include "Physics/Collider.h"
 #include "State/State.h"
-#include "State/SkelDogState.h"
-#include "State/IdleState.h"
-#include "State/RunState.h"
-#include "State/AttackState.h"
-#include "State/JumpState.h"
-#include "State/WaitState.h"
+#include "State/SkelDogState/SkelDogState.h"
+#include "State/SkelDogState/IdleState.h"
+#include "State/SkelDogState/RunState.h"
+#include "State/SkelDogState/AttackState.h"
+#include "State/SkelDogState/JumpState.h"
+#include "State/SkelDogState/WaitState.h"
 #include "SkelDog.h"
 
 SkelDog::SkelDog()
