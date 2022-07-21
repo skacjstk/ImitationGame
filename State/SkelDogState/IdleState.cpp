@@ -1,7 +1,7 @@
 #include "ImitationGame/framework.h"
 #include "Object/Enemy/SkelDog.h"
-#include "State/SkelDogState.h"
-#include "State/RunState.h"
+#include "State/SkelDogState/SkelDogState.h"
+#include "State/SkelDogState/RunState.h"
 #include "IdleState.h"
 
 void IdleState::SwitchState(SkelDog& actor)
