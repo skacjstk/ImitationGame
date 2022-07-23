@@ -68,6 +68,10 @@ Player::Player(int AnimationID)
 	// actor 데이터 받아오기
 	actorData_.ImmuneTime = 1;
 	actorData_.HP = 10;
+	// 플레이어 공통 사운드 추가
+	wstring hitP = AUDIO_FOLDER;
+	hitP += L"Hit_Player.wav";
+	Audio->AddSound("Hit_Player", hitP, false);
 }
 
 Player::~Player()
@@ -227,62 +231,6 @@ void Player::GroundCheck()
 		}
 	}
 	isGround_ = flag;
-
-	/*
-	Scene* tempScene = SCENEMANAGER->GetCurrentScene();
-	Line* m_pGroundLine = tempScene->GetGroundLines();
-	bool flag = false;
-	for (UINT i = 0; i < m_pGroundLine->GetCountLine(); i++) {
-		Vector2 start = m_pGroundLine->GetStartPoint(i);
-		Vector2 end = m_pGroundLine->GetEndPoint(i);
-		Vector2 mStart = pCollider_->GetPosition();
-		Vector2 mEnd;
-		mEnd.x = mStart.x;
-		mEnd.y = mStart.y - pCollider_->GetScale().y * 0.5f;
-		Vector2 result;
-		if (!isJump && Line::IntersectionLine(start, end, mStart, mEnd, result))
-		{
-			Vector2 charPos = GetPosition();
-			float fRad = atan2f(end.y - start.y, end.x - start.x);
-			float Slope = (end.y - start.y) / (end.x - start.x);
-			charPos.y = Slope * (charPos.x - start.x) + start.y + _animation->GetTextureRealSize().y* 0.5f;
-			SetY(charPos.y - 1.0f * WSCALEY);
-			flag = true;
-			SetGroundCheck(true);
-			_currentState = State::IDLE;
-			longJumpCount_ = 0.0f;
-			isCanlongJump_ = true;
-			isLongJump_ = false;
-			isJump = false;
-			isFall = false;		
-		}
-		mEnd.x = mStart.x;
-		mEnd.y = mStart.y + pCollider_->GetScale().y * 0.5f;
-		if (Line::IntersectionLine(start, end, mStart, mEnd, result)) {
-			mStart.y = result.y - pCollider_->GetScale().y * 0.5f;
-			SetY(mStart.y);
-			break;
-
-		}
-		// 왼쪽과 선 검사
-		mEnd.x = mStart.x - pCollider_->GetScale().x * 0.5f;
-		mEnd.y = mStart.y;
-		if (Line::IntersectionLine(start, end, mStart, mEnd, result)) {
-			mStart.x = result.x + pCollider_->GetScale().x * 0.5f;
-			SetX(mStart.x);
-			break;
-		}
-		// 오른쪽과 선 검사
-		mEnd.x = mStart.x + pCollider_->GetScale().x * 0.5f;
-		mEnd.y = mStart.y;
-		if (Line::IntersectionLine(start, end, mStart, mEnd, result)) {
-			mStart.x = result.x - pCollider_->GetScale().x * 0.5f;
-			SetX(mStart.x);
-			break;
-		}
-	}
-	isGround_ = flag;	
-	*/
 }
 
 
@@ -368,6 +316,8 @@ void Player::Attacked()
 //	eventHandler->Push(L"playerAttacked");	// 무기 구현같은거할때 필요하면 하자. 꼭 이벤트가 아닐수도 있다.
 	actorData_.HP -= 1;
 	ImmuneFrame_ = maxImmuneFrame_;
+	Audio->Play("Hit_Player");
+	//Explosion.wav 죽으면 이거 호출하면 됨.
 }
 
 // 0 1 2 3  01은 1번, 23은 2번
