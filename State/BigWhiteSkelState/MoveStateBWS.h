@@ -1,11 +1,15 @@
 #pragma once
 #include "Object/Enemy/BigWhiteSkel.h"
 #include "State/BigWhiteSkelState/BigWhiteSkelState.h"
-class AttackStateBWS : public BigWhiteSkelState
+class RunStateBWS : public BigWhiteSkelState
 {
+private:
+	float distance = 0.0f;
+	float actorScale = 0.0f;
+	Vector2 beforePos = Vector2(0.0f, 0.0f);
 public: // 持失切 & 社瑚切
-	AttackStateBWS() {};
-	~AttackStateBWS() {};
+	RunStateBWS() {};
+	~RunStateBWS() {};
 public:
 	void SwitchState(class BigWhiteSkel& actor) override;
 	void Action(class BigWhiteSkel& actor) override;

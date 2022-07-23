@@ -1,7 +1,7 @@
 #include "ImitationGame/framework.h"
 #include "Object/Enemy/BigWhiteSkel.h"
 #include "State/BigWhiteSkelState/BigWhiteSkelState.h"
-#include "State/BigWhiteSkelState/RunStateBWS.h"
+#include "State/BigWhiteSkelState/MoveStateBWS.h"
 #include "IdleStateBWS.h"
 
 void IdleStateBWS::SwitchState(BigWhiteSkel& actor)
@@ -22,9 +22,13 @@ void IdleStateBWS::SwitchState(BigWhiteSkel& actor)
 void IdleStateBWS::Action(BigWhiteSkel& actor)
 {
 	// 하는게 없는데, 움직이지도 않고...
+
+	actor.GroundCheck();
+	actor.GravityUpdate();
 }
 
 void IdleStateBWS::Enter(BigWhiteSkel& actor)
 {
+	actor.GetAnimation()->SetPlay(static_cast<int>(actor.stateEnum_));
 	// 히트판정 제거
 }
