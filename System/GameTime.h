@@ -21,7 +21,7 @@ private:
 	float runningTime = 0.0f;		//총 running 시간
 	float framePerSecond = 0.0f;	//
 	float frameCount = 0;
-	int frameCountPerSecond = 0;	//초당 Frame Count
+	int frameCountPerSecond = 144;	//초당 Frame Count
 
 	GameTime();
 public:
