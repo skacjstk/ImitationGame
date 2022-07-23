@@ -10,7 +10,7 @@ void GameActor::GroundCheck()
 	Line* m_pCeilingLine = tempScene->GetCeilingLines();
 	bool flag = false;
 	isConflicted_ = false;
-	for (UINT i = 0; i < m_pGroundLine->GetCountLine(); i++) {
+	for (int i = 0; i < m_pGroundLine->GetCountLine(); i++) {
 		Vector2 start = m_pGroundLine->GetStartPoint(i);
 		Vector2 end = m_pGroundLine->GetEndPoint(i);
 		Vector2 mStart = pCollider_->GetPosition();
