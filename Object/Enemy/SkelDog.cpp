@@ -156,7 +156,7 @@ void SkelDog::Jump()
 	if (isGround_ == true) {
 		isJump = true;
 		isGround_ = false;
-		gravity_ = jumpSpeed * 0.1f;
+		gravity_ = jumpSpeed * 0.07f;
 	}
 }
 
