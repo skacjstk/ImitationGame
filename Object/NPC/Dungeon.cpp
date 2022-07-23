@@ -18,9 +18,9 @@ Dungeon::Dungeon()
 		for (int i = 0; i <= 27; ++i) {
 			strImage = IMAGE_FOLDER; strImage += L"NPC/Dungeon/Eat/DungeonEat" + to_wstring((int)(i * 0.1)) + to_wstring((int)(i % 10)) + L".png";
 			pClip->AddFrame(pTexture, strImage, 0, 0, 0.075f);
-			_animation->SetPivot(Vector3(0.0f, -85.0f * WSCALEY * 3.0f, 0.0f));
 		}
 		_animation->AddClip(pClip);
+		_animation->GetAnimationClip(0)->SetClipPivot(Vector3(0.0f, -85.0f * WSCALEY * 3.0f, 0.0f));
 	}
 	// INGURGITATE
 	{
