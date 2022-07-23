@@ -71,7 +71,9 @@ void Animation::Update(Matrix V, Matrix P)
 	if (m_nCurrentClip >= m_cvAnimationClips.size()) return;
 
 	AnimationClip* pClip = m_cvAnimationClips[m_nCurrentClip];
+
 	pClip->Update(V, P);
+
 
 }
 

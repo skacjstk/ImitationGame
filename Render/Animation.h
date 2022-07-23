@@ -28,6 +28,7 @@ public: // Getter
 	Vector2  GetScale()                           { return _texture->GetScale(); }
 	Vector3  GetRotation()                        { return _texture->GetRotation(); }
 	Vector2  GetTextureRealSize()                 { return _texture->GetTextureRealSize(); }
+	Vector3  GetPivot()							  { return _texture->_pivot; }
 	UINT     GetClipNo()                          { return m_nCurrentClip; }
 	AnimationClip* GetAnimationClip(int clipNo)   { return m_cvAnimationClips[clipNo]; }
 private:

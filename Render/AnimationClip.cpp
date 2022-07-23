@@ -66,6 +66,22 @@ void AnimationClip::AddFrame(Texture * pTexture, wstring strImageFile, float sta
 	m_cvFrames.push_back(pFrame);
 	m_ptrTexture = pTexture;
 }
+// 피벗 값을 설정해주는 ( 배율 적용 전 이미지의 크기를 기준으로 ) AddFrame
+void AnimationClip::AddFrame(Texture* pTexture, wstring strImageFile, float startX, float startY, float endX, float endY, float delta, float pivX, float pivY)
+{
+	Frame* pFrame = new Frame();
+
+	pFrame->m_strImageFile = strImageFile;	// 왜 IMAGE_FOLDER 가 없었지? 어쨋든 이 시점에서 완전한 Path 여야 함.
+	pFrame->m_Offset = Vector2(startX, startY);
+	pFrame->m_OffsetSize = Vector2(endX - startX, endY - startY);
+	pFrame->m_Time = delta;
+	pFrame->m_framePivot = Vector3(pivX, pivY, 0.0f);
+	pTexture->CreateShaderResourceView(strImageFile); // 이름이 만약 같으면 단 1
+	m_cvFrames.push_back(pFrame);
+	m_ptrTexture = pTexture;
+	
+
+}
 
 void AnimationClip::AddFrame(Texture * pTexture, wstring strImageFile, float startX, float startY, float endX, float endY, float delta)
 {
@@ -158,6 +174,7 @@ void AnimationClip::Update(Matrix V, Matrix P)
 	this->m_ptrTexture->SetImageFile(pFrame->m_strImageFile);
 	this->m_ptrTexture->SetOffset(pFrame->m_Offset);
 	this->m_ptrTexture->SetOffsetSize(pFrame->m_OffsetSize);
+	this->m_ptrTexture->_pivot = m_ClipPivot + pFrame->m_framePivot;
 	this->m_ptrTexture->Update(V, P);
 }
 
