@@ -72,7 +72,7 @@ void ShortSword::Update(Matrix V, Matrix P)
 	weapon_->SetPosition(GetWeaponPosition());
 	weapon_->SetRotation(GetWeaponRotation());
 	weapon_->SetScale(GetWeaponScale());
-	weapon_->SetPivot(GetWeaponPivot());
+	weapon_->GetAnimationClip(0)->SetClipPivot(GetWeaponPivot());
 	weapon_->Update(V, P);
 	attackFX_->Update(V, P);
 }
