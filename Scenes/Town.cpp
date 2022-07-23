@@ -5,7 +5,6 @@
 #include "./Object/NPC/Dungeon.h"
 #include "./Physics/Collider.h"
 #include "./Object/Line.h"
-#include "./Object/Weapons/MeleeWeapons/ShortSword.h"	// Next: 지울 예정( 무기와 Player 관계에 대한 고민 )
 #include "Town.h"
 
 Town::Town()
