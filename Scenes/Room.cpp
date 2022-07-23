@@ -1,6 +1,8 @@
 #include "./ImitationGame/framework.h"
 #include "./Object/Line.h"
 #include "./Object/Enemy/SkelDog.h"
+#include "Object/Enemy/BigWhiteSkel.h"
+#include "Object/Enemy/LittleGhost.h"
 #include "Scenes/DungeonFactory.h"
 #include "Room.h"
 
@@ -48,11 +50,21 @@ bool Room::InitializeRoom()
 
 	DungeonFactory::GenerateDungeon(this);
 	
-	// ÀÓ½Ã ¶Ë°³ °´Ã¼
-	SkelDog* obj = new SkelDog();
-	obj->Reset();
-	OBJECTMANAGER->AddObject("SkelDog", obj);
-	OBJECTMANAGER->AddObjectStrings("SkelDog");
+	// ÀÓ½Ã Àû °´Ã¼
+//	SkelDog* obj = new SkelDog();
+//	obj->Reset();
+//	OBJECTMANAGER->AddObject("SkelDog1", obj);
+//	OBJECTMANAGER->AddObjectStrings("SkelDog1");
+
+//	BigWhiteSkel* obj2 = new BigWhiteSkel();
+//	obj2->Reset();
+//	OBJECTMANAGER->AddObject("BWS1", obj2);
+//	OBJECTMANAGER->AddObjectStrings("BWS1");
+
+	LittleGhost* obj3 = new LittleGhost();
+	obj3->Reset();
+	OBJECTMANAGER->AddObject("LG1", obj3);
+	OBJECTMANAGER->AddObjectStrings("LG1");
 
 	//terrainImage_ 
 	wstring shader = SHADER_FOLDER;	shader += L"TextureColor.hlsl";

@@ -115,6 +115,24 @@
     <Filter Include="헤더 파일\Object\Enemy">
       <UniqueIdentifier>{c7e3b2db-1dab-4182-a772-2c538f2fe3ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\State\SkelDog">
+      <UniqueIdentifier>{88dd37ea-d04f-4878-9389-79483caa5319}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\State\BigWhiteSkel">
+      <UniqueIdentifier>{9fcca321-a1eb-4a89-b7b4-b87ab22336c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\State\BigWhiteSkel">
+      <UniqueIdentifier>{2809b0ec-5173-4fb5-be26-9599de934cc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\State\SkelDog">
+      <UniqueIdentifier>{1f28c501-41e1-4e48-a257-1443842b75be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\State\LittleGhost">
+      <UniqueIdentifier>{dc4c609d-8acb-4124-a1f4-df4aea136b6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\State\LittleGhost">
+      <UniqueIdentifier>{8eeb7226-6899-4010-8f59-56d83becb975}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -315,9 +333,6 @@
     <ClInclude Include="..\InputHandler\InputHandler.h">
       <Filter>헤더 파일\InputHandler</Filter>
     </ClInclude>
-    <ClInclude Include="..\State\State.h">
-      <Filter>헤더 파일\State</Filter>
-    </ClInclude>
     <ClInclude Include="..\Scenes\Floor_1.h">
       <Filter>헤더 파일\Scenes</Filter>
     </ClInclude>
@@ -333,26 +348,59 @@
     <ClInclude Include="..\Object\Enemy\SkelDog.h">
       <Filter>헤더 파일\Object\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="..\State\IdleState.h">
-      <Filter>헤더 파일\State</Filter>
+    <ClInclude Include="..\Object\Enemy\BigWhiteSkel.h">
+      <Filter>헤더 파일\Object\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="..\State\RunState.h">
-      <Filter>헤더 파일\State</Filter>
+    <ClInclude Include="..\State\SkelDogState\JumpState.h">
+      <Filter>헤더 파일\State\SkelDog</Filter>
     </ClInclude>
-    <ClInclude Include="..\State\SkelDogState.h">
-      <Filter>헤더 파일\State</Filter>
+    <ClInclude Include="..\State\SkelDogState\RunState.h">
+      <Filter>헤더 파일\State\SkelDog</Filter>
     </ClInclude>
-    <ClInclude Include="..\Object\Enemy\Enemy.h">
-      <Filter>소스 파일\Object\Enemy</Filter>
+    <ClInclude Include="..\State\SkelDogState\SkelDogState.h">
+      <Filter>헤더 파일\State\SkelDog</Filter>
     </ClInclude>
-    <ClInclude Include="..\State\AttackState.h">
-      <Filter>헤더 파일\State</Filter>
+    <ClInclude Include="..\State\SkelDogState\WaitState.h">
+      <Filter>헤더 파일\State\SkelDog</Filter>
     </ClInclude>
-    <ClInclude Include="..\State\JumpState.h">
-      <Filter>헤더 파일\State</Filter>
+    <ClInclude Include="..\State\SkelDogState\AttackState.h">
+      <Filter>헤더 파일\State\SkelDog</Filter>
     </ClInclude>
-    <ClInclude Include="..\State\WaitState.h">
-      <Filter>헤더 파일\State</Filter>
+    <ClInclude Include="..\State\SkelDogState\IdleState.h">
+      <Filter>헤더 파일\State\SkelDog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\BigWhiteSkelState\AttackStateBWS.h">
+      <Filter>헤더 파일\State\BigWhiteSkel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\BigWhiteSkelState\BigWhiteSkelState.h">
+      <Filter>헤더 파일\State\BigWhiteSkel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\BigWhiteSkelState\IdleStateBWS.h">
+      <Filter>헤더 파일\State\BigWhiteSkel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\BigWhiteSkelState\JumpStateBWS.h">
+      <Filter>헤더 파일\State\BigWhiteSkel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\BigWhiteSkelState\WaitStateBWS.h">
+      <Filter>헤더 파일\State\BigWhiteSkel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\BigWhiteSkelState\MoveStateBWS.h">
+      <Filter>헤더 파일\State\BigWhiteSkel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\LittleGhostState\MoveStateLG.h">
+      <Filter>헤더 파일\State\LittleGhost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\LittleGhostState\AttackStateLG.h">
+      <Filter>헤더 파일\State\LittleGhost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\LittleGhostState\IdleStateLG.h">
+      <Filter>헤더 파일\State\LittleGhost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\Enemy\LittleGhost.h">
+      <Filter>헤더 파일\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\State\LittleGhostState\LittleGhostState.h">
+      <Filter>헤더 파일\State\LittleGhost</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -521,9 +569,6 @@
     <ClCompile Include="..\System\Audio.cpp">
       <Filter>소스 파일\System</Filter>
     </ClCompile>
-    <ClCompile Include="..\State\State.cpp">
-      <Filter>소스 파일\State</Filter>
-    </ClCompile>
     <ClCompile Include="..\Object\NPC\Dungeon.cpp">
       <Filter>소스 파일\Object\NPC</Filter>
     </ClCompile>
@@ -554,26 +599,59 @@
     <ClCompile Include="..\Object\Enemy\SkelDog.cpp">
       <Filter>소스 파일\Object\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="..\State\IdleState.cpp">
-      <Filter>소스 파일\State</Filter>
-    </ClCompile>
-    <ClCompile Include="..\State\SkelDogState.cpp">
-      <Filter>소스 파일\State</Filter>
-    </ClCompile>
-    <ClCompile Include="..\State\RunState.cpp">
-      <Filter>소스 파일\State</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Object\Enemy\Enemy.cpp">
+    <ClCompile Include="..\Object\Enemy\BigWhiteSkel.cpp">
       <Filter>소스 파일\Object\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="..\State\AttackState.cpp">
-      <Filter>소스 파일\State</Filter>
+    <ClCompile Include="..\State\SkelDogState\AttackState.cpp">
+      <Filter>소스 파일\State\SkelDog</Filter>
     </ClCompile>
-    <ClCompile Include="..\State\JumpState.cpp">
-      <Filter>소스 파일\State</Filter>
+    <ClCompile Include="..\State\SkelDogState\IdleState.cpp">
+      <Filter>소스 파일\State\SkelDog</Filter>
     </ClCompile>
-    <ClCompile Include="..\State\WaitState.cpp">
-      <Filter>소스 파일\State</Filter>
+    <ClCompile Include="..\State\SkelDogState\JumpState.cpp">
+      <Filter>소스 파일\State\SkelDog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\SkelDogState\RunState.cpp">
+      <Filter>소스 파일\State\SkelDog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\SkelDogState\SkelDogState.cpp">
+      <Filter>소스 파일\State\SkelDog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\SkelDogState\WaitState.cpp">
+      <Filter>소스 파일\State\SkelDog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\BigWhiteSkelState\AttackStateBWS.cpp">
+      <Filter>소스 파일\State\BigWhiteSkel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\BigWhiteSkelState\IdleStateBWS.cpp">
+      <Filter>소스 파일\State\BigWhiteSkel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\BigWhiteSkelState\JumpStateBWS.cpp">
+      <Filter>소스 파일\State\BigWhiteSkel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\BigWhiteSkelState\WaitStateBWS.cpp">
+      <Filter>소스 파일\State\BigWhiteSkel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\BigWhiteSkelState\BigWhiteSkelState.cpp">
+      <Filter>소스 파일\State\BigWhiteSkel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\BigWhiteSkelState\MoveStateBWS.cpp">
+      <Filter>소스 파일\State\BigWhiteSkel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\LittleGhostState\AttackStateLG.cpp">
+      <Filter>소스 파일\State\LittleGhost</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\LittleGhostState\IdleStateLG.cpp">
+      <Filter>소스 파일\State\LittleGhost</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\LittleGhostState\MoveStateLG.cpp">
+      <Filter>소스 파일\State\LittleGhost</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Enemy\LittleGhost.cpp">
+      <Filter>소스 파일\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\State\LittleGhostState\LittleGhostState.cpp">
+      <Filter>소스 파일\State\LittleGhost</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
