@@ -73,14 +73,15 @@ void Town::ChangeScene()
 	// 임시 코드
 	Player* tempPlayer = new Player();
 	tempPlayer->SetPosition(2250.0F * WSCALEX, -1725.0f * WSCALEY);
-	tempPlayer->Reset();
 	OBJECTMANAGER->AddObject("player" , tempPlayer);
 	OBJECTMANAGER->AddObjectStrings("player");	// 이것도 추가해줘야 함.
+	tempPlayer->Reset();
+
 	npc->SetPosition(1885.5f * WSCALEX, -2085.0f * WSCALEY);
 	npc->Reset();
 	CAMERA->SetObject(tempPlayer);
 	CAMERA->SetCenterXLock(0);
-	TRNMANAGER->SetSceneMap("../MapData/GraphicData/Town");	// 더미... 지금은 안씀
+	TRNMANAGER->SetSceneMap("../MapData/GraphicData/Town", true);	// TerrainMagnification을 가져오기 위해 필요함. terrainMag만 가져오는 함수 추가 예정
 	TRNMANAGER->TerrainMagnification_.x *= WSCALEX;
 	TRNMANAGER->TerrainMagnification_.y *= WSCALEY;
 	m_pGroundLine->LoadLine("../MapData/LineData/testcoord.txt");
