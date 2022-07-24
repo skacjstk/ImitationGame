@@ -412,6 +412,6 @@ void Player::SwapHandFocus()
 		MessageBoxW(MAIN->GetWindowHandler(), L"handFocus는 0과 1밖에 없습니다.", L"Player::SwapHandFocus()", MB_OK);
 	Inventory_->SetFocusHand(currentFocusHand_);
 	Inventory_->SetFocusPosition();
-
+	eventHandler->Push(L"SwapItem");
 	UpdateHandedWeapon();
 }
