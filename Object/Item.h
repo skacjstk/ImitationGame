@@ -22,4 +22,5 @@ public:
 	void FrontImageRender();					// 이미지만 렌더하기
 	// Setter
 	// Getter
+	Texture* GetFrontImage() { return frontImage_; }
 };
