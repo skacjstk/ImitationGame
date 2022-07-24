@@ -4,6 +4,7 @@
 #include "ImitationGame/framework.h"
 #include "ImitationGame/MainWindow.h"
 #include "System/EventHandler.h"
+#include "GameUI/PlayerUI/PlayerUI.h"
 #include "ImitationGame.h"
 
 #define MAX_LOADSTRING 100
@@ -13,6 +14,7 @@
 CMouse* Mouse = NULL;	// 실패할 수 있음
 CAudio* Audio = NULL;
 EventHandler* eventHandler = nullptr;
+PlayerUI* playerUI = nullptr;
 void LoadFont();
 //Window Create
 //1. 윈도우 클래스를 정의 레지스트리에 등록
@@ -30,11 +32,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
-    MAIN->CreateInstance(hInstance, 0, 0);
+    MAIN->CreateInstance(hInstance, 1920, 1080);
 	// Audio Create
 	Audio = new CAudio();
     // EventHandler 
     eventHandler = new EventHandler();
+    // PlayerUI
+    playerUI = new PlayerUI();
     // IMGui Setting
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
@@ -70,9 +74,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         //   TIMEMANAGER->Update();    // 프레임 무제한 업데이트: 주로 최적화 테스트용( 둘중 하나만 쓸 것 )
             // Mouse position
             Mouse->Update();
+            playerUI->Update();   // Next: 테스트코드, UI의 업데이트는 이벤트 큐를 통해 제어할 것.
             MAIN->Update();
             eventHandler->Update();   
 			Audio->Update();
+            // Render
             MAIN->Render();
         }
     }

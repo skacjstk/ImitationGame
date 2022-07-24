@@ -136,6 +136,7 @@ typedef D3DXCOLOR	Color;
 #include "System/Keyboard.h"
 #include "System/Mouse.h"
 #include "System/EventHandler.h"
+#include "GameUI/PlayerUI/PlayerUI.h"		// 220724 추가
 #include "./Base/SRVManager.h"
 #include "./Render/Texture.h"
 #include "./Base/Camera.h"
@@ -158,6 +159,7 @@ extern IDXGISwapChain* SwapChain;
 extern ID3D11RenderTargetView* RTV;		//실제로 보는 영역
 extern CMouse* Mouse;
 extern CAudio* Audio;
+extern PlayerUI* playerUI;
 extern bool g_bVisibleCollisionCheck;
 extern const float G;
 extern float WSCALEX;	// 오프셋 배율 계산용
