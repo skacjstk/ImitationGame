@@ -54,11 +54,32 @@ void EquippedWeaponUI::Reset()
 
 	imageBase_[1]->SetPosition((temp * 0.1f) + GetPosition());
 	// Next: 이벤트 큐로 제어하기
-	Player* playerTemp = (Player*)OBJECTMANAGER->FindObject("player");
-	Weapon* itemTemp = playerTemp->GetHandedWeapon(0);	// 오류 이유: OBJECTMANAGER 등록이 Reset보다 늦었음
-	equipFrontImage_ = itemTemp->GetFrontImage();	// 버그 존재: 인벤토리 열면 사라짐.
-
+	playerTemp = (Player*)OBJECTMANAGER->FindObject("player");
+	UpdateItemImage();
 	equipFrontImage_->SetScale(itemTemp->GetWeaponTransform().scale);
 	
 	SetActive(true);
+}
+
+void EquippedWeaponUI::SwapItem()
+{
+	if (currentFocusHand_ == 0)
+		currentFocusHand_ = 1;
+	else if (currentFocusHand_ == 1)
+		currentFocusHand_ = 0;
+
+	UpdateItemImage();
+}
+
+void EquippedWeaponUI::UpdateItemImage()
+{
+	// 대표 이미지를 가져올 땐 index 0 번 또는 2번을 가져와야 함.
+	itemTemp = playerTemp->GetHandedWeapon(currentFocusHand_ * 2);	// 오류 이유: OBJECTMANAGER 등록이 Reset보다 늦었음
+	if (itemTemp == nullptr)
+		equipFrontImage_ = nullptr;
+	else
+	{
+		equipFrontImage_ = itemTemp->GetFrontImage();	// 버그 존재: 인벤토리 열면 사라짐.
+	//	equipFrontImage_->SetPosition(imageBase_[0]->GetPosition()); // 있나없나 똑같다. 현재버그는 inven어쩌구
+	}
 }
