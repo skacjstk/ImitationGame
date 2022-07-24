@@ -1,11 +1,12 @@
 #pragma once
 #include "GameUI/BaseUI.h"
+#include "./Render/Texture.h"
 class DashUI : public BaseUI
 {
-	Texture* left_ = nullptr;	// 2 x 8
-	Texture* right_ = nullptr;	// 2 x 8
-	Texture* base_ = nullptr;	// 9 x 8 
-	Texture* count_ = nullptr;	// 9 x 4
+	class Texture* left_ = nullptr;	// 2 x 8
+	class Texture* right_ = nullptr;	// 2 x 8
+	class Texture* base_ = nullptr;	// 9 x 8 
+	class Texture* count_ = nullptr;	// 9 x 4
 public: // 持失切 & 社瑚切
 	DashUI();
 	~DashUI();

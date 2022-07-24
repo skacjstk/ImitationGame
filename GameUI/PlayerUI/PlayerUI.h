@@ -1,5 +1,8 @@
 #pragma once
 #include "GameUI/BaseUI.h"
+#include "GameUI/PlayerUI/DashUI.h"
+#include "GameUI/PlayerUI/PlayerLifeUI.h"
+#include "GameUI/PlayerUI/EquippedWeaponUI.h"
 class PlayerUI : public BaseUI
 {
 public:

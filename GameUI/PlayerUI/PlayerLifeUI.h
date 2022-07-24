@@ -1,9 +1,10 @@
 #pragma once
 #include "GameUI/BaseUI.h"
+#include "./Render/Texture.h"
 class PlayerLifeUI : public BaseUI
 {
-	Texture* imageBase_ = nullptr;
-	Texture* imageBack_ = nullptr;
+	class Texture* imageBase_ = nullptr;
+	class Texture* imageBack_ = nullptr;
 public: // 持失切 & 社瑚切
 	PlayerLifeUI();
 	~PlayerLifeUI();

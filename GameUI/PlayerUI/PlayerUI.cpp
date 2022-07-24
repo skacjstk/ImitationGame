@@ -1,7 +1,4 @@
 #include "ImitationGame/framework.h"
-#include "GameUI/PlayerUI/DashUI.h"
-#include "GameUI/PlayerUI/PlayerLifeUI.h"
-#include "GameUI/PlayerUI/EquippedWeaponUI.h"
 #include "PlayerUI.h"
 
 PlayerUI::PlayerUI()
@@ -66,7 +63,7 @@ void PlayerUI::Reset()
 	playerLifeUI_->Reset();
 	equippedWeaponUI_->Reset();
 	dashUI_->Reset();
-}							
+}
 
 /*
 playerLifeUI_ 
