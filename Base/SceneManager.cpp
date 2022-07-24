@@ -44,6 +44,7 @@ void SceneManager::Render()
 			m_cvScenes[i]->Render();
 		}
 	}
+	playerUI->Render();	// UI 테스트코드.
 	Display();
 }
 /*
