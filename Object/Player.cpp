@@ -72,6 +72,7 @@ Player::Player(int AnimationID)
 	wstring hitP = AUDIO_FOLDER;
 	hitP += L"Hit_Player.wav";
 	Audio->AddSound("Hit_Player", hitP, false);
+
 }
 
 Player::~Player()
@@ -157,6 +158,9 @@ void Player::Reset()
 {
 	_currentState = State::IDLE;
 	maxImmuneFrame_ = actorData_.ImmuneTime * TIMEMANAGER->GetFrame();
+
+	// 플레이어 인벤토리니까 플레이어가 리셋
+	playerUI->Reset();
 }
 // 캐릭터를 바꾸려고 할 때 사용할
 void Player::ChangeChar(objectType playerType)
@@ -279,23 +283,6 @@ void Player::HandUpdate(Matrix V, Matrix P)
 // GameActor 멤버함수로 변경
 /*
 void Player::GravityUpdate()
-{
-	if (isGround_ == true)
-		gravity_ = 0.0f;
-	else if (beforeGround_ != isGround_ && isJump == false)
-		gravity_ = -1.5f;
-	else
-		gravity_ -= G * TIMEMANAGER->Delta() * 1.5f;
-	ModifyPosition(0.0f, gravity_);
-	if (gravity_ > 0.0f) {
-		isFall = false;
-	}
-	else if (gravity_ < 0.0f) {
-		isFall = true;
-		isJump = false;
-	}
-	beforeGround_ = isGround_;
-}
 */
 void Player::UpdateHandedWeapon()
 {
@@ -326,8 +313,15 @@ void Player::SetHandedWeapon(Weapon * item, int index)
 	int newIndex = min(index, (int)_countof(handedWeapon_) - 1);
 	handedWeapon_[newIndex] = item;
 }
-// 0 1 2 3  01은 1번, 23은 2번
+/*
 auto Player::GetHandedWeapon(int index)
+{
+	int newIndex = min(index, ((int)sizeof(handedWeapon_) / (int)sizeof(handedWeapon_[0])) - 1);
+	return handedWeapon_[newIndex];
+}
+*/
+// 0 1 2 3  01은 1번, 23은 2번
+Weapon* Player::GetHandedWeapon(int index)
 {
 	int newIndex = min(index, ((int)sizeof(handedWeapon_) / (int)sizeof(handedWeapon_[0])) - 1);
 	return handedWeapon_[newIndex];

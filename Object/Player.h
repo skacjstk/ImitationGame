@@ -27,6 +27,7 @@ public:		// 공개 인스턴스 변수
 private:	// 비공개 인스턴스 변수
 	class InputHandler* inputHandler_;
 	class Inventory* Inventory_ = nullptr;
+	class Weapon* handedWeapon_[4] = { nullptr, };
 //	Animation* _animation = nullptr;		 // GameActor에 일원화
 	State _currentState = State::IDLE;
 	objectType _heroType = objectType::EXPLORER;	// 던그리드 캐릭터 변경할때 사용할 것
@@ -40,7 +41,6 @@ private:	// 비공개 인스턴스 변수
 	int _HP = 0;
 	int currentFocusHand_ = 0;	// 0, 1 
 	Texture* hand_[2] = { nullptr, };	// 무기에 장착되는건 왼손( 0번 )
-	class Weapon* handedWeapon_[4] = { nullptr, };
 	
 	struct PlayerData playerData_;
 public:
@@ -69,7 +69,8 @@ public:
 	// Getter
 	int GetHP() { return _HP; }
 	bool IsPlay() { return _animation->IsPlay(); }	
-	auto GetHandedWeapon(int index);
+//	auto GetHandedWeapon(int index);
+	Weapon* GetHandedWeapon(int index);
 	int GetFocusHand() { return currentFocusHand_; }
 	bool IsGround() { return isGround_; }
 public:	// 움직임 관련 Command 함수
