@@ -133,23 +133,23 @@
     <Filter Include="소스 파일\State\LittleGhost">
       <UniqueIdentifier>{8eeb7226-6899-4010-8f59-56d83becb975}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\UI">
-      <UniqueIdentifier>{aa119dd0-7c16-4546-84d1-a46c6e1df961}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\UI\Base">
-      <UniqueIdentifier>{8c297f1a-9a55-4676-a769-d496a86c2f93}</UniqueIdentifier>
-    </Filter>
     <Filter Include="헤더 파일\UI">
       <UniqueIdentifier>{dbaa295d-84ed-471c-aad5-078ae217a335}</UniqueIdentifier>
     </Filter>
     <Filter Include="헤더 파일\UI\Base">
       <UniqueIdentifier>{397d7644-f80c-40f4-82ee-8afa9575cfdc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\UI\PlayerUI">
-      <UniqueIdentifier>{b757a52d-b61d-4428-98a6-2c713a7aa0d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="헤더 파일\UI\PlayerUI">
       <UniqueIdentifier>{8eb97ad4-ff62-4629-a851-5c9dd7caf6ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\UI///////////////">
+      <UniqueIdentifier>{aa119dd0-7c16-4546-84d1-a46c6e1df961}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\UI///////////////\Base">
+      <UniqueIdentifier>{8c297f1a-9a55-4676-a769-d496a86c2f93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\UI///////////////\PlayerUI">
+      <UniqueIdentifier>{b757a52d-b61d-4428-98a6-2c713a7aa0d3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -424,16 +424,19 @@
       <Filter>헤더 파일\UI\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\GameUI\PlayerUI\DashUI.h">
-      <Filter>소스 파일\UI\PlayerUI</Filter>
+      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
     </ClInclude>
     <ClInclude Include="..\GameUI\PlayerUI\EquippedWeaponUI.h">
-      <Filter>소스 파일\UI\PlayerUI</Filter>
+      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
     </ClInclude>
     <ClInclude Include="..\GameUI\PlayerUI\PlayerLifeUI.h">
-      <Filter>소스 파일\UI\PlayerUI</Filter>
+      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
     </ClInclude>
     <ClInclude Include="..\GameUI\PlayerUI\PlayerUI.h">
-      <Filter>소스 파일\UI\PlayerUI</Filter>
+      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Event\SwapItemEvent.h">
+      <Filter>소스 파일\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -687,19 +690,22 @@
       <Filter>소스 파일\State\LittleGhost</Filter>
     </ClCompile>
     <ClCompile Include="..\GameUI\BaseUI.cpp">
-      <Filter>소스 파일\UI\Base</Filter>
+      <Filter>소스 파일\UI///////////////\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\GameUI\PlayerUI\DashUI.cpp">
-      <Filter>소스 파일\UI\PlayerUI</Filter>
+      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
     </ClCompile>
     <ClCompile Include="..\GameUI\PlayerUI\EquippedWeaponUI.cpp">
-      <Filter>소스 파일\UI\PlayerUI</Filter>
+      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
     </ClCompile>
     <ClCompile Include="..\GameUI\PlayerUI\PlayerLifeUI.cpp">
-      <Filter>소스 파일\UI\PlayerUI</Filter>
+      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
     </ClCompile>
     <ClCompile Include="..\GameUI\PlayerUI\PlayerUI.cpp">
-      <Filter>소스 파일\UI\PlayerUI</Filter>
+      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Event\SwapItemEvent.cpp">
+      <Filter>소스 파일\Event</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

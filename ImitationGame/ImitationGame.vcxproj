@@ -170,6 +170,7 @@
     <ClInclude Include="..\Command\RightMoveCommand.h" />
     <ClInclude Include="..\Event\EnterDungeonEvent.h" />
     <ClInclude Include="..\Event\Event.h" />
+    <ClInclude Include="..\Event\SwapItemEvent.h" />
     <ClInclude Include="..\FMOD\fmod.hpp" />
     <ClInclude Include="..\GameUI\BaseUI.h" />
     <ClInclude Include="..\GameUI\PlayerUI\DashUI.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="..\Command\RightMoveCommand.cpp" />
     <ClCompile Include="..\Event\EnterDungeonEvent.cpp" />
     <ClCompile Include="..\Event\Event.cpp" />
+    <ClCompile Include="..\Event\SwapItemEvent.cpp" />
     <ClCompile Include="..\GameUI\BaseUI.cpp" />
     <ClCompile Include="..\GameUI\PlayerUI\DashUI.cpp" />
     <ClCompile Include="..\GameUI\PlayerUI\EquippedWeaponUI.cpp" />
