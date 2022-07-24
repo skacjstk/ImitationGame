@@ -92,11 +92,11 @@ void Terrain::AddTile(int X, int Y, int nOrder, int nType, int nObjectType, wstr
 	pTile->SetPosition(position);
 	pTile->SetOrder(m_pTexture, nOrder, strImageFile, offset, offsetSize, 0, 0.0f, Vector2(1.0f,1.0f));
 }
-
-void Terrain::SetSceneMap(string sceneName)
+// flag가 True 일 경우, Map의 Magnification( 기타 필수옵션 )만 받아옴.
+void Terrain::SetSceneMap(string sceneName, bool minimal)
 {
 	string str = "./" + sceneName + ".txt";
-	OpenFile(str);
+	OpenFile(str, minimal);
 }
 void Terrain::EraseTile(int x, int y)
 {
@@ -430,8 +430,8 @@ Tile * Terrain::FindTile(wstring strMap)
 	return nullptr;
 
 }
-
-void Terrain::OpenFile(string strFileName)
+// 최소옵션(SetSceneMap 에서 받아옴)
+void Terrain::OpenFile(string strFileName, bool minimal)
 {
 	FILE  *fp;
 
@@ -467,7 +467,13 @@ void Terrain::OpenFile(string strFileName)
 			success = sscanf_s(buf, "MAGNIFICATION:%f %f", &scale.x, &scale.y);
 			// 기본 타입이 아닐 때만 _s 에 해당 인자 뒤에 크기를 전달해주면 됨. ( char, float은 괜찮, string은 크기 전달 등등)
 			TerrainMagnification_ = scale;
-			continue;
+			////////////////////////////////
+			// 220725 추가: minimal 이 true 일 경우 최소옵션만 적용하고 빠져나옴 )
+			////////////////////////////////
+			if (minimal == true)
+				break;
+			else
+				continue;
 		}
 		if (strlen(buf) < 10)
 			continue;

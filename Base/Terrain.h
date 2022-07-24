@@ -36,7 +36,7 @@ public:  // Setter
 	void    AddTile(int X, int Y, int nOrder, int nType, int nObjectType,
 		wstring strImageFile,
 		Vector2 offset, Vector2 offsetSize);
-	void    SetSceneMap(string sceneName);
+	void    SetSceneMap(string sceneName, bool minimal = false);
 	void    SetOffset(float x, float y)   { m_Offset = Vector2(x, y); }
 	void    SetTileSize(float x, float y) { m_Size = Vector2(x, y); }
 	void    SetMapXY(int x, int y)        { m_MapXY = POINT{ x,y }; }
@@ -57,7 +57,7 @@ public:  // Getter
 	Vector2 GetMapScale() { return TerrainMagnification_; }
 private:
 	class    Tile* FindTile(wstring strMap);
-	void     OpenFile(string strFileName);
+	void     OpenFile(string strFileName, bool minimal = false);
 	Vector2  m_Offset = Vector2(-500.0f, 800.0f);
 	Vector2  m_Size   = Vector2(100.0f, 100.0f);
 	POINT    m_MapXY = POINT{ 6,10 };
