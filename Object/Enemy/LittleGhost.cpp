@@ -110,13 +110,10 @@ void LittleGhost::AttackCheck()
 void LittleGhost::Move(float& radian)
 {
 	// chaseTarget_ 추적
-	printf("각도:%f\n", radian * 180 / PI);
 	float sign = copysign(1, radian);	// copysign 부호 비트 추출 어쨋든 양수면 1, 음수면 -1
 	ModifyPosition(cosf(radian) * moveSpeed * TIMEMANAGER->Delta(),
 		sinf(radian) * moveSpeed * TIMEMANAGER->Delta());	// Next: -1 곱해야 할 수 있음.
 
-
-	printf("sign: %f\n", sign);
 	// 각도는 정상
 	sign -= 1.0f;	// 양수 2, 음수 0
 	SetRotation(0.0f, sign * 90.0f, 0.0f);
