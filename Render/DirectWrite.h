@@ -25,7 +25,7 @@ public:
 	static void DrawLine(Vector2 start, Vector2 end, float strokeWidth);
 	static void SkewRectangle(RECT rect, D2D1::ColorF color, float angle, float angle2);
 	static int  GetStringWidth(wstring text, float size);
-
+	static void RenderTextCenter(wstring& text, float cx, float cy, int r, int g, int b, float size);
 
 private:
 	ID2D1Factory1* factory; //2D용 Device를 생성해주기 위함

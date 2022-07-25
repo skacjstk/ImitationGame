@@ -2,7 +2,7 @@
 class GameActor : public GameObject
 {
 public:
-	struct ActorData
+	struct ActorData	// 현재 HP와 무적타임만 가지고 있음. ( maxHP 등 나머지는 개별 객체가 가질 수 있음. )
 	{
 		int HP = 0;
 		int ImmuneTime = 0;
@@ -39,6 +39,7 @@ public:
 	virtual void SwapHandFocus() {};
 	virtual void UpdateHandedWeapon() {};	// 인벤토리에서 아이템 정보 갱신용
 	virtual void Dash() {};
+	virtual void HPChange() {};	// 체력이 변화하게 되면 이 함수를 호출해 주세요.
 	// Getter
 	int GetImmuneFrame() { return ImmuneFrame_; }
 	// Setter

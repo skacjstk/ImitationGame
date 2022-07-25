@@ -73,7 +73,7 @@ Player::Player(int AnimationID)
 
 	// actor 데이터 받아오기
 	actorData_.ImmuneTime = 1;
-	actorData_.HP = 10;
+	actorData_.HP = 20;
 	// 플레이어 공통 사운드 추가
 	wstring strAudio = AUDIO_FOLDER;
 	Audio->AddSound("Hit_Player", strAudio += L"Hit_Player.wav", false);
@@ -179,6 +179,7 @@ void Player::Reset()
 
 	// 플레이어 인벤토리니까 플레이어가 리셋
 	playerUI->Reset();
+	playerUI->playerLifeUI_->UpdateLifeBar(actorData_.HP, playerData_.maxHP);
 }
 // 캐릭터를 바꾸려고 할 때 사용할
 void Player::ChangeChar(objectType playerType)
@@ -329,7 +330,7 @@ void Player::UpdateHandedWeapon()
 void Player::Attacked()
 {
 //	eventHandler->Push(L"playerAttacked");	// 무기 구현같은거할때 필요하면 하자. 꼭 이벤트가 아닐수도 있다.
-	actorData_.HP -= 1;
+	DecreaseHP(1);
 	ImmuneFrame_ = maxImmuneFrame_;
 	Audio->Play("Hit_Player");
 	//Explosion.wav 죽으면 이거 호출하면 됨.
@@ -398,6 +399,23 @@ Weapon* Player::GetHandedWeapon(int index)
 {
 	int newIndex = min(index, ((int)sizeof(handedWeapon_) / (int)sizeof(handedWeapon_[0])) - 1);
 	return handedWeapon_[newIndex];
+}
+
+void Player::IncreaseHP(int amount)
+{
+	actorData_.HP = min(playerData_.maxHP, actorData_.HP + amount);
+	HPChange();
+}
+
+void Player::DecreaseHP(int amount)
+{
+	actorData_.HP = max(0, actorData_.HP - amount);
+	HPChange();
+}
+
+void Player::HPChange()
+{
+	playerUI->playerLifeUI_->UpdateLifeBar(actorData_.HP, playerData_.maxHP);
 }
 
 // 왼쪽이 x 음수 moveSpeed x speed xy 만큼 이동하는 함수

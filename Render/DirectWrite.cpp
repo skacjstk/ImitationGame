@@ -258,3 +258,15 @@ int DirectWrite::GetStringWidth(wstring text, float size)
 	return sz.cx;
 
 }
+
+void DirectWrite::RenderTextCenter(wstring& text, float cx, float cy, int r, int g, int b, float size)
+{
+	BeginDraw();
+	{	
+		float x = -(text.length() * size * 0.5f) + cx;	// font size , 중간사이즈 보정치
+		Vector2 pos = Vector2(x, cy);
+		CAMERA->AbsoluteVCtoWC(pos);
+		RenderText(text, pos, r, g, b, size);
+	}
+	EndDraw();
+}
