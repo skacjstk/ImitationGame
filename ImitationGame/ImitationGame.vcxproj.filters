@@ -339,9 +339,6 @@
     <ClInclude Include="..\Object\NPC.h">
       <Filter>헤더 파일\Object\NPC</Filter>
     </ClInclude>
-    <ClInclude Include="..\Object\NPCPool.h">
-      <Filter>소스 파일\Object</Filter>
-    </ClInclude>
     <ClInclude Include="..\System\EventHandler.h">
       <Filter>헤더 파일\System</Filter>
     </ClInclude>
@@ -437,6 +434,12 @@
     </ClInclude>
     <ClInclude Include="..\Event\SwapItemEvent.h">
       <Filter>소스 파일\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\NPCPool.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Command\DashCommand.h">
+      <Filter>헤더 파일\Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -706,6 +709,9 @@
     </ClCompile>
     <ClCompile Include="..\Event\SwapItemEvent.cpp">
       <Filter>소스 파일\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Command\DashCommand.cpp">
+      <Filter>소스 파일\Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

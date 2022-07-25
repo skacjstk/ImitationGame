@@ -161,6 +161,7 @@
     <ClInclude Include="..\Base\UIObject.h" />
     <ClInclude Include="..\Command\AttackCommand.h" />
     <ClInclude Include="..\Command\Command.h" />
+    <ClInclude Include="..\Command\DashCommand.h" />
     <ClInclude Include="..\Command\IdleCommand.h" />
     <ClInclude Include="..\Command\Inventory\DragAndDropCommand.h" />
     <ClInclude Include="..\Command\JumpCommand.h" />
@@ -258,6 +259,7 @@
     <ClCompile Include="..\Base\UIObject.cpp" />
     <ClCompile Include="..\Command\AttackCommand.cpp" />
     <ClCompile Include="..\Command\Command.cpp" />
+    <ClCompile Include="..\Command\DashCommand.cpp" />
     <ClCompile Include="..\Command\IdleCommand.cpp" />
     <ClCompile Include="..\Command\Inventory\DragAndDropCommand.cpp" />
     <ClCompile Include="..\Command\JumpCommand.cpp" />
