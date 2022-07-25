@@ -4,6 +4,6 @@
 
 void SwapItemEvent::execute()
 {
-	printf("SwapItemEvnet 출력");
+	printf("SwapItemEvnet 출력\n");
 	playerUI->equippedWeaponUI_->SwapItem();
 }
