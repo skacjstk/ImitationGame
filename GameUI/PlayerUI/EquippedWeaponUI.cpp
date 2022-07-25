@@ -12,6 +12,9 @@ EquippedWeaponUI::EquippedWeaponUI()
 	
 	imageBase_[0] = new Texture(strImage, strShader);
 	imageBase_[1] = new Texture(strImage, strShader);
+
+	wstring strSound = AUDIO_FOLDER;
+	Audio->AddSound("SwapItem", strSound += L"etc-sound0033_swap.wav", false);
 }
 
 EquippedWeaponUI::~EquippedWeaponUI()
@@ -68,6 +71,7 @@ void EquippedWeaponUI::SwapItem()
 	else if (currentFocusHand_ == 1)
 		currentFocusHand_ = 0;
 
+	Audio->Play("SwapItem");
 	UpdateItemImage();
 }
 
