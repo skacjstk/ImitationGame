@@ -142,7 +142,7 @@ bool CMouse::DoubleClick(UINT button)
 {
 	return buttonMap[button] == Button::DoubleClick;
 }
-// 0 은 DirectX, 나머지는 Window, 커플링: CAMERA->WCtoVC()
+// 0 은 angle, 1은 radian, 커플링: CAMERA->WCtoVC()
 float CMouse::GetAngleRelativeToMouse(float x, float y, int viewType)
 {
 	float fAngle = 0.0f;
@@ -153,6 +153,9 @@ float CMouse::GetAngleRelativeToMouse(float x, float y, int viewType)
 	float fdX = tempPosition.x - x;
 	float fdY = tempPosition.y - y;
 	float dRad = atan2f(fdY, fdX);
+	if (viewType != 0)
+		return dRad;	// 지금은 뭐없으니까 0이 아니면으로 하자.
+
 	fAngle = (dRad * 180.0f) / PI;
 	return fAngle;
 }
