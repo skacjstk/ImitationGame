@@ -38,6 +38,7 @@ public:
 	virtual void ItemDragAndDrop() {};	// 아이템 드래그앤 드롭 ( 장비교체의 조건 )
 	virtual void SwapHandFocus() {};
 	virtual void UpdateHandedWeapon() {};	// 인벤토리에서 아이템 정보 갱신용
+	virtual void Dash() {};
 	// Getter
 	int GetImmuneFrame() { return ImmuneFrame_; }
 	// Setter
