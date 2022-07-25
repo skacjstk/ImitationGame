@@ -17,6 +17,12 @@ Player::Player(int AnimationID)
 	Texture* pTexture = _animation->GetTexture();
 	pTexture->UpdateColorBuffer(0);
 
+	// 0725: Dash Effect 추가
+	for (int i = 0; i < _countof(dashEffect_); ++i) {
+		dashEffect_[i] = new Texture(strImage, shader);
+		dashEffect_[i]->UpdateColorBuffer(Color(1.0f, 1.0f, 1.0f, 0.8f), 4);
+	}
+
 	strImage = IMAGE_FOLDER;	strImage += L"char/Adventurer/CharHand.png";
 	hand_[0] = new Texture(strImage, shader);
 	hand_[1] = new Texture(strImage, shader);
@@ -69,9 +75,13 @@ Player::Player(int AnimationID)
 	actorData_.ImmuneTime = 1;
 	actorData_.HP = 10;
 	// 플레이어 공통 사운드 추가
-	wstring hitP = AUDIO_FOLDER;
-	hitP += L"Hit_Player.wav";
-	Audio->AddSound("Hit_Player", hitP, false);
+	wstring strAudio = AUDIO_FOLDER;
+	Audio->AddSound("Hit_Player", strAudio += L"Hit_Player.wav", false);
+	strAudio = AUDIO_FOLDER;
+	Audio->AddSound("Dash_Player", strAudio += L"ui-sound-13-dash.wav", false);
+
+	// 콜백 설정
+	dashCB = std::bind(&Player::DashWaiting, this);
 
 }
 
@@ -87,15 +97,20 @@ Player::~Player()
 void Player::Update(Matrix V, Matrix P)
 {	
 	RotateToMouse();
-	GroundCheck();
 	InputUpdate();
+	GroundCheck();
+	dashCB();
 	GravityUpdate();
+	CycleUpdate();
 
 	_animation->SetPlay(_currentState + _heroType);
 	_animation->SetRotation(GetRotation());
 	_animation->SetPosition(GetPosition());
 	_animation->SetScale(GetScale());	 
 	_animation->Update(V, P);
+	dashEffect_[0]->Update(V, P);	// 테스트코드
+	dashEffect_[1]->Update(V, P);	// 테스트코드
+	dashEffect_[2]->Update(V, P);	// 테스트코드
 		
 	pCollider_->SetScale(_animation->GetTexture()->GetTextureRealSize());
 	pCollider_->SetRotation(GetRotation());
@@ -139,6 +154,9 @@ void Player::RotateToMouse()
 
 void Player::Render()
 {
+	dashEffect_[0]->Render();
+	dashEffect_[1]->Render();
+	dashEffect_[2]->Render();
 	_animation->Render();
 	pCollider_->Render();
 	Inventory_->Render();
@@ -192,7 +210,8 @@ void Player::GroundCheck()
 			SetY(charPos.y - 1.0f * WSCALEY);
 			flag = true;
 			SetGroundCheck(true);
-			_currentState = State::IDLE;
+			if(_currentState != State::RUN)
+				_currentState = State::IDLE;
 			longJumpCount_ = 0.0f;
 			isCanlongJump_ = true;
 			isLongJump_ = false;
@@ -280,6 +299,15 @@ void Player::HandUpdate(Matrix V, Matrix P)
 	}
 	hand_[0]->Update(V, P);
 }
+// 각종 사이클을 위한 업데이트
+void Player::CycleUpdate()
+{
+	dashCycleTime_ += TIMEMANAGER->Delta();
+	if (dashCycleTime_ >= playerData_.dashRechargeTime) {
+		dashCycleTime_ = 0.0f;
+		DashRecharge(1);
+	}
+}
 // GameActor 멤버함수로 변경
 /*
 void Player::GravityUpdate()
@@ -305,6 +333,50 @@ void Player::Attacked()
 	ImmuneFrame_ = maxImmuneFrame_;
 	Audio->Play("Hit_Player");
 	//Explosion.wav 죽으면 이거 호출하면 됨.
+}
+
+void Player::Dash()
+{
+	if (playerData_.dashCount <= 0)
+		return;
+
+	Audio->Play("Dash_Player");
+	// player의 Dash 일련의 과정 
+	playerData_.dashCount--;	// 1. 카운트 감소
+	dashRadian = Mouse->GetAngleRelativeToMouse(this->_position.x, this->_position.y, 1);	// 각도 구하기
+	if (dashRadian >= 0.0f)
+		gravity_ = 7.0f;
+	dashLifeCycle = 0.5f;	// 라이프사이클 초기화.
+	dashCB = std::bind(&Player::DashDo, this);	// 이 콜백은 Update 쪽에서 실행됨.
+	// 이후 UI 변경
+	playerUI->dashUI_->Dash();
+
+}
+// Dash 의 물리 애니메이션을 수행하며 lifeCycle 관리 
+void Player::DashDo()
+{
+	isDash = true;
+	this->ModifyPosition(cosf(dashRadian) * playerData_.baseSpeed* 1.5f * TIMEMANAGER->Delta(),
+		sinf(dashRadian) * playerData_.baseSpeed * 1.5f * TIMEMANAGER->Delta());
+	// 위치변경 이후 lifeCycle 관리
+	dashLifeCycle -= TIMEMANAGER->Delta();
+
+	DashAnimationUpdate();
+
+	if (dashLifeCycle <= 0.0f) {
+		dashLifeCycle = 0.5f;	// 혹시 모르니 초기화
+		dashCB = std::bind(&Player::DashWaiting, this);
+		isDash = false;
+
+		dashEffect_[0]->SetScale(0.0f, 0.0f);
+		dashEffect_[1]->SetScale(0.0f, 0.0f);
+		dashEffect_[2]->SetScale(0.0f, 0.0f);
+	}
+}
+
+void Player::DashWaiting()
+{
+	// 얘는 아무것도 안함. 
 }
 
 // 0 1 2 3  01은 1번, 23은 2번
@@ -354,6 +426,56 @@ void Player::Move(Vector2& position)
 {
 	// Collider 등의 충돌 적용하기
 	SetPosition(position);
+}
+
+void Player::DashRecharge(int amount)
+{
+	playerData_.dashCount += amount;
+	playerUI->dashUI_->IncreaseDashCount(amount);
+}
+// Next: 무식한 방법으로 애니메이션 제어, 여유 된다면 01, 12 20 순으로 index를 순회하며 놓아주기를 수행할 것
+void Player::DashAnimationUpdate()
+{
+	if (dashLifeCycle <= 0.1f) {
+		dashEffect_[2]->SetScale(0.0f, 0.0f);
+	}
+	else if (dashLifeCycle <= 0.15f) {
+		dashEffect_[1]->SetScale(0.0f, 0.0f);
+	}
+	else if (dashLifeCycle <= 0.2f) {
+		dashEffect_[0]->SetScale(0.0f, 0.0f);
+	}
+	else if (dashLifeCycle <= 0.25f) {
+		dashEffect_[2]->SetPosition(GetPosition());
+		dashEffect_[2]->SetRotation(GetRotation());
+		dashEffect_[2]->SetScale(GetScale());
+	}
+	else if (dashLifeCycle <= 0.3f) {
+		dashEffect_[1]->SetPosition(GetPosition());
+		dashEffect_[1]->SetRotation(GetRotation());
+		dashEffect_[1]->SetScale(GetScale());
+	}
+	else if (dashLifeCycle <= 0.35f) {
+		dashEffect_[0]->SetPosition(GetPosition());
+		dashEffect_[0]->SetRotation(GetRotation());
+		dashEffect_[0]->SetScale(GetScale());
+	}
+	else if (dashLifeCycle <= 0.4f) {
+		dashEffect_[2]->SetPosition(GetPosition());
+		dashEffect_[2]->SetRotation(GetRotation());
+		dashEffect_[2]->SetScale(GetScale());
+	}
+	else if (dashLifeCycle <= 0.45f) {
+		dashEffect_[1]->SetPosition(GetPosition());
+		dashEffect_[1]->SetRotation(GetRotation());
+		dashEffect_[1]->SetScale(GetScale());
+	}
+	else if (dashLifeCycle <= 0.5f) {
+		dashEffect_[0]->SetPosition(GetPosition());
+		dashEffect_[0]->SetRotation(GetRotation());
+		dashEffect_[0]->SetScale(GetScale());
+	}
+
 }
 
 void Player::Jump()
