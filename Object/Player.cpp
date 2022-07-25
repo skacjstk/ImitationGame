@@ -343,6 +343,7 @@ void Player::Dash()
 	Audio->Play("Dash_Player");
 	// player의 Dash 일련의 과정 
 	playerData_.dashCount--;	// 1. 카운트 감소
+	printf("대시카운트: %d\n", playerData_.dashCount);
 	dashRadian = Mouse->GetAngleRelativeToMouse(this->_position.x, this->_position.y, 1);	// 각도 구하기
 	if (dashRadian >= 0.0f)
 		gravity_ = 7.0f;
@@ -430,7 +431,7 @@ void Player::Move(Vector2& position)
 
 void Player::DashRecharge(int amount)
 {
-	playerData_.dashCount += amount;
+	playerData_.dashCount = min(playerData_.maxDashCount, playerData_.dashCount + amount);	
 	playerUI->dashUI_->IncreaseDashCount(amount);
 }
 // Next: 무식한 방법으로 애니메이션 제어, 여유 된다면 01, 12 20 순으로 index를 순회하며 놓아주기를 수행할 것

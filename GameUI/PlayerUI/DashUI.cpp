@@ -31,8 +31,6 @@ void DashUI::Update(Matrix V, Matrix P)
 {
 	left_->Update(V, P);
 	right_->Update(V, P);
-	base_->Update(V, P);
-	count_->Update(V, P);
 }
 
 void DashUI::Render()
@@ -41,8 +39,7 @@ void DashUI::Render()
 		return;
 	left_->Render();
 	right_->Render();
-	base_->Render();
-	count_->Render();
+	DashRender();
 }
 
 void DashUI::Reset()
@@ -53,10 +50,54 @@ void DashUI::Reset()
 	count_->SetScale(GetScale());
 
 	left_->SetPosition(GetPosition());
-	right_->SetPosition(GetPosition());
-	base_->SetPosition(GetPosition());
+
+	baseGap = base_->GetTextureRealSize();
+
+	rightPos = Vector2(baseGap.x * (maxDashCount) + (baseGap.x * 0.2f), rightPos.y);
+		rightPos += GetPosition();
+	right_->SetPosition(rightPos);
+
+	firstBasePos = GetPosition();
+	firstBasePos.x += baseGap.x * 0.6f;
+
+	base_->SetPosition(firstBasePos);
 	count_->SetPosition(GetPosition());
 	SetActive(true);
+}
+// 최대 대시횟수가 변경될 때 호출하면 됩니다.
+void DashUI::InitializeDashCount(int maxDashCount)
+{
+	maxDashCount = currentDashCount = maxDashCount;
+}
+void DashUI::Dash()
+{
+	DecreaseDashCount(1);
+}
+void DashUI::DashRender()
+{
+	Matrix abV, P;
+	abV = CAMERA->GetAbsoluteViewMatrix();
+	P = CAMERA->GetProjectionMatrix();
+	// base는 max 수만큼 UpRe 하고,
+	for (int i = 0; i < maxDashCount; ++i) {
+		base_->SetPosition(firstBasePos.x + (baseGap.x * i), firstBasePos.y);
+		base_->Update(abV, P);
+		base_->Render();
+	}
+	// count는 currnet 수만큼 UpRe 하자
+	for (int i = 0; i < currentDashCount; ++i) {
+		count_->SetPosition(firstBasePos.x + (baseGap.x * i), firstBasePos.y);
+		count_->Update(abV, P);
+		count_->Render();
+	}
+}
+void DashUI::IncreaseDashCount(int amount)
+{
+	currentDashCount = min(maxDashCount, currentDashCount + amount);
+}
+void DashUI::DecreaseDashCount(int amount)
+{
+	currentDashCount -= amount;
 }
 /*
 	left_
