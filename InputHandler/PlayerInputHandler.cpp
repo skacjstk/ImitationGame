@@ -4,6 +4,7 @@
 #include "./Command/JumpCommand.h"
 #include "./Command/IdleCommand.h"
 #include "./Command/AttackCommand.h"
+#include "./Command/DashCommand.h"
 #include "./Command/Player/InventoryToggleCommand.h"
 #include "./Command/Player/SwapHandFocusCommand.h"
 #include "./Object/Player.h"
@@ -29,6 +30,7 @@ vector<class Command*> PlayerInputHandler::handleInput()
 	//			return buttonS_;
 	//	}
 	if (Mouse->Down(0)) tempCommand.push_back(mouse0_);	// Next: UI 형태에 따라 바뀌어야 할 수 있음.
+	if (Mouse->Down(2)) tempCommand.push_back(mouse2_);	// 2번이 우클릭 맞음.
 	if (tempCommand.size() == 0)
 		tempCommand.push_back(idleCommand_);
 	return tempCommand;
@@ -43,6 +45,7 @@ void PlayerInputHandler::BindActorInput()
 	idleCommand_ = (Command*)new IdleCommand();
 	mouse0_ = (Command*)new AttackCommand();
 	buttonVK_OEM_3_ = (Command*) new SwapHandFocusCommand();
+	mouse2_ = (Command*)new DashCommand();
 	
 	//buttonVK_OEM_3_ = bind(&Player::SwapHandFocus, ); // Player의 인스턴스를 넣어줘야 함.
 
