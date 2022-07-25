@@ -74,7 +74,7 @@ void GameActor::GravityUpdate()
 	if (isGround_ == true)
 		gravity_ = 0.0f;
 	else
-		gravity_ -= G * TIMEMANAGER->Delta() * 1.5f;
+		gravity_ -= G * TIMEMANAGER->Delta() * 1.5f * WSCALEY;
 	ModifyPosition(0.0f, gravity_);
 	if (gravity_ > 0.0f) {
 		isFall = false;

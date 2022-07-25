@@ -423,7 +423,7 @@ void Player::LeftMove()
 {
 	Vector2 position = this->GetPosition();
 
-	position.x -= playerData_.baseSpeed * TIMEMANAGER->Delta();
+	position.x -= playerData_.baseSpeed * TIMEMANAGER->Delta() * WSCALEX;
 	if (_currentState != State::JUMP)
 		_currentState = State::RUN;
 
@@ -434,7 +434,7 @@ void Player::RightMove()
 {
 	Vector2 position = this->GetPosition();
 
-	position.x += playerData_.baseSpeed * TIMEMANAGER->Delta();
+	position.x += playerData_.baseSpeed * TIMEMANAGER->Delta() * WSCALEX;
 
 	if(_currentState != State::JUMP)
 		_currentState = State::RUN;
@@ -504,13 +504,13 @@ void Player::Jump()
 		isJump = true;
 		isGround_ = false;
 		_currentState = State::JUMP;
-		gravity_ = playerData_.baseJumpSpeed * 0.05f;
+		gravity_ = playerData_.baseJumpSpeed * 0.05f * WSCALEY;
 		longJumpCount_ = 0.0f;
 	}
 	else if (isLongJump_ == false && isCanlongJump_ == true) {
 		longJumpCount_ += TIMEMANAGER->Delta();
 		if (longJumpCount_ > 0.16f) {
-			gravity_ += playerData_.baseLongJumpSpeed * 0.05f;
+			gravity_ += playerData_.baseLongJumpSpeed * 0.05f * WSCALEY;
 			isLongJump_ = true;
 			isCanlongJump_ = false;
 		}

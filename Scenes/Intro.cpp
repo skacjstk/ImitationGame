@@ -9,6 +9,7 @@ Intro::Intro()
 	wstring strHoverImage;
 	titleImage_ = new Texture(strImage, strShader);
 	titleImage_->SetPosition(0.0f, 200.0f);
+	titleImage_->SetScale(WSCALEX, WSCALEY);
 
 	strImage = IMAGE_FOLDER; strImage += L"Intro/backGround.png";
 	strShader = SHADER_FOLDER;  strShader += L"TextureColor.hlsl";
