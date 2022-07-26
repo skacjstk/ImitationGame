@@ -17,6 +17,7 @@ public:
 	class GameActor* chaseTarget_ = nullptr;	// 이걸 모든 enemy가 가지고 있게 하고싶은데... 공통을 못뽑겠네 Next
 	float moveSpeed = 400.0f;
 	float jumpSpeed = 100.0f;
+	bool attacked_ = false;
 private:
 
 public: // 생성자 & 소멸자
@@ -37,6 +38,7 @@ public:	// 공개 인스턴스 변수
 	void Idle() override;		// IDLE과 Attack은 꼭 있어야 함.
 	void Attack() override;
 	void Attack(float& dX);
+	void AttackJump();
 
 public:	//Getter
 	bool IsGround() { return isGround_; }

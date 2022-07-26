@@ -108,12 +108,15 @@ void SkelDog::Render()
 
 void SkelDog::Reset()
 {
-	SetActive(true);
 	SetScale(3.0f * WSCALEX, 3.0f * WSCALEY);
 	_animation->SetScale(GetScale());
 	pCollider_->SetScale(_animation->GetTextureRealSize());
 	chaseTarget_ = (GameActor*)OBJECTMANAGER->FindObject("player");
 	this->SetPosition(chaseTarget_->GetPosition());
+	actorData_.HP = 10;
+	actorData_.maxHP = 10;
+	actorData_.ImmuneTime = 0;
+	SetActive(true);
 }
 
 void SkelDog::StateUpdate()
@@ -131,7 +134,7 @@ void SkelDog::AttackCheck()
 	// 겹쳐져 있으면 공격 성공, 타겟의 무적시간이 0 이면서
 	if (chaseTarget_->GetImmuneFrame() <= 0 && Collider::IntersectAABB(pCollider_, chaseTarget_->GetCollider()))
 	{
-		chaseTarget_->Attacked();
+		chaseTarget_->Attacked(actorData_.damage);
 	}
 }
 
@@ -190,10 +193,16 @@ void SkelDog::Attack(float& dX)
 
 	sign -= 1.0f;	// 양수 0, 음수 -2
 	SetRotation(0.0f, sign * 90.0f, 0.0f);
-	if (isGround_ == true) {
+	AttackJump();
+	AttackCheck();
+}
+// 한번만 점프함
+void SkelDog::AttackJump()
+{
+	if (isGround_ == true && attacked_ == false) {
+		attacked_ = true;
 		isJump = true;
 		isGround_ = false;
 		gravity_ = jumpSpeed * 0.05f;
 	}
-	AttackCheck();
 }
