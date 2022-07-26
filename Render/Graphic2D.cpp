@@ -110,34 +110,36 @@ void Graphic2D::SavePNG(wstring strFile)
 
 void Graphic2D::Merge()
 {
-//	return;//안쓸 땐 return해놓자
+	return;//안쓸 땐 return해놓자
 
 	HDC dc = GetDC(MAIN->GetWindowHandler());
 	// DC 의 handle 을 가져와서 그래픽을 만들어준다.
 	Graphics graphic(dc);
 	// HDC 를 받아서 생성한다.
 
-	Gdiplus::Bitmap* bit = new Gdiplus::Bitmap(100 * 28, 140, &graphic); // Bitmap 이미지 생성  그림 파일의 너비를 적어준다.
+	Gdiplus::Bitmap* bit = new Gdiplus::Bitmap(320 * 3, 95, &graphic); // Bitmap 이미지 생성  그림 파일의 너비를 적어준다.
 	Graphics* memG = new Graphics(bit);   // Memory DC 를 생성해준다. 여기에 그림을 그려서 파일을 만들어준다.
-
+	//320 x 142	: 산
+	//320 x 95 : 숲
 	int x = 0;
 	Gdiplus::Image* images[30];
 
-	for (int i = 1; i <= 28; i++)
+	for (int i = 0; i <= 2; i++)
 	{
 		/*wstring str = L"./Image/lucifer/lu_face";
 		images[0] = new Gdiplus::Image(str.c_str());
 		memG->DrawImage(images[0], 0, 0, images[0]->GetWidth(), images[0]->GetHeight());*/
-		wstring str = IMAGE_FOLDER;
-		str += L"Booper/booper (" + to_wstring(i) + L").png";//손 대려고하는 파일의 이름을 적어준다.
+		wstring str = L"../Resources/Image/Town/TownLayer_Day.png";//손 대려고하는 파일의 이름을 적어준다.
+		
 		images[i] = new Gdiplus::Image(str.c_str());
-		memG->DrawImage(images[i], x, 0, images[i]->GetWidth(), images[i]->GetHeight());
-		x = x + 100;
+ 		memG->DrawImage(images[i], x, 0, images[i]->GetWidth(), images[i]->GetHeight());
+		x = x + 320;
 
 		SAFE_DELETE(images[i]);
 	}
 
-	wstring writeFileName = L"./_Texture/Image/Booper/booperAll.png";//만들어진 파일의 위치를 정해준다.
+	wstring writeFileName = L"../Resources/Image/Town/Modify.png";
+		//만들어진 파일의 위치를 정해준다.
 
 	CLSID png;
 	CLSIDFromString(L"{557cf406-1a04-11d3-9a73-0000f81ef32e}", &png);

@@ -151,6 +151,12 @@
     <Filter Include="소스 파일\UI///////////////\PlayerUI">
       <UniqueIdentifier>{b757a52d-b61d-4428-98a6-2c713a7aa0d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\UI///////////////\EnemyUI">
+      <UniqueIdentifier>{2c3ebaf0-3644-4ee2-836f-4a5aa1364ed9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Base\Editor">
+      <UniqueIdentifier>{e742a897-7977-489d-a083-1398ed2e1844}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -441,6 +447,15 @@
     <ClInclude Include="..\Command\DashCommand.h">
       <Filter>헤더 파일\Command</Filter>
     </ClInclude>
+    <ClInclude Include="..\GameUI\EnemyUI\EnemyLifeUI.h">
+      <Filter>소스 파일\UI///////////////\EnemyUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\RoomObjects.h">
+      <Filter>소스 파일\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\EditorObjects.h">
+      <Filter>소스 파일\Base\Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -712,6 +727,15 @@
     </ClCompile>
     <ClCompile Include="..\Command\DashCommand.cpp">
       <Filter>소스 파일\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameUI\EnemyUI\EnemyLifeUI.cpp">
+      <Filter>소스 파일\UI///////////////\EnemyUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\RoomObjects.cpp">
+      <Filter>소스 파일\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\EditorObjects.cpp">
+      <Filter>소스 파일\Base\Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

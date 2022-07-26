@@ -51,6 +51,7 @@
 #include <algorithm>
 #include <queue>	// 이벤트 핸들러에서 사용
 #include <random>	// Floor_1 에서 부동소수점난수생성으로 사용
+#include <iomanip>
 // using std 
 using std::string;
 using std::wstring;
