@@ -24,10 +24,12 @@ public:
 		RIGHT = 8
 	};
 public:
+	map<string, GameObject*> roomObjects;
 	LinkedRoom myLinkedRoom_ = LinkedRoom::NONE;
 	int myIndex[2] = { 0,0 };
 	class Line* GroundLine_ = nullptr;
 	class Line* CeilingLine_ = nullptr;
+	class Line* PlatformLine_ = nullptr;
 private:	//private instance variable
 	int currentFloor_ = 0;
 	RoomType roomType_ = RoomType::DISABLE;
@@ -50,4 +52,6 @@ public:	//public instance method
 	void SetRoomType(RoomType type) { roomType_ = type; }
 	class Line* GetGroundLines() override { return GroundLine_; }
 	class Line* GetCeilingLines() override { return CeilingLine_; }
+	// Getter
+	void GetRoomObjectData();
 };

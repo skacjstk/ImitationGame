@@ -21,6 +21,7 @@ void Room::Update()
 	terrainImage_->Update(V, P);
 	GroundLine_->Update(V, P);
 	CeilingLine_->Update(V, P);
+	PlatformLine_->Update(V, P);
 	OBJECTMANAGER->UpdateAll(V, P);
 }
 
@@ -29,6 +30,7 @@ void Room::Render()
 	terrainImage_->Render();
 	GroundLine_->Render();
 	CeilingLine_->Render();
+	PlatformLine_->Render();
 	OBJECTMANAGER->RenderAll();
 }
 
@@ -50,21 +52,22 @@ bool Room::InitializeRoom()
 
 	DungeonFactory::GenerateDungeon(this);
 	
+	GetRoomObjectData();
 	// 임시 적 객체
-//	SkelDog* obj = new SkelDog();
-//	obj->Reset();
-//	OBJECTMANAGER->AddObject("SkelDog1", obj);
-//	OBJECTMANAGER->AddObjectStrings("SkelDog1");
+	SkelDog* obj = new SkelDog();
+	obj->Reset();
+	OBJECTMANAGER->AddObject("SkelDog1", obj);
+	OBJECTMANAGER->AddObjectStrings("SkelDog1");
 
 //	BigWhiteSkel* obj2 = new BigWhiteSkel();
 //	obj2->Reset();
 //	OBJECTMANAGER->AddObject("BWS1", obj2);
 //	OBJECTMANAGER->AddObjectStrings("BWS1");
-
-	LittleGhost* obj3 = new LittleGhost();
-	obj3->Reset();
-	OBJECTMANAGER->AddObject("LG1", obj3);
-	OBJECTMANAGER->AddObjectStrings("LG1");
+//
+//	LittleGhost* obj3 = new LittleGhost();
+//	obj3->Reset();
+//	OBJECTMANAGER->AddObject("LG1", obj3);
+//	OBJECTMANAGER->AddObjectStrings("LG1");
 
 	//terrainImage_ 
 	wstring shader = SHADER_FOLDER;	shader += L"TextureColor.hlsl";
@@ -80,7 +83,18 @@ bool Room::InitializeRoom()
 	GroundLine_->LoadLine("../MapData/LineData/testMapLine.txt");
 	CeilingLine_ = new Line();
 	CeilingLine_->LoadLine("../MapData/LineData/testMapCelingLine.txt");
+	PlatformLine_ = new Line();
+	PlatformLine_->LoadLine("../MapData/LineData/testMapPlatformLine.txt");
+
+	// 오브젝트 매니저를 통한 배치가 아닌, 자신만의 오브젝트 맵이 있음.
 	value = true;
 	return value;
+}
+
+void Room::GetRoomObjectData()
+{
+	//1. myIndex를 따라 자신의 오브젝트 txt 파일을 가져감.
+	//2. switch 문을 통해 해당 객체의 오브젝트 타입에 따라 new 이후 자신만의 맵에 넣어주며, 위치, 크기에 대한 초기화를 수행함
+	//2-5. 크기에 대한 초기화는 각 옵젝에 기본적으로 있음( 하드코딩 했었잖아 )
 }
 
