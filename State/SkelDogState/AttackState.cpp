@@ -9,11 +9,13 @@ void AttackState::SwitchState(SkelDog& actor)
 	// y값이 처음보다 낮아지면 공격이 끝난 것.
 	// 땅이거나, 다른 선에 충돌했다면 attack을 즉시 중단하고 IDLE 로
 	//actor.IsGround() || actor.IsConflicted() || 
-	if (time_ > 1.0f || firstAttackPos.y > actor.GetPosition().y) {
+	if (time_ > 1.0f || actor.attacked_ == true && actor.isGround_ == true) {
+		actor.attacked_ = false;
 		actor.stateEnum_ = SkelDog::DogState::IDLE;
 		actor.currentState_ = actor.state_[static_cast<int>(actor.stateEnum_)];
 		actor.currentState_->Enter(actor);
 		actor.moveSpeed = fabsf(actor.moveSpeed);	// Enter 에서 값을 바꿨는데, 그걸 정상화 하는 코드.
+
 		time_ = 0.0f;
 	}
 }
