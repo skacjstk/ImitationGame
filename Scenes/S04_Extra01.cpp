@@ -173,7 +173,7 @@ S04_Extra01::S04_Extra01()
 	m_pLine = new Line();
 	CreateGrid();
 
-//	TRNMANAGER->SetSceneMap("test");
+	TRNMANAGER->SetSceneMap("test");
 //	editorObjects->LoadObjectsFile("testObjects");
 
 }
@@ -391,7 +391,7 @@ void S04_Extra01::SettingMenu()
 	char  buf[120];
 	bool  ret = false;
 
-	static Vector2  Origin = Vector2(100.0f, 100.0f);
+	static Vector2  Origin = Vector2(0.0f, 0.0f);
 	static int PixelXY[2] = { 100,100 };
 	static int MapXY[4] = { 5,10,20,20 };
 	static float scaleXY[2] = { 1.0f, 1.0f };
@@ -506,7 +506,8 @@ void S04_Extra01::SettingMenu()
 		{
 			TRNMANAGER->SetMapXY(MapXY[0], MapXY[1]);
 			TRNMANAGER->SetTileSize(PixelXY[0], PixelXY[1]);
-			TRNMANAGER->SetOffset(Origin.x, Origin.y);
+			TRNMANAGER->SetOffset(Origin.x, Origin.y);	// 이 시점에서 origin이 적용되기 전 old가 저장됨.
+			TRNMANAGER->MoveTiles();	// 오프셋의 변화량을 모든 Tile에 적용, 이후 offset과 old Offset을 동기화
 			CreateGrid();
 		}
 
@@ -613,7 +614,7 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					m_pCeilingLine->SaveLine("./testPlatformcoord.txt");
+					m_pPlatformLine->SaveLine("./testPlatformcoord.txt");
 				}
 			}
 			// Button
@@ -623,7 +624,7 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					m_pCeilingLine->LoadLine("./testPlatformcoord.txt");
+					m_pPlatformLine->LoadLine("./testPlatformcoord.txt");
 				}
 			}
 		}// end combo3

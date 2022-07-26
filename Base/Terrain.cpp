@@ -401,12 +401,12 @@ bool Terrain::GetMapXY(int & x, int & y, Vector2 position)
 
 	for (int i = 0; i < this->GetMapXY().x; i++)
 	{
-		Min.x = -GetTileSizeWithMag().x*0.5f + GetOffset().x + (i* GetTileSizeWithMag().x);
+		Min.x = -GetTileSizeWithMag().x*0.5f + GetOffsetWithMag().x + (i* GetTileSizeWithMag().x);
 		Max.x =  Min.x + GetTileSizeWithMag().x;
 
 		for (int j = 0; j <= GetMapXY().y; j++)
 		{
-			Max.y = GetTileSizeWithMag().y*0.5f + GetOffset().y - (j* GetTileSizeWithMag().y);
+			Max.y = GetTileSizeWithMag().y*0.5f + GetOffsetWithMag().y - (j* GetTileSizeWithMag().y);
 			Min.y = Max.y - GetTileSizeWithMag().y;
 			if ((position.x >= Min.x && position.x <= Max.x) &&
 				(position.y >= Min.y && position.y <= Max.y))
@@ -421,6 +421,17 @@ bool Terrain::GetMapXY(int & x, int & y, Vector2 position)
 			break;
 	}
 	return bExist;
+}
+
+void Terrain::MoveTiles()
+{
+	Vector2 changeAmount = m_Offset - m_oldOffset;
+	Vector2 tempPos = Vector2(0.0f, 0.0f);
+	for (auto iter = m_cmTiles.begin(); iter != m_cmTiles.end(); ++iter) {
+		tempPos = iter->second->GetPosition();
+		iter->second->SetPosition(tempPos + changeAmount);
+	}
+	m_oldOffset = m_Offset;	// µø±‚»≠
 }
 
 Tile * Terrain::FindTile(wstring strMap)

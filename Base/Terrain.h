@@ -33,11 +33,9 @@ public:
 
 public:  // Setter	
 	void    Clear();
-	void    AddTile(int X, int Y, int nOrder, int nType, int nObjectType,
-		wstring strImageFile,
-		Vector2 offset, Vector2 offsetSize);
+	void    AddTile(int X, int Y, int nOrder, int nType, int nObjectType, wstring strImageFile, Vector2 offset, Vector2 offsetSize);
 	void    SetSceneMap(string sceneName, bool minimal = false);
-	void    SetOffset(float x, float y)   { m_Offset = Vector2(x, y); }
+	void    SetOffset(float x, float y) { m_oldOffset = m_Offset;  m_Offset = Vector2(x, y); }
 	void    SetTileSize(float x, float y) { m_Size = Vector2(x, y); }
 	void    SetMapXY(int x, int y)        { m_MapXY = POINT{ x,y }; }
 	void    EraseTile(int x, int y);
@@ -53,6 +51,7 @@ public:  // Getter
 	Vector2 GetOffsetWithMag() { return Vector2(m_Offset.x * TerrainMagnification_.x,
 		m_Offset.y * TerrainMagnification_.y);
 	}
+	Vector2 GetOldOffset() { return m_oldOffset; }
 	Vector2 GetTileSize()                 { return m_Size; }
 	Vector2 GetTileSizeWithMag() { return Vector2(m_Size.x * TerrainMagnification_.x, 
 		m_Size.y * TerrainMagnification_.y); }
@@ -60,6 +59,7 @@ public:  // Getter
 	bool    GetMapXY(int& x, int&y, Vector2 position);  
 	int     GetOrderMax() { return m_nMaxDisplayOrder; }
 	Vector2 GetMapScale() { return TerrainMagnification_; }
+	void	MoveTiles();
 private:
 	class    Tile* FindTile(wstring strMap);
 	void     OpenFile(string strFileName, bool minimal = false);
@@ -67,6 +67,7 @@ private:
 	Vector2  m_Size   = Vector2(100.0f, 100.0f);
 	POINT    m_MapXY = POINT{ 6,10 };
 	Texture* m_pTexture = nullptr;  // 텍스쳐는 한개만 사용
+	Vector2  m_oldOffset = Vector2(0.0f, 0.0f);
 	map<wstring, class Tile*>     m_cmTiles;
 	int      m_nMaxDisplayOrder = 0;
 private:
