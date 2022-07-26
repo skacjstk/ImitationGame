@@ -91,6 +91,10 @@ bool Line::SaveLine(string fileName)
 	{
 		Vector2 pos1 = this->GetStartPoint(i);
 		Vector2 pos2 = this->GetEndPoint(i);
+		pos1.x /= TRNMANAGER->TerrainMagnification_.x;
+		pos1.y /= TRNMANAGER->TerrainMagnification_.y;
+		pos2.x /= TRNMANAGER->TerrainMagnification_.x;
+		pos2.y /= TRNMANAGER->TerrainMagnification_.y;
 		fwrite(&pos1, sizeof(Vector2), 1, fp);
 		fwrite(&pos2, sizeof(Vector2), 1, fp);
 	}
@@ -136,7 +140,7 @@ void Line::Update(Matrix V, Matrix P)
 	for (UINT i = 0; i < m_cvLines.size(); i++)
 	{
 		Vector2 *p = m_cvLines[i];
-		vertices[i].Position = Vector3(p->x, p->y, 0.0f);
+		vertices[i].Position = Vector3(p->x * lineScale_.x, p->y * lineScale_.y, 0.0f);
 		vertices[i].Color    = m_Color;
 	}
 
