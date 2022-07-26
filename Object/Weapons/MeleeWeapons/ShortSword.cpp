@@ -55,10 +55,13 @@ ShortSword::ShortSword()
 	leftHandPivot_.x = -10.0f * WSCALEX;
 	leftHandPivot_.y = 15.0f * WSCALEY;
 	leftHandPivot_.z = 0.0f;
+
+	attackCollider_ = new Collider();
 }
 
 ShortSword::~ShortSword()
 {
+	SAFE_DELETE(attackCollider_);
 }
 
 void ShortSword::Update(Matrix V, Matrix P)
@@ -74,14 +77,20 @@ void ShortSword::Update(Matrix V, Matrix P)
 	weapon_->SetScale(GetWeaponScale());
 	weapon_->GetAnimationClip(0)->SetClipPivot(GetWeaponPivot());
 	weapon_->Update(V, P);
-	attackFX_->Update(V, P);
+
+	if (attackFX_->IsPlay()) {
+		attackFX_->Update(V, P);
+		attackCollider_->Update(V, P);
+	}
 }
 
 void ShortSword::Render()
 {
 	weapon_->Render();
-	if(attackFX_->IsPlay())
+	if (attackFX_->IsPlay()) {
 		attackFX_->Render();
+		attackCollider_->Render();
+	}
 }
 
 void ShortSword::Reset()
@@ -112,7 +121,36 @@ void ShortSword::Fire()
 	attackFX_->SetRotation(afterRotation);
 	attackFX_->SetPlay(0, true);
 
+	// 콜라이더 활성화
+	attackCollider_->SetScale(attackFX_->GetTextureRealSize());
+	attackCollider_->SetPosition(attackFX_->GetPosition());
+	attackCollider_->SetRotation(attackFX_->GetRotation());
+	Matrix V, P;
+	V = CAMERA->GetViewMatrix();
+	P = CAMERA->GetProjectionMatrix();
+	attackCollider_->Update(V, P);
+	CheckAttack();
+	// 이걸 단 한번만으로 바꿔보자
 	Audio->Play("swing", 1.0f);
+}
+
+void ShortSword::CheckAttack()
+{
+	GameActor* actor = nullptr;
+	// 참조 전달로 해봤음.
+	for (auto iter = OBJECTMANAGER->GetObjectsMap()->begin(); iter != OBJECTMANAGER->GetObjectsMap()->end(); ++iter) {
+		actor = (GameActor*)iter->second;
+		// actorType이 enemy가 아니면 애초에 충돌검사를 하지 않음.
+		if (
+		Collider::IntersectOBB(attackCollider_, actor->GetCollider()))	// next: 내일
+		{
+		//	MessageBoxW(MAIN->GetWindowHandler(), L"닿았음",L"ShortSword::CheckAttack()", MB_OK);
+		//	printf("오브젝트가 닿았음.\n");
+			actor->Attacked(DamageDice());
+		}		
+	}
+
+
 }
 
 // 주의사항: Player의 위치를 업데이트하고, Player가 WeaponPosition을 자신의 위치로 바꾼 직후에 AniUp을 수행해야 함.
