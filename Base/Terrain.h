@@ -35,7 +35,10 @@ public:  // Setter
 	void    Clear();
 	void    AddTile(int X, int Y, int nOrder, int nType, int nObjectType, wstring strImageFile, Vector2 offset, Vector2 offsetSize);
 	void    SetSceneMap(string sceneName, bool minimal = false);
-	void    SetOffset(float x, float y) { m_oldOffset = m_Offset;  m_Offset = Vector2(x, y); }
+	void    SetOffset(float x, float y) { m_Offset = Vector2(x, y); }
+	void    SetOldOffset(float x, float y) { m_oldOffset = Vector2(x, y); }
+	// m_oldOffset 갱신( SetOffset 에 있던 기능 분리 )
+	void    ApplyOldOffset() { m_oldOffset = m_Offset; }
 	void    SetTileSize(float x, float y) { m_Size = Vector2(x, y); }
 	void    SetMapXY(int x, int y)        { m_MapXY = POINT{ x,y }; }
 	void    EraseTile(int x, int y);

@@ -10,6 +10,14 @@
 
 bool IsDrawingLine = false;
 bool saftyPress = true;		// F1 키: 이제 line 수가 0이면 안그리게 했으니까 더미
+	typedef struct MapEditorOption
+	{
+		Vector2  Origin = Vector2(0.0f, 0.0f);
+		int PixelXY[2] = { 100,100 };
+		int MapXY[4] = { 5,10,20,20 };
+		float scaleXY[2] = { 1.0f, 1.0f };
+	}MapEditorOption;
+static MapEditorOption OPT;
 
 void S04_Extra01::Replace(wstring & str, wstring comp, wstring rep)
 {
@@ -311,6 +319,7 @@ void S04_Extra01::Render()
 
 void S04_Extra01::ChangeScene()
 {
+	LoadEditorOption("./Option.txt", true);
 	SetActive(true);
 }
 
@@ -348,6 +357,7 @@ void S04_Extra01::ShowGUI()
 			{
 				//this->FileOpenDialog();				
 				TRNMANAGER->SaveFile("./test.txt");
+				SaveEditorOption("./Option.txt");	// 중복 저장되지 않게 주의!
 			}
 			if (ImGui::MenuItem("Save PNG File"))
 			{
@@ -391,12 +401,6 @@ void S04_Extra01::SettingMenu()
 	char  buf[120];
 	bool  ret = false;
 
-	static Vector2  Origin = Vector2(0.0f, 0.0f);
-	static int PixelXY[2] = { 100,100 };
-	static int MapXY[4] = { 5,10,20,20 };
-	static float scaleXY[2] = { 1.0f, 1.0f };
-
-
 	sprintf(buf, "%s", u8"Setting");
 
 	if (!ImGui::CollapsingHeader(buf))
@@ -420,13 +424,13 @@ void S04_Extra01::SettingMenu()
 
 		// 파일이나, 데이터베이스 읽어오는 것이 처리
 
-		ret = ImGui::InputInt2("##1", MapXY);
+		ret = ImGui::InputInt2("##1", OPT.MapXY);
 		if (ret)
 		{
-			if (MapXY[0] < 1)
-				MapXY[0] = 1;
-			if (MapXY[1] < 1)
-				MapXY[1] = 1;
+			if (OPT.MapXY[0] < 1)
+				OPT.MapXY[0] = 1;
+			if (OPT.MapXY[1] < 1)
+				OPT.MapXY[1] = 1;
 		}
 	}
 	// Pixel 크기
@@ -435,13 +439,13 @@ void S04_Extra01::SettingMenu()
 		ImGui::SameLine(120.0f, 0.0f);
 
 		// 파일이나, 데이터베이스 읽어오는 것이 처리
-		ret = ImGui::InputInt2("##2", PixelXY);
+		ret = ImGui::InputInt2("##2", OPT.PixelXY);
 		if (ret)
 		{
-			if (PixelXY[0] < 1)
-				PixelXY[0] = 1;
-			if (PixelXY[1] < 1)
-				PixelXY[1] = 1;
+			if (OPT.PixelXY[0] < 1)
+				OPT.PixelXY[0] = 1;
+			if (OPT.PixelXY[1] < 1)
+				OPT.PixelXY[1] = 1;
 		}		
 	}
 	// Offset
@@ -450,7 +454,7 @@ void S04_Extra01::SettingMenu()
 		ImGui::SameLine(120.0f, 0.0f);
 
 		// 파일이나, 데이터베이스 읽어오는 것이 처리
-		ret =  ImGui::InputFloat2("##3", Origin, "%0.2f",0);
+		ret =  ImGui::InputFloat2("##3", OPT.Origin, "%0.2f",0);
 		if (ret)
 		{
 	
@@ -462,15 +466,13 @@ void S04_Extra01::SettingMenu()
 		ImGui::SameLine(120.0f, 0.0f);
 
 		// 파일이나, 데이터베이스 읽어오는 것이 처리
-		ret = ImGui::InputFloat2("##4", scaleXY);
+		ret = ImGui::InputFloat2("##4", OPT.scaleXY);
 		if (ret)
 		{
-			if (scaleXY[0] < 0.0f)
-				scaleXY[0] = 0.0001f;
-			if (scaleXY[1] < 0.0f)
-				scaleXY[1] = 0.0001f;
-			TRNMANAGER->SetMapScale(scaleXY[0], scaleXY[1]);
-			ResetLineScale(Vector2(scaleXY[0], scaleXY[1]));	// m_pLine만 바꾼다. 나머진 저장할때 나눠져
+			if (OPT.scaleXY[0] < 0.0f)
+				OPT.scaleXY[0] = 0.0001f;
+			if (OPT.scaleXY[1] < 0.0f)
+				OPT.scaleXY[1] = 0.0001f;
 		}
 	}
 	// Button
@@ -487,10 +489,8 @@ void S04_Extra01::SettingMenu()
 
 		if (ret)
 		{
-			MapXY[0] = MAIN->GetWidth();
-			MapXY[1] = MAIN->GetHeight();
-			PixelXY[0] = 1;
-			PixelXY[1] = 1;
+			TRNMANAGER->ApplyOldOffset();
+			LoadEditorOption("./Option.txt");
 		}
 
 		ImGui::SameLine();
@@ -499,16 +499,13 @@ void S04_Extra01::SettingMenu()
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.6f, 0.6f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(1.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(1.0f, 0.8f, 0.7f));
-		ret = ImGui::Button(u8"데이터저장");
+		ret = ImGui::Button(u8"세팅값 적용");
 		ImGui::PopStyleColor(3);
 		
 		if (ret)
 		{
-			TRNMANAGER->SetMapXY(MapXY[0], MapXY[1]);
-			TRNMANAGER->SetTileSize(PixelXY[0], PixelXY[1]);
-			TRNMANAGER->SetOffset(Origin.x, Origin.y);	// 이 시점에서 origin이 적용되기 전 old가 저장됨.
-			TRNMANAGER->MoveTiles();	// 오프셋의 변화량을 모든 Tile에 적용, 이후 offset과 old Offset을 동기화
-			CreateGrid();
+			TRNMANAGER->ApplyOldOffset();
+			ApplyEditorOption();	
 		}
 
 	}
@@ -526,7 +523,8 @@ void S04_Extra01::SettingMenu()
 		{
 
 			TRNMANAGER->Clear();
-			TRNMANAGER->SetOffset(Origin.x, Origin.y);
+			TRNMANAGER->SetOldOffset(OPT.Origin.x, OPT.Origin.y);
+			TRNMANAGER->SetOffset(OPT.Origin.x, OPT.Origin.y);
 			CreateGrid();
 		}
 
@@ -869,6 +867,80 @@ void S04_Extra01::FileOpenDialog()
 			file = L"." + file;
 		m_cvImageFiles.push_back(file);
 	}
+}
+
+void S04_Extra01::SaveEditorOption(string strFileName)
+{
+	FILE* op = NULL;
+
+	op = fopen(strFileName.c_str(), "w");
+	if (op == NULL)
+		return;
+
+	fprintf(op, "#OriginX	Y,	PixelX	Y,	MapX	Y,	scaleX	Y\n");
+	fprintf(op, "%f %f %d %d %d %d %f %f\0",
+		OPT.Origin.x,
+		OPT.Origin.y,
+		OPT.PixelXY[0],
+		OPT.PixelXY[1],
+		OPT.MapXY[0],
+		OPT.MapXY[1],
+		OPT.scaleXY[0],
+		OPT.scaleXY[1]
+	);
+	fclose(op);
+}
+// 최초 적용 여부 판별: 기본값: false. true 위치는 ChangeScene에 있음.
+void S04_Extra01::LoadEditorOption(string strFileName, bool isTheFirst)
+{
+	FILE* fp = NULL;
+
+	fp = fopen(strFileName.c_str(), "r");
+	if (fp == NULL)
+		return;
+
+	const int size = 100;
+	char buf[size] = { 0 };
+	int readCount = 1;	// 크기가 커서 다 못읽으니, 의미없는 변수
+	readCount = fread(buf, sizeof(buf), 1, fp);
+	
+	char* value = NULL;	
+	// 읽은 버퍼에 끝내기가 없다면
+	if (buf[size - 1] != '\0')
+		return;
+
+	value = strstr(buf, "\n");
+	value = value + 1;	// 개행문자 바로 다음으로
+
+	if (value != NULL) {
+		sscanf_s(value, "%f %f %d %d %d %d %f %f",
+			&OPT.Origin.x,
+			&OPT.Origin.y,
+			&OPT.PixelXY[0],
+			&OPT.PixelXY[1],
+			&OPT.MapXY[0],
+			&OPT.MapXY[1],
+			&OPT.scaleXY[0],
+			&OPT.scaleXY[1]
+		);
+	}
+	if(isTheFirst == true)	// oldOffset이 곧 newOffset이기에 이렇게 함.
+		TRNMANAGER->SetOldOffset(OPT.Origin.x, OPT.Origin.y);
+	ApplyEditorOption(isTheFirst);	// 받아온 opt들을 적용
+	// 참고로, 여긴 타일 움직이기가 없음.
+	fclose(fp);
+}
+
+void S04_Extra01::ApplyEditorOption(bool isTheFirst)
+{	// 최초 적용시엔 Load할때 
+	TRNMANAGER->SetMapXY(OPT.MapXY[0], OPT.MapXY[1]);
+	TRNMANAGER->SetTileSize(OPT.PixelXY[0], OPT.PixelXY[1]);
+	TRNMANAGER->SetOffset(OPT.Origin.x, OPT.Origin.y);
+	TRNMANAGER->SetMapScale(OPT.scaleXY[0], OPT.scaleXY[1]);
+	if(isTheFirst == false)	// 처음엔 MoveTiles 안해도 됨.
+		TRNMANAGER->MoveTiles();	// 오프셋의 변화량을 모든 Tile에 적용, 이후 offset과 old Offset을 동기화
+	ResetLineScale(Vector2(OPT.scaleXY[0], OPT.scaleXY[1]));	// m_pLine만 바꾼다. 나머진 저장할때 나눠져
+	CreateGrid();
 }
 
 wstring S04_Extra01::GetSaveFile()

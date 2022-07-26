@@ -14,8 +14,12 @@ private:
 	void  SelectTexture();
 	void  CreateGrid();
 	void  FileOpenDialog();
+	void  SaveEditorOption(string strFileName);
+	void  LoadEditorOption(string strFileName, bool isTheFirst = false);
+	void  ApplyEditorOption(bool isTheFirst = false);	// 읽어온, 혹은 세팅값 적용(이때는 moveTiles를 ret에 넣어놓음) 버튼을 누를때 호출
 	wstring  GetSaveFile();
 private:
+	//MapEditorOption 구조체는 .cpp 파일에 선언되어 있음.
 	class EditorObjects* editorObjects_ = nullptr;
 	vector<wstring>  m_cvImageFiles;
 	Texture  *m_pMoveTexture = nullptr;

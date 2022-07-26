@@ -427,6 +427,11 @@ void Terrain::MoveTiles()
 {
 	Vector2 changeAmount = m_Offset - m_oldOffset;
 	Vector2 tempPos = Vector2(0.0f, 0.0f);
+	if (fabsf(changeAmount.x + changeAmount.y) < 0.01f){
+		printf("최소크기 0.01f 미만 이동 무시\n");
+		return;
+	}
+
 	for (auto iter = m_cmTiles.begin(); iter != m_cmTiles.end(); ++iter) {
 		tempPos = iter->second->GetPosition();
 		iter->second->SetPosition(tempPos + changeAmount);
