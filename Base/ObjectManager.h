@@ -24,6 +24,7 @@ public:
 	GameObject* FindObject(string name);
 	void         AddObjectStrings(string name) { m_cmObjectStrings.push_back(name); };
 	void         ClearObjectStrings() { m_cmObjectStrings.clear(); }
+	auto		 GetObjectsMap() { return &m_cmObjects; }
 private:
 	map<string, GameObject*> m_cmObjects;
 	vector<string>  m_cmObjectStrings;
