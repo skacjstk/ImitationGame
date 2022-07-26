@@ -85,8 +85,27 @@ void GameActor::GravityUpdate()
 	}
 	beforeGround_ = isGround_;
 }
-// 임시코드
-void GameActor::Attacked()
+// 재정의자 제외 모두 이거 쓰려고.
+void GameActor::Attacked(float damage)
 {
-	actorData_.HP -= 1;
+	float changed = max(damage - actorData_.armor, 1.0f);
+	actorData_.HP -= changed;
+	HPChange();
 }
+void GameActor::FatalBlow()
+{
+	Die();
+}
+void GameActor::HPChange()
+{
+	// 오브젝트마다 만들어줘야 함.
+	//	playerUI->playerLifeUI_->UpdateLifeBar(actorData_.HP, actorData_.maxHP);
+	int hp = (int)actorData_.HP;
+	if (hp <= 0)
+		FatalBlow();
+}
+void GameActor::Die()
+{
+	printf("액터 사망\n");
+}
+

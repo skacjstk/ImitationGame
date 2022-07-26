@@ -21,7 +21,6 @@ public:		// 공개 인스턴스 변수
 	struct PlayerData
 	{
 		int charCode = 0;
-		int maxHP = 20;	// HP는 actorData 에 있음.
 		UINT dashCount = 2;
 		UINT maxDashCount = 2;
 		float baseSpeed = 500.0f;
@@ -68,7 +67,7 @@ public:
 //	void GravityUpdate();
 	void CycleUpdate();
 	void UpdateHandedWeapon() override;
-	void Attacked() override;
+	void Attacked(float damage) override;
 	void Dash() override;
 	void DashDo();
 	void DashWaiting();
@@ -88,8 +87,6 @@ public:
 	bool IsGround() { return isGround_; }
 	void IncreaseHP(int amount);
 	void DecreaseHP(int amount);
-	void HPChange() override;	// 체력이 변화할 경우, 이 함수를 호출해 주세요
-	void Die();	// HP가 0이 되면 사망.
 public:	// 움직임 관련 Command 함수
 	void LeftMove() override;
 	void RightMove() override;
@@ -98,6 +95,9 @@ public:	// 움직임 관련 Command 함수
 	void Attack() override;
 	void InventoryToggle() override;
 	void SwapHandFocus() override;
+	// 상태 관련 Command
+	void HPChange() override;	// 체력이 변화할 경우, 이 함수를 호출해 주세요
+	void Die() override;	// HP가 0이 되면 사망.
 private: 
 	void Move(Vector2& position);	// 해당 위치로 움직이려고 시도함
 	void DashRecharge(int amount);

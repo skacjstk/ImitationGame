@@ -2,17 +2,26 @@
 class GameActor : public GameObject
 {
 public:
+	enum class ActorType
+	{
+		Player,
+		Enemy
+	};
 	struct ActorData	// 현재 HP와 무적타임만 가지고 있음. ( maxHP 등 나머지는 개별 객체가 가질 수 있음. )
 	{
-		int HP = 0;
+		int HP = 10;
+		int maxHP = 10;
 		int ImmuneTime = 0;
+		ActorType type = ActorType::Enemy;
+		float damage = 5.0f;	// 이건 몬스터용, 플레이어는 무기의 데미지를 인자가 따로 있다.
+		float armor = 5.0f;	// 임시: 아머
 	};
-protected:
 	struct ActorData actorData_;
+	bool isGround_ = false;	// Actor 자신이 땅에 닿았는지 확인할 변수
+protected:
 	class Collider* pCollider_ = nullptr;
 	class Animation* _animation = nullptr;
 	float gravity_ = 0.0f;	// Actor들에게 적용되는 매 프레임마다 아래로 떨어지는 변화량
-	bool isGround_ = false;	// Actor 자신이 땅에 닿았는지 확인할 변수
 	bool isConflicted_ = false;	// 벽 제외 다른 곳에 부딧혔을 때
 	bool isFall = false;
 	bool isJump = false;
@@ -26,9 +35,11 @@ public:
 	// Command 목록
 	virtual void GroundCheck();
 	void GravityUpdate();
-	virtual void Attacked();
 	virtual void LeftMove() {};
 	virtual void RightMove() {};
+	virtual void Attacked(float damage);
+	virtual void FatalBlow();	// 치명적인 일격 판정, 이후 뭐가 없으면 사망
+	virtual void Die();
 	virtual void Jump() {};
 	virtual void Move() {};	// 파생용: 0630 기준 Left,Right에서 정해준 방향으로 Move를 호출하는 역할. 
 	virtual void Idle() {};		// IDLE과 Attack은 꼭 있어야 함.
@@ -39,7 +50,7 @@ public:
 	virtual void SwapHandFocus() {};
 	virtual void UpdateHandedWeapon() {};	// 인벤토리에서 아이템 정보 갱신용
 	virtual void Dash() {};
-	virtual void HPChange() {};	// 체력이 변화하게 되면 이 함수를 호출해 주세요.
+	virtual void HPChange();	// 체력이 변화하게 되면 이 함수를 호출해 주세요. 체력바 갱신용
 	// Getter
 	int GetImmuneFrame() { return ImmuneFrame_; }
 	// Setter

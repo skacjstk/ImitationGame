@@ -84,12 +84,15 @@ void LittleGhost::Render()
 
 void LittleGhost::Reset()
 {
-	SetActive(true);
 	SetScale(3.0f * WSCALEX, 3.0f * WSCALEY);
 	_animation->SetScale(GetScale());
 	chaseTarget_ = (GameActor*)OBJECTMANAGER->FindObject("player");
 	this->SetPosition(chaseTarget_->GetPosition());
 	currentState_->Enter(*this);
+	actorData_.HP = 12;
+	actorData_.maxHP = 12;
+	actorData_.ImmuneTime = 0;
+	SetActive(true);
 }
 
 void LittleGhost::StateUpdate()
@@ -103,7 +106,7 @@ void LittleGhost::AttackCheck()
 	// 겹쳐져 있으면 공격 성공, 타겟의 무적시간이 0 이면서
 	if (chaseTarget_->GetImmuneFrame() <= 0 && Collider::IntersectAABB(pCollider_, chaseTarget_->GetCollider()))
 	{
-		chaseTarget_->Attacked();
+		chaseTarget_->Attacked(actorData_.damage);
 	}
 }
 
