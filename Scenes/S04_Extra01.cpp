@@ -3,12 +3,13 @@
 #include "./Object/Line.h"
 // #include "./Object/Rect.h"
 #include "./ImGUI/imgui.h"
+#include "Base/EditorObjects.h"
 #include <shellapi.h>
 #include <commdlg.h>
 //#include <codecvt>
 
 bool IsDrawingLine = false;
-bool saftyPress = false;		// F1 키
+bool saftyPress = true;		// F1 키: 이제 line 수가 0이면 안그리게 했으니까 더미
 
 void S04_Extra01::Replace(wstring & str, wstring comp, wstring rep)
 {
@@ -65,7 +66,7 @@ void S04_Extra01::EditLine()
 	}
 }
 
-void S04_Extra01::EditCelingLine()
+void S04_Extra01::EditCeilingLine()
 {
 	// ImGUI윈도우에 마우스가 Capture되어 있으면 동작 안함
 //	if (ImGui::GetIO().WantCaptureMouse)  
@@ -105,39 +106,64 @@ void S04_Extra01::EditCelingLine()
 	}
 }
 
+void S04_Extra01::EditPlatformLine()
+{
+	if (Mouse->Down(0))
+	{
+		m_nMousePick = 1;
+		m_pRubberBand->ClearLine();
+
+		Vector2 line = Mouse->GetPosition();
+		CAMERA->WCtoVC(line);
+		m_pRubberBand->AddLine(line.x, line.y, line.x, line.y);
+		m_pRubberBand->EndLine();
+	}
+	if (Mouse->Up(0) && saftyPress)  // 데이터를 저장
+	{
+		m_pPlatformLine->ClearVertexBuffer();
+		Vector2 start = m_pRubberBand->GetStartPoint(0);
+		Vector2 end = m_pRubberBand->GetEndPoint(0);
+
+		m_pPlatformLine->AddLine(start.x, start.y, end.x, end.y);
+		m_pPlatformLine->EndLine();
+
+		m_nMousePick = -1;
+		m_pRubberBand->ClearLine();
+	}
+	// 마우스가 움직이는 상태
+	if (m_nMousePick == 1)
+	{
+		Vector2 start = m_pRubberBand->GetStartPoint(0);
+		Vector2 end = Mouse->GetPosition();
+		CAMERA->WCtoVC(end);
+		m_pRubberBand->ClearLine();
+		m_pRubberBand->AddLine(start.x, start.y, end.x, end.y);
+		m_pRubberBand->EndLine();
+	}
+}
+
+void S04_Extra01::ResetLineScale(Vector2 trnMag)
+{
+	m_pLine->lineScale_ = trnMag;
+//	m_pGroundLine->lineScale_ = trnMag;
+//	m_pCeilingLine->lineScale_ = trnMag;
+//	m_pRubberBand->lineScale_ = trnMag;
+//	m_pPlatformLine->lineScale_ = trnMag;
+}
+
 S04_Extra01::S04_Extra01()
 {
 	m_strSceneName = "MapEditor";
 	SetActive(false);
-
+	editorObjects_ = new EditorObjects();	// 객체 데이터 추가.
 	m_pGroundLine = new Line();
 	m_pCeilingLine = new Line();
 	m_pRubberBand = new Line();
+	m_pPlatformLine = new Line();
 	m_pGroundLine->SetColor(Color(1.0f, 1.0f, 0.0f, 1.0f));
 	m_pCeilingLine->SetColor(Color(0.0f, 1.0f, 1.0f, 1.0f));
 	m_pRubberBand->SetColor(Color(1.0f,0.0f,1.0f, 1.0f));
-	/*
-
-	TRNMANAGER->SetSceneMap("SceneEX01");
-	m_cvImageFiles.push_back(L"./Image/Floor/Floor1.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/Floor2.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/Floor3.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/Floor4.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/Floor5.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/Floor6.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/Floor7.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/Floor8.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/SideFrost1.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/SideFrost3.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/SideFrost4.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/SideFrost5.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/SideFrost6.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/SideFrost7.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/SideFrost8.png");
-	m_cvImageFiles.push_back(L"./Image/Floor/Wall.png");
-
-	*/
-
+	m_pPlatformLine->SetColor(Color(0.0f, 0.5f, 0.5f, 1.0f));
 
 	wstring strImage = IMAGE_FOLDER;
 	strImage += L"Button/GameStart.png";
@@ -147,8 +173,8 @@ S04_Extra01::S04_Extra01()
 	m_pLine = new Line();
 	CreateGrid();
 
-	
-
+//	TRNMANAGER->SetSceneMap("test");
+//	editorObjects->LoadObjectsFile("testObjects");
 
 }
 
@@ -167,13 +193,10 @@ void S04_Extra01::Update()
 	V = CAMERA->GetViewMatrix();
 
 	CAMERA->Update(V, P);
-	TRNMANAGER->Update(V, P);
+//	TRNMANAGER->Update(V, P);
 
 	if (KEYBOARD->Down(VK_TAB)) {
 		IsDrawingLine = !IsDrawingLine;
-	}
-	if (KEYBOARD->Down(VK_F1)) {
-		saftyPress = !saftyPress;
 	}
 
 	if(IsDrawingLine == false){
@@ -240,15 +263,17 @@ void S04_Extra01::Update()
 
 			m_pGroundLine->EraseLine(pos, 2.0f);
 			m_pCeilingLine->EraseLine(pos, 2.0f);
+			m_pPlatformLine->EraseLine(pos, 2.0f);
 			m_pRubberBand->ClearLine();
 		}
 	}
-
 	m_pMoveTexture->Update(V, P);
 	m_pLine->Update(V, P);
 	m_pGroundLine->Update(V, P);
 	m_pCeilingLine->Update(V, P);
+	m_pPlatformLine->Update(V, P);
 	m_pRubberBand->Update(V, P);
+	editorObjects_->UpdateAll(V, P);
 }
 
 void S04_Extra01::Render()
@@ -264,7 +289,10 @@ void S04_Extra01::Render()
 		m_pCeilingLine->Render();
 	if (m_pRubberBand->GetCountLine() > 0)
 		m_pRubberBand->Render();
-	
+	if (m_pPlatformLine->GetCountLine() > 0)
+		m_pPlatformLine->Render();
+
+	editorObjects_->RenderAll();
 	
 	// imGui Rendering
 	{
@@ -327,6 +355,10 @@ void S04_Extra01::ShowGUI()
 				if (saveFile != L"")
 				TRNMANAGER->SavePNGFile(saveFile);
 			}
+			if (ImGui::MenuItem("Save Objects File"))
+			{
+				editorObjects_->SaveObjectsFile("./testObjects.txt");
+			}
 			if (ImGui::MenuItem(u8"PNG 파일 저장(Fit)"))
 			{
 				wstring  saveFile = GetSaveFile();
@@ -337,9 +369,6 @@ void S04_Extra01::ShowGUI()
 		}
 		ImGui::EndMenuBar();
 	}
-
-
-
 
 	if (ImGui::IsWindowHovered())
 		m_bImGuiWindow = true;
@@ -441,6 +470,7 @@ void S04_Extra01::SettingMenu()
 			if (scaleXY[1] < 0.0f)
 				scaleXY[1] = 0.0001f;
 			TRNMANAGER->SetMapScale(scaleXY[0], scaleXY[1]);
+			ResetLineScale(Vector2(scaleXY[0], scaleXY[1]));	// m_pLine만 바꾼다. 나머진 저장할때 나눠져
 		}
 	}
 	// Button
@@ -504,7 +534,7 @@ void S04_Extra01::SettingMenu()
 	// Button
 // Combo
 	{
-		const char* items[] = { "None","GroundLine","CelingLine"};
+		const char* items[] = { "None","Ground","Ceiling", "Platform"};
 		static int combo;
 		int  oldcombo = combo;
 		ImGui::Combo("Background", &combo, items, ARRAYSIZE(items));
@@ -515,53 +545,89 @@ void S04_Extra01::SettingMenu()
 		if (combo == 1)
 			EditLine();
 		if (combo == 2)
-			EditCelingLine();
-
+			EditCeilingLine();
+		if (combo == 3)
+			EditPlatformLine();
 	}
-
-	// Button LineButton
+	// LineCombo
 	{
-	//	ImGui::SameLine();
-		ret = ImGui::Button(u8"G: 저장하기");
-
-		if (ret)
+		const char* items[] = { "None","Ground","Ceiling", "Platform" };
+		static int combo;
+		int  oldcombo = combo;
+		ImGui::Combo("LineOption", &combo, items, ARRAYSIZE(items));
+	
+		if (oldcombo != combo)
+			m_nMousePick = -1;
+	
+		if (combo == 1)
+		{ 
+			{
+				ImGui::SameLine();
+				ret = ImGui::Button(u8"G: 저장하기");
+	
+				if (ret)
+				{
+					m_pGroundLine->SaveLine("./testcoord.txt");
+				}
+			}
+			// Button
+			{
+				ImGui::SameLine();
+				ret = ImGui::Button(u8"G: LOAD하기");
+	
+				if (ret)
+				{
+					m_pGroundLine->LoadLine("./testcoord.txt");
+				}
+			}
+		}// end combo1
+		if (combo == 2)
+		{	
+			// Button
+			{
+				ImGui::SameLine();
+				ret = ImGui::Button(u8"C: 저장하기");
+	
+				if (ret)
+				{
+					m_pCeilingLine->SaveLine("./testCeilingcoord.txt");
+				}
+			}
+			// Button
+			{
+				ImGui::SameLine();
+				ret = ImGui::Button(u8"C: LOAD하기");
+	
+				if (ret)
+				{
+					m_pCeilingLine->LoadLine("./testCeilingcoord.txt");
+				}
+			}
+		}// end combo2
+		if (combo == 3)
 		{
-			m_pGroundLine->SaveLine("./testcoord.txt");
-		}
-
+			// Button
+			{
+				ImGui::SameLine();
+				ret = ImGui::Button(u8"P: 저장하기");
+	
+				if (ret)
+				{
+					m_pCeilingLine->SaveLine("./testPlatformcoord.txt");
+				}
+			}
+			// Button
+			{
+				ImGui::SameLine();
+				ret = ImGui::Button(u8"P: LOAD하기");
+	
+				if (ret)
+				{
+					m_pCeilingLine->LoadLine("./testPlatformcoord.txt");
+				}
+			}
+		}// end combo3
 	}
-	// Button
-	{
-		ImGui::SameLine();
-		ret = ImGui::Button(u8"C: 저장하기");
-
-		if (ret)
-		{
-			m_pCeilingLine->SaveLine("./testCeilingcoord.txt");
-		}
-
-	}
-	// Button
-	{
-		ImGui::SameLine();
-		ret = ImGui::Button(u8"G: LOAD하기");
-
-		if (ret)
-		{
-			m_pGroundLine->LoadLine("./testcoord.txt");
-		}
-	}
-	// Button
-	{
-		ImGui::SameLine();
-		ret = ImGui::Button(u8"C: LOAD하기");
-
-		if (ret)
-		{
-			m_pCeilingLine->LoadLine("./testCeilingcoord.txt");
-		}
-	}
-
 }
 
 void S04_Extra01::SelectTexture()
