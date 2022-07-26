@@ -71,4 +71,5 @@ public:
 	auto GetRightHandPoint() { return RightHandPoint_; }
 	auto GetLeftHandRotation() { return leftHandRot_; }
 	auto GetLeftHandPivot() { return leftHandPivot_; }
+	float DamageDice();
 };
