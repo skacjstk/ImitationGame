@@ -1,0 +1,2 @@
+#OriginX	Y,	PixelX	Y,	MapX	Y,	scaleX	Y
+-64.000000 64.000000 16 16 10 10 6.000000 6.000000
