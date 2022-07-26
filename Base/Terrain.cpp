@@ -401,13 +401,13 @@ bool Terrain::GetMapXY(int & x, int & y, Vector2 position)
 
 	for (int i = 0; i < this->GetMapXY().x; i++)
 	{
-		Min.x = -GetTileSize().x*0.5f + GetOffset().x + (i*GetTileSize().x);
-		Max.x =  Min.x +GetTileSize().x;
+		Min.x = -GetTileSizeWithMag().x*0.5f + GetOffset().x + (i* GetTileSizeWithMag().x);
+		Max.x =  Min.x + GetTileSizeWithMag().x;
 
 		for (int j = 0; j <= GetMapXY().y; j++)
 		{
-			Max.y = GetTileSize().y*0.5f + GetOffset().y - (j*GetTileSize().y);
-			Min.y = Max.y - GetTileSize().y;
+			Max.y = GetTileSizeWithMag().y*0.5f + GetOffset().y - (j* GetTileSizeWithMag().y);
+			Min.y = Max.y - GetTileSizeWithMag().y;
 			if ((position.x >= Min.x && position.x <= Max.x) &&
 				(position.y >= Min.y && position.y <= Max.y))
 			{

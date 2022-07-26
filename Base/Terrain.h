@@ -51,6 +51,8 @@ public:  // Setter
 public:  // Getter
 	Vector2 GetOffset()					  { return m_Offset; }
 	Vector2 GetTileSize()                 { return m_Size; }
+	Vector2 GetTileSizeWithMag() { return Vector2(m_Size.x * TerrainMagnification_.x, 
+		m_Size.y * TerrainMagnification_.y); }
 	POINT   GetMapXY()                    { return m_MapXY; }
 	bool    GetMapXY(int& x, int&y, Vector2 position);  
 	int     GetOrderMax() { return m_nMaxDisplayOrder; }
