@@ -6,18 +6,18 @@ class Terrain  // 지형,
 public:
 	struct  BinaryMAP
 	{
-		int		 x;
-		int		 y;
-		Vector2  position;  // class(x)
-		char     imgname[80];
-		int      order;
-		Vector2  offset;
-		Vector2  offsetSize;
-		int      objectType;
-		int      Type;
-		int      Flip;
-		float    angle;
-		Vector2  scale;
+		int		 x = 0;
+		int		 y = 0;
+		Vector2  position = Vector2(0.0f,0.0f);  // class(x)
+		char     imgname[80] = "";
+		int      order = 0;
+		Vector2  offset = Vector2(0.0f, 0.0f);
+		Vector2  offsetSize = Vector2(0.0f, 0.0f);
+		int      objectType = 0;
+		int      Type = 0;
+		int      Flip = 0;
+		float    angle = 0.0f;
+		Vector2  scale = Vector2(0.0f,0.0f);
 	};
 
 	Vector2 TerrainMagnification_ = Vector2(1.0f, 1.0f);	// 기본은 1.0, Scene 따라 배율이 달라지게 하려고 함.
@@ -50,6 +50,9 @@ public:  // Setter
 	void    SetMapScale(float x, float y) { TerrainMagnification_.x = x, TerrainMagnification_.y = y;	}
 public:  // Getter
 	Vector2 GetOffset()					  { return m_Offset; }
+	Vector2 GetOffsetWithMag() { return Vector2(m_Offset.x * TerrainMagnification_.x,
+		m_Offset.y * TerrainMagnification_.y);
+	}
 	Vector2 GetTileSize()                 { return m_Size; }
 	Vector2 GetTileSizeWithMag() { return Vector2(m_Size.x * TerrainMagnification_.x, 
 		m_Size.y * TerrainMagnification_.y); }
