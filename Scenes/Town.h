@@ -9,10 +9,17 @@ class Town : public Scene
 {
 private:	//private instance variable
 	Texture* backGround_ = nullptr;
+	Texture* mountain_ = nullptr;
+	Texture* forest_ = nullptr;
 	Texture* townTerrain_ = nullptr;
 	class Line* m_pGroundLine = nullptr;
 	class Line* m_pCeilingLine = nullptr;
 	class NPC* npc = nullptr;
+	class Player* tempPlayer = nullptr;
+	Vector2 playerBefore = Vector2(0.0f, 0.0f);
+	Vector2 playerAfter = Vector2(0.0f, 0.0f);
+	float playerMoveX = 0.0f;
+	float playerMoveY = 0.0f;
 public:	//»ý ¼Ò
 	Town();
 	~Town();
