@@ -1,6 +1,7 @@
 
 #include  "ImitationGame/framework.h"
 #include  "Terrain.h"
+#include "./Scenes/Room.h"
 #include  "./Object/Tile.h"
 #include  "./Render/Graphic2D.h"
 
@@ -86,17 +87,28 @@ void Terrain::AddTile(int X, int Y, int nOrder, int nType, int nObjectType, wstr
 	if (m_nMaxDisplayOrder < nOrder)
 		m_nMaxDisplayOrder = nOrder;
 
+	// nType은 TileType인데 의미 없음.
 
 
 	SRVMANAGER->CreateShaderResourceView(strImageFile);
 	pTile->SetPosition(position);
-	pTile->SetOrder(m_pTexture, nOrder, strImageFile, offset, offsetSize, 0, 0.0f, Vector2(1.0f,1.0f));
+	pTile->SetOrder(m_pTexture, nOrder, strImageFile, offset, offsetSize, 0, 0.0f, Vector2(1.0f, 1.0f), nObjectType);
+	
+
 }
 // flag가 True 일 경우, Map의 Magnification( 기타 필수옵션 )만 받아옴.
 void Terrain::SetSceneMap(string sceneName, bool minimal)
 {
 	string str = "./" + sceneName + ".txt";
 	OpenFile(str, minimal);
+}
+// 옵션파일에 floor, x, y 넣어볼 거야, 얘는 맵에디터용이니 temp를 가져와야지
+void Terrain::SetSceneObj(int floor, int x, int y)
+{
+	string fileName = TEMPROOM_FOLDER;
+	fileName += to_string(floor) + "F/";
+	fileName += to_string(x) + to_string(y) + "ObjectDesc.txt";
+	LoadObjFile(fileName);
 }
 void Terrain::EraseTile(int x, int y)
 {
@@ -107,15 +119,17 @@ void Terrain::EraseTile(int x, int y)
 /////////////////////////////////////////////////////////
 // 파일저장
 /////////////////////////////////////////////////////////
-void Terrain::SaveFile(string strFileName)
+void Terrain::SaveFile(string strFileName, string objFileName)
 {
 	FILE *op = NULL;
-
+	FILE* opObj = NULL;
 	op = fopen(strFileName.c_str(), "w");
-	if (op == NULL) 
+	opObj = fopen(objFileName.c_str(), "w");
+	if (op == NULL || opObj == NULL) 
 		return;
 
-	fprintf(op, "#X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY\n");
+	fprintf(op, "#X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	OBJECTYPE\n");
+	fprintf(opObj, "#X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	OBJECTYPE\n");
 	fprintf(op, "MAGNIFICATION:%f %f\n", TerrainMagnification_.x, TerrainMagnification_.y);
 	for (auto v : m_cmTiles)
 	{
@@ -128,7 +142,7 @@ void Terrain::SaveFile(string strFileName)
 		// scanf  : 입력(console)
 		// sscanf : stearm  char buf[100];
 		//    sscanf(buf,"%d%*c......
-		sscanf(strMap2.c_str(), "%d%*c%d", &x, &y);
+		sscanf(strMap2.c_str(), "%d%*c%d", &x, &y);	// 처음 XY 구하기
 	
 
 		for (UINT i = 0; i < v.second->GetTileOrderSize(); i++)
@@ -136,24 +150,51 @@ void Terrain::SaveFile(string strFileName)
 			TileOrder *pOrder = v.second->GetTile(i);
 			if (!pOrder)
 				continue;
-			// MAP X, Y
-			fprintf(op, "%-3d %-3d ", x, y);
-			// POSITION
-			fprintf(op, "%-3.2f %-3.2f |", v.second->GetPosition().x, v.second->GetPosition().y);
-			// IMAGE
-			string tmp;
-			tmp.assign(pOrder->imageFile.begin(), pOrder->imageFile.end());
-			tmp = tmp.replace(0 , tmp.find("Resources"), "../");	// 상대경로 변경 완료
-			fprintf(op, "%s|", tmp.c_str());
-			// DIAPLAY ORDER
-			fprintf(op, "%3d ", pOrder->order);
-			// Offset
-			fprintf(op, "%.f %.f ", pOrder->offset.x, pOrder->offset.y);
-			// Offset Size
-			fprintf(op, "%.f %.f ", pOrder->offsetSize.x, pOrder->offsetSize.y);
-			// SCALE
-			fprintf(op, "%.f %.f ", pOrder->scale.x, pOrder->scale.y );
-			fprintf(op, "\n");	
+			if(pOrder->objectType == 0){
+				// MAP X, Y
+				fprintf(op, "%-3d %-3d ", x, y);
+				// POSITION
+				fprintf(op, "%-3.2f %-3.2f |", v.second->GetPosition().x, v.second->GetPosition().y);
+				// IMAGE
+				string tmp;
+				tmp.assign(pOrder->imageFile.begin(), pOrder->imageFile.end());
+				tmp = tmp.replace(0, tmp.find("Resources"), "../");	// 상대경로 변경 완료
+				fprintf(op, "%s|", tmp.c_str());
+				// DIAPLAY ORDER
+				fprintf(op, "%3d ", pOrder->order);
+				// Offset
+				fprintf(op, "%.f %.f ", pOrder->offset.x, pOrder->offset.y);
+				// Offset Size
+				fprintf(op, "%.f %.f ", pOrder->offsetSize.x, pOrder->offsetSize.y);
+				// SCALE
+				fprintf(op, "%.f %.f ", pOrder->scale.x, pOrder->scale.y);
+				// 오브젝트 타입
+				fprintf(op, "%d", pOrder->objectType);
+				fprintf(op, "\n");
+			} // end 0 
+			else // 오브젝트에 넣기
+			{
+				// MAP X, Y
+				fprintf(opObj, "%-3d %-3d ", x, y);
+				// POSITION
+				fprintf(opObj, "%-3.2f %-3.2f |", v.second->GetPosition().x, v.second->GetPosition().y);
+				// IMAGE
+				string tmp;
+				tmp.assign(pOrder->imageFile.begin(), pOrder->imageFile.end());
+				tmp = tmp.replace(0, tmp.find("Resources"), "../");	// 상대경로 변경 완료
+				fprintf(opObj, "%s|", tmp.c_str());
+				// DIAPLAY ORDER
+				fprintf(opObj, "%3d ", pOrder->order);
+				// Offset
+				fprintf(opObj, "%.f %.f ", pOrder->offset.x, pOrder->offset.y);
+				// Offset Size
+				fprintf(opObj, "%.f %.f ", pOrder->offsetSize.x, pOrder->offsetSize.y);
+				// SCALE
+				fprintf(opObj, "%.f %.f ", pOrder->scale.x, pOrder->scale.y);
+				// 오브젝트 타입
+				fprintf(opObj, "%d", pOrder->objectType);
+				fprintf(opObj, "\n");
+			}
 		}
 	
 	}
@@ -161,10 +202,123 @@ void Terrain::SaveFile(string strFileName)
 
 
 	fclose(op);
-	system("NotePad.exe ./test.txt");
+	fclose(opObj);
+	string t = "NotePad.exe " + objFileName;
+	const char* ptr = t.c_str();
+	system(ptr);
+//	system("NotePad.exe ./test.txt");
+
+	// 바이너리 봉인
+	return;
 	SaveBinaryFile("./test.bi");
 
 }
+void Terrain::SetRoomObj(Room* room)
+{
+	string fileName = ROOM_FOLDER;
+	fileName += to_string(room->currentFloor_) + "F/";
+	fileName += to_string(room->myIndex[0]) + to_string(room->myIndex[1]) + "ObjectDesc.txt";
+	LoadObjFile(fileName, room);
+}
+// 이건 Room 에 데이터 담는거라 그렇다.
+void Terrain::LoadObjFile(string strFileName, Room* room)
+{
+}
+// m_cmTiles에 데이터 넣기(맵 에디터용)
+void Terrain::LoadObjFile(string strFileName)
+{
+	FILE* fp;
+
+	// Texture값 Setting
+
+//	OpenBinaryFile("./test.bi");
+//	return;
+
+	printf("%s\n", strFileName.c_str());
+	fp = fopen(strFileName.c_str(), "r");
+	if (fp == NULL)
+		return;
+
+	// Ascii File인 경우 1 Line씩 데이터를 read
+
+	while (1)
+	{
+		char buf[1024];
+		int  X, Y;
+		char imgBuf[200];
+		int  nOrder = 0;
+		int objectType = 0;
+		Vector2 Offset = Vector2(0.0f, 0.0f);
+		Vector2 OffsetSize = Vector2(0.0f, 0.0f);
+		Vector2 scale = Vector2(1.0f, 1.0f);
+		int   nFlip = 0;
+		float nAngle = 0.0f;
+		int success = 0;
+
+		if (!fgets(buf, 1024, fp))
+			break;
+		//	buf[strlen(buf) - 1] = '\0'; // NewLine데이터 삭제
+		if (strlen(buf) < 10)
+			continue;
+		if (strstr(buf, "#"))
+			continue;
+
+		//	0   10 -500.00 -200.00 | . / Image//Floor/Wall7.png|       1 0 0 100 112 
+		float FX, FY;
+
+		success = sscanf(buf, "%d %d %f %f", &X, &Y, &FX, &FY);
+		char* p = strstr(buf, "|");
+		p++;
+		strcpy(imgBuf, p);
+		p = strstr(imgBuf, "|");
+		*p = '\0';
+
+		string   str = imgBuf;
+		wstring  str2;
+		str2.assign(str.begin(), str.end());
+
+		p = strstr(buf, "|");
+		p++;
+
+		p = strstr(p, "|");
+		p++;
+
+		Vector2 offset;
+		Vector2 offsetSize;
+		success = sscanf_s(p, "%d %f %f %f %f %f %f %d", &nOrder, &offset.x, &offset.y, &offsetSize.x, &offsetSize.y, &scale.x, &scale.y, &objectType);
+		//_s는 %d, %f같은 기본사양은 크기지정 안해줘도 됨.
+
+
+		// imgBuf의 내용은 SRVMANAGER에 저장
+		wstring strImage = str2;
+		// Texture에 저장
+
+		// 6 * 10
+		wstring strMap = to_wstring(X) + L"," + to_wstring(Y);
+
+
+		Vector2 position = Vector2(FX, FY);
+
+		SRVMANAGER->CreateShaderResourceView(strImage);
+
+		Tile* pTile = FindTile(strMap);
+
+		// 신규생성
+		if (!pTile)
+		{
+			pTile = new Tile();
+			m_cmTiles.insert(make_pair(strMap, pTile));
+		}
+
+		if (m_nMaxDisplayOrder < nOrder)
+			m_nMaxDisplayOrder = nOrder;
+
+		pTile->SetPosition(position);
+		pTile->SetOrder(m_pTexture, nOrder, strImage, offset, offsetSize, nFlip, nAngle, scale, objectType);
+	}
+	fclose(fp);
+}
+
 void Terrain::SaveBinaryFile(string strFileName)
 {
 	FILE  *op; 
@@ -268,7 +422,7 @@ void Terrain::OpenBinaryFile(string strFileName)
 		if (m_nMaxDisplayOrder < tmp.order)
 			m_nMaxDisplayOrder = tmp.order;
 		pTile->SetPosition(position);
-		pTile->SetOrder(m_pTexture, tmp.order, strImage, tmp.offset, tmp.offsetSize, tmp.Flip, tmp.angle, tmp.scale);
+		pTile->SetOrder(m_pTexture, tmp.order, strImage, tmp.offset, tmp.offsetSize, tmp.Flip, tmp.angle, tmp.scale, tmp.objectType);
 
 	}
 
@@ -423,18 +577,54 @@ bool Terrain::GetMapXY(int & x, int & y, Vector2 position)
 	return bExist;
 }
 
+bool Terrain::GetOldMapXY(int& x, int& y, Vector2 position)
+{
+	bool bExist = false;
+	Vector2 Min;
+	Vector2 Max;
+
+	for (int i = 0; i < this->GetMapXY().x; i++)
+	{
+		Min.x = -GetOldTileSizeWithMag().x * 0.5f + GetOldOffsetWithMag().x + (i * GetOldTileSizeWithMag().x);
+		Max.x = Min.x + GetOldTileSizeWithMag().x;
+
+		for (int j = 0; j <= GetMapXY().y; j++)
+		{
+			Max.y = GetOldTileSizeWithMag().y * 0.5f + GetOldOffsetWithMag().y - (j * GetOldTileSizeWithMag().y);
+			Min.y = Max.y - GetOldTileSizeWithMag().y;
+			if ((position.x >= Min.x && position.x <= Max.x) &&
+				(position.y >= Min.y && position.y <= Max.y))
+			{
+				x = i;
+				y = j;
+				bExist = true;
+				break;
+			}
+		}
+		if (bExist)
+			break;
+	}
+	return bExist;
+}
+
 void Terrain::MoveTiles()
 {
+	// TileSize에 관한 게 있어야 함.
 	Vector2 changeAmount = m_Offset - m_oldOffset;
+	Vector2 changeSize = m_Size - m_oldSize;
 	Vector2 tempPos = Vector2(0.0f, 0.0f);
-	if (fabsf(changeAmount.x + changeAmount.y) < 0.01f){
+	if (fabsf(changeAmount.x + changeAmount.y) < 0.01f && fabsf(changeSize.x + changeSize.y) < 0.01f){
 		printf("최소크기 0.01f 미만 이동 무시\n");
 		return;
 	}
-
+	
+	int index[2] = { 0,0 };
 	for (auto iter = m_cmTiles.begin(); iter != m_cmTiles.end(); ++iter) {
 		tempPos = iter->second->GetPosition();
-		iter->second->SetPosition(tempPos + changeAmount);
+		GetOldMapXY(index[0], index[1], tempPos);
+	//	iter->second->SetPosition(tempPos + changeAmount);
+		iter->second->SetPosition(tempPos.x + changeAmount.x + changeSize.x * index[0],
+			tempPos.y + changeAmount.y - (changeSize.y * index[1]) );
 	}
 	m_oldOffset = m_Offset;	// 동기화
 }
@@ -468,7 +658,8 @@ void Terrain::OpenFile(string strFileName, bool minimal)
 		char buf[1024];
 		int  X, Y;
 		char imgBuf[200];
-		int  nOrder =0;
+		int  nOrder = 0;
+		int objectType = 0;
 		Vector2 Offset = Vector2(0.0f,0.0f);
 		Vector2 OffsetSize = Vector2(0.0f, 0.0f);
 		Vector2 scale = Vector2(1.0f, 1.0f);
@@ -518,8 +709,8 @@ void Terrain::OpenFile(string strFileName, bool minimal)
 
 		Vector2 offset;
 		Vector2 offsetSize;
-		success = sscanf(p, "%d %f %f %f %f %f %f", &nOrder, &offset.x, &offset.y, &offsetSize.x, &offsetSize.y, &scale.x, &scale.y);
-
+		success = sscanf_s(p, "%d %f %f %f %f %f %f %d", &nOrder, &offset.x, &offset.y, &offsetSize.x, &offsetSize.y, &scale.x, &scale.y, &objectType);
+		//_s는 %d, %f같은 기본사양은 크기지정 안해줘도 됨.
 
 
 		// imgBuf의 내용은 SRVMANAGER에 저장
@@ -547,7 +738,7 @@ void Terrain::OpenFile(string strFileName, bool minimal)
 			m_nMaxDisplayOrder = nOrder;
 
 		pTile->SetPosition(position);
-		pTile->SetOrder(m_pTexture, nOrder, strImage, offset, offsetSize, nFlip, nAngle, scale);
+		pTile->SetOrder(m_pTexture, nOrder, strImage, offset, offsetSize, nFlip, nAngle, scale, objectType);
 	}
 	fclose(fp);
 }
