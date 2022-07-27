@@ -8,7 +8,8 @@ public:
 		static Camera singleToneInstance;
 		return &singleToneInstance;
 	}
-
+	Vector2 cornerLeft = Vector2(0.0f, 0.0f);
+	Vector2 cornerRight = Vector2(0.0f, 0.0f);
 public:
 	void   PreUpdate();  // Keyborad
 	void   Update();     // View, Projection Matrix Update
@@ -19,6 +20,9 @@ public:
 	void   AbsoluteVCtoWC(Vector2& position);	// 절대좌표 View -> Window 변환 ( 주로 UI 용)
 	void   WCtoVC(Vector2& posotion);   // Window -> View
 
+	// 범위 지정
+	void SetCornerLeft(float x, float y) { this->cornerLeft = Vector2(x, y); }
+	void SetCornerRight(float x, float y) { this->cornerRight = Vector2(x, y); }
 
 
 public:   // Setter
@@ -37,7 +41,7 @@ public:   // Getter
 
 private:
 	Vector2 m_Position = Vector2(0.0f, 0.0f);
-	Vector2 m_MoveSpeed = Vector2(200.0f, 200.0f);
+	Vector2 m_MoveSpeed = Vector2(500.0f, 500.0f);
 	Matrix  m_Projection;
 	Matrix  m_View;
 	Matrix m_abView;

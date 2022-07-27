@@ -83,6 +83,17 @@ void Camera::Update()
 			position.y + m_Offset.y);
 		if (CenterXLock == 1)
 			position.x = 0.0f;
+		/*
+		if (position.x < cornerLeft.x)	// 좌
+			position.x = cornerLeft.x;
+		else if (position.x > cornerRight.x)	// 우
+			position.x = cornerRight.x;
+
+		if (position.y < cornerLeft.y)	// 하단
+			position.y = cornerLeft.y;
+		else if (position.y > cornerRight.y)	// 상단
+			position.y = cornerRight.y;
+			*/
 		SetPosition(position);
 	}
 
