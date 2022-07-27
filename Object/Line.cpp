@@ -41,14 +41,19 @@ void Line::ClearLine()
 Vector2 Line::GetStartPoint(int no)
 {
 	// 0 : start, 1: end
-
-	Vector2 pos = Vector2(m_cvLines[no * 2]->x, m_cvLines[no * 2]->y);
+	Vector2 pos = Vector2(0.0f, 0.0f);
+	if (GetCountLine() > 0) {
+		pos = Vector2(m_cvLines[no * 2]->x, m_cvLines[no * 2]->y);	
+	}
 	return pos;
 }
 
 Vector2 Line::GetEndPoint(int no)
 {
-	Vector2 pos = Vector2(m_cvLines[no * 2 +1]->x, m_cvLines[no * 2+1]->y);
+	Vector2 pos = Vector2(0.0f, 0.0f);
+	if (GetCountLine() > 0) {
+		pos = Vector2(m_cvLines[no * 2 + 1]->x, m_cvLines[no * 2 + 1]->y);		
+	}
 	return pos;
 }
 
