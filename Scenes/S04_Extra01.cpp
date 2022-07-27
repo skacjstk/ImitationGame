@@ -19,6 +19,10 @@ bool saftyPress = true;		// F1 키: 이제 line 수가 0이면 안그리게 했으니까 더미
 	}MapEditorOption;
 static MapEditorOption OPT;
 
+static int coords[2] = { 0,0 };
+static int Floor = 1;
+static int enemyCombo;
+
 void S04_Extra01::Replace(wstring & str, wstring comp, wstring rep)
 {
 	wstring temp = str;
@@ -49,14 +53,14 @@ void S04_Extra01::EditLine()
 		m_pRubberBand->AddLine(line.x, line.y, line.x, line.y);
 		m_pRubberBand->EndLine();
 	}
-	if (Mouse->Up(0) && saftyPress)  // 데이터를 저장
+	if (Mouse->Up(0))  // 데이터를 저장
 	{
 		m_pGroundLine->ClearVertexBuffer();
 		Vector2 start = m_pRubberBand->GetStartPoint(0);
 		Vector2 end = m_pRubberBand->GetEndPoint(0);
-
 		m_pGroundLine->AddLine(start.x, start.y, end.x, end.y);
 		m_pGroundLine->EndLine();
+		
 
 		m_nMousePick = -1;
 
@@ -163,7 +167,6 @@ S04_Extra01::S04_Extra01()
 {
 	m_strSceneName = "MapEditor";
 	SetActive(false);
-	editorObjects_ = new EditorObjects();	// 객체 데이터 추가.
 	m_pGroundLine = new Line();
 	m_pCeilingLine = new Line();
 	m_pRubberBand = new Line();
@@ -180,10 +183,6 @@ S04_Extra01::S04_Extra01()
 	m_pMoveTexture = new Texture(strImage, strShader);
 	m_pLine = new Line();
 	CreateGrid();
-
-	TRNMANAGER->SetSceneMap("test");
-//	editorObjects->LoadObjectsFile("testObjects");
-
 }
 
 S04_Extra01::~S04_Extra01()
@@ -210,31 +209,13 @@ void S04_Extra01::Update()
 	if(IsDrawingLine == false){
 
 	// Mouse Move
-
 		if (m_bImGuiWindow == false)
 		{
 			Vector2 pos = Mouse->GetPosition();  // Window
 			CAMERA->WCtoVC(pos);                 // Widow coord --> DirectX coord
 			m_pMoveTexture->SetPosition(pos);
 		}
-		if ((m_bImGuiWindow == false) && Mouse->Down(0)) // 1번튼이 눌려진 경우
-		{
-			Vector2 pos = Mouse->GetPosition();  // Window
-			CAMERA->WCtoVC(pos);                 // Widow coord --> DirectX coord
-			int x = -1;
-			int y = -1;
-			if (TRNMANAGER->GetMapXY(x, y, pos))
-			{
-				wstring strImageFile = m_pMoveTexture->GetImageFile();
-				Vector2 offset    = m_pMoveTexture->GetOffset();
-				Vector2 offsetSize = m_pMoveTexture->GetOffsetSize();
-				TRNMANAGER->AddTile(x, y, m_nDisplayOrder, m_nTileType, m_nObjectType,
-					strImageFile, offset, offsetSize);
-				m_nSelectMapX = x;
-				m_nSelectMapY = y;
-			}
-		}
-		if ((m_bImGuiWindow == false) && Mouse->Press(0)) // 1버튼이튼이 지속적 눌려진 경우
+		if ((m_bImGuiWindow == false) && Mouse->Press(0)) // 1버튼이튼이 지속적 눌려진 경우: Down 제거했음.
 		{
 			Vector2 pos = Mouse->GetPosition();  // Window
 			CAMERA->WCtoVC(pos);                 // Widow coord --> DirectX coord
@@ -245,22 +226,26 @@ void S04_Extra01::Update()
 				wstring strImageFile = m_pMoveTexture->GetImageFile();
 				Vector2 offset = m_pMoveTexture->GetOffset();
 				Vector2 offsetSize = m_pMoveTexture->GetOffsetSize();
+								
+				// 0728 기능 추가: object일 경우: 
 				TRNMANAGER->AddTile(x, y, m_nDisplayOrder, m_nTileType, m_nObjectType,
 					strImageFile, offset, offsetSize);
+				
 				m_nSelectMapX = x;
-				m_nSelectMapY = y;
+				m_nSelectMapY = y;	
 			}
 		}
 		if ((!m_bImGuiWindow) && Mouse->Press(2))	// 우클릭(3번) 버튼이 계속 눌리는 경우
 		{
 			Vector2 pos = Mouse->GetPosition();
 			CAMERA->WCtoVC(pos);		// W좌표 -> V(DX)좌표 
-			int x = -1;
+				int x = -1;
 			int y = -1;
 			if (TRNMANAGER->GetMapXY(x, y, pos)) {
 				TRNMANAGER->EraseTile(x, y);
 				printf("우클릭으로 타일 지우기. %d %d\n", x, y);
 			}
+			
 		}
 	}
 	else if (IsDrawingLine == true) {
@@ -281,7 +266,6 @@ void S04_Extra01::Update()
 	m_pCeilingLine->Update(V, P);
 	m_pPlatformLine->Update(V, P);
 	m_pRubberBand->Update(V, P);
-	editorObjects_->UpdateAll(V, P);
 }
 
 void S04_Extra01::Render()
@@ -291,16 +275,11 @@ void S04_Extra01::Render()
 	m_pLine->Render();
 	m_pMoveTexture->Render();
 	CAMERA->Render();
-	if (m_pGroundLine->GetCountLine() > 0)	// 언젠가는
-		m_pGroundLine->Render();
-	if (m_pCeilingLine->GetCountLine() > 0)
-		m_pCeilingLine->Render();
-	if (m_pRubberBand->GetCountLine() > 0)
-		m_pRubberBand->Render();
-	if (m_pPlatformLine->GetCountLine() > 0)
-		m_pPlatformLine->Render();
+	m_pGroundLine->Render();	// 검산을 이 함수 내부로 옮김
+	m_pCeilingLine->Render();
+	m_pRubberBand->Render();
+	m_pPlatformLine->Render();
 
-	editorObjects_->RenderAll();
 	
 	// imGui Rendering
 	{
@@ -319,7 +298,9 @@ void S04_Extra01::Render()
 
 void S04_Extra01::ChangeScene()
 {
-	LoadEditorOption("./Option.txt", true);
+	TRNMANAGER->SetSceneMap("test");
+	LoadEditorOption("./Option.txt", true);	// 이 시점에서 Floor, coords도 같이 초기화됨.
+	TRNMANAGER->SetSceneObj(Floor, coords[0], coords[1]);
 	SetActive(true);
 }
 
@@ -351,23 +332,33 @@ void S04_Extra01::ShowGUI()
 			if (ImGui::MenuItem("Load PNG File"))
 			{
 				this->FileOpenDialog();
+				//m_cvImageFiles 에 넣어짐 
 			}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Save Map File"))
 			{
-				//this->FileOpenDialog();				
-				TRNMANAGER->SaveFile("./test.txt");
+				//this->FileOpenDialog();		
+				string coord = to_string(coords[0]) + to_string(coords[1]);
+			//	int coord = (coords[0] * 10) + coords[1];	// 10 미만의 위치가 뻑남
+				string objName = TEMPROOM_FOLDER;
+				objName += to_string(Floor) + "F/";
+				objName += coord + "ObjectDesc.txt";
+				TRNMANAGER->SaveFile("./test.txt", objName);	// 0728 기능추가: object도 같이 저장되게
+				
 				SaveEditorOption("./Option.txt");	// 중복 저장되지 않게 주의!
 			}
 			if (ImGui::MenuItem("Save PNG File"))
 			{
+				int coord = (coords[0] * 10) + coords[1];
+				wstring objName = TEMPROOM_FOLDER_W;
+				objName += to_wstring(Floor) + L"F/";
+				objName += to_wstring(coord) + L"Terrain.txt";
+				TRNMANAGER->SavePNGFile(objName);
+				/*
 				wstring  saveFile = GetSaveFile();
 				if (saveFile != L"")
-				TRNMANAGER->SavePNGFile(saveFile);
-			}
-			if (ImGui::MenuItem("Save Objects File"))
-			{
-				editorObjects_->SaveObjectsFile("./testObjects.txt");
+					TRNMANAGER->SavePNGFile(saveFile);
+				*/
 			}
 			if (ImGui::MenuItem(u8"PNG 파일 저장(Fit)"))
 			{
@@ -408,14 +399,24 @@ void S04_Extra01::SettingMenu()
 
 	// Scene선택용 콤보박스
 	{
-		const char*  items[] = { "Chapter1","Chapter2","Chapter3" };
-		static int   nCurrentScene = 2;
-		ImGui::Text(u8"Scene선택");
-		ImGui::SameLine(120.0f, 0.0f);
-
-		ret = ImGui::Combo("##Scene", &nCurrentScene, items, IM_ARRAYSIZE(items));
+	//	
+		ImGui::Text(u8"현재 던전 좌표: ");
+		ret = ImGui::InputInt2("##5", coords);
 		if (ret)
-			printf(" %d\n", nCurrentScene);
+		{
+			if (coords[0] < 1)
+				coords[0] = 1;
+			if (coords[1] < 1)
+				coords[1] = 1;
+		}
+	}
+	{
+		ImGui::Text(u8"현재 층: ");
+		ret = ImGui::InputInt("##6", &Floor);
+		if (ret)
+		{
+			Floor = max(Floor, 1);	// 1보다 작을 수 없음.
+		}
 	}
 	// MAP 크기
 	{
@@ -442,10 +443,10 @@ void S04_Extra01::SettingMenu()
 		ret = ImGui::InputInt2("##2", OPT.PixelXY);
 		if (ret)
 		{
-			if (OPT.PixelXY[0] < 1)
-				OPT.PixelXY[0] = 1;
-			if (OPT.PixelXY[1] < 1)
-				OPT.PixelXY[1] = 1;
+			if (OPT.PixelXY[0] < 16)
+				OPT.PixelXY[0] = 16;
+			if (OPT.PixelXY[1] < 16)
+				OPT.PixelXY[1] = 16;
 		}		
 	}
 	// Offset
@@ -490,7 +491,9 @@ void S04_Extra01::SettingMenu()
 		if (ret)
 		{
 			TRNMANAGER->ApplyOldOffset();
+			TRNMANAGER->ApplyOldSize();
 			LoadEditorOption("./Option.txt");
+			m_pMoveTexture->SetScale(OPT.scaleXY[0], OPT.scaleXY[1]);
 		}
 
 		ImGui::SameLine();
@@ -505,7 +508,9 @@ void S04_Extra01::SettingMenu()
 		if (ret)
 		{
 			TRNMANAGER->ApplyOldOffset();
-			ApplyEditorOption();	
+			TRNMANAGER->ApplyOldSize();
+			ApplyEditorOption();
+			m_pMoveTexture->SetScale(OPT.scaleXY[0], OPT.scaleXY[1]);
 		}
 
 	}
@@ -541,19 +546,21 @@ void S04_Extra01::SettingMenu()
 		if (oldcombo != combo)
 			m_nMousePick = -1;
 
-		if (combo == 1)
-			EditLine();
-		if (combo == 2)
-			EditCeilingLine();
-		if (combo == 3)
-			EditPlatformLine();
+		if (IsDrawingLine == true) {
+			if (combo == 1)
+				EditLine();
+			if (combo == 2)
+				EditCeilingLine();
+			if (combo == 3)
+				EditPlatformLine();
+		}
 	}
 	// LineCombo
 	{
 		const char* items[] = { "None","Ground","Ceiling", "Platform" };
 		static int combo;
 		int  oldcombo = combo;
-		ImGui::Combo("LineOption", &combo, items, ARRAYSIZE(items));
+		ImGui::Combo(u8"층과 좌표기준 옵션", &combo, items, ARRAYSIZE(items));
 	
 		if (oldcombo != combo)
 			m_nMousePick = -1;
@@ -566,7 +573,11 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					m_pGroundLine->SaveLine("./testcoord.txt");
+					int coord = (coords[0] * 10) + coords[1];
+					string objName = TEMPROOM_FOLDER;
+					objName += to_string(Floor) + "F/";
+					objName += to_string(coord) + "GroundLine.txt";
+					m_pGroundLine->SaveLine(objName);
 				}
 			}
 			// Button
@@ -576,7 +587,11 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					m_pGroundLine->LoadLine("./testcoord.txt");
+					int coord = (coords[0] * 10) + coords[1];
+					string objName = TEMPROOM_FOLDER;
+					objName += to_string(Floor) + "F/";
+					objName += to_string(coord) + "GroundLine.txt";
+					m_pGroundLine->LoadLine(objName);
 				}
 			}
 		}// end combo1
@@ -589,7 +604,11 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					m_pCeilingLine->SaveLine("./testCeilingcoord.txt");
+					int coord = (coords[0] * 10) + coords[1];
+					string objName = TEMPROOM_FOLDER;
+					objName += to_string(Floor) + "F/";
+					objName += to_string(coord) + "CeilingLine.txt";
+					m_pCeilingLine->SaveLine(objName);
 				}
 			}
 			// Button
@@ -599,7 +618,11 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					m_pCeilingLine->LoadLine("./testCeilingcoord.txt");
+					int coord = (coords[0] * 10) + coords[1];
+					string objName = TEMPROOM_FOLDER;
+					objName += to_string(Floor) + "F/";
+					objName += to_string(coord) + "CeilingLine.txt";
+					m_pCeilingLine->LoadLine(objName);
 				}
 			}
 		}// end combo2
@@ -612,7 +635,11 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					m_pPlatformLine->SaveLine("./testPlatformcoord.txt");
+					int coord = (coords[0] * 10) + coords[1];
+					string objName = TEMPROOM_FOLDER;
+					objName += to_string(Floor) + "F/";
+					objName += to_string(coord) + "PlatformLine.txt";
+					m_pPlatformLine->SaveLine(objName);
 				}
 			}
 			// Button
@@ -622,10 +649,33 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					m_pPlatformLine->LoadLine("./testPlatformcoord.txt");
+					int coord = (coords[0] * 10) + coords[1];
+					string objName = TEMPROOM_FOLDER;
+					objName += to_string(Floor) + "F/";
+					objName += to_string(coord) + "PlatformLine.txt";
+					m_pPlatformLine->LoadLine(objName);
 				}
 			}
 		}// end combo3
+	}//end LineOption Combo
+
+	// 오브젝트 배치 모드
+	{
+		const char* items[] = { "None","SkelDog","BigWhiteSkel", "LittleGhost" };
+		// EnemyCombo를 SelectTexture() 내부에서 참조하기 위해 전역 static 화 
+		int  oldcombo = enemyCombo;
+		ImGui::Combo("Enemy", &enemyCombo, items, ARRAYSIZE(items));
+
+		if (oldcombo != enemyCombo) {
+			m_nMousePick = -1;
+			m_nObjectType = enemyCombo;
+			// moveTexture 교체 및 배율적용
+			if (enemyCombo != 0) {
+				m_pMoveTexture = enemyDB.FindActorTexture(m_nObjectType);
+				m_pMoveTexture->SetPosition(Mouse->GetPosition());
+				m_pMoveTexture->SetScale(OPT.scaleXY[0], OPT.scaleXY[1]);
+			}
+		}
 	}
 }
 
@@ -633,12 +683,11 @@ void S04_Extra01::SelectTexture()
 {
 	bool ret = false;
 	if (!ImGui::CollapsingHeader("Tile Slect"))
-		return;
+		return;	//m_nMaxDisplayOrder
 	// Display Order 선택용 콤보박스
 	{
 		const char*  items[] = { "0","1","2","3","4","5" };
 		static int   nOrder = 0;
-
 		nOrder = m_nDisplayOrder;
 		ImGui::Text(u8"Display Order선택");
 		ImGui::SameLine(120.0f, 0.0f);
@@ -696,13 +745,12 @@ void S04_Extra01::SelectTexture()
 	ImGui::BeginChild("scroll texture", scroll_size, true,
 		ImGuiWindowFlags_HorizontalScrollbar);
 
-
 	int Count = 0;
 	for (UINT i = 0; i < m_cvImageFiles.size(); i++)
 	{
 		Vector2 size = SRVMANAGER->FindSpriteSize(m_cvImageFiles[i]);
 		ret = ImGui::ImageButton(SRVMANAGER->CreateShaderResourceView(m_cvImageFiles[i]),
-			ImVec2(size.x*0.3, size.y*0.3), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f));
+			ImVec2(size.x*2.0, size.y*2.0), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f));
 		Count++;
 		if (Count < 9)
 			ImGui::SameLine();
@@ -713,9 +761,9 @@ void S04_Extra01::SelectTexture()
 		
 		if (ret)  // Button이 Click
 		{
+			enemyCombo = 0;	// EnemyCombo를 0으로 바꿔, moveTexture가 선택한게 Tile이 되도록 함.
 			Vector2 pos = Vector2(0.0f+size.x*1.5f , MAIN->GetHeight()*0.5f);    // Window 좌표
 			CAMERA->WCtoVC(pos);
-
 			m_pMoveTexture->SetOffsetSize(size);
 			m_pMoveTexture->SetImageFile(m_cvImageFiles[i]);
 			m_pMoveTexture->SetPosition(pos);
@@ -877,8 +925,11 @@ void S04_Extra01::SaveEditorOption(string strFileName)
 	if (op == NULL)
 		return;
 
-	fprintf(op, "#OriginX	Y,	PixelX	Y,	MapX	Y,	scaleX	Y\n");
-	fprintf(op, "%f %f %d %d %d %d %f %f\0",
+	fprintf(op, "#Floor coordsX Y	OriginX	Y,	PixelX	Y,	MapX	Y,	scaleX	Y\n");
+	fprintf(op, "%d %d %d %f %f %d %d %d %d %f %f\0",
+		Floor,
+		coords[0],
+		coords[1],
 		OPT.Origin.x,
 		OPT.Origin.y,
 		OPT.PixelXY[0],
@@ -899,7 +950,7 @@ void S04_Extra01::LoadEditorOption(string strFileName, bool isTheFirst)
 	if (fp == NULL)
 		return;
 
-	const int size = 100;
+	const int size = 120;
 	char buf[size] = { 0 };
 	int readCount = 1;	// 크기가 커서 다 못읽으니, 의미없는 변수
 	readCount = fread(buf, sizeof(buf), 1, fp);
@@ -913,7 +964,10 @@ void S04_Extra01::LoadEditorOption(string strFileName, bool isTheFirst)
 	value = value + 1;	// 개행문자 바로 다음으로
 
 	if (value != NULL) {
-		sscanf_s(value, "%f %f %d %d %d %d %f %f",
+		sscanf_s(value, "%d %d %d %f %f %d %d %d %d %f %f",
+			&Floor,
+			&coords[0],
+			&coords[1],
 			&OPT.Origin.x,
 			&OPT.Origin.y,
 			&OPT.PixelXY[0],
@@ -973,3 +1027,14 @@ wstring S04_Extra01::GetSaveFile()
 }
 
 
+
+/*
+const char*  items[] = { "Chapter1","Chapter2","Chapter3" };
+static int   nCurrentScene = 2;
+ImGui::Text(u8"Scene선택");
+ImGui::SameLine(120.0f, 0.0f);
+
+ret = ImGui::Combo("##Scene", &nCurrentScene, items, IM_ARRAYSIZE(items));
+if (ret)
+	printf(" %d\n", nCurrentScene);
+*/
