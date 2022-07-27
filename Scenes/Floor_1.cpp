@@ -37,9 +37,9 @@ void Floor_1::Render()
 void Floor_1::ChangeScene()
 {
 	// 절차적 지형 생성 취소, 고정 크기 Room 데이터 읽어오기로 변경
-	void ApplyStartRoom();	// 0 0에 start room
-	void ApplyEndRoom();	// 5 1에 EndRoom
-	void ApplyOtherRoom();	// 10 20 21 31 41 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
+	ApplyStartRoom();	// 0 0에 start room
+	ApplyEndRoom();	// 5 1에 EndRoom
+	ApplyOtherRoom();	// 10 20 21 31 41 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
 
 	return;
 	// 1. 방 생성
@@ -73,18 +73,16 @@ void Floor_1::ExitScene()
 void Floor_1::ApplyStartRoom()
 {
 	// myIndex를 똑 같이 넣어줘야 함.
-	roomData_[0][0] = new Room(Room::RoomType::START);
-	roomData_[0][0]->myIndex[0] = 0;
-	roomData_[0][0]->myIndex[1] = 0;
+	roomData_[0][0] = new Room(Room::RoomType::START,0,0);
 	// txt 파일 읽어 데이터 넣어주기
+	ReadRoomData(0, 0);
 }
 
 void Floor_1::ApplyEndRoom()
 {
-	roomData_[5][1] = new Room(Room::RoomType::START);
-	roomData_[5][1]->myIndex[0] = 5;
-	roomData_[5][1]->myIndex[1] = 1;
+	roomData_[5][1] = new Room(Room::RoomType::END,5,1);
 	// txt 파일 읽어 데이터 넣어주기
+	ReadRoomData(5, 1);
 }
 
 void Floor_1::ApplyOtherRoom()
@@ -94,11 +92,43 @@ void Floor_1::ApplyOtherRoom()
 	for (int i = 0; i < _countof(xy); ++i) {
 		x = xy[i] / 10;
 		y = xy[i] % 10;
-		roomData_[x][y] = new Room(Room::RoomType::NORMAL);
+		roomData_[x][y] = new Room(Room::RoomType::NORMAL,x,y);
 		roomData_[x][y]->myIndex[0] = x;
 		roomData_[x][y]->myIndex[1] = y;
 		// txt 파일 읽어 데이터 넣어주기
+		ReadRoomData(x, y);
 	}
+}
+
+void Floor_1::ReadRoomData(int x, int y)
+{
+	Room* tempRoom = roomData_[x][y];	// 편하게 하려고 포인터 
+
+	int coord = (x * 10) + y;
+	// terrain 이미지 배치
+	wstring filePath = L"../RoomData/" + to_wstring(currentFloor_) + L"F/" + to_wstring(coord) + L"Terrain.png";
+	wstring strShader = SHADER_FOLDER; strShader += L"Texture.hlsl";
+	tempRoom->terrainImage_ = new Texture(filePath, strShader);
+	ReadLines(tempRoom, coord);
+	ReadObjects(tempRoom, coord);
+}
+
+void Floor_1::ReadLines(Room* tempRoom, int& coord)
+{
+	
+	string filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + to_string(coord) + "GroundLine.txt";
+	tempRoom->GroundLine_->LoadLine(filePath);
+
+	filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + to_string(coord) + "CeilingLine.txt";
+	tempRoom->GroundLine_->LoadLine(filePath);
+
+	filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + to_string(coord) + "PlatformLine.txt";
+	tempRoom->GroundLine_->LoadLine(filePath);	
+}
+
+void Floor_1::ReadObjects(Room* tempRoom, int& coord)
+{
+	wstring filePath = L"../RoomData/" + to_wstring(currentFloor_) + L"F/" + to_wstring(coord) + L"ObjectDesc.txt";
 }
 
 void Floor_1::GenerateRoom()

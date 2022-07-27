@@ -35,6 +35,9 @@ private:
 	void ApplyStartRoom();	// 0 0에 start room
 	void ApplyEndRoom();	// 5 1에 EndRoom
 	void ApplyOtherRoom();	// 10 20 21 31 41 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
+	void ReadRoomData(int x, int y);	// Start, end는 여기서 구분할 게 아님.
+		void ReadLines(Room* tempRoom, int& coord);	// 3개 형태의 Line들 가져와 Room 에 적용하기
+		void ReadObjects(Room* tempRoom, int& coord);	// 오브젝트 desc 가져와 Room에 new 하기
 	// connectRoom은 재활용 가능할 듯
 	
 	// 절차적 지형생성 부분: 잠정폐기
