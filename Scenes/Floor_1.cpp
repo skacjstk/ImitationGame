@@ -36,6 +36,12 @@ void Floor_1::Render()
 
 void Floor_1::ChangeScene()
 {
+	// 절차적 지형 생성 취소, 고정 크기 Room 데이터 읽어오기로 변경
+	void ApplyStartRoom();	// 0 0에 start room
+	void ApplyEndRoom();	// 5 1에 EndRoom
+	void ApplyOtherRoom();	// 10 20 21 31 41 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
+
+	return;
 	// 1. 방 생성
 	// 2. 시작 위치와 끝 위치 연결
 	GenerateRoom();
@@ -62,6 +68,37 @@ void Floor_1::ChangeScene()
 
 void Floor_1::ExitScene()
 {
+}
+
+void Floor_1::ApplyStartRoom()
+{
+	// myIndex를 똑 같이 넣어줘야 함.
+	roomData_[0][0] = new Room(Room::RoomType::START);
+	roomData_[0][0]->myIndex[0] = 0;
+	roomData_[0][0]->myIndex[1] = 0;
+	// txt 파일 읽어 데이터 넣어주기
+}
+
+void Floor_1::ApplyEndRoom()
+{
+	roomData_[5][1] = new Room(Room::RoomType::START);
+	roomData_[5][1]->myIndex[0] = 5;
+	roomData_[5][1]->myIndex[1] = 1;
+	// txt 파일 읽어 데이터 넣어주기
+}
+
+void Floor_1::ApplyOtherRoom()
+{
+	int xy[5] = { 10, 20, 21, 31, 41 };
+	int x, y;
+	for (int i = 0; i < _countof(xy); ++i) {
+		x = xy[i] / 10;
+		y = xy[i] % 10;
+		roomData_[x][y] = new Room(Room::RoomType::NORMAL);
+		roomData_[x][y]->myIndex[0] = x;
+		roomData_[x][y]->myIndex[1] = y;
+		// txt 파일 읽어 데이터 넣어주기
+	}
 }
 
 void Floor_1::GenerateRoom()

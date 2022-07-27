@@ -11,6 +11,7 @@ const int maxY = 4;
 class Floor_1 : public Scene
 {
 public:
+	int currentFloor_ = 1;	// 여긴 1층이니까
 private:	//private instance variable
 	Texture* backGround_ = nullptr;
 
@@ -30,6 +31,13 @@ public:	//override
 	void ChangeScene() override; // Scene 변경시 변경할 대상 Scene에 이 함수가 호출됨
 	void ExitScene() override;	// 씬 나올 때 따로 설정해야 할 함수
 private:
+	// 딱 한가지로 고정된 맵 형태
+	void ApplyStartRoom();	// 0 0에 start room
+	void ApplyEndRoom();	// 5 1에 EndRoom
+	void ApplyOtherRoom();	// 10 20 21 31 41 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
+	// connectRoom은 재활용 가능할 듯
+	
+	// 절차적 지형생성 부분: 잠정폐기
 	void GenerateRoom();
 	void SetSRER(int& SX, int& SY, int& EX, int& EY);
 	void ConnectSRER(int& SX, int& SY, int& EX, int& EY);
