@@ -41,6 +41,7 @@ public:
 	auto GetNextName()	{ return m_strNextSceneName; };
 	virtual class Line* GetGroundLines() { return nullptr; }
 	virtual class Line* GetCeilingLines() { return nullptr; }
+	virtual class Line* GetPlatformLines() { return nullptr; }
 //	Scene();
 //	~Scene();
 };

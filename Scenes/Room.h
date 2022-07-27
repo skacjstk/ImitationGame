@@ -52,6 +52,7 @@ public:	//public instance method
 	void SetRoomType(RoomType type) { roomType_ = type; }
 	class Line* GetGroundLines() override { return GroundLine_; }
 	class Line* GetCeilingLines() override { return CeilingLine_; }
+	class Line* GetPlatformLines() override { return PlatformLine_; }
 	// Getter
 	void GetRoomObjectData();
 };

@@ -3,6 +3,7 @@
 #include "Physics/Collider.h"
 #include "GameActor.h"
 
+// PlatformLine 추가해야 함. + currentScene뿐만 아니라 Room 변경도....
 void GameActor::GroundCheck()
 {
 	Scene* tempScene = SCENEMANAGER->GetCurrentScene();
