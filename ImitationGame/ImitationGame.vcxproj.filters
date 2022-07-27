@@ -157,6 +157,12 @@
     <Filter Include="소스 파일\Base\Editor">
       <UniqueIdentifier>{e742a897-7977-489d-a083-1398ed2e1844}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\DataBase">
+      <UniqueIdentifier>{f5917990-5fc0-4681-b35d-3645f0af9346}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\DataBase">
+      <UniqueIdentifier>{0f469280-82e7-419e-b5f1-cadd1441eca8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -456,6 +462,9 @@
     <ClInclude Include="..\Base\EditorObjects.h">
       <Filter>소스 파일\Base\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="..\Database\EnemyDB.h">
+      <Filter>헤더 파일\DataBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -736,6 +745,9 @@
     </ClCompile>
     <ClCompile Include="..\Base\EditorObjects.cpp">
       <Filter>소스 파일\Base\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Database\EnemyDB.cpp">
+      <Filter>소스 파일\DataBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

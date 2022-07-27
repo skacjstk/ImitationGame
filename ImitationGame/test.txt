@@ -1,8 +1,8 @@
-#X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY
+#X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	OBJECTYPE
 MAGNIFICATION:6.000000 6.000000
-0   0   -64.00 64.00 |../Resources/Image/Tile/DirtBasic_BottomCenter.png|  0 0 0 16 16 1 1 
-0   1   -64.00 48.00 |../Resources/Image/Tile/DirtBasic_BottomCenter.png|  0 0 0 16 16 1 1 
-1   0   -48.00 64.00 |../Resources/Image/Tile/DirtBasic_BottomCenter.png|  0 0 0 16 16 1 1 
-1   1   -48.00 48.00 |../Resources/Image/Tile/DirtBasic_BottomCenter.png|  0 0 0 16 16 1 1 
-2   0   -32.00 64.00 |../Resources/Image/Tile/DirtBasic_BottomCenter.png|  0 0 0 16 16 1 1 
-2   1   -32.00 48.00 |../Resources/Image/Tile/DirtBasic_BottomCenter.png|  0 0 0 16 16 1 1 
+1   0   16.00 0.00 |../Resources/Image/Tile/DirtBasic_Middle.png|  0 0 0 16 16 1 1 0
+1   1   16.00 -16.00 |../Resources/Image/Tile/DirtBasic_Middle.png|  0 0 0 16 16 1 1 0
+2   0   32.00 0.00 |../Resources/Image/Tile/DirtBasic_Middle.png|  0 0 0 16 16 1 1 0
+2   1   32.00 -16.00 |../Resources/Image/Tile/DirtBasic_Middle.png|  0 0 0 16 16 1 1 0
+3   0   48.00 0.00 |../Resources/Image/Tile/DirtBasic_Middle.png|  0 0 0 16 16 1 1 0
+3   1   48.00 -16.00 |../Resources/Image/Tile/DirtBasic_Middle.png|  0 0 0 16 16 1 1 0
