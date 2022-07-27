@@ -5,6 +5,7 @@
 IA = 코딩
 VS, RS, PS = Shader Language
 */
+#include "Object/Line.h"
 class Room : public Scene
 {
 public:
@@ -26,20 +27,21 @@ public:
 public:
 	map<string, GameObject*> roomObjects;
 	LinkedRoom myLinkedRoom_ = LinkedRoom::NONE;
+	RoomType roomType_ = RoomType::DISABLE;
 	int myIndex[2] = { 0,0 };
+	int currentFloor_ = 0;	// Floor 와 동기화되(어야 할 변수)
 	class Line* GroundLine_ = nullptr;
 	class Line* CeilingLine_ = nullptr;
 	class Line* PlatformLine_ = nullptr;
-private:	//private instance variable
-	int currentFloor_ = 0;
-	RoomType roomType_ = RoomType::DISABLE;
-	// 오브젝트 정보
 	Texture* terrainImage_ = nullptr;	// 지형 정보 
+private:	//private instance variable
+	// 오브젝트 정보
 	bool isCleared_ = false;
 
 public:	//생 소
 	Room() : roomType_(RoomType::DISABLE) {};	// 초기화 리스트
 	Room(RoomType type) : roomType_(type) {};
+	Room(RoomType type, int x, int y) : roomType_(type), myIndex{ x,y } {};
 	~Room();
 public:	//override
 	void Update() override;
