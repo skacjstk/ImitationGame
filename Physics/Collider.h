@@ -22,12 +22,26 @@ public:
 		Vector3 Position;   // Color가 빠진 이유는 충돌이 일어 나면 빨강색
 		Color   Color;
 	};
+public:
+	static         bool        Obb(class Collider* A, class Collider* B);
+private:
+	struct ObbDesc
+	{
+		Vector2 HalfSize;
+
+		Vector2 Right;
+		Vector2 Up;
+
+		Vector2 Length_Right;
+		Vector2 Length_Up;
+	};
+	static void CreateObb(ObbDesc* out, Vector2& half, Matrix& transform);
+	static float SeprateAxis(Vector2& init, Vector2& e1, Vector2& e2);
 
 public:
 	void			Update(Matrix View, Matrix Projection);
 	void			Render();
 	
-	// 
 	static         bool   IntersectOBB(SHAPE A, SHAPE B);
 	static         bool   IntersectOBB(class Collider *A, class Collider *B);
 	static         bool   IntersectAABB(class Collider *A, class Collider *B);

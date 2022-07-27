@@ -498,5 +498,69 @@ void Collider::UpdateBlock(Color color)
 
 
 }
+bool Collider::Obb(Collider* a, Collider* b)
+{
+	ObbDesc A, B;
+	Vector2 halfSize;
+
+	//OBB객체 생성
+	halfSize = Vector2(a->GetScale().x * 0.5f, a->GetScale().y * 0.5f);
+	Matrix tempA = a->GetWorld();
+	CreateObb(&A, halfSize, tempA);
+
+	halfSize = Vector2(b->GetScale().x * 0.5f, b->GetScale().y * 0.5f);
+	Matrix tempB = b->GetWorld();
+	CreateObb(&B, halfSize, tempB);
+
+	Vector2 distance = a->GetPosition() - b->GetPosition();
+
+	//A.Right축 투영
+	float lengthA = D3DXVec2Length(&A.Length_Right);
+	float lengthB = SeprateAxis(A.Right, B.Length_Right, B.Length_Up);
+	float length = fabsf(D3DXVec2Dot(&A.Right, &distance));
+	if (length > lengthA + lengthB) return false;
+
+	//A.Up축 투영
+	lengthA = D3DXVec2Length(&A.Length_Up);
+	lengthB = SeprateAxis(A.Up, B.Length_Right, B.Length_Up);
+	length = fabsf(D3DXVec2Dot(&A.Up, &distance));
+	if (length > lengthA + lengthB) return false;
+
+	//B.Right축 투영
+	lengthA = D3DXVec2Length(&B.Length_Right);
+	lengthB = SeprateAxis(B.Right, A.Length_Right, A.Length_Up);
+	length = fabsf(D3DXVec2Dot(&B.Right, &distance));
+	if (length > lengthA + lengthB) return false;
+
+	//B.Up축 투영
+	lengthA = D3DXVec2Length(&B.Length_Up);
+	lengthB = SeprateAxis(B.Up, A.Length_Right, A.Length_Up);
+	length = fabsf(D3DXVec2Dot(&B.Up, &distance));
+	if (length > lengthA + lengthB) return false;
+
+	return true;
+}
+void Collider::CreateObb(ObbDesc* out, Vector2& half, Matrix& transform)
+{
+	// l-value 에러 수정본
+	Vector2* right = &out->Right;
+	Vector2* up = &out->Up;
+	Vector2* transform_11_12 = new Vector2(transform._11, transform._12);
+	Vector2* transform_21_22 = new Vector2(transform._21, transform._22);
+
+	D3DXVec2Normalize(right, transform_11_12);
+	D3DXVec2Normalize(up, transform_21_22);
+//	D3DXVec2Normalize(&out->Right, &Vector2(transform._11, transform._12));
+//	D3DXVec2Normalize(&out->Up, &Vector2(transform._21, transform._22));
+
+	out->HalfSize = half;
+	out->Length_Right = out->Right * out->HalfSize.x;
+	out->Length_Up = out->Up * out->HalfSize.y;
 
 
+}
+
+float Collider::SeprateAxis(Vector2& init, Vector2& e1, Vector2& e2)
+{
+	return fabsf(D3DXVec2Dot(&init, &e1)) + fabsf(D3DXVec2Dot(&init, &e2));
+}
