@@ -105,6 +105,9 @@ using std::to_string;
 #define SHADER_FOLDER	L"../Shader/"
 #define IMAGE_FOLDER	L"../Resources/Image/"
 #define AUDIO_FOLDER	L"../Resources/AudioClip/"
+#define TEMPROOM_FOLDER "../TempRoomData/"
+#define TEMPROOM_FOLDER_W L"../TempRoomData/"
+#define ROOM_FOLDER		"../RoomData/";
 
 //typedef		
 typedef D3DXVECTOR2 Vector2;
@@ -150,6 +153,7 @@ typedef D3DXCOLOR	Color;
 #include "./Base/UIObject.h"
 #include "./Object/Button.h"
 #include "./Object/Tile.h"
+#include "Database/EnemyDB.h"
 #include "./Render/DirectWrite.h"
 
 //DX Cominterface 및 Global
@@ -168,3 +172,5 @@ extern float WSCALEY;	// 오프셋 배율 계산용
 extern EventHandler* eventHandler;
 constexpr int MAPX = 30;
 constexpr int MAPY = 30;
+
+extern EnemyDB enemyDB;
