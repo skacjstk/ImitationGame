@@ -141,13 +141,11 @@ void ShortSword::CheckAttack()
 	for (auto iter = OBJECTMANAGER->GetObjectsMap()->begin(); iter != OBJECTMANAGER->GetObjectsMap()->end(); ++iter) {
 		actor = (GameActor*)iter->second;
 		// actorType이 enemy가 아니면 애초에 충돌검사를 하지 않음.
-		if (
-		Collider::IntersectOBB(attackCollider_, actor->GetCollider()))	// next: 내일
-		{
-		//	MessageBoxW(MAIN->GetWindowHandler(), L"닿았음",L"ShortSword::CheckAttack()", MB_OK);
-		//	printf("오브젝트가 닿았음.\n");
-			actor->Attacked(DamageDice());
-		}		
+		if (actor->actorData_.type == GameActor::ActorType::Enemy) {
+			if(Collider::Obb(attackCollider_, actor->GetCollider())){// IntersectionOBB 개선판			
+				actor->Attacked(DamageDice());
+			}// end Obb
+		}// end ifEnemy	
 	}
 
 
