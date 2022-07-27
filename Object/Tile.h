@@ -12,6 +12,7 @@ public:
 	Vector2 scale = Vector2(1.0f, 1.0f);
 	int Flip = 0;	// X Flip, Y Flip (뒤집기 기준)
 	float Angle = 0.0f;	// 라디안 or Degree 
+	int objectType = 0;	// 추가된 int형 Next: 모든 읽기, 쓰기 타입에 이 객체를 추가해줘야 함.
 };
 class Tile : public GameObject
 {
@@ -28,7 +29,7 @@ public:	// Getter
 public:	// Setter
 	void SetOrder(int order) { _order = order; }
 	void SetOrder(Texture* pTexture, int order, wstring strImageFile,
-	Vector2 offset, Vector2 offsetSize, int Flip, float Angle, Vector2 scale);
+	Vector2 offset, Vector2 offsetSize, int Flip, float Angle, Vector2 scale, int objectType);
 	TileOrder* FindTileOrder(int order);
 private:	// Fields
 	vector<TileOrder*> _orders;

@@ -73,7 +73,7 @@ TileOrder* Tile::GetTile(UINT id)
 	return _orders[id];
 }
 
-void Tile::SetOrder(Texture* pTexture, int order, wstring strImageFile, Vector2 offset, Vector2 offsetSize, int Flip, float Angle, Vector2 scale)
+void Tile::SetOrder(Texture* pTexture, int order, wstring strImageFile, Vector2 offset, Vector2 offsetSize, int Flip, float Angle, Vector2 scale, int objectType)
 {
 	_pTexture = pTexture;
 	TileOrder* pTileOrder = FindTileOrder(order);
@@ -89,6 +89,7 @@ void Tile::SetOrder(Texture* pTexture, int order, wstring strImageFile, Vector2 
 	pTileOrder->scale = scale;
 	pTileOrder->Flip = Flip;
 	pTileOrder->Angle = Angle;
+	pTileOrder->objectType = objectType;
 }
 // 안나오면 nullptr 반환. 
 TileOrder* Tile::FindTileOrder(int order)
