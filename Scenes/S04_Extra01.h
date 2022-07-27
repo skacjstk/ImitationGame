@@ -20,12 +20,12 @@ private:
 	wstring  GetSaveFile();
 private:
 	//MapEditorOption 구조체는 .cpp 파일에 선언되어 있음.
-	class EditorObjects* editorObjects_ = nullptr;
 	vector<wstring>  m_cvImageFiles;
 	Texture  *m_pMoveTexture = nullptr;
 	class    Line     *m_pLine = nullptr;
 	bool     m_bImGuiWindow = false;
 	int      m_nDisplayOrder = 0;
+	int      m_nMaxDisplayOrder = 5;
 	int      m_nTileType = 0;  // Water, Wall
 	int      m_nObjectType = 0; // 0 tile, 1 object
 	int      m_nSelectMapX = -1;
