@@ -1,6 +1,7 @@
 #include "ImitationGame/framework.h"
 #include "Event/EnterDungeonEvent.h"
 #include "Event/SwapItemEvent.h"
+#include "Event/RiseNextFloorEvent.h"
 //#include "Event/Event.h"
 #include "EventHandler.h"
 
@@ -8,6 +9,7 @@ EventHandler::EventHandler()
 {
 	eventMap.insert(std::make_pair<wstring, Event*>(L"EnterDungeon", new EnterDungeonEvent()));
 	eventMap.insert(std::make_pair<wstring, Event*>(L"SwapItem", new SwapItemEvent()));
+	eventMap.insert(std::make_pair<wstring, Event*>(L"RiseNextFloor", new RiseNextFloorEvent()));
 }
 
 void EventHandler::Update()
