@@ -7,6 +7,7 @@ Floor_1::Floor_1()
 {
 	SetActive(false);
 	m_strSceneName = "Floor_1";
+	m_strNextSceneName = "Floor_2";
 }
 
 Floor_1::~Floor_1()
