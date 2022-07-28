@@ -19,13 +19,14 @@ ObjectDB::ObjectDB()
 // 많아지면 Texture 찾기에서는 switch문이 없어질 수 있음.
 Texture* ObjectDB::FindActorTexture(int index)
 {
+	if (index >= 101)
+		return FindActorTextureOver100(index);
+
 	Texture* temp = nullptr;
 	wstring strImage = IMAGE_FOLDER;
 	wstring strShader = SHADER_FOLDER; strShader += L"Texture.hlsl";
 	strImage += L"Monster/";
 
-	if (index >= 101)
-		return FindActorTexture(index);
 
 	// 너무 많아지면, 한 10개? 단위로 switch 문을 쪼갤 예정 0~9는 저쪽 함수, 10~19는 이쪽 함수 등등
 	switch (index)
@@ -33,7 +34,7 @@ Texture* ObjectDB::FindActorTexture(int index)
 	case 1:	// SkelDog
 	case 2:	// BigWhiteSkel
 	case 3:	// LittleGhost
-		strImage += enemyDB[index - 1] + L"/" + enemyDB[index - 1] + L"T.png";
+		strImage += enemyDB.at(index - 1) + L"/" + enemyDB.at(index - 1) + L"T.png";
 		temp = new Texture(strImage, strShader);
 		break;
 	}
@@ -42,10 +43,10 @@ Texture* ObjectDB::FindActorTexture(int index)
 
 GameActor* ObjectDB::FindActor(int index)
 {
+	if (index >= 100)
+		return FindActorOver100(index);
 	GameActor* temp = nullptr;
 
-	if (index >= 100)
-		return FindActor(index);
 
 	switch (index)
 	{

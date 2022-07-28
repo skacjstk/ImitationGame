@@ -4,8 +4,8 @@ class ObjectDB
 public:
 	ObjectDB();
 public:
-	wstring enemyDB[50];	// 인덱스에 
-	wstring NPCDB[50];		// 인덱스에 
+	std::array<wstring,50> enemyDB;	// 인덱스에 
+	std::array<wstring, 50> NPCDB;	// 인덱스에 
 
 	Texture* FindActorTexture(int index);	// 해당 번호에 맞는 objectType을 골라줌.
 	GameActor* FindActor(int index);
