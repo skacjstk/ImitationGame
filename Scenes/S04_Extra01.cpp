@@ -3,7 +3,6 @@
 #include "./Object/Line.h"
 // #include "./Object/Rect.h"
 #include "./ImGUI/imgui.h"
-#include "Base/EditorObjects.h"
 #include <shellapi.h>
 #include <commdlg.h>
 //#include <codecvt>
