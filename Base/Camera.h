@@ -23,6 +23,8 @@ public:
 	// 범위 지정
 	void SetCornerLeft(float x, float y) { this->cornerLeft = Vector2(x, y); }
 	void SetCornerRight(float x, float y) { this->cornerRight = Vector2(x, y); }
+	void SetCornerLeft(Vector2 leftDown) { this->cornerLeft = leftDown; }
+	void SetCornerRight(Vector2 rightTop) { this->cornerRight = rightTop; }
 
 
 public:   // Setter
