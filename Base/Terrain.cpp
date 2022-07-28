@@ -577,6 +577,13 @@ bool Terrain::GetMapXY(int & x, int & y, Vector2 position)
 	return bExist;
 }
 
+/////////////////////////////////////////////////////////
+// MoveTiles() 에서 사용하는, 좌표 변경 전의 XY를 찾는 함수
+// 차이점: Magnification을 곱하지 않음.
+// 이유: Tile::Update()에서 SetPosition을 할 때 Magni를 곱하는데, 
+// 그래픽적으론 배율에 따라 그려지지만, 실제 객체의 좌표는 Magni를 곱하지 않은 위치에 있음.
+// 그렇게 한 이유가: 맵을 나중에 배율만 바꾸고 싶을 때 망가지지 않게 하기 위해서임. (txt파일 배율만 바꾸면 Scene에서 받아올 때 배율이 바뀜)
+/////////////////////////////////////////////////////////
 bool Terrain::GetOldMapXY(int& x, int& y, Vector2 position)
 {
 	bool bExist = false;
@@ -612,12 +619,13 @@ void Terrain::MoveTiles()
 	// TileSize에 관한 게 있어야 함.
 	Vector2 changeAmount = m_Offset - m_oldOffset;
 	Vector2 changeSize = m_Size - m_oldSize;
+	Vector2 changeMag = OldTerrainMag_ - TerrainMagnification_;
 	Vector2 tempPos = Vector2(0.0f, 0.0f);
-//	if (fabsf(changeAmount.x + changeAmount.y) < 0.01f && fabsf(changeSize.x + changeSize.y) < 0.01f){
-//		printf("최소크기 0.01f 미만 이동 무시\n");
-//		return;
-//	}
-	printf("//////////////////\n");
+	if (fabsf(changeAmount.x + changeAmount.y) < 0.01f && fabsf(changeSize.x + changeSize.y) < 0.01f && fabsf(changeMag.x + changeMag.y) < 0.01f){
+		printf("최소크기 0.01f 미만 이동 무시\n");
+		return;
+	}
+//	printf("//////////////////\n");
 	
 	int index[2] = { 0,0 };
 	for (auto iter = m_cmTiles.begin(); iter != m_cmTiles.end(); ++iter) {
