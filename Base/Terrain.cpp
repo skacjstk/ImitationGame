@@ -546,6 +546,8 @@ void Terrain::SetOrderMax(int order)
 }
 /////////////////////////////////////////////////////////
 // 좌표점을 주었을때  Map에서의 row,column을 찾는 함수
+// 아래 Old는 GameObject의 좌표를 가져오기에, 실제 그래픽과 현재 위치가 다르지만
+// 이 함수는 주로 position 에 Mouse좌표가 들어가기 때문에 실제 위치가 같아야 함. 그래서 보정함.
 /////////////////////////////////////////////////////////
 bool Terrain::GetMapXY(int & x, int & y, Vector2 position)
 {
