@@ -108,6 +108,7 @@ void Town::ChangeScene()
 	npc->Reset();
 	CAMERA->SetObject(tempPlayer);
 	CAMERA->SetCenterXLock(0);
+
 	TRNMANAGER->SetSceneMap("../MapData/GraphicData/Town", true);	// TerrainMagnification을 가져오기 위해 필요함. terrainMag만 가져오는 함수 추가 예정
 	TRNMANAGER->TerrainMagnification_.x *= WSCALEX;
 	TRNMANAGER->TerrainMagnification_.y *= WSCALEY;
@@ -115,6 +116,20 @@ void Town::ChangeScene()
 	// 카메라의 최대, 최소값 잡아주기 (MoMoDora Camera 참조) Next0701
 
 	townTerrain_->SetPosition(2110.0f * WSCALEX, -1025.0f * WSCALEY);
+
+	// 메인 맵 이미지 위치가 잡히고 나서 좌우 정해주기
+	Vector2 leftDown = townTerrain_->GetPosition();
+	Vector2 rightTop = leftDown;
+
+	leftDown -= townTerrain_->GetTextureRealSize() * 0.5f;
+	rightTop += townTerrain_->GetTextureRealSize() * 0.5f;
+	// 이후 X값만 윈도우 너비만큼 보정해주면 된다.
+	leftDown.x += MAIN->GetWidth() * 0.5f;
+	rightTop.x -= MAIN->GetWidth() * 0.5f;
+
+	// y값도 보정해주긴 해야 한다. // 그건 인던에서 하자.
+	CAMERA->SetCornerLeft(leftDown);
+	CAMERA->SetCornerRight(rightTop);
 }
 
 void Town::ExitScene()
