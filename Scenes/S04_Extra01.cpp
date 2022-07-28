@@ -349,10 +349,10 @@ void S04_Extra01::ShowGUI()
 			}
 			if (ImGui::MenuItem("Save PNG File"))
 			{
-				int coord = (coords[0] * 10) + coords[1];
+				wstring coord = to_wstring(coords[0]) + to_wstring(coords[1]);
 				wstring objName = TEMPROOM_FOLDER_W;
 				objName += to_wstring(Floor) + L"F/";
-				objName += to_wstring(coord) + L"Terrain.txt";
+				objName += coord + L"Terrain.png";
 				TRNMANAGER->SavePNGFile(objName);
 				/*
 				wstring  saveFile = GetSaveFile();
