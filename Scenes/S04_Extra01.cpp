@@ -3,6 +3,7 @@
 #include "./Object/Line.h"
 // #include "./Object/Rect.h"
 #include "./ImGUI/imgui.h"
+#include "Database/ObjectDB.h"
 #include <shellapi.h>
 #include <commdlg.h>
 //#include <codecvt>
@@ -20,7 +21,7 @@ static MapEditorOption OPT;
 
 static int coords[2] = { 0,0 };
 static int Floor = 1;
-static int enemyCombo;
+static std::array<int, 2> objCombo;
 
 void S04_Extra01::Replace(wstring & str, wstring comp, wstring rep)
 {
@@ -297,9 +298,9 @@ void S04_Extra01::Render()
 
 void S04_Extra01::ChangeScene()
 {
-	TRNMANAGER->SetSceneMap("test");
-	LoadEditorOption("./Option.txt", true);	// 이 시점에서 Floor, coords도 같이 초기화됨.
-	TRNMANAGER->SetSceneObj(Floor, coords[0], coords[1]);
+//	TRNMANAGER->SetSceneMap("test");
+//	LoadEditorOption("./Option.txt", true);	// 이 시점에서 Floor, coords도 같이 초기화됨.
+//	TRNMANAGER->SetSceneObj(Floor, coords[0], coords[1]);
 	SetActive(true);
 }
 
@@ -491,6 +492,7 @@ void S04_Extra01::SettingMenu()
 		{
 			TRNMANAGER->ApplyOldOffset();
 			TRNMANAGER->ApplyOldSize();
+			TRNMANAGER->ApplyOldMagnification();
 			LoadEditorOption("./Option.txt");
 			m_pMoveTexture->SetScale(OPT.scaleXY[0], OPT.scaleXY[1]);
 		}
@@ -508,6 +510,7 @@ void S04_Extra01::SettingMenu()
 		{
 			TRNMANAGER->ApplyOldOffset();
 			TRNMANAGER->ApplyOldSize();
+			TRNMANAGER->ApplyOldMagnification();
 			ApplyEditorOption();
 			m_pMoveTexture->SetScale(OPT.scaleXY[0], OPT.scaleXY[1]);
 		}
@@ -658,19 +661,40 @@ void S04_Extra01::SettingMenu()
 		}// end combo3
 	}//end LineOption Combo
 
-	// 오브젝트 배치 모드
+	// 오브젝트 Enemy배치 모드
 	{
 		const char* items[] = { "None","SkelDog","BigWhiteSkel", "LittleGhost" };
 		// EnemyCombo를 SelectTexture() 내부에서 참조하기 위해 전역 static 화 
-		int  oldcombo = enemyCombo;
-		ImGui::Combo("Enemy", &enemyCombo, items, ARRAYSIZE(items));
+		int  oldcombo = objCombo[0];
+		ImGui::Combo("Enemy", &objCombo[0], items, ARRAYSIZE(items));
 
-		if (oldcombo != enemyCombo) {
+		if (oldcombo != objCombo[0]) {
 			m_nMousePick = -1;
-			m_nObjectType = enemyCombo;
+			m_nObjectType = objCombo[0];
 			// moveTexture 교체 및 배율적용
-			if (enemyCombo != 0) {
-				m_pMoveTexture = enemyDB.FindActorTexture(m_nObjectType);
+			if (objCombo[0] != 0) {
+				SetOtherComboZero(0, objCombo[0]);
+				m_pMoveTexture = objectDB.FindActorTexture(m_nObjectType);
+				m_pMoveTexture->SetPosition(Mouse->GetPosition());
+				m_pMoveTexture->SetScale(OPT.scaleXY[0], OPT.scaleXY[1]);
+			}
+		}
+	}
+	// 오브젝트 NPC배치 모드
+	{
+		const char* items[] = { "None","Door"};
+		// EnemyCombo를 SelectTexture() 내부에서 참조하기 위해 전역 static 화 
+		int  oldcombo = objCombo[1];
+		ImGui::Combo("NPC", &objCombo[1], items, ARRAYSIZE(items));
+
+		if (oldcombo != objCombo[1]) {
+			m_nMousePick = -1;
+			m_nObjectType = objCombo[1];
+			m_nObjectType += 100;	// 얘는 객체코드가 101부터임. 그래서 100을 더해줘야 함.
+			// moveTexture 교체 및 배율적용
+			if (objCombo[1] != 0) {
+				SetOtherComboZero(1, objCombo[1]);
+				m_pMoveTexture = objectDB.FindActorTexture(m_nObjectType);
 				m_pMoveTexture->SetPosition(Mouse->GetPosition());
 				m_pMoveTexture->SetScale(OPT.scaleXY[0], OPT.scaleXY[1]);
 			}
@@ -760,7 +784,7 @@ void S04_Extra01::SelectTexture()
 		
 		if (ret)  // Button이 Click
 		{
-			enemyCombo = 0;	// EnemyCombo를 0으로 바꿔, moveTexture가 선택한게 Tile이 되도록 함.
+			SetOtherComboZero(-1, 0);		//EnemyCombo를 0으로 바꿔, moveTexture가 선택한게 Tile이 되도록 함.
 			Vector2 pos = Vector2(0.0f+size.x*1.5f , MAIN->GetHeight()*0.5f);    // Window 좌표
 			CAMERA->WCtoVC(pos);
 			m_pMoveTexture->SetOffsetSize(size);
@@ -1023,6 +1047,18 @@ wstring S04_Extra01::GetSaveFile()
 
 	wstring strSaveFile = OFN.lpstrFile;
 	return strSaveFile;
+}
+/// <summary>
+/// objCombo[exceptIndex] = value 를 제외하고 나머지를 0으로 만든다.
+/// </summary>
+/// <param name="exceptIndex">: 변화하지 않을 index 번호, 0보다 작은 수를 넣으면 모두 0으로 바뀐다.</param>
+/// <param name="value">: 그 index의 값.(꼭 복사 전달 해야 함)</param>
+void S04_Extra01::SetOtherComboZero(int exceptIndex, int value)
+{
+	objCombo.fill(0);	// 전부 0으로 바꾸고
+	// index번호가 0 이상이면 넣어준다.
+	if(exceptIndex >= 0)	
+		objCombo[exceptIndex] = value;
 }
 
 

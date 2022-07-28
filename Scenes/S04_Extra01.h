@@ -18,6 +18,7 @@ private:
 	void  LoadEditorOption(string strFileName, bool isTheFirst = false);
 	void  ApplyEditorOption(bool isTheFirst = false);	// 읽어온, 혹은 세팅값 적용(이때는 moveTiles를 ret에 넣어놓음) 버튼을 누를때 호출
 	wstring  GetSaveFile();
+	void  SetOtherComboZero(int exceptIndex, int value);	// 선택은 하나만 해야하니까, 다른애들은 모두 0으로 만들어버리자.
 private:
 	//MapEditorOption 구조체는 .cpp 파일에 선언되어 있음.
 	vector<wstring>  m_cvImageFiles;

@@ -585,13 +585,13 @@ bool Terrain::GetOldMapXY(int& x, int& y, Vector2 position)
 
 	for (int i = 0; i < this->GetMapXY().x; i++)
 	{
-		Min.x = -GetOldTileSizeWithMag().x * 0.5f + GetOldOffsetWithMag().x + (i * GetOldTileSizeWithMag().x);
-		Max.x = Min.x + GetOldTileSizeWithMag().x;
+		Min.x = -GetOldTileSize().x * 0.5f + GetOldOffset().x + (i * GetOldTileSize().x);
+		Max.x = Min.x + GetOldTileSize().x;
 
 		for (int j = 0; j <= GetMapXY().y; j++)
 		{
-			Max.y = GetOldTileSizeWithMag().y * 0.5f + GetOldOffsetWithMag().y - (j * GetOldTileSizeWithMag().y);
-			Min.y = Max.y - GetOldTileSizeWithMag().y;
+			Max.y = GetOldTileSize().y * 0.5f + GetOldOffset().y - (j * GetOldTileSize().y);
+			Min.y = Max.y - GetOldTileSize().y;
 			if ((position.x >= Min.x && position.x <= Max.x) &&
 				(position.y >= Min.y && position.y <= Max.y))
 			{
@@ -613,18 +613,20 @@ void Terrain::MoveTiles()
 	Vector2 changeAmount = m_Offset - m_oldOffset;
 	Vector2 changeSize = m_Size - m_oldSize;
 	Vector2 tempPos = Vector2(0.0f, 0.0f);
-	if (fabsf(changeAmount.x + changeAmount.y) < 0.01f && fabsf(changeSize.x + changeSize.y) < 0.01f){
-		printf("최소크기 0.01f 미만 이동 무시\n");
-		return;
-	}
+//	if (fabsf(changeAmount.x + changeAmount.y) < 0.01f && fabsf(changeSize.x + changeSize.y) < 0.01f){
+//		printf("최소크기 0.01f 미만 이동 무시\n");
+//		return;
+//	}
+	printf("//////////////////\n");
 	
 	int index[2] = { 0,0 };
 	for (auto iter = m_cmTiles.begin(); iter != m_cmTiles.end(); ++iter) {
 		tempPos = iter->second->GetPosition();
 		GetOldMapXY(index[0], index[1], tempPos);
+		printf("coord: %d %d\n", index[0], index[1]);
 	//	iter->second->SetPosition(tempPos + changeAmount);
-		iter->second->SetPosition(tempPos.x + changeAmount.x + changeSize.x * index[0],
-			tempPos.y + changeAmount.y - (changeSize.y * index[1]) );
+		iter->second->SetPosition(tempPos.x + changeAmount.x + changeSize.x * (float)index[0],
+			tempPos.y + changeAmount.y  - changeSize.y * (float)index[1]);
 	}
 	m_oldOffset = m_Offset;	// 동기화
 }

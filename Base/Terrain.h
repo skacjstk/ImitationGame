@@ -21,6 +21,7 @@ public:
 	};
 
 	Vector2 TerrainMagnification_ = Vector2(1.0f, 1.0f);	// 기본은 1.0, Scene 따라 배율이 달라지게 하려고 함.
+	Vector2 OldTerrainMag_ = Vector2(1.0f, 1.0f);
 public:
 	static  Terrain* GetInstance()
 	{
@@ -42,6 +43,7 @@ public:  // Setter
 	// m_oldOffset 갱신( SetOffset 에 있던 기능 분리 )
 	void    ApplyOldOffset() { m_oldOffset = m_Offset; }
 	void    ApplyOldSize() { m_oldSize = m_Size; }
+	void    ApplyOldMagnification() { OldTerrainMag_ = TerrainMagnification_; }
 	void    SetTileSize(float x, float y) { m_Size = Vector2(x, y); }
 	void    SetMapXY(int x, int y)        { m_MapXY = POINT{ x,y }; }
 	void    EraseTile(int x, int y);
@@ -60,15 +62,16 @@ public:  // Getter
 	Vector2 GetOffsetWithMag() { return Vector2(m_Offset.x * TerrainMagnification_.x,
 		m_Offset.y * TerrainMagnification_.y);
 	}
-	Vector2 GetOldOffsetWithMag() { return Vector2(m_oldOffset.x * TerrainMagnification_.x,
-		m_oldOffset.y * TerrainMagnification_.y);
+	Vector2 GetOldOffsetWithMag() { return Vector2(m_oldOffset.x * OldTerrainMag_.x,
+		m_oldOffset.y * OldTerrainMag_.y);
 	}
 	Vector2 GetOldOffset() { return m_oldOffset; }
 	Vector2 GetTileSize()                 { return m_Size; }
 	Vector2 GetTileSizeWithMag() { return Vector2(m_Size.x * TerrainMagnification_.x, 
 		m_Size.y * TerrainMagnification_.y); }
-	Vector2 GetOldTileSizeWithMag() {	return Vector2(m_oldSize.x * TerrainMagnification_.x,
-		m_oldSize.y * TerrainMagnification_.y);
+	Vector2 GetOldTileSize(){ return m_oldSize; }
+	Vector2 GetOldTileSizeWithMag() {	return Vector2(m_oldSize.x * OldTerrainMag_.x,
+		m_oldSize.y * OldTerrainMag_.y);
 	}
 	POINT   GetMapXY()                    { return m_MapXY; }
 	bool    GetMapXY(int& x, int&y, Vector2 position);  
