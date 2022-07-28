@@ -1,3 +1,1 @@
 #X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	OBJECTYPE
-1   3   16.00 -48.00 |../Resources/Image/Monster/BigWhiteSkel/BigWhiteSkelT.png|  0 0 0 33 30 1 1 2
-4   1   64.00 -16.00 |../Resources/Image/Monster/SkelDog/SkelDogT.png|  0 0 0 20 18 1 1 1

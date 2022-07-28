@@ -154,9 +154,6 @@
     <Filter Include="소스 파일\UI///////////////\EnemyUI">
       <UniqueIdentifier>{2c3ebaf0-3644-4ee2-836f-4a5aa1364ed9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Base\Editor">
-      <UniqueIdentifier>{e742a897-7977-489d-a083-1398ed2e1844}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\DataBase">
       <UniqueIdentifier>{f5917990-5fc0-4681-b35d-3645f0af9346}</UniqueIdentifier>
     </Filter>
@@ -351,9 +348,6 @@
     <ClInclude Include="..\Object\NPC.h">
       <Filter>헤더 파일\Object\NPC</Filter>
     </ClInclude>
-    <ClInclude Include="..\System\EventHandler.h">
-      <Filter>헤더 파일\System</Filter>
-    </ClInclude>
     <ClInclude Include="..\Event\Event.h">
       <Filter>헤더 파일\Event</Filter>
     </ClInclude>
@@ -432,21 +426,6 @@
     <ClInclude Include="..\GameUI\BaseUI.h">
       <Filter>헤더 파일\UI\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\GameUI\PlayerUI\DashUI.h">
-      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\GameUI\PlayerUI\EquippedWeaponUI.h">
-      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\GameUI\PlayerUI\PlayerLifeUI.h">
-      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\GameUI\PlayerUI\PlayerUI.h">
-      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Event\SwapItemEvent.h">
-      <Filter>소스 파일\Event</Filter>
-    </ClInclude>
     <ClInclude Include="..\Object\NPCPool.h">
       <Filter>헤더 파일\Object</Filter>
     </ClInclude>
@@ -459,10 +438,31 @@
     <ClInclude Include="..\Base\RoomObjects.h">
       <Filter>소스 파일\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Base\EditorObjects.h">
-      <Filter>소스 파일\Base\Editor</Filter>
+    <ClInclude Include="..\GameUI\PlayerUI\DashUI.h">
+      <Filter>헤더 파일\UI\PlayerUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Database\EnemyDB.h">
+    <ClInclude Include="..\GameUI\PlayerUI\EquippedWeaponUI.h">
+      <Filter>헤더 파일\UI\PlayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameUI\PlayerUI\PlayerLifeUI.h">
+      <Filter>헤더 파일\UI\PlayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameUI\PlayerUI\PlayerUI.h">
+      <Filter>헤더 파일\UI\PlayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\NPC\Door.h">
+      <Filter>소스 파일\Object\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Event\RiseNextFloorEvent.h">
+      <Filter>소스 파일\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Event\SwapItemEvent.h">
+      <Filter>헤더 파일\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\EventHandler.h">
+      <Filter>헤더 파일\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Database\ObjectDB.h">
       <Filter>헤더 파일\DataBase</Filter>
     </ClInclude>
   </ItemGroup>
@@ -641,9 +641,6 @@
     <ClCompile Include="..\Object\NPCPool.cpp">
       <Filter>소스 파일\Object</Filter>
     </ClCompile>
-    <ClCompile Include="..\System\EventHandler.cpp">
-      <Filter>소스 파일\System</Filter>
-    </ClCompile>
     <ClCompile Include="..\Event\Event.cpp">
       <Filter>소스 파일\Event</Filter>
     </ClCompile>
@@ -743,10 +740,16 @@
     <ClCompile Include="..\Base\RoomObjects.cpp">
       <Filter>소스 파일\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Base\EditorObjects.cpp">
-      <Filter>소스 파일\Base\Editor</Filter>
+    <ClCompile Include="..\Object\NPC\Door.cpp">
+      <Filter>소스 파일\Object\NPC</Filter>
     </ClCompile>
-    <ClCompile Include="..\Database\EnemyDB.cpp">
+    <ClCompile Include="..\Event\RiseNextFloorEvent.cpp">
+      <Filter>소스 파일\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\EventHandler.cpp">
+      <Filter>소스 파일\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Database\ObjectDB.cpp">
       <Filter>소스 파일\DataBase</Filter>
     </ClCompile>
   </ItemGroup>

@@ -15,7 +15,7 @@ CMouse* Mouse = NULL;	// 실패할 수 있음
 CAudio* Audio = NULL;
 EventHandler* eventHandler = nullptr;
 PlayerUI* playerUI = nullptr;
-EnemyDB enemyDB;
+ObjectDB objectDB;
 void LoadFont();
 //Window Create
 //1. 윈도우 클래스를 정의 레지스트리에 등록
