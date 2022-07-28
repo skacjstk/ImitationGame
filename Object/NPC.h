@@ -12,7 +12,7 @@ public:		// 공개 인스턴스 변수
 	// 던그리드 캐릭터 변경할때 사용할 것
 protected:	
 	Animation* _animation = nullptr;
-	int codeNPC_ = -1;
+	int codeNPC_ = -1;	// DB에서 찾을때 사용할 것.
 	StateNPC _currentState = StateNPC::RESCUED;
 	StateNPC _beforeState = StateNPC::RESCUED;
 public:
