@@ -52,6 +52,7 @@
 #include <queue>	// 이벤트 핸들러에서 사용
 #include <random>	// Floor_1 에서 부동소수점난수생성으로 사용
 #include <iomanip>
+#include <array>	// std::array 사용
 // using std 
 using std::string;
 using std::wstring;
@@ -153,7 +154,7 @@ typedef D3DXCOLOR	Color;
 #include "./Base/UIObject.h"
 #include "./Object/Button.h"
 #include "./Object/Tile.h"
-#include "Database/EnemyDB.h"
+#include "Database/ObjectDB.h"
 #include "./Render/DirectWrite.h"
 
 //DX Cominterface 및 Global
@@ -173,4 +174,4 @@ extern EventHandler* eventHandler;
 constexpr int MAPX = 30;
 constexpr int MAPY = 30;
 
-extern EnemyDB enemyDB;
+extern ObjectDB objectDB;
