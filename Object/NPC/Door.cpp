@@ -39,6 +39,9 @@ Door::Door()
 
 		_animation->AddClip(pClip);
 	}
+
+	// NPC 코드 설정
+	codeNPC_ = 101;	// DB에서 찾을때만 써.
 }
 
 Door::~Door()
@@ -51,7 +54,6 @@ void Door::Update(Matrix V, Matrix P)
 		return;
 
 	SwitchState();
-	Action();
 
 	_animation->SetScale(GetScale());
 	_animation->SetPosition(GetPosition());
@@ -68,7 +70,7 @@ void Door::Render()
 void Door::Reset()
 {
 	SetActive(true);
-	_currentState = DoorState::CLOSING;
+	doorState = DoorState::CLOSING;
 	ppPlayer = (Player*)OBJECTMANAGER->FindObject("player");
 	this->SetScale(1.0f * WSCALEX, 1.0f * WSCALEY);	// 일단 이건 절대 6배 아니야
 	_animation->SetScale(this->GetScale());
@@ -82,7 +84,7 @@ void Door::Reset()
 void Door::Communicate()
 {
 	eventHandler->Push(L"RiseNextFloor");
-//	SCENEMANAGER->ChangeScene("Floor_" + to_wstring(currentFloor_ + 1));
+	//	SCENEMANAGER->ChangeScene("Floor_" + to_wstring(currentFloor_ + 1));
 }
 
 bool Door::CheckPlayer()
@@ -108,8 +110,8 @@ void Door::OpenSwitch()
 
 void Door::OpenEnter()
 {
-	_currentState = DoorState::OPEN;
-	_animation->SetPlay(_currentState);
+	doorState = DoorState::OPEN;
+	_animation->SetPlay(doorState);
 }
 // Closing 이 끝나면 Close로 바뀜.
 void Door::ClosingSwitch()
@@ -124,8 +126,8 @@ void Door::ClosingSwitch()
 
 void Door::ClosingEnter()
 {
-	_currentState = DoorState::CLOSING;
-	_animation->SetPlay(_currentState);
+	doorState = DoorState::CLOSING;
+	_animation->SetPlay(doorState);
 }
 // 얘는 뭐 닫히면 할게없어. 그냥 Texture 야
 void Door::CloseSwitch()
@@ -134,6 +136,6 @@ void Door::CloseSwitch()
 
 void Door::CloseEnter()
 {
-	_currentState = DoorState::CLOSE;
-	_animation->SetPlay(_currentState);
+	doorState = DoorState::CLOSE;
+	_animation->SetPlay(doorState);
 }

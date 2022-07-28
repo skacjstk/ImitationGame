@@ -1,4 +1,5 @@
 #pragma once
+#include "Object/NPC.h"
 class Door : public NPC
 {
 public:		// 공개 인스턴스 변수
@@ -9,10 +10,9 @@ public:		// 공개 인스턴스 변수
 	};
 	// 던그리드 캐릭터 변경할때 사용할 것
 private:	// 비공개 인스턴스 변수
-	DoorState _currentState = DoorState::CLOSING;
+	DoorState doorState = DoorState::CLOSING;
 	class Player* ppPlayer = { nullptr, };
 	std::function<void()> SwitchState;
-//	std::function<void()> Action;
 	std::function<void()> Enter;
 	// 상태패턴때 사용할 것
 public:
