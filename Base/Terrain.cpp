@@ -206,7 +206,7 @@ void Terrain::SaveFile(string strFileName, string objFileName)
 	string t = "NotePad.exe " + objFileName;
 	const char* ptr = t.c_str();
 	system(ptr);
-//	system("NotePad.exe ./test.txt");
+	system("NotePad.exe ./test.txt");
 
 	// 바이너리 봉인
 	return;
@@ -476,7 +476,25 @@ void Terrain::SavePNGFile(wstring strPNGFile)
 	graphic->GdiPlusShutDown();
 	SAFE_DELETE(graphic);
 
-	MessageBox(MAIN->GetWindowHandler(), L"png파일이 생성 되었습니다", L"Game", MB_OK);
+	
+	wstring t = L"mspaint.exe " + strPNGFile;
+	Replace(t, L"/", L"\\");	// S04 에 있던 거 때어왔음.
+	const WCHAR* ptr = t.c_str();
+	printf("%d\n", _wsystem(ptr));	
+
+}
+// S04_Extra01::Replace와 같음.
+void Terrain::Replace(wstring& str, wstring comp, wstring rep)
+{
+	wstring temp = str;
+
+	size_t start_pos = 0;
+	while ((start_pos = temp.find(comp, start_pos)) != wstring::npos)
+	{
+		temp.replace(start_pos, comp.length(), rep);
+		start_pos += rep.length();
+	}
+	str = temp;
 
 }
 //Fit 파일은 기존과 같음.

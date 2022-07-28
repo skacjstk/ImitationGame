@@ -83,6 +83,7 @@ private:
 	class    Tile* FindTile(wstring strMap);
 	void     OpenFile(string strFileName, bool minimal = false);
 	void     LoadObjFile(string strFileName, Room* room);	// 0728 추가, 아래쪽 OpenFile 기반
+	void Replace(wstring& str, wstring comp, wstring rep);
 	Vector2  m_Offset = Vector2(-500.0f, 800.0f);
 	Vector2  m_Size   = Vector2(100.0f, 100.0f);
 	POINT    m_MapXY = POINT{ 6,10 };
