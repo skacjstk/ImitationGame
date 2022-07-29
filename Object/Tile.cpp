@@ -53,6 +53,7 @@ void Tile::Render()
 		pTileOrder->offsetSize.y = size.y;
 	}
 	_pTexture->SetOffsetSize(pTileOrder->offsetSize);
+	_pTexture->SetRotation(0.0f, 0.0f, pTileOrder->Angle);
 	_pTexture->SetScale(pTileOrder->scale.x * TRNMANAGER->GetMapScale().x,
 		pTileOrder->scale.y * TRNMANAGER->GetMapScale().y);
 	_pTexture->SetPosition(GetPosition().x * TRNMANAGER->GetMapScale().x, GetPosition().y * TRNMANAGER->GetMapScale().y);
