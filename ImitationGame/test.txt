@@ -1,8 +1,61 @@
-#X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	OBJECTYPE
-MAGNIFICATION:3.000000 3.000000
-0   5   50.00 -80.00 |../Resources/Image/Tile/Dirt_H_StairR2.png|  0 0 0 16 16 1 1 0
-1   5   66.00 -80.00 |../Resources/Image/Tile/Dirt_H_StairR2.png|  0 0 0 16 16 1 1 0
-2   5   82.00 -80.00 |../Resources/Image/Tile/Dirt_H_StairR2.png|  0 0 0 16 16 1 1 0
-3   5   98.00 -80.00 |../Resources/Image/Tile/Dirt_H_StairR2.png|  0 0 0 16 16 1 1 0
-4   5   114.00 -80.00 |../Resources/Image/Tile/Dirt_H_StairR2.png|  0 0 0 16 16 1 1 0
-5   5   214.00 -80.00 |../Resources/Image/Tile/Dirt_H_StairR2.png|  0 0 0 16 16 1 1 0
+#X		Y		POSITION		IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	Z_ANGLE	OBJECTYPE
+MAGNIFICATION:6.000000 6.000000
+0   0   -400.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H9.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+0   1   -400.00 224.00 |../Resources/Image/Tile/1F/Tile/Tile_H5.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+0   10  -400.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H11.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+0   2   -400.00 208.00 |../Resources/Image/Tile/1F/Tile/Tile_H5.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+0   3   -400.00 192.00 |../Resources/Image/Tile/1F/Tile/Tile_H5.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+0   4   -400.00 176.00 |../Resources/Image/Tile/1F/Tile/Tile_H5.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+0   5   -400.00 160.00 |../Resources/Image/Tile/1F/Tile/Tile_H5.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+0   6   -400.00 144.00 |../Resources/Image/Tile/1F/Tile/Tile_H5.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+0   7   -400.00 128.00 |../Resources/Image/Tile/1F/Tile/Tile_H5.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+0   8   -400.00 112.00 |../Resources/Image/Tile/1F/Tile/Tile_H5.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+0   9   -400.00 96.00 |../Resources/Image/Tile/1F/Tile/Tile_H5.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+1   0   -384.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+1   10  -384.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+10  0   -240.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+10  10  -240.00 80.00 |../Resources/Image/Tile/1F/Platform/OneWayPlatform.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+11  0   -224.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+11  10  -224.00 80.00 |../Resources/Image/Tile/1F/Platform/OneWayPlatform.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+12  0   -208.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+12  10  -208.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H13.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+12  11  -208.00 64.00 |../Resources/Image/Tile/1F/Tile/Tile_H3.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 360.00 0
+12  12  -208.00 48.00 |../Resources/Image/Tile/1F/Tile/Tile_H3.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 360.00 0
+13  0   -192.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+13  10  -192.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+14  0   -176.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+14  10  -176.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+15  0   -160.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+15  10  -160.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+16  0   -144.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+16  10  -144.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+17  0   -128.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+17  10  -128.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+18  0   -112.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H10.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+18  1   -112.00 224.00 |../Resources/Image/Tile/1F/Tile/Tile_H3.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+18  10  -112.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+18  2   -112.00 208.00 |../Resources/Image/Tile/1F/Tile/Tile_H3.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+18  3   -112.00 192.00 |../Resources/Image/Tile/1F/Tile/Tile_H3.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+18  4   -112.00 176.00 |../Resources/Image/Tile/1F/Tile/Tile_H3.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+18  5   -112.00 160.00 |../Resources/Image/Tile/1F/Tile/Tile_H6.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+19  10  -96.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+19  5   -96.00 160.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+2   0   -368.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+2   10  -368.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+3   0   -352.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 360.00 0
+3   10  -352.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+4   0   -336.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 360.00 0
+4   10  -336.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+4   7   -336.00 128.00 |../Resources/Image/NPC/Door/DoorT.png|  0 0.00 0.00 57.00 80.00 1.00 1.00 0.00 0
+5   0   -320.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 360.00 0
+5   10  -320.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+6   0   -304.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 360.00 0
+6   10  -304.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H14.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+7   0   -288.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 360.00 0
+7   10  -288.00 80.00 |../Resources/Image/Tile/1F/Tile/Tile_H15.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+7   11  -288.00 64.00 |../Resources/Image/Tile/1F/Tile/Tile_H5.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+7   12  -288.00 48.00 |../Resources/Image/Tile/1F/Tile/Tile_H5.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+8   0   -272.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 360.00 0
+8   10  -272.00 80.00 |../Resources/Image/Tile/1F/Platform/OneWayPlatform.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0
+9   0   -256.00 240.00 |../Resources/Image/Tile/1F/Tile/Tile_H7.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 360.00 0
+9   10  -256.00 80.00 |../Resources/Image/Tile/1F/Platform/OneWayPlatform.png|  0 0.00 0.00 16.00 16.00 1.00 1.00 0.00 0

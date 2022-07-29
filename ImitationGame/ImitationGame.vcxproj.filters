@@ -160,6 +160,9 @@
     <Filter Include="헤더 파일\DataBase">
       <UniqueIdentifier>{0f469280-82e7-419e-b5f1-cadd1441eca8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Object\TileObject">
+      <UniqueIdentifier>{246db4af-d221-493f-98f0-eea8dcc0b26a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -465,6 +468,18 @@
     <ClInclude Include="..\Database\ObjectDB.h">
       <Filter>헤더 파일\DataBase</Filter>
     </ClInclude>
+    <ClInclude Include="..\Object\Rect.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Scenes\S18_AStarDemo.h">
+      <Filter>헤더 파일\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\AStar.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\TileObject\Stele.h">
+      <Filter>소스 파일\Object\TileObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -751,6 +766,18 @@
     </ClCompile>
     <ClCompile Include="..\Database\ObjectDB.cpp">
       <Filter>소스 파일\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Rect.cpp">
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Scenes\S18_AStarDemo.cpp">
+      <Filter>소스 파일\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\AStar.cpp">
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\TileObject\Stele.cpp">
+      <Filter>소스 파일\Object\TileObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

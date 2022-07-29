@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -193,6 +193,7 @@
     <ClInclude Include="..\InputHandler\InputHandler.h" />
     <ClInclude Include="..\InputHandler\InventoryInputHandler.h" />
     <ClInclude Include="..\InputHandler\PlayerInputHandler.h" />
+    <ClInclude Include="..\Object\AStar.h" />
     <ClInclude Include="..\Object\Button.h" />
     <ClInclude Include="..\Object\Enemy\BigWhiteSkel.h" />
     <ClInclude Include="..\Object\Enemy\LittleGhost.h" />
@@ -205,8 +206,10 @@
     <ClInclude Include="..\Object\NPC\Door.h" />
     <ClInclude Include="..\Object\NPC\Dungeon.h" />
     <ClInclude Include="..\Object\Player.h" />
+    <ClInclude Include="..\Object\Rect.h" />
     <ClInclude Include="..\Object\Slot.h" />
     <ClInclude Include="..\Object\Tile.h" />
+    <ClInclude Include="..\Object\TileObject\Stele.h" />
     <ClInclude Include="..\Object\Weapons\MeleeWeapons\MeleeWeapon.h" />
     <ClInclude Include="..\Object\Weapons\MeleeWeapons\ShortSword.h" />
     <ClInclude Include="..\Object\Weapons\Weapon.h" />
@@ -224,6 +227,7 @@
     <ClInclude Include="..\Scenes\Intro.h" />
     <ClInclude Include="..\Scenes\Room.h" />
     <ClInclude Include="..\Scenes\S04_Extra01.h" />
+    <ClInclude Include="..\Scenes\S18_AStarDemo.h" />
     <ClInclude Include="..\Scenes\Town.h" />
     <ClInclude Include="..\State\BigWhiteSkelState\AttackStateBWS.h" />
     <ClInclude Include="..\State\BigWhiteSkelState\BigWhiteSkelState.h" />
@@ -293,6 +297,7 @@
     <ClCompile Include="..\InputHandler\InputHandler.cpp" />
     <ClCompile Include="..\InputHandler\InventoryInputHandler.cpp" />
     <ClCompile Include="..\InputHandler\PlayerInputHandler.cpp" />
+    <ClCompile Include="..\Object\AStar.cpp" />
     <ClCompile Include="..\Object\Button.cpp" />
     <ClCompile Include="..\Object\Enemy\BigWhiteSkel.cpp" />
     <ClCompile Include="..\Object\Enemy\LittleGhost.cpp" />
@@ -305,8 +310,10 @@
     <ClCompile Include="..\Object\NPC\Door.cpp" />
     <ClCompile Include="..\Object\NPC\Dungeon.cpp" />
     <ClCompile Include="..\Object\Player.cpp" />
+    <ClCompile Include="..\Object\Rect.cpp" />
     <ClCompile Include="..\Object\Slot.cpp" />
     <ClCompile Include="..\Object\Tile.cpp" />
+    <ClCompile Include="..\Object\TileObject\Stele.cpp" />
     <ClCompile Include="..\Object\Weapons\MeleeWeapons\MeleeWeapon.cpp" />
     <ClCompile Include="..\Object\Weapons\MeleeWeapons\ShortSword.cpp" />
     <ClCompile Include="..\Object\Weapons\Weapon.cpp" />
@@ -324,6 +331,7 @@
     <ClCompile Include="..\Scenes\Intro.cpp" />
     <ClCompile Include="..\Scenes\Room.cpp" />
     <ClCompile Include="..\Scenes\S04_Extra01.cpp" />
+    <ClCompile Include="..\Scenes\S18_AStarDemo.cpp" />
     <ClCompile Include="..\Scenes\Town.cpp" />
     <ClCompile Include="..\State\BigWhiteSkelState\AttackStateBWS.cpp" />
     <ClCompile Include="..\State\BigWhiteSkelState\BigWhiteSkelState.cpp" />
