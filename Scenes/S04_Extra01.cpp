@@ -8,8 +8,9 @@
 #include <commdlg.h>
 //#include <codecvt>
 
-bool IsDrawingLine = false;
-bool saftyPress = true;		// F1 키: 이제 line 수가 0이면 안그리게 했으니까 더미
+bool IsDrawingLine = false;		// Tab 키: 라인을 그리느냐 마느냐
+bool DrawDivideLine = true;		// F1 키: 구분선을 그리느냐 마느냐
+bool FreePosition = false;	// int 단위의 프리포지션을 하느냐 마느냐
 	typedef struct MapEditorOption
 	{
 		Vector2  Origin = Vector2(0.0f, 0.0f);
@@ -94,7 +95,7 @@ void S04_Extra01::EditCeilingLine()
 		m_pRubberBand->AddLine(line.x, line.y, line.x, line.y);
 		m_pRubberBand->EndLine();
 	}
-	if (Mouse->Up(0) && saftyPress)  // 데이터를 저장
+	if (Mouse->Up(0))  // 데이터를 저장
 	{
 		m_pCeilingLine->ClearVertexBuffer();
 		Vector2 start = m_pRubberBand->GetStartPoint(0);
@@ -130,7 +131,7 @@ void S04_Extra01::EditPlatformLine()
 		m_pRubberBand->AddLine(line.x, line.y, line.x, line.y);
 		m_pRubberBand->EndLine();
 	}
-	if (Mouse->Up(0) && saftyPress)  // 데이터를 저장
+	if (Mouse->Up(0))  // 데이터를 저장
 	{
 		m_pPlatformLine->ClearVertexBuffer();
 		Vector2 start = m_pRubberBand->GetStartPoint(0);
@@ -200,10 +201,16 @@ void S04_Extra01::Update()
 	V = CAMERA->GetViewMatrix();
 
 	CAMERA->Update(V, P);
-//	TRNMANAGER->Update(V, P);
 
 	if (KEYBOARD->Down(VK_TAB)) {
 		IsDrawingLine = !IsDrawingLine;
+	}
+	// 구분 선 그리기 여부
+	if (KEYBOARD->Down(VK_F1)) {
+		DrawDivideLine = !DrawDivideLine;
+	}
+	if (KEYBOARD->Down(VK_F2)) {
+		FreePosition = !FreePosition;
 	}
 
 	if(IsDrawingLine == false){
@@ -221,18 +228,24 @@ void S04_Extra01::Update()
 			CAMERA->WCtoVC(pos);                 // Widow coord --> DirectX coord
 			int x = -1;
 			int y = -1;
-			if (TRNMANAGER->GetMapXY(x, y, pos))
+			if (FreePosition == false) {
+				if (TRNMANAGER->GetMapXY(x, y, pos))
+				{
+					wstring strImageFile = m_pMoveTexture->GetImageFile();
+					Vector2 offset = m_pMoveTexture->GetOffset();
+					Vector2 offsetSize = m_pMoveTexture->GetOffsetSize();
+
+					// 0728 기능 추가: object일 경우 ObjectDesc 로 분리. 0729Next: int 단위의 개별 배치기능 추가하기
+					TRNMANAGER->AddTile(x, y, m_nDisplayOrder, m_nTileType, m_nObjectType,
+						strImageFile, offset, offsetSize);
+
+					m_nSelectMapX = x;
+					m_nSelectMapY = y;
+				}
+			}
+			else  // FreePosition 타일 Add
 			{
-				wstring strImageFile = m_pMoveTexture->GetImageFile();
-				Vector2 offset = m_pMoveTexture->GetOffset();
-				Vector2 offsetSize = m_pMoveTexture->GetOffsetSize();
-								
-				// 0728 기능 추가: object일 경우: 
-				TRNMANAGER->AddTile(x, y, m_nDisplayOrder, m_nTileType, m_nObjectType,
-					strImageFile, offset, offsetSize);
-				
-				m_nSelectMapX = x;
-				m_nSelectMapY = y;	
+
 			}
 		}
 		if ((!m_bImGuiWindow) && Mouse->Press(2))	// 우클릭(3번) 버튼이 계속 눌리는 경우
@@ -241,9 +254,16 @@ void S04_Extra01::Update()
 			CAMERA->WCtoVC(pos);		// W좌표 -> V(DX)좌표 
 				int x = -1;
 			int y = -1;
-			if (TRNMANAGER->GetMapXY(x, y, pos)) {
-				TRNMANAGER->EraseTile(x, y);
-				printf("우클릭으로 타일 지우기. %d %d\n", x, y);
+			if (FreePosition == false) {
+
+				if (TRNMANAGER->GetMapXY(x, y, pos)) {
+					TRNMANAGER->EraseTile(x, y);
+					printf("우클릭으로 타일 지우기. %d %d\n", x, y);
+				}
+			}
+			else  // FreePosition 타일 Delete 
+			{
+
 			}
 			
 		}
@@ -266,13 +286,18 @@ void S04_Extra01::Update()
 	m_pCeilingLine->Update(V, P);
 	m_pPlatformLine->Update(V, P);
 	m_pRubberBand->Update(V, P);
+
+	if (FreePosition == true) {
+
+	}
 }
 
 void S04_Extra01::Render()
 {
 
 	TRNMANAGER->Render();
-	m_pLine->Render();
+	if (DrawDivideLine == true)
+		m_pLine->Render();
 	m_pMoveTexture->Render();
 	CAMERA->Render();
 	m_pGroundLine->Render();	// 검산을 이 함수 내부로 옮김
@@ -298,9 +323,9 @@ void S04_Extra01::Render()
 
 void S04_Extra01::ChangeScene()
 {
-//	TRNMANAGER->SetSceneMap("test");
-//	LoadEditorOption("./Option.txt", true);	// 이 시점에서 Floor, coords도 같이 초기화됨.
-//	TRNMANAGER->SetSceneObj(Floor, coords[0], coords[1]);
+	TRNMANAGER->SetSceneMap("test");
+	LoadEditorOption("./Option.txt", true);	// 이 시점에서 Floor, coords도 같이 초기화됨.
+	TRNMANAGER->SetSceneObj(Floor, coords[0], coords[1]);
 	SetActive(true);
 }
 
@@ -459,6 +484,30 @@ void S04_Extra01::SettingMenu()
 		if (ret)
 		{
 	
+		}
+		ImGui::Text(u8"원점 좌표계 변환");
+		ImGui::SameLine(120.0f, 0.0f);
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.6f, 0.6f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(1.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(1.0f, 0.8f, 0.8f));
+		ret = ImGui::Button(u8"중심 좌표계 변환");
+		ImGui::PopStyleColor(3);
+		if (ret)
+		{	// 맵 배율은 안곱해도 된다. 이유는 저번 GetOldMapXY와 같음.
+			OPT.Origin[0] = OPT.Origin[0] - (OPT.MapXY[0] * OPT.PixelXY[0]) * 0.5f;
+			OPT.Origin[1] = OPT.Origin[1] + (OPT.MapXY[1] * OPT.PixelXY[1]) * 0.5f;
+		}
+
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.6f, 0.6f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(1.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(1.0f, 0.8f, 0.8f));
+		ret = ImGui::Button(u8"Window 좌표계 변환");
+		ImGui::PopStyleColor(3);
+		if (ret)
+		{
+			OPT.Origin[0] = OPT.Origin[0] + (OPT.MapXY[0] * OPT.PixelXY[0]) * 0.5f;
+			OPT.Origin[1] = OPT.Origin[1] - (OPT.MapXY[1] * OPT.PixelXY[1]) * 0.5f;
 		}
 	}
 	// 배율 크기
