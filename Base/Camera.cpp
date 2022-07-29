@@ -56,11 +56,11 @@ void Camera::PreUpdate()
 	}
 	if (KEYBOARD->Press(VK_UP))
 	{
-		position.y = position.y - TIMEMANAGER->Delta() * m_MoveSpeed.y;
+		position.y = position.y + TIMEMANAGER->Delta() * m_MoveSpeed.y;
 	}
 	if (KEYBOARD->Press(VK_DOWN))
 	{
-		position.y = position.y + TIMEMANAGER->Delta() * m_MoveSpeed.y;
+		position.y = position.y - TIMEMANAGER->Delta() * m_MoveSpeed.y;
 	}
 
 	// Limit Check
