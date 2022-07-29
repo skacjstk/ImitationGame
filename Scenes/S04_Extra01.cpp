@@ -10,7 +10,10 @@
 
 bool IsDrawingLine = false;		// Tab 키: 라인을 그리느냐 마느냐
 bool DrawDivideLine = true;		// F1 키: 구분선을 그리느냐 마느냐
-bool FreePosition = false;	// int 단위의 프리포지션을 하느냐 마느냐
+bool Div2Position = false;	// F2 키: 포지션 값을 반으로 나눠 마치 0.5 영역에 놓게 함.// 위치점을 반칸 당김
+bool IsAxisX = true;	// 기준이 X축인가?  
+float axisX = 0;
+float axisY = 0;
 	typedef struct MapEditorOption
 	{
 		Vector2  Origin = Vector2(0.0f, 0.0f);
@@ -210,7 +213,14 @@ void S04_Extra01::Update()
 		DrawDivideLine = !DrawDivideLine;
 	}
 	if (KEYBOARD->Down(VK_F2)) {
-		FreePosition = !FreePosition;
+		Div2Position = !Div2Position;
+	}
+	if (KEYBOARD->Down('R')) {
+		float z = m_pMoveTexture->GetRotation().z;
+		m_pMoveTexture->SetRotation(0.0f, 0.0f, z+ 90.0f); 
+	}
+	if(KEYBOARD->Down('T')){
+		IsAxisX = !IsAxisX;
 	}
 
 	if(IsDrawingLine == false){
@@ -220,7 +230,22 @@ void S04_Extra01::Update()
 		{
 			Vector2 pos = Mouse->GetPosition();  // Window
 			CAMERA->WCtoVC(pos);                 // Widow coord --> DirectX coord
-			m_pMoveTexture->SetPosition(pos);
+
+			if (Div2Position == true) {
+				if (IsAxisX == true) {
+				//	axisX = OPT.PixelXY[0] * (OPT.scaleXY[0] * 0.5f);
+					axisX = OPT.PixelXY[0] * 0.5f;
+					m_pMoveTexture->SetPosition(pos.x + axisX, pos.y);
+					axisY = 0.0f;
+				}
+				else {
+					axisY = OPT.PixelXY[1] * 0.5f;
+					m_pMoveTexture->SetPosition(pos.x, pos.y - axisY);
+					axisX = 0.0f;
+
+				}
+			}else
+				m_pMoveTexture->SetPosition(pos);
 		}
 		if ((m_bImGuiWindow == false) && Mouse->Press(0)) // 1버튼이튼이 지속적 눌려진 경우: Down 제거했음.
 		{
@@ -228,7 +253,7 @@ void S04_Extra01::Update()
 			CAMERA->WCtoVC(pos);                 // Widow coord --> DirectX coord
 			int x = -1;
 			int y = -1;
-			if (FreePosition == false) {
+			if (Div2Position == false) {
 				if (TRNMANAGER->GetMapXY(x, y, pos))
 				{
 					wstring strImageFile = m_pMoveTexture->GetImageFile();
@@ -237,15 +262,31 @@ void S04_Extra01::Update()
 
 					// 0728 기능 추가: object일 경우 ObjectDesc 로 분리. 0729Next: int 단위의 개별 배치기능 추가하기
 					TRNMANAGER->AddTile(x, y, m_nDisplayOrder, m_nTileType, m_nObjectType,
-						strImageFile, offset, offsetSize);
+						strImageFile, offset, offsetSize, m_pMoveTexture->GetRotation());
 
 					m_nSelectMapX = x;
 					m_nSelectMapY = y;
 				}
 			}
-			else  // FreePosition 타일 Add
+			else  // Div2Position 타일 Add
 			{
+				if (TRNMANAGER->GetMapXY(x, y, pos))
+				{
+					wstring strImageFile = m_pMoveTexture->GetImageFile();
+					Vector2 offset = m_pMoveTexture->GetOffset();
+					Vector2 offsetSize = m_pMoveTexture->GetOffsetSize();
+					int half = 0;
+					if (IsAxisX == true) 
+						half = (int)axisX;					
+					else
+						half = (int)axisY;
+					// 0728 기능 추가: object일 경우 ObjectDesc 로 분리. 0729Next: int 단위의 개별 배치기능 추가하기
+					TRNMANAGER->AddTileHalf(x, y, half, m_nDisplayOrder, m_nTileType, m_nObjectType,
+						strImageFile, offset, offsetSize, m_pMoveTexture->GetRotation(), IsAxisX);
 
+					m_nSelectMapX = x;
+					m_nSelectMapY = y;
+				}
 			}
 		}
 		if ((!m_bImGuiWindow) && Mouse->Press(2))	// 우클릭(3번) 버튼이 계속 눌리는 경우
@@ -254,17 +295,13 @@ void S04_Extra01::Update()
 			CAMERA->WCtoVC(pos);		// W좌표 -> V(DX)좌표 
 				int x = -1;
 			int y = -1;
-			if (FreePosition == false) {
 
-				if (TRNMANAGER->GetMapXY(x, y, pos)) {
+			// 지우는건 똑같이 지운다.
+			if (TRNMANAGER->GetMapXY(x, y, pos)) {
 					TRNMANAGER->EraseTile(x, y);
 					printf("우클릭으로 타일 지우기. %d %d\n", x, y);
-				}
 			}
-			else  // FreePosition 타일 Delete 
-			{
-
-			}
+			
 			
 		}
 	}
@@ -286,10 +323,6 @@ void S04_Extra01::Update()
 	m_pCeilingLine->Update(V, P);
 	m_pPlatformLine->Update(V, P);
 	m_pRubberBand->Update(V, P);
-
-	if (FreePosition == true) {
-
-	}
 }
 
 void S04_Extra01::Render()
@@ -726,6 +759,8 @@ void S04_Extra01::SettingMenu()
 				m_pMoveTexture = objectDB.FindActorTexture(m_nObjectType);
 				m_pMoveTexture->SetPosition(Mouse->GetPosition());
 				m_pMoveTexture->SetScale(OPT.scaleXY[0], OPT.scaleXY[1]);
+				m_pMoveTexture->SetRotation(0.0f, 0.0f, 0.0f);		// 0729 회전 초기화
+				IsAxisX = true;
 			}
 		}
 	}
@@ -746,6 +781,7 @@ void S04_Extra01::SettingMenu()
 				m_pMoveTexture = objectDB.FindActorTexture(m_nObjectType);
 				m_pMoveTexture->SetPosition(Mouse->GetPosition());
 				m_pMoveTexture->SetScale(OPT.scaleXY[0], OPT.scaleXY[1]);
+				m_pMoveTexture->SetRotation(0.0f, 0.0f, 0.0f);
 			}
 		}
 	}
@@ -836,11 +872,13 @@ void S04_Extra01::SelectTexture()
 			SetOtherComboZero(-1, 0);		//EnemyCombo를 0으로 바꿔, moveTexture가 선택한게 Tile이 되도록 함.
 			Vector2 pos = Vector2(0.0f+size.x*1.5f , MAIN->GetHeight()*0.5f);    // Window 좌표
 			CAMERA->WCtoVC(pos);
+			m_nObjectType = 0;
 			m_pMoveTexture->SetOffsetSize(size);
 			m_pMoveTexture->SetImageFile(m_cvImageFiles[i]);
 			m_pMoveTexture->SetPosition(pos);
+			m_pMoveTexture->SetRotation(0.0f, 0.0f, 0.0f);
 			m_pMoveTexture->Update(CAMERA->GetViewMatrix(),
-				CAMERA->GetProjectionMatrix());
+			CAMERA->GetProjectionMatrix());
 		}
 			
 	}
