@@ -34,7 +34,8 @@ public:
 
 public:  // Setter	
 	void    Clear();
-	void    AddTile(int X, int Y, int nOrder, int nType, int nObjectType, wstring strImageFile, Vector2 offset, Vector2 offsetSize);
+	void    AddTile(int X, int Y, int nOrder, int nType, int nObjectType, wstring strImageFile, Vector2 offset, Vector2 offsetSize, Vector3 rotation);
+	void    AddTileHalf(int X, int Y, int half, int nOrder, int nType, int nObjectType, wstring strImageFile, Vector2 offset, Vector2 offsetSize, Vector3 rotation, bool IsAxisX);
 	void    SetSceneMap(string sceneName, bool minimal = false);
 	void    SetSceneObj(int floor, int x, int y);	// 당연히 temp를 가져와야 함. (loadObjFile과 연계)
 	void    SetOffset(float x, float y) { m_Offset = Vector2(x, y); }

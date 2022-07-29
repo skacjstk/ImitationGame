@@ -70,7 +70,7 @@ void Terrain::Render()
 
 
 
-void Terrain::AddTile(int X, int Y, int nOrder, int nType, int nObjectType, wstring strImageFile, Vector2 offset, Vector2 offsetSize)
+void Terrain::AddTile(int X, int Y, int nOrder, int nType, int nObjectType, wstring strImageFile, Vector2 offset, Vector2 offsetSize, Vector3 rotation)
 {
 	Tile   *pTile = nullptr;
 	wstring strMap = to_wstring(X) + L"," + to_wstring(Y);
@@ -92,9 +92,45 @@ void Terrain::AddTile(int X, int Y, int nOrder, int nType, int nObjectType, wstr
 
 	SRVMANAGER->CreateShaderResourceView(strImageFile);
 	pTile->SetPosition(position);
-	pTile->SetOrder(m_pTexture, nOrder, strImageFile, offset, offsetSize, 0, 0.0f, Vector2(1.0f, 1.0f), nObjectType);
-	
+	pTile->SetOrder(m_pTexture, nOrder, strImageFile, offset, offsetSize, 0, rotation.z, Vector2(1.0f, 1.0f), nObjectType);
+}
+/// <summary>
+/// AddTile을 Half위치 적용하기 위해 추가함.
+/// </summary>
+/// <param name="X"></param>
+/// <param name="Y"></param>
+/// <param name="half">이동량 Pixel * scale</param>
+/// <param name="nOrder"></param>
+/// <param name="nType"></param>
+/// <param name="nObjectType"></param>
+/// <param name="strImageFile"></param>
+/// <param name="offset"></param>
+/// <param name="offsetSize"></param>
+/// <param name="rotation">2D 기준이라 Z 값만 적용된다.</param>
+/// <param name="IsAxisX">m_pMoveTexture가 X축인지 Y축인지 확인할 값</param>
+void Terrain::AddTileHalf(int X, int Y, int half, int nOrder, int nType, int nObjectType, wstring strImageFile, Vector2 offset, Vector2 offsetSize, Vector3 rotation, bool IsAxisX)
+{
+	Tile* pTile = nullptr;
+	wstring strMap = to_wstring(X) + L"," + to_wstring(Y);
+	Vector2 position = Vector2(0.0f, 0.0f);	
+	position = Vector2(m_Offset.x + (X * m_Size.x) + (half * (int)IsAxisX),	m_Offset.y - (Y * m_Size.y) - ( half * (int)!IsAxisX));
 
+	pTile = FindTile(strMap);
+	if (!pTile)
+	{
+		pTile = new Tile();
+		m_cmTiles.insert(make_pair(strMap, pTile));
+	}
+
+	if (m_nMaxDisplayOrder < nOrder)
+		m_nMaxDisplayOrder = nOrder;
+
+	// nType은 TileType인데 의미 없음.
+
+
+	SRVMANAGER->CreateShaderResourceView(strImageFile);
+	pTile->SetPosition(position);
+	pTile->SetOrder(m_pTexture, nOrder, strImageFile, offset, offsetSize, 0, rotation.z, Vector2(1.0f, 1.0f), nObjectType);
 }
 // flag가 True 일 경우, Map의 Magnification( 기타 필수옵션 )만 받아옴.
 void Terrain::SetSceneMap(string sceneName, bool minimal)
@@ -128,8 +164,8 @@ void Terrain::SaveFile(string strFileName, string objFileName)
 	if (op == NULL || opObj == NULL) 
 		return;
 
-	fprintf(op, "#X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	OBJECTYPE\n");
-	fprintf(opObj, "#X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	OBJECTYPE\n");
+	fprintf(op, "#X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	Z_ANGLE	OBJECTYPE\n");
+	fprintf(opObj, "#X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	Z_ANGLE	OBJECTYPE\n");
 	fprintf(op, "MAGNIFICATION:%f %f\n", TerrainMagnification_.x, TerrainMagnification_.y);
 	for (auto v : m_cmTiles)
 	{
@@ -168,6 +204,8 @@ void Terrain::SaveFile(string strFileName, string objFileName)
 				fprintf(op, "%.f %.f ", pOrder->offsetSize.x, pOrder->offsetSize.y);
 				// SCALE
 				fprintf(op, "%.f %.f ", pOrder->scale.x, pOrder->scale.y);
+				// Angle
+				fprintf(op, "%-3.2f ", pOrder->Angle);
 				// 오브젝트 타입
 				fprintf(op, "%d", pOrder->objectType);
 				fprintf(op, "\n");
@@ -191,6 +229,8 @@ void Terrain::SaveFile(string strFileName, string objFileName)
 				fprintf(opObj, "%.f %.f ", pOrder->offsetSize.x, pOrder->offsetSize.y);
 				// SCALE
 				fprintf(opObj, "%.f %.f ", pOrder->scale.x, pOrder->scale.y);
+				// Angle
+				fprintf(op, "%-3.2f ", pOrder->Angle);
 				// 오브젝트 타입
 				fprintf(opObj, "%d", pOrder->objectType);
 				fprintf(opObj, "\n");
@@ -739,7 +779,7 @@ void Terrain::OpenFile(string strFileName, bool minimal)
 
 		Vector2 offset;
 		Vector2 offsetSize;
-		success = sscanf_s(p, "%d %f %f %f %f %f %f %d", &nOrder, &offset.x, &offset.y, &offsetSize.x, &offsetSize.y, &scale.x, &scale.y, &objectType);
+		success = sscanf_s(p, "%d %f %f %f %f %f %f %f %d", &nOrder, &offset.x, &offset.y, &offsetSize.x, &offsetSize.y, &scale.x, &scale.y, &nAngle, &objectType);
 		//_s는 %d, %f같은 기본사양은 크기지정 안해줘도 됨.
 
 
