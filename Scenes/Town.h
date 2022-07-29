@@ -16,10 +16,8 @@ private:	//private instance variable
 	class Line* m_pCeilingLine = nullptr;
 	class NPC* npc = nullptr;
 	class Player* tempPlayer = nullptr;
-	Vector2 playerBefore = Vector2(0.0f, 0.0f);
-	Vector2 playerAfter = Vector2(0.0f, 0.0f);
-	float playerMoveX = 0.0f;
-	float playerMoveY = 0.0f;
+	float cameraMoveX = 0.0f;
+	float cameraMoveY = 0.0f;
 public:	//»ý ¼Ò
 	Town();
 	~Town();

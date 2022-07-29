@@ -73,6 +73,7 @@ void Camera::PreUpdate()
 
 void Camera::Update()
 {
+	cameraBefore = m_Position;
 	if (!m_pGameObject)
 		PreUpdate();
 	else
@@ -96,6 +97,7 @@ void Camera::Update()
 			
 		SetPosition(position);
 	}
+	cameraAfter = m_Position;
 
 
 	// ±âº»

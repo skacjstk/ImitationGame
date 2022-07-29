@@ -55,18 +55,17 @@ void Town::Update()
 	abV = CAMERA->GetAbsoluteViewMatrix();
 	P = CAMERA->GetProjectionMatrix();
 	// Next: 충돌법
-	playerBefore = tempPlayer->GetPosition();
-	OBJECTMANAGER->UpdateAll(V, P);		
-	playerAfter = tempPlayer->GetPosition();
-	playerMoveX = playerAfter.x - playerBefore.x;
-	playerMoveY = playerAfter.y - playerBefore.y;
-	mountain_->ModifyPosition(playerMoveX * 0.3f, playerMoveY * 0.6f);
-	forest_->ModifyPosition(playerMoveX * 0.4f, playerMoveY * 0.4f);
+	OBJECTMANAGER->UpdateAll(V, P);
+	cameraMoveX = CAMERA->cameraAfter.x - CAMERA->cameraBefore.x;
+	cameraMoveY = CAMERA->cameraAfter.y - CAMERA->cameraBefore.y;
+	printf("변화: %f %f\n", cameraMoveX, cameraMoveY);
+	if(fabsf(cameraMoveX) < 200.0f * WSCALEX && fabsf(cameraMoveY) < 200.0f * WSCALEY)
+	mountain_->ModifyPosition(cameraMoveX * 0.8f, cameraMoveY * 0.6f);
+	forest_->ModifyPosition(cameraMoveX * 0.6f,cameraMoveY * 0.4f);
 	CAMERA->Update(V, P);
 	backGround_->Update(abV, P);
 	townTerrain_->Update(V, P);
 	mountain_->Update(V, P);
-	printf("%f %f\n", mountain_->GetPosition().x, mountain_->GetPosition().y);
 	forest_->Update(V, P);
 	m_pGroundLine->Update(V, P);
 	npc->Update(V, P);
@@ -101,8 +100,8 @@ void Town::ChangeScene()
 	OBJECTMANAGER->AddObjectStrings("player");	// 이것도 추가해줘야 함.
 	tempPlayer->Reset();
 
-	mountain_->SetPosition(2250.0f * WSCALEX, -1925.0f * WSCALEY);
-	forest_->SetPosition(2250.0f * WSCALEX, -1925.0f * WSCALEY);
+	mountain_->SetPosition(2250.0f * WSCALEX, -1825.0f * WSCALEY);
+	forest_->SetPosition(2250.0f * WSCALEX, -1225.0f * WSCALEY);
 	
 	npc->SetPosition(1885.5f * WSCALEX, -2085.0f * WSCALEY);
 	npc->Reset();
@@ -130,6 +129,7 @@ void Town::ChangeScene()
 	// y값도 보정해주긴 해야 한다. // 그건 인던에서 하자.
 	CAMERA->SetCornerLeft(leftDown);
 	CAMERA->SetCornerRight(rightTop);
+
 }
 
 void Town::ExitScene()

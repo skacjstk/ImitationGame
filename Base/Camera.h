@@ -10,6 +10,10 @@ public:
 	}
 	Vector2 cornerLeft = Vector2(0.0f, 0.0f);
 	Vector2 cornerRight = Vector2(0.0f, 0.0f);
+
+	Vector2 cameraBefore = Vector2(0.0f, 0.0f);
+	Vector2 cameraAfter = Vector2(0.0f, 0.0f);
+
 public:
 	void   PreUpdate();  // Keyborad
 	void   Update();     // View, Projection Matrix Update
