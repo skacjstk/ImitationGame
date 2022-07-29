@@ -54,6 +54,8 @@ void CMouse::Update()
 	buttonStatus[0] = GetAsyncKeyState(VK_LBUTTON) & 0x8000 ? 1 : 0;
 	buttonStatus[1] = GetAsyncKeyState(VK_MBUTTON) & 0x8000 ? 1 : 0;
 	buttonStatus[2] = GetAsyncKeyState(VK_RBUTTON) & 0x8000 ? 1 : 0;
+	buttonStatus[3] = GetAsyncKeyState(VK_XBUTTON1) & 0x8000 ? 1 : 0;
+	buttonStatus[4] = GetAsyncKeyState(VK_XBUTTON2) & 0x8000 ? 1 : 0;
 
 	for (UINT i = 0; i < 8; i++)
 	{
