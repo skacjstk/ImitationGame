@@ -86,6 +86,13 @@ void Intro::Update()
 		SCENEMANAGER->ChangeScene("MapEditor");
 		return;
 	}
+	// Astar Test
+	if (KEYBOARD->Down(VK_NUMPAD8))
+	{
+		ExitScene();
+		SCENEMANAGER->ChangeScene("AstarDemo");
+		return;
+	}
 	CAMERA->Update(V, P);
 
 	backGround_->Update(V, P);
