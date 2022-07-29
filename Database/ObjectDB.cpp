@@ -3,6 +3,7 @@
 #include "Object/Enemy/BigWhiteSkel.h"
 #include "Object/Enemy/LittleGhost.h"
 #include "Object/NPC/Door.h"
+#include "Object/TileObject/Stele.h"	// 일단은 NPCDB 에
 #include "ObjectDB.h"
 
 ObjectDB::ObjectDB()
@@ -15,6 +16,7 @@ ObjectDB::ObjectDB()
 
 	// 100번부터 NPC
 	NPCDB[0] = L"Door";
+	NPCDB[1] = L"Stele";
 }
 // 많아지면 Texture 찾기에서는 switch문이 없어질 수 있음.
 Texture* ObjectDB::FindActorTexture(int index)
@@ -90,6 +92,9 @@ GameActor* ObjectDB::FindActorOver100(int index)
 	{
 	case 101:	// Door
 		temp = (GameActor*)new Door();		// NPC도 결국 Actor 임.
+		break;
+	case 102:	// Stele
+		temp = (GameActor*)new Stele();		// 
 		break;
 	}
 
