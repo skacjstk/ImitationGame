@@ -204,24 +204,7 @@ void S04_Extra01::Update()
 	V = CAMERA->GetViewMatrix();
 
 	CAMERA->Update(V, P);
-
-	if (KEYBOARD->Down(VK_TAB)) {
-		IsDrawingLine = !IsDrawingLine;
-	}
-	// 구분 선 그리기 여부
-	if (KEYBOARD->Down(VK_F1)) {
-		DrawDivideLine = !DrawDivideLine;
-	}
-	if (KEYBOARD->Down(VK_F2)) {
-		Div2Position = !Div2Position;
-	}
-	if (KEYBOARD->Down('R')) {
-		float z = m_pMoveTexture->GetRotation().z;
-		m_pMoveTexture->SetRotation(0.0f, 0.0f, z+ 90.0f); 
-	}
-	if(KEYBOARD->Down('T')){
-		IsAxisX = !IsAxisX;
-	}
+	CheckOptionKeyboard();
 
 	if(IsDrawingLine == false){
 
@@ -371,6 +354,28 @@ void S04_Extra01::AddDrops(HDROP hDrop)
 {
 	//printf("AAAAAAAAAAAAAAAAAAAA\n");
 
+}
+// 키 변경할만한 곳이 여기밖에
+void S04_Extra01::CheckOptionKeyboard()
+{
+
+	if (KEYBOARD->Down(VK_TAB)) {
+		IsDrawingLine = !IsDrawingLine;
+	}
+	// 구분 선 그리기 여부
+	if (KEYBOARD->Down(VK_F1)) {
+		DrawDivideLine = !DrawDivideLine;
+	}
+	if (Mouse->Down(4)) {	// 마우스 5버튼(위)
+		Div2Position = !Div2Position;
+	}
+	if (KEYBOARD->Down('R')) {
+		float z = m_pMoveTexture->GetRotation().z;
+		m_pMoveTexture->SetRotation(0.0f, 0.0f, z + 90.0f);
+	}
+	if (Mouse->Down(3)) {	// 마우스 4버튼(아래)
+		IsAxisX = !IsAxisX;
+	}
 }
 
 void S04_Extra01::ShowGUI()

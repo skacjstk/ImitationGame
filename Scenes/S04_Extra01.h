@@ -9,6 +9,7 @@ public: // override
 	void  AddDrops(HDROP hDrop);
 
 private:
+	void CheckOptionKeyboard();
 	void  ShowGUI();
 	void  SettingMenu();
 	void  SelectTexture();
