@@ -164,8 +164,8 @@ void Terrain::SaveFile(string strFileName, string objFileName)
 	if (op == NULL || opObj == NULL) 
 		return;
 
-	fprintf(op, "#X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	Z_ANGLE	OBJECTYPE\n");
-	fprintf(opObj, "#X		Y		POSITION	IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	Z_ANGLE	OBJECTYPE\n");
+	fprintf(op, "#X		Y		POSITION		IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	Z_ANGLE	OBJECTYPE\n");
+	fprintf(opObj, "#X		Y		POSITION		IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	Z_ANGLE	OBJECTYPE\n");
 	fprintf(op, "MAGNIFICATION:%f %f\n", TerrainMagnification_.x, TerrainMagnification_.y);
 	for (auto v : m_cmTiles)
 	{
@@ -199,13 +199,13 @@ void Terrain::SaveFile(string strFileName, string objFileName)
 				// DIAPLAY ORDER
 				fprintf(op, "%3d ", pOrder->order);
 				// Offset
-				fprintf(op, "%.f %.f ", pOrder->offset.x, pOrder->offset.y);
+				fprintf(op, "%.2f %.2f ", pOrder->offset.x, pOrder->offset.y);
 				// Offset Size
-				fprintf(op, "%.f %.f ", pOrder->offsetSize.x, pOrder->offsetSize.y);
+				fprintf(op, "%.2f %.2f ", pOrder->offsetSize.x, pOrder->offsetSize.y);
 				// SCALE
-				fprintf(op, "%.f %.f ", pOrder->scale.x, pOrder->scale.y);
+				fprintf(op, "%.2f %.2f ", pOrder->scale.x, pOrder->scale.y);
 				// Angle
-				fprintf(op, "%-3.2f ", pOrder->Angle);
+				fprintf(op, "%3.2f ", pOrder->Angle);
 				// 오브젝트 타입
 				fprintf(op, "%d", pOrder->objectType);
 				fprintf(op, "\n");
@@ -224,13 +224,13 @@ void Terrain::SaveFile(string strFileName, string objFileName)
 				// DIAPLAY ORDER
 				fprintf(opObj, "%3d ", pOrder->order);
 				// Offset
-				fprintf(opObj, "%.f %.f ", pOrder->offset.x, pOrder->offset.y);
+				fprintf(opObj, "%.2f %.2f ", pOrder->offset.x, pOrder->offset.y);
 				// Offset Size
-				fprintf(opObj, "%.f %.f ", pOrder->offsetSize.x, pOrder->offsetSize.y);
+				fprintf(opObj, "%.2f %.2f ", pOrder->offsetSize.x, pOrder->offsetSize.y);
 				// SCALE
-				fprintf(opObj, "%.f %.f ", pOrder->scale.x, pOrder->scale.y);
+				fprintf(opObj, "%.2f %.2f ", pOrder->scale.x, pOrder->scale.y);
 				// Angle
-				fprintf(op, "%-3.2f ", pOrder->Angle);
+				fprintf(opObj, "%-3.2f ", pOrder->Angle);
 				// 오브젝트 타입
 				fprintf(opObj, "%d", pOrder->objectType);
 				fprintf(opObj, "\n");
@@ -762,6 +762,8 @@ void Terrain::OpenFile(string strFileName, bool minimal)
 
 		success = sscanf(buf, "%d %d %f %f", &X, &Y,&FX,&FY);
 		char *p = strstr(buf, "|");
+		if (p == NULL)
+			return;
 		p++;
 		strcpy(imgBuf, p);
 		p = strstr(imgBuf, "|");
