@@ -16,7 +16,7 @@ public:
 	bool     LoadLine(string fileName);
 	bool     SaveLine(string fileName);
 	void     EraseLine(Vector2 pos, float gap = 1.0f);    // 마우스가 Click된 위치
-	void     SetColor(Color color) { m_Color = color; }
+	void     SetColor(Color color) { m_Color = color; }	
 
 public:
 	void         AddLine(float x1, float y1, float x2, float y2);

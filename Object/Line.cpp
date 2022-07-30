@@ -43,7 +43,7 @@ Vector2 Line::GetStartPoint(int no)
 	// 0 : start, 1: end
 	Vector2 pos = Vector2(0.0f, 0.0f);
 	if (GetCountLine() > 0) {
-		pos = Vector2(m_cvLines[no * 2]->x, m_cvLines[no * 2]->y);	
+		pos = Vector2(m_cvLines[no * 2]->x * lineScale_.x, m_cvLines[no * 2]->y * lineScale_.y);
 	}
 	return pos;
 }
@@ -52,7 +52,7 @@ Vector2 Line::GetEndPoint(int no)
 {
 	Vector2 pos = Vector2(0.0f, 0.0f);
 	if (GetCountLine() > 0) {
-		pos = Vector2(m_cvLines[no * 2 + 1]->x, m_cvLines[no * 2 + 1]->y);		
+		pos = Vector2(m_cvLines[no * 2 + 1]->x * lineScale_.x, m_cvLines[no * 2 + 1]->y * lineScale_.y);
 	}
 	return pos;
 }
@@ -145,7 +145,7 @@ void Line::Update(Matrix V, Matrix P)
 	for (UINT i = 0; i < m_cvLines.size(); i++)
 	{
 		Vector2 *p = m_cvLines[i];
-		vertices[i].Position = Vector3(p->x * lineScale_.x, p->y * lineScale_.y, 0.0f);
+		vertices[i].Position = Vector3((p->x * lineScale_.x), (p->y * lineScale_.y), 0.0f);
 		vertices[i].Color    = m_Color;
 	}
 
