@@ -17,6 +17,8 @@ ObjectDB::ObjectDB()
 	// 100번부터 NPC
 	NPCDB[0] = L"Door";
 	NPCDB[1] = L"Stele";
+
+	InitializeNumOneArray();
 }
 // 많아지면 Texture 찾기에서는 switch문이 없어질 수 있음.
 Texture* ObjectDB::FindActorTexture(int index)
@@ -66,6 +68,33 @@ GameActor* ObjectDB::FindActor(int index)
 	return temp;
 }
 
+GameActor* ObjectDB::FindActor(int index, wstring& objName, int& outObjIndex)
+{
+	if (index >= 100)
+		return FindActorOver100(index, objName, outObjIndex);
+	GameActor* temp = nullptr;
+
+
+	switch (index)
+	{
+	case 1:	// SkelDog
+		temp = new SkelDog();
+		break;
+	case 2:	// BigWhiteSkel
+		temp = new BigWhiteSkel();
+		break;
+	case 3:	// LittleGhost
+		temp = new LittleGhost();
+		break;
+	}
+	if (temp != nullptr) {
+		objName = enemyDB[size_t(index - 1)];
+		outObjIndex = enemyNum[size_t(index - 1)]++;	// 이러면 넣고 더해지려나
+	}
+
+	return temp;
+}
+
 Texture* ObjectDB::FindActorTextureOver100(int index)
 {
 	Texture* temp = nullptr;
@@ -76,12 +105,19 @@ Texture* ObjectDB::FindActorTextureOver100(int index)
 	// 101~은 NPC 영역
 	switch (index)
 	{
-	case 101:	
+	case 101:
+	case 102:	// stele
 		strImage += NPCDB[index - 101] + L"/" + NPCDB[index - 101] + L"T.png";
 		temp = new Texture(strImage, strShader);
 		break;
 	}
 	return temp;
+}
+
+void ObjectDB::InitializeNumOneArray()
+{
+	enemyNum.fill(1);
+	npcNum.fill(1);
 }
 
 GameActor* ObjectDB::FindActorOver100(int index)
@@ -94,8 +130,31 @@ GameActor* ObjectDB::FindActorOver100(int index)
 		temp = (GameActor*)new Door();		// NPC도 결국 Actor 임.
 		break;
 	case 102:	// Stele
+		temp = (GameActor*)new Stele();		 
+		break;
+	}
+
+	return temp;
+}
+
+GameActor* ObjectDB::FindActorOver100(int index, wstring& objName, int& outObjIndex)
+{
+	GameActor* temp = nullptr;
+
+	switch (index)
+	{
+	case 101:	// Door
+		temp = (GameActor*)new Door();		// NPC도 결국 Actor 임.
+		break;
+	case 102:	// Stele
 		temp = (GameActor*)new Stele();		// 
 		break;
+	}
+
+	if (temp != nullptr) {
+		objName = NPCDB[size_t(index - 101)];
+		outObjIndex = npcNum[size_t(index - 101)]++;	// 이러면 넣고 더해지려나
+		printf("ObjectDB::FindActorOver100: -1 나와야함: %d\n", outObjIndex - npcNum[size_t(index - 101)]);
 	}
 
 	return temp;
