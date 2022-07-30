@@ -25,23 +25,24 @@ public:
 		RIGHT = 8
 	};
 public:
-	map<string, GameObject*> roomObjects;
+	map<wstring, GameObject*> roomObjects;
 	LinkedRoom myLinkedRoom_ = LinkedRoom::NONE;
 	RoomType roomType_ = RoomType::DISABLE;
 	int myIndex[2] = { 0,0 };
-	int currentFloor_ = 0;	// Floor 와 동기화되(어야 할 변수)
+	int currentFloor_ = 1;	// Floor 와 동기화되(어야 할 변수)
 	class Line* GroundLine_ = nullptr;
 	class Line* CeilingLine_ = nullptr;
 	class Line* PlatformLine_ = nullptr;
 	Texture* terrainImage_ = nullptr;	// 지형 정보 
+	std::array<Vector2, 4> posOfDirection;		// player 가 n 방향"으로" 왔을 때 있어야 할 위치  상하좌우 순 ( 좌<->우, 상<-> 하 끼리 한번 교환해야함)
 private:	//private instance variable
 	// 오브젝트 정보
 	bool isCleared_ = false;
 
 public:	//생 소
-	Room() : roomType_(RoomType::DISABLE) {};	// 초기화 리스트
-	Room(RoomType type) : roomType_(type) {};
-	Room(RoomType type, int x, int y) : roomType_(type), myIndex{ x,y } {};
+	Room();	// 초기화 리스트
+	Room(RoomType type);
+	Room(RoomType type, int x, int y, int currentFloor_);
 	~Room();
 public:	//override
 	void Update() override;
@@ -49,6 +50,10 @@ public:	//override
 	void ChangeScene() override;
 	void ExitScene() override;
 	bool InitializeRoom();	// 룸을 초기화한다 ( 실패시 false 반환)
+	void LoadObjFile(string strFileName);
+	void SetTerrainImage(wstring strFileName, Vector2 pos);
+	GameObject* FindObject(wstring objName);
+	void Reset();
 public:	//public instance method
 	RoomType GetRoomType() { return roomType_; }
 	void SetRoomType(RoomType type) { roomType_ = type; }
@@ -57,4 +62,5 @@ public:	//public instance method
 	class Line* GetPlatformLines() override { return PlatformLine_; }
 	// Getter
 	void GetRoomObjectData();
+
 };
