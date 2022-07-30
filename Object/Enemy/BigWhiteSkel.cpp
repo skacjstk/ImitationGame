@@ -135,7 +135,7 @@ void BigWhiteSkel::Reset()
 	SetScale(3.0f * WSCALEX, 3.0f * WSCALEY);
 	_animation->SetScale(GetScale());
 	chaseTarget_ = (GameActor*)OBJECTMANAGER->FindObject("player");
-	this->SetPosition(chaseTarget_->GetPosition());
+//	this->SetPosition(chaseTarget_->GetPosition());	// 테스트코드
 	actorData_.HP = 18;
 	actorData_.maxHP = 18;
 	actorData_.ImmuneTime = 0;
