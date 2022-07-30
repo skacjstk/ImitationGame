@@ -167,6 +167,8 @@ void Terrain::SaveFile(string strFileName, string objFileName)
 	fprintf(op, "#X		Y		POSITION		IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	Z_ANGLE	OBJECTYPE\n");
 	fprintf(opObj, "#X		Y		POSITION		IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	Z_ANGLE	OBJECTYPE\n");
 	fprintf(op, "MAGNIFICATION:%f %f\n", TerrainMagnification_.x, TerrainMagnification_.y);
+	fprintf(op, "TileSize:%f %f\n", m_Size.x, m_Size.y);	// 이 값이 TerrainImage를 바꾸는 값이 될 것.
+	fprintf(op, "Offset:%f %f\n", m_Offset.x, m_Offset.y);	// 이 값이 TerrainImage를 바꾸는 값이 될 것.
 	for (auto v : m_cmTiles)
 	{
 		// map
@@ -325,7 +327,7 @@ void Terrain::LoadObjFile(string strFileName)
 
 		Vector2 offset;
 		Vector2 offsetSize;
-		success = sscanf_s(p, "%d %f %f %f %f %f %f %d", &nOrder, &offset.x, &offset.y, &offsetSize.x, &offsetSize.y, &scale.x, &scale.y, &objectType);
+		success = sscanf_s(p, "%d %f %f %f %f %f %f %f %d", &nOrder, &offset.x, &offset.y, &offsetSize.x, &offsetSize.y, &scale.x, &scale.y, &nAngle, &objectType);
 		//_s는 %d, %f같은 기본사양은 크기지정 안해줘도 됨.
 
 
@@ -506,8 +508,9 @@ void Terrain::SavePNGFile(wstring strPNGFile)
 		//	position.y = GetOffset().y - position.y - GetTileSize().y * 0.5f;
 			position.x = OffsetX + position.x - offsetSize.x*0.5f;
 			position.y = OffsetY - position.y - offsetSize.y*0.5f;
-
-			graphic->DrawImage(pOrder->imageFile, position, pOrder->offset, pOrder->offsetSize);
+			
+			if(pOrder->objectType == 0)	// 0만 Tile 이기 때문에 0만 그려줘야 한다.
+				graphic->DrawImage(pOrder->imageFile, position, pOrder->offset, pOrder->offsetSize);
 		}
 	}
 
@@ -730,6 +733,8 @@ void Terrain::OpenFile(string strFileName, bool minimal)
 		char imgBuf[200];
 		int  nOrder = 0;
 		int objectType = 0;
+		Vector2 tileSize = Vector2(0.0f, 0.0f);
+		Vector2 mapOffset = Vector2(0.0f, 0.0f);
 		Vector2 Offset = Vector2(0.0f,0.0f);
 		Vector2 OffsetSize = Vector2(0.0f, 0.0f);
 		Vector2 scale = Vector2(1.0f, 1.0f);
@@ -747,7 +752,17 @@ void Terrain::OpenFile(string strFileName, bool minimal)
 			////////////////////////////////
 			// 220725 추가: minimal 이 true 일 경우 최소옵션만 적용하고 빠져나옴 )
 			////////////////////////////////
-			if (minimal == true)
+			continue;
+		}
+		if (strstr(buf, "TileSize:")) {
+			success = sscanf_s(buf, "TileSize:%f %f", &tileSize.x, &tileSize.y);
+			m_Size = tileSize;
+			continue;
+		}
+		if (strstr(buf, "Offset:")) {
+			success = sscanf_s(buf, "Offset:%f %f", &mapOffset.x, &mapOffset.y);
+			m_Offset = mapOffset;
+			if (minimal == true)	// 이제 minimal이 끝나는 시점은 여기까지.
 				break;
 			else
 				continue;
