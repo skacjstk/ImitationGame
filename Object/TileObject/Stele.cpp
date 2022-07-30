@@ -83,7 +83,14 @@ void Stele::Update(Matrix V, Matrix P)
 
 	_animation->SetScale(GetScale());
 	_animation->SetPosition(GetPosition());
+	_animation->SetRotation(GetRotation());
 	_animation->Update(V, P);
+
+	/*
+	메모:
+	충돌 판정 자체를 line과 collider를 비교하는 (player에 intersectionLine)
+	그걸로 하고, Open 상태에서 부딧히면 넘겨주기, 아니면 평범한 벽판정으로 하자
+	*/
 }
 
 void Stele::Render()
@@ -98,7 +105,7 @@ void Stele::Reset()
 	SetActive(true);
 	SteleState_ = SteleState::CLOSING;
 	ppPlayer = (Player*)OBJECTMANAGER->FindObject("player");
-	this->SetScale(TRNMANAGER->GetMapScale().x * WSCALEX, TRNMANAGER->GetMapScale().y * WSCALEY);
+	this->SetScale(TRNMANAGER->GetMapScale().x, TRNMANAGER->GetMapScale().y);
 	_animation->SetScale(this->GetScale());
 	
 	pCollider_->SetScale(_animation->GetTextureRealSize());
@@ -117,16 +124,16 @@ void Stele::SetPath()
 	float angle = GetRotation().z;
 
 	if (fabsf(angle - 0.0f) < FLT_EPSILON)	{
-		stelePath_ = StelePath::BOTTOM;	printf("하 포탈\n");
+		stelePath_ = StelePath::BOTTOM;//	printf("하 포탈\n");
 	}
 	if (fabsf(angle - 90.0f) < FLT_EPSILON)	{
-		stelePath_ = StelePath::LEFT;	printf("좌 포탈\n");
+		stelePath_ = StelePath::LEFT;//		printf("좌 포탈\n");
 	}
 	if (fabsf(angle - 180.0f) < FLT_EPSILON)	{
-		stelePath_ = StelePath::TOP;	printf("상 포탈\n");
+		stelePath_ = StelePath::TOP;//		printf("상 포탈\n");
 	}
 	if (fabsf(angle - 270.0f) < FLT_EPSILON)	{
-		stelePath_ = StelePath::RIGHT;	printf("우 포탈\n");
+		stelePath_ = StelePath::RIGHT;//	printf("우 포탈\n");
 	}
 }
 bool Stele::CheckPlayer()
@@ -137,6 +144,7 @@ bool Stele::CheckPlayer()
 // 문이 열린 상태에서는 플레이어 위치검사 및
 void Stele::OpenSwitch()
 {
+	return;
 	SwitchState = std::bind(&Stele::CloseSwitch, this);
 	Action = std::bind(&Stele::CloseEnter, this);
 	Enter = std::bind(&Stele::CloseEnter, this);

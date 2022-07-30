@@ -134,8 +134,8 @@ void Floor_1::ReadRoomData(int x, int y)
 	
 	Vector2 pos = Vector2(0.0f, 0.0f);
 	pos = TRNMANAGER->GetTileSize() * -0.5f;
-	pos.x *= TRNMANAGER->TerrainMagnification_.x * WSCALEX;
-	pos.y *= -TRNMANAGER->TerrainMagnification_.y * WSCALEY; 
+	pos.x *= TRNMANAGER->TerrainMagnification_.x;
+	pos.y *= -TRNMANAGER->TerrainMagnification_.y; 
 	// 왜 두번 곱해야 딱맞지? ReadStartRoomMinimal() 시점에서 이미 지형배율에 Wscale 곱을 했는데.
 
 	tempRoom->SetTerrainImage(filePath, pos);
@@ -144,19 +144,16 @@ void Floor_1::ReadRoomData(int x, int y)
 	tempRoom->InitializeRoom();	
 	objectDB.InitializeNumOneArray();	// 옵젝 초기화 이후 순번을 초기화해야함
 }
-// 룸 Line 정보 읽기
+// 룸 Line 정보 읽기(이때 이미 mapscale은 Wscale이 곱해져 있음)
 void Floor_1::ReadLines(Room* tempRoom, string coord)
 {	
 	string filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + coord + "GroundLine.txt";
 	tempRoom->GroundLine_->LoadLine(filePath);
-	tempRoom->GroundLine_->lineScale_ = Vector2(WSCALEX, WSCALEY);
 	filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + coord + "CeilingLine.txt";
 	tempRoom->CeilingLine_->LoadLine(filePath);
-	tempRoom->CeilingLine_->lineScale_ = Vector2(WSCALEX, WSCALEY);
 
 	filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + coord + "PlatformLine.txt";
 	tempRoom->PlatformLine_->LoadLine(filePath);
-	tempRoom->PlatformLine_->lineScale_ = Vector2(WSCALEX, WSCALEY);
 }
 
 // 방 연결하기 DFS 비슷한 탐색 알고리즘 ( 

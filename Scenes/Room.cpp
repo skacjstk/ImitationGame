@@ -152,8 +152,8 @@ void Room::LoadObjFile(string strFileName)
 		// 6 * 10
 		wstring strMap = to_wstring(X) + L"," + to_wstring(Y);
 
-
-		Vector2 position = Vector2(FX * TRNMANAGER->TerrainMagnification_.x * WSCALEX, FY * TRNMANAGER->TerrainMagnification_.y * WSCALEY);
+		// 이때쯤 이미 Wscale이 곱해져 있어야 함
+		Vector2 position = Vector2(FX * TRNMANAGER->TerrainMagnification_.x, FY * TRNMANAGER->TerrainMagnification_.y);
 
 		GameObject* pObject;
 
@@ -177,7 +177,7 @@ void Room::SetTerrainImage(wstring strFileName, Vector2 pos)
 {
 	wstring strShader = SHADER_FOLDER; strShader += L"Texture.hlsl";
 	terrainImage_ = new Texture(strFileName, strShader);
-	terrainImage_->SetScale(TRNMANAGER->TerrainMagnification_.x * WSCALEX, TRNMANAGER->TerrainMagnification_.y * WSCALEY);
+	terrainImage_->SetScale(TRNMANAGER->TerrainMagnification_.x, TRNMANAGER->TerrainMagnification_.y);
 	terrainImage_->SetPosition(pos);
 }
 

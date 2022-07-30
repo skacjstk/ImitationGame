@@ -72,7 +72,7 @@ void Door::Reset()
 	SetActive(true);
 	doorState = DoorState::CLOSING;
 	ppPlayer = (Player*)OBJECTMANAGER->FindObject("player");
-	this->SetScale(6.0f * WSCALEX, 6.0f * WSCALEY);	// 일단 이건 절대 6배 아니야
+	this->SetScale(6.0f * WSCALEX, 6.0f * WSCALEY);
 	_animation->SetScale(this->GetScale());
 
 	SwitchState = std::bind(&Door::ClosingSwitch, this);
