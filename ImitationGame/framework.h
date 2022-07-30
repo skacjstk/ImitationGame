@@ -109,6 +109,7 @@ using std::to_string;
 #define TEMPROOM_FOLDER "../TempRoomData/"
 #define TEMPROOM_FOLDER_W L"../TempRoomData/"
 #define ROOM_FOLDER		"../RoomData/";
+#define ROOM_FOLDER_W		L"../RoomData/";
 
 //typedef		
 typedef D3DXVECTOR2 Vector2;

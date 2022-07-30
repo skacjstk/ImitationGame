@@ -33,7 +33,7 @@ void GameActor::GroundCheck()
 			break;
 		}
 	}//end for
-	for (UINT i = 0; i < m_pCeilingLine->GetCountLine(); i++)
+	for (int i = 0; i < m_pCeilingLine->GetCountLine(); i++)
 	{
 		Vector2 start = m_pCeilingLine->GetStartPoint(i);
 		Vector2 end = m_pCeilingLine->GetEndPoint(i);
