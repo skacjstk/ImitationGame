@@ -58,7 +58,6 @@ void Town::Update()
 	OBJECTMANAGER->UpdateAll(V, P);
 	cameraMoveX = CAMERA->cameraAfter.x - CAMERA->cameraBefore.x;
 	cameraMoveY = CAMERA->cameraAfter.y - CAMERA->cameraBefore.y;
-	printf("º¯È­: %f %f\n", cameraMoveX, cameraMoveY);
 	if(fabsf(cameraMoveX) < 200.0f * WSCALEX && fabsf(cameraMoveY) < 200.0f * WSCALEY)
 	mountain_->ModifyPosition(cameraMoveX * 0.8f, cameraMoveY * 0.6f);
 	forest_->ModifyPosition(cameraMoveX * 0.6f,cameraMoveY * 0.4f);
