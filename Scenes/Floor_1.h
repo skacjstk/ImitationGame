@@ -12,6 +12,7 @@ class Floor_1 : public Scene
 {
 public:
 	int currentFloor_ = 1;	// 여긴 1층이니까
+	Vector2 startPos = Vector2(0.0f, 0.0f);	// 플레이어가 층 진입했을때의 위치
 private:	//private instance variable
 	Texture* backGround_ = nullptr;
 
@@ -32,12 +33,13 @@ public:	//override
 	void ExitScene() override;	// 씬 나올 때 따로 설정해야 할 함수
 private:
 	// 딱 한가지로 고정된 맵 형태
+	void ReadStartRoomMinimal();		//테스트: 나중에는 룸 별로 minimal로 값을 가져와야 함(offset)
 	void ApplyStartRoom();	// 0 0에 start room
 	void ApplyEndRoom();	// 5 1에 EndRoom
 	void ApplyOtherRoom();	// 10 20 21 31 41 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
 	void ReadRoomData(int x, int y);	// Start, end는 여기서 구분할 게 아님.
-		void ReadLines(Room* tempRoom, int& coord);	// 3개 형태의 Line들 가져와 Room 에 적용하기
-		void ReadObjects(Room* tempRoom, int& coord);	// 오브젝트 desc 가져와 Room에 new 하기
+		void ReadLines(Room* tempRoom, string coord);	// 3개 형태의 Line들 가져와 Room 에 적용하기
+//		void ReadObjects(Room* tempRoom, int& coord);	// 오브젝트 desc 가져와 Room에 new 하기	// Room에 기능 옮김.
 	// connectRoom은 재활용 가능할 듯
 	
 	// 절차적 지형생성 부분: 잠정폐기
@@ -49,4 +51,7 @@ private:
 	class Line* GetGroundLines() override { return roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->GetGroundLines(); }
 	class Line* GetCeilingLines() override { return roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->GetCeilingLines(); }
 	class Line* GetPlatformLines() override { return roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->GetPlatformLines(); }
+private:	// 던전 룸 관련
+	void EnterRoom(/*좌표*/);	// 지금은 00 
+
 };

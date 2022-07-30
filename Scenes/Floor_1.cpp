@@ -1,5 +1,6 @@
 #include "./ImitationGame/framework.h"
 #include "Scenes/Room.h"
+#include "Object/Player.h"
 #include "DungeonFactory.h"
 #include "Floor_1.h"
 
@@ -25,13 +26,11 @@ void Floor_1::Update()
 	Matrix abV, P;
 	abV = CAMERA->GetAbsoluteViewMatrix();
 	P = CAMERA->GetProjectionMatrix();
-//	backGround_->Update(abV, P);	// 그 돌무대기 배경
 	roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->Update();
 }
 
 void Floor_1::Render()
 {
-//	backGround_->Render();
 	roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->Render();
 }
 
@@ -39,15 +38,20 @@ void Floor_1::ChangeScene()
 {
 	// 절차적 지형 생성 취소, 고정 크기 Room 데이터 읽어오기로 변경
 	ApplyStartRoom();	// 0 0에 start room
+
+	EnterRoom();
+	return;	// 일단 시작룸만
 	ApplyEndRoom();	// 5 1에 EndRoom
 	ApplyOtherRoom();	// 10 20 21 31 41 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
 
+	ConnectRoom(currentActiveRoom_[0], currentActiveRoom_[1]);
+
+	EnterRoom();
 	return;
 	// 1. 방 생성
 	// 2. 시작 위치와 끝 위치 연결
 	GenerateRoom();
 	// 3. 방 유효성 확인 (  시작과 끝이 연결되었는가? )
-	ConnectRoom(currentActiveRoom_[0], currentActiveRoom_[1]);
 	// DFS 를 통해 시작과 끝이 연결되어있는지 확인. ( 0 이 아니면 일단 연결된 것 )
 	// 4. 특수 방 (1개만 있는) 지정(시작, 보스입구 빼고)
 	// 나중에 하자
@@ -64,24 +68,41 @@ void Floor_1::ChangeScene()
 		room 간의 연결 정보를 담나?
 		시작 위치값을 넣어주기
 	*/
-
 }
 
 void Floor_1::ExitScene()
 {
 }
 
+void Floor_1::ReadStartRoomMinimal()
+{
+	TRNMANAGER->SetSceneMap("test", true);
+	TRNMANAGER->TerrainMagnification_.x *= WSCALEX;
+	TRNMANAGER->TerrainMagnification_.y *= WSCALEY;
+}
+
 void Floor_1::ApplyStartRoom()
 {
+	ReadStartRoomMinimal();
 	// myIndex를 똑 같이 넣어줘야 함.
-	roomData_[0][0] = new Room(Room::RoomType::START,0,0);
+	roomData_[0][0] = new Room(Room::RoomType::START,0,0,1);
 	// txt 파일 읽어 데이터 넣어주기
 	ReadRoomData(0, 0);
+	currentActiveRoom_[0] = 0;
+	currentActiveRoom_[1] = 0;
+
+	// 테스트코드
+	GameActor* temp = (GameActor *)roomData_[0][0]->FindObject(L"Door1");
+	// 테스트코드
+	GameActor* player = (GameActor*)OBJECTMANAGER->FindObject("player");
+
+	player->SetPosition(temp->GetPosition());
+
 }
 
 void Floor_1::ApplyEndRoom()
 {
-	roomData_[5][1] = new Room(Room::RoomType::END,5,1);
+	roomData_[5][1] = new Room(Room::RoomType::END,5,1,1);
 	// txt 파일 읽어 데이터 넣어주기
 	ReadRoomData(5, 1);
 }
@@ -93,44 +114,102 @@ void Floor_1::ApplyOtherRoom()
 	for (int i = 0; i < _countof(xy); ++i) {
 		x = xy[i] / 10;
 		y = xy[i] % 10;
-		roomData_[x][y] = new Room(Room::RoomType::NORMAL,x,y);
+		roomData_[x][y] = new Room(Room::RoomType::NORMAL,x,y,1);
 		roomData_[x][y]->myIndex[0] = x;
 		roomData_[x][y]->myIndex[1] = y;
 		// txt 파일 읽어 데이터 넣어주기
 		ReadRoomData(x, y);
 	}
 }
-
+// 룸 지형 이미지, 지형 Line 정보 읽기
 void Floor_1::ReadRoomData(int x, int y)
 {
 	Room* tempRoom = roomData_[x][y];	// 편하게 하려고 포인터 
 
-	int coord = (x * 10) + y;
+	string coord = to_string((int)(x  * 0.1))+ to_string(y % 10);
+	wstring coord2 = to_wstring((int)(x * 0.1)) + to_wstring(y % 10);
 	// terrain 이미지 배치
-	wstring filePath = L"../RoomData/" + to_wstring(currentFloor_) + L"F/" + to_wstring(coord) + L"Terrain.png";
-	wstring strShader = SHADER_FOLDER; strShader += L"Texture.hlsl";
-	tempRoom->terrainImage_ = new Texture(filePath, strShader);
-	ReadLines(tempRoom, coord);
-	ReadObjects(tempRoom, coord);
-}
-
-void Floor_1::ReadLines(Room* tempRoom, int& coord)
-{
+	wstring filePath = ROOM_FOLDER_W;
+	filePath += to_wstring(currentFloor_) + L"F/" + coord2 + L"Terrain.png";	// 지형배치
 	
-	string filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + to_string(coord) + "GroundLine.txt";
-	tempRoom->GroundLine_->LoadLine(filePath);
+	Vector2 pos = Vector2(0.0f, 0.0f);
+	pos = TRNMANAGER->GetTileSize() * -0.5f;
+	pos.x *= TRNMANAGER->TerrainMagnification_.x * WSCALEX;
+	pos.y *= -TRNMANAGER->TerrainMagnification_.y * WSCALEY; 
+	// 왜 두번 곱해야 딱맞지? ReadStartRoomMinimal() 시점에서 이미 지형배율에 Wscale 곱을 했는데.
 
-	filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + to_string(coord) + "CeilingLine.txt";
+	tempRoom->SetTerrainImage(filePath, pos);
+	ReadLines(tempRoom, coord);
+	
+	tempRoom->InitializeRoom();	
+	objectDB.InitializeNumOneArray();	// 옵젝 초기화 이후 순번을 초기화해야함
+}
+// 룸 Line 정보 읽기
+void Floor_1::ReadLines(Room* tempRoom, string coord)
+{	
+	string filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + coord + "GroundLine.txt";
 	tempRoom->GroundLine_->LoadLine(filePath);
+	tempRoom->GroundLine_->lineScale_ = Vector2(WSCALEX, WSCALEY);
+	filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + coord + "CeilingLine.txt";
+	tempRoom->CeilingLine_->LoadLine(filePath);
+	tempRoom->CeilingLine_->lineScale_ = Vector2(WSCALEX, WSCALEY);
 
-	filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + to_string(coord) + "PlatformLine.txt";
-	tempRoom->GroundLine_->LoadLine(filePath);	
+	filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + coord + "PlatformLine.txt";
+	tempRoom->PlatformLine_->LoadLine(filePath);
+	tempRoom->PlatformLine_->lineScale_ = Vector2(WSCALEX, WSCALEY);
 }
 
-void Floor_1::ReadObjects(Room* tempRoom, int& coord)
+// 방 연결하기 DFS 비슷한 탐색 알고리즘 ( 
+void Floor_1::ConnectRoom(int x, int y)
 {
-	wstring filePath = L"../RoomData/" + to_wstring(currentFloor_) + L"F/" + to_wstring(coord) + L"ObjectDesc.txt";
+	// 이미 방문했거나 End이면 경우 return
+	if (visitedRoom[x][y] == true)
+		return;
+	else
+		visitedRoom[x][y] = true;
+
+	if (tempRoom[x][y] == (int)Room::RoomType::END)
+		return;
+
+	// 여기를 시작으로 Normal DFS 수행
+	if (tempRoom[x][y] != (int)Room::RoomType::DISABLE) {	// disable이 아니면
+
+		if (x+1 < maxX && tempRoom[x + 1][y] != (int)Room::RoomType::DISABLE) {
+			roomData_[x][y]->myLinkedRoom_ = (Room::LinkedRoom)(roomData_[x][y]->myLinkedRoom_ | Room::LinkedRoom::RIGHT);
+			ConnectRoom(x + 1,y);
+		}
+		else if (x - 1 >= 0 && tempRoom[x - 1][y] != (int)Room::RoomType::DISABLE) {
+			roomData_[x][y]->myLinkedRoom_ = (Room::LinkedRoom)(roomData_[x][y]->myLinkedRoom_ | Room::LinkedRoom::LEFT);
+			ConnectRoom(x - 1, y);
+		}
+		else if (y + 1 < maxY && tempRoom[x][y + 1] != (int)Room::RoomType::DISABLE) {
+			roomData_[x][y]->myLinkedRoom_ = (Room::LinkedRoom)(roomData_[x][y]->myLinkedRoom_ | Room::LinkedRoom::BOTTOM);
+			ConnectRoom(x, y + 1);
+		}
+		else if (y - 1 >= 0 && tempRoom[x][y - 1] != (int)Room::RoomType::DISABLE) {
+			roomData_[x][y]->myLinkedRoom_ = (Room::LinkedRoom)(roomData_[x][y]->myLinkedRoom_ | Room::LinkedRoom::TOP);
+			ConnectRoom(x, y - 1);
+		}
+	}		
 }
+// 미완성: 위에처럼 탐색해가며 맵의 데이터를 바탕으로 이미지를 정해줘야함.
+void Floor_1::GenerateRoomData()
+{
+	// 일단 new 자체는 이전에 되어있음. 빈 깡통이라 그렇지
+	int x = currentActiveRoom_[0];
+	int y = currentActiveRoom_[1];
+	roomData_[x][y]->InitializeRoom();
+	roomData_[x][y]->myIndex[0] = x;
+	roomData_[x][y]->myIndex[1] = y;
+}
+
+void Floor_1::EnterRoom()
+{
+	roomData_[0][0]->Reset();
+}
+
+
+////////폐기된 절차적 지형생성
 
 void Floor_1::GenerateRoom()
 {
@@ -185,11 +264,11 @@ void Floor_1::ConnectSRER(int& SX, int& SY, int& EX, int& EY)
 		int dY = SY - EY;    // 양수면 UP, 음수면 Down
 		float diceX = 0.0f;
 		float diceY = 0.0f;
-		if ( dX == 0 )	// X는 확장되지 않음.
+		if (dX == 0)	// X는 확장되지 않음.
 		{
 			possibilityX = false;
 		}
-		if( dY == 0 ) // Y는 확장되지 않음.
+		if (dY == 0) // Y는 확장되지 않음.
 		{
 			possibilityY = false;
 		}
@@ -227,54 +306,10 @@ void Floor_1::ConnectSRER(int& SX, int& SY, int& EX, int& EY)
 				tempRoom[SX][SY] = Room::RoomType::NORMAL;
 				// 진짜 룸 만들기
 				roomData_[SX][SY] = new Room(Room::RoomType::NORMAL);
-			}			
+			}
 			else // 다 연결된거임. 시작과 끝이 같으니까				
 				break;
-			
+
 		} // end if
 	}//end while
-}
-
-// 방 연결하기 DFS 비슷한 탐색 알고리즘 ( 
-void Floor_1::ConnectRoom(int x, int y)
-{
-	// 이미 방문했거나 End이면 경우 return
-	if (visitedRoom[x][y] == true)
-		return;
-	else
-		visitedRoom[x][y] = true;
-
-	if (tempRoom[x][y] == (int)Room::RoomType::END)
-		return;
-
-	// 여기를 시작으로 Normal DFS 수행
-	if (tempRoom[x][y] != (int)Room::RoomType::DISABLE) {	// disable이 아니면
-
-		if (x+1 < maxX && tempRoom[x + 1][y] != (int)Room::RoomType::DISABLE) {
-			roomData_[x][y]->myLinkedRoom_ = (Room::LinkedRoom)(roomData_[x][y]->myLinkedRoom_ | Room::LinkedRoom::RIGHT);
-			ConnectRoom(x + 1,y);
-		}
-		else if (x - 1 >= 0 && tempRoom[x - 1][y] != (int)Room::RoomType::DISABLE) {
-			roomData_[x][y]->myLinkedRoom_ = (Room::LinkedRoom)(roomData_[x][y]->myLinkedRoom_ | Room::LinkedRoom::LEFT);
-			ConnectRoom(x - 1, y);
-		}
-		else if (y + 1 < maxY && tempRoom[x][y + 1] != (int)Room::RoomType::DISABLE) {
-			roomData_[x][y]->myLinkedRoom_ = (Room::LinkedRoom)(roomData_[x][y]->myLinkedRoom_ | Room::LinkedRoom::BOTTOM);
-			ConnectRoom(x, y + 1);
-		}
-		else if (y - 1 >= 0 && tempRoom[x][y - 1] != (int)Room::RoomType::DISABLE) {
-			roomData_[x][y]->myLinkedRoom_ = (Room::LinkedRoom)(roomData_[x][y]->myLinkedRoom_ | Room::LinkedRoom::TOP);
-			ConnectRoom(x, y - 1);
-		}
-	}		
-}
-// 미완성: 위에처럼 탐색해가며 맵의 데이터를 바탕으로 이미지를 정해줘야함.
-void Floor_1::GenerateRoomData()
-{
-	// 일단 new 자체는 이전에 되어있음. 빈 깡통이라 그렇지
-	int x = currentActiveRoom_[0];
-	int y = currentActiveRoom_[1];
-	roomData_[x][y]->InitializeRoom();
-	roomData_[x][y]->myIndex[0] = x;
-	roomData_[x][y]->myIndex[1] = y;
 }
