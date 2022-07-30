@@ -404,8 +404,11 @@ void S04_Extra01::ShowGUI()
 				string coord = to_string(coords[0]) + to_string(coords[1]);
 			//	int coord = (coords[0] * 10) + coords[1];	// 10 미만의 위치가 뻑남
 				string objName = TEMPROOM_FOLDER;
+				string mapName;
 				objName += to_string(Floor) + "F/";
+				mapName = objName;
 				objName += coord + "ObjectDesc.txt";
+				mapName += coord + "TileMap.txt";
 				TRNMANAGER->SaveFile("./test.txt", objName);	// 0728 기능추가: object도 같이 저장되게
 				
 				SaveEditorOption("./Option.txt");	// 중복 저장되지 않게 주의!
@@ -467,10 +470,10 @@ void S04_Extra01::SettingMenu()
 		ret = ImGui::InputInt2("##5", coords);
 		if (ret)
 		{
-			if (coords[0] < 1)
-				coords[0] = 1;
-			if (coords[1] < 1)
-				coords[1] = 1;
+			if (coords[0] < 0)
+				coords[0] = 0;
+			if (coords[1] < 0)
+				coords[1] = 0;
 		}
 	}
 	{
@@ -662,10 +665,11 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					int coord = (coords[0] * 10) + coords[1];
+					string coord = to_string(coords[0]) + to_string(coords[1]);
+					//	int coord = (coords[0] * 10) + coords[1];	// 10 미만의 위치가 뻑남
 					string objName = TEMPROOM_FOLDER;
 					objName += to_string(Floor) + "F/";
-					objName += to_string(coord) + "GroundLine.txt";
+					objName += coord + "GroundLine.txt";
 					m_pGroundLine->SaveLine(objName);
 				}
 			}
@@ -676,10 +680,11 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					int coord = (coords[0] * 10) + coords[1];
+					string coord = to_string(coords[0]) + to_string(coords[1]);
+					//	int coord = (coords[0] * 10) + coords[1];	// 10 미만의 위치가 뻑남
 					string objName = TEMPROOM_FOLDER;
 					objName += to_string(Floor) + "F/";
-					objName += to_string(coord) + "GroundLine.txt";
+					objName += coord + "GroundLine.txt";
 					m_pGroundLine->LoadLine(objName);
 				}
 			}
@@ -693,10 +698,11 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					int coord = (coords[0] * 10) + coords[1];
+					string coord = to_string(coords[0]) + to_string(coords[1]);
+					//	int coord = (coords[0] * 10) + coords[1];	// 10 미만의 위치가 뻑남
 					string objName = TEMPROOM_FOLDER;
 					objName += to_string(Floor) + "F/";
-					objName += to_string(coord) + "CeilingLine.txt";
+					objName += coord + "CeilingLine.txt";
 					m_pCeilingLine->SaveLine(objName);
 				}
 			}
@@ -707,10 +713,11 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					int coord = (coords[0] * 10) + coords[1];
+					string coord = to_string(coords[0]) + to_string(coords[1]);
+					//	int coord = (coords[0] * 10) + coords[1];	// 10 미만의 위치가 뻑남
 					string objName = TEMPROOM_FOLDER;
 					objName += to_string(Floor) + "F/";
-					objName += to_string(coord) + "CeilingLine.txt";
+					objName += coord + "CeilingLine.txt";
 					m_pCeilingLine->LoadLine(objName);
 				}
 			}
@@ -724,10 +731,11 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					int coord = (coords[0] * 10) + coords[1];
+					string coord = to_string(coords[0]) + to_string(coords[1]);
+					//	int coord = (coords[0] * 10) + coords[1];	// 10 미만의 위치가 뻑남
 					string objName = TEMPROOM_FOLDER;
 					objName += to_string(Floor) + "F/";
-					objName += to_string(coord) + "PlatformLine.txt";
+					objName += coord + "PlatformLine.txt";
 					m_pPlatformLine->SaveLine(objName);
 				}
 			}
@@ -738,10 +746,11 @@ void S04_Extra01::SettingMenu()
 	
 				if (ret)
 				{
-					int coord = (coords[0] * 10) + coords[1];
+					string coord = to_string(coords[0]) + to_string(coords[1]);
+					//	int coord = (coords[0] * 10) + coords[1];	// 10 미만의 위치가 뻑남
 					string objName = TEMPROOM_FOLDER;
 					objName += to_string(Floor) + "F/";
-					objName += to_string(coord) + "PlatformLine.txt";
+					objName += coord + "PlatformLine.txt";
 					m_pPlatformLine->LoadLine(objName);
 				}
 			}
@@ -771,7 +780,7 @@ void S04_Extra01::SettingMenu()
 	}
 	// 오브젝트 NPC배치 모드
 	{
-		const char* items[] = { "None","Door"};
+		const char* items[] = { "None","Door", "Stele"};
 		// EnemyCombo를 SelectTexture() 내부에서 참조하기 위해 전역 static 화 
 		int  oldcombo = objCombo[1];
 		ImGui::Combo("NPC", &objCombo[1], items, ARRAYSIZE(items));
