@@ -16,7 +16,7 @@ Door::Door()
 		AnimationClip* pClip = new AnimationClip(AnimationClip::eState::EndStay);
 		Texture* pTexture = _animation->GetTexture();
 		strImage = IMAGE_FOLDER; strImage += L"NPC/Door/Door (1).png";
-		pClip->AddFrame(pTexture, strImage, 0, 0, 57, 65, 1.0f);
+		pClip->AddFrame(pTexture, strImage, 0, 0, 57, 80, 1.0f);
 		
 		_animation->AddClip(pClip);
 	}
@@ -26,7 +26,7 @@ Door::Door()
 		Texture* pTexture = _animation->GetTexture();
 		for (int i = 1; i <= 10; ++i) {
 			strImage = IMAGE_FOLDER; strImage += L"NPC/Door/Door (" + to_wstring(i) +  L").png";
-			pClip->AddFrame(pTexture, strImage, 0, 0, 57, 65, 1.0f);
+			pClip->AddFrame(pTexture, strImage, 0, 0, 57, 80, 0.1f);
 		}
 		_animation->AddClip(pClip);
 	}
@@ -35,7 +35,7 @@ Door::Door()
 		AnimationClip* pClip = new AnimationClip(AnimationClip::eState::EndStay);
 		Texture* pTexture = _animation->GetTexture();
 		strImage = IMAGE_FOLDER; strImage += L"NPC/Door/Door (10).png";
-		pClip->AddFrame(pTexture, strImage, 0, 0, 57, 65, 1.0f);
+		pClip->AddFrame(pTexture, strImage, 0, 0, 57, 80, 1.0f);
 
 		_animation->AddClip(pClip);
 	}
@@ -72,7 +72,7 @@ void Door::Reset()
 	SetActive(true);
 	doorState = DoorState::CLOSING;
 	ppPlayer = (Player*)OBJECTMANAGER->FindObject("player");
-	this->SetScale(1.0f * WSCALEX, 1.0f * WSCALEY);	// 일단 이건 절대 6배 아니야
+	this->SetScale(6.0f * WSCALEX, 6.0f * WSCALEY);	// 일단 이건 절대 6배 아니야
 	_animation->SetScale(this->GetScale());
 
 	SwitchState = std::bind(&Door::ClosingSwitch, this);
