@@ -34,6 +34,7 @@ Town::Town()
 
 	m_pGroundLine = new Line();
 	m_pCeilingLine = new Line();
+	m_pPlatformLine = new Line();
 	npc = NPCPOOL->GetNPC(0);
 
 	strImage = IMAGE_FOLDER; strImage += L"Town/townBase.png";

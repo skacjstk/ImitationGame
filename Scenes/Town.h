@@ -14,6 +14,7 @@ private:	//private instance variable
 	Texture* townTerrain_ = nullptr;
 	class Line* m_pGroundLine = nullptr;
 	class Line* m_pCeilingLine = nullptr;
+	class Line* m_pPlatformLine = nullptr;
 	class NPC* npc = nullptr;
 	class Player* tempPlayer = nullptr;
 	float cameraMoveX = 0.0f;
@@ -28,5 +29,6 @@ public:	//override
 	void ExitScene() override;
 	Line* GetGroundLines() override { return m_pGroundLine; }
 	Line* GetCeilingLines() override { return m_pCeilingLine; }
+	Line* GetPlatformLines() override { return m_pPlatformLine; }
 
 };
