@@ -105,7 +105,8 @@ using std::to_string;
 #define PI 3.141592f
 #define SHADER_FOLDER	L"../Shader/"
 #define IMAGE_FOLDER	L"../Resources/Image/"
-#define AUDIO_FOLDER	L"../Resources/AudioClip/"
+#define AUDIO_FOLDER_W	L"../Resources/AudioClip/"
+#define AUDIO_FOLDER	"../Resources/AudioClip/"
 #define TEMPROOM_FOLDER "../TempRoomData/"
 #define TEMPROOM_FOLDER_W L"../TempRoomData/"
 #define ROOM_FOLDER		"../RoomData/";

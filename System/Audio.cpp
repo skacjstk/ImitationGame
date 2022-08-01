@@ -49,6 +49,10 @@ void CAudio::Update()
 
 void CAudio::AddSound(string name, string file, bool bLoop)
 {
+	if (sounds.find(name) != sounds.end()) {
+		printf("AddSound 내용물 중복 %s\n", name.c_str());
+		return;
+	}
 	if (bLoop == true)
 		system->createStream(file.c_str(), FMOD_LOOP_NORMAL, NULL, &sound[sounds.size()]);
 	else
@@ -63,7 +67,7 @@ void CAudio::AddSound(string name, wstring file, bool bLoop)
 	cfile.assign(file.begin(), file.end());
 	
 	if (sounds.find(name) != sounds.end()) {
-		printf("AddSound 내용물 중복\n");
+		printf("AddSound 내용물 중복 %s\n", name.c_str());
 		return;
 	}
 
