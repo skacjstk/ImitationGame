@@ -1,4 +1,5 @@
 #pragma once
+#include "Base/GameActor.h"
 class Stele : public GameActor
 {
 public:		// 공개 인스턴스 변수
@@ -12,10 +13,10 @@ public:		// 공개 인스턴스 변수
 	// 이 Stele 에 도달했을 때 Player를 보내줄 방향
 	enum class StelePath
 	{
-		LEFT,
-		TOP,
-		RIGHT,
-		BOTTOM
+		BOTTOM = 0,
+		RIGHT = 1,
+		TOP = 2,
+		LEFT = 3
 	};
 	// 던그리드 캐릭터 변경할때 사용할 것
 private:	// 비공개 인스턴스 변수
@@ -36,9 +37,12 @@ public:
 	void Reset() override;
 	
 	void SetPath();	// 분명 오브젝트 받아와서 Rotation을 초기화 함. 그 이후에 Rotation을 기반으로 Path 설정
+	Stele::StelePath GetPath() { return stelePath_; }
 	bool CheckPlayer();
+
 	// 상태 패턴을 std::function으로 객체 내부에 구현해보기
 	// Open 상태
+private:
 	void OpenSwitch();
 	void OpenAction();
 	void OpenEnter();

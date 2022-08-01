@@ -86,6 +86,10 @@ void Stele::Update(Matrix V, Matrix P)
 	_animation->SetRotation(GetRotation());
 	_animation->Update(V, P);
 
+	pCollider_->SetPosition(GetPosition());
+	pCollider_->SetPosition(GetPosition());
+	pCollider_->SetRotation(GetRotation());
+	pCollider_->Update(V, P);
 	/*
 	메모:
 	충돌 판정 자체를 line과 collider를 비교하는 (player에 intersectionLine)
@@ -98,6 +102,7 @@ void Stele::Render()
 	if (IsActive() == false)
 		return;
 	_animation->Render();
+	pCollider_->Render();
 }
 
 void Stele::Reset()
@@ -124,31 +129,51 @@ void Stele::SetPath()
 	float angle = GetRotation().z;
 
 	if (fabsf(angle - 0.0f) < FLT_EPSILON)	{
-		stelePath_ = StelePath::BOTTOM;//	printf("하 포탈\n");
+		stelePath_ = StelePath::BOTTOM;		printf("하 포탈\n");
 	}
-	if (fabsf(angle - 90.0f) < FLT_EPSILON)	{
-		stelePath_ = StelePath::LEFT;//		printf("좌 포탈\n");
+	else if (fabsf(angle - 90.0f) < FLT_EPSILON)	{
+		stelePath_ = StelePath::RIGHT;		printf("우 포탈\n");
 	}
-	if (fabsf(angle - 180.0f) < FLT_EPSILON)	{
-		stelePath_ = StelePath::TOP;//		printf("상 포탈\n");
+	else if (fabsf(angle - 180.0f) < FLT_EPSILON)	{
+		stelePath_ = StelePath::TOP;		printf("상 포탈\n");
 	}
-	if (fabsf(angle - 270.0f) < FLT_EPSILON)	{
-		stelePath_ = StelePath::RIGHT;//	printf("우 포탈\n");
+	else if (fabsf(angle - 270.0f) < FLT_EPSILON)	{
+		stelePath_ = StelePath::LEFT;		printf("좌 포탈\n");
 	}
 }
 bool Stele::CheckPlayer()
 {
-	return Collider::IntersectAABB(ppPlayer->GetCollider(), pCollider_);
+	return Collider::Obb(ppPlayer->GetCollider(), pCollider_);	// stele는 회전이 있기에 Obb로 검사해야 함.
 
 }
 // 문이 열린 상태에서는 플레이어 위치검사 및
 void Stele::OpenSwitch()
 {
-	return;
-	SwitchState = std::bind(&Stele::CloseSwitch, this);
-	Action = std::bind(&Stele::CloseEnter, this);
-	Enter = std::bind(&Stele::CloseEnter, this);
-	Enter();
+	
+	if (CheckPlayer() == true) {
+		// 이동 이벤트 호출.
+		switch (stelePath_)
+		{
+		case StelePath::BOTTOM:
+			eventHandler->Push(L"MR1");	// 하
+			break;
+		case StelePath::LEFT:
+			eventHandler->Push(L"MR2");	// 좌
+			break;
+		case StelePath::TOP:
+			eventHandler->Push(L"MR3");	// 상
+			break;
+		case StelePath::RIGHT:
+			eventHandler->Push(L"MR4");	// 우
+			break;
+		}
+
+		SwitchState = std::bind(&Stele::ClosingSwitch, this);
+		Action = std::bind(&Stele::ClosingEnter, this);
+		Enter = std::bind(&Stele::ClosingEnter, this);
+		Enter();
+	}
+
 }
 
 void Stele::OpenAction()
