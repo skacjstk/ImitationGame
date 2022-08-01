@@ -1,4 +1,4 @@
 #X		Y		POSITION		IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	Z_ANGLE	OBJECTYPE
-19  7   88.00 0.00 |../Resources/Image/NPC/Stele/SteleT.png|  1 0.00 0.00 66.00 20.00 1.00 1.00 270.00 102
+19  7   88.00 0.00 |../Resources/Image/NPC/Stele/SteleT.png|  1 0.00 0.00 66.00 20.00 1.00 1.00 90.00 102
 4   7   -152.00 8.00 |../Resources/Image/NPC/Door/DoorT.png|  1 0.00 0.00 57.00 80.00 1.00 1.00 0.00 101
 9   12  -64.00 -72.00 |../Resources/Image/NPC/Stele/SteleT.png|  1 0.00 0.00 66.00 20.00 1.00 1.00 0.00 102

@@ -456,9 +456,6 @@
     <ClInclude Include="..\Object\NPC\Door.h">
       <Filter>소스 파일\Object\NPC</Filter>
     </ClInclude>
-    <ClInclude Include="..\Event\RiseNextFloorEvent.h">
-      <Filter>소스 파일\Event</Filter>
-    </ClInclude>
     <ClInclude Include="..\Event\SwapItemEvent.h">
       <Filter>헤더 파일\Event</Filter>
     </ClInclude>
@@ -479,6 +476,21 @@
     </ClInclude>
     <ClInclude Include="..\Object\TileObject\Stele.h">
       <Filter>소스 파일\Object\TileObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Event\RiseNextFloorEvent.h">
+      <Filter>헤더 파일\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Event\MoveRoomDown.h">
+      <Filter>헤더 파일\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Event\MoveRoomLeft.h">
+      <Filter>헤더 파일\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Event\MoveRoomRight.h">
+      <Filter>헤더 파일\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Event\MoveRoomUp.h">
+      <Filter>헤더 파일\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -778,6 +790,18 @@
     </ClCompile>
     <ClCompile Include="..\Object\TileObject\Stele.cpp">
       <Filter>소스 파일\Object\TileObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Event\MoveRoomDown.cpp">
+      <Filter>소스 파일\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Event\MoveRoomLeft.cpp">
+      <Filter>소스 파일\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Event\MoveRoomRight.cpp">
+      <Filter>소스 파일\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Event\MoveRoomUp.cpp">
+      <Filter>소스 파일\Event</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

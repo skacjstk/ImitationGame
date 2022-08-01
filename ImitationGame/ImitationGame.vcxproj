@@ -173,6 +173,10 @@
     <ClInclude Include="..\Database\ObjectDB.h" />
     <ClInclude Include="..\Event\EnterDungeonEvent.h" />
     <ClInclude Include="..\Event\Event.h" />
+    <ClInclude Include="..\Event\MoveRoomDown.h" />
+    <ClInclude Include="..\Event\MoveRoomLeft.h" />
+    <ClInclude Include="..\Event\MoveRoomRight.h" />
+    <ClInclude Include="..\Event\MoveRoomUp.h" />
     <ClInclude Include="..\Event\RiseNextFloorEvent.h" />
     <ClInclude Include="..\Event\SwapItemEvent.h" />
     <ClInclude Include="..\FMOD\fmod.hpp" />
@@ -280,6 +284,10 @@
     <ClCompile Include="..\Database\ObjectDB.cpp" />
     <ClCompile Include="..\Event\EnterDungeonEvent.cpp" />
     <ClCompile Include="..\Event\Event.cpp" />
+    <ClCompile Include="..\Event\MoveRoomDown.cpp" />
+    <ClCompile Include="..\Event\MoveRoomLeft.cpp" />
+    <ClCompile Include="..\Event\MoveRoomRight.cpp" />
+    <ClCompile Include="..\Event\MoveRoomUp.cpp" />
     <ClCompile Include="..\Event\RiseNextFloorEvent.cpp" />
     <ClCompile Include="..\Event\SwapItemEvent.cpp" />
     <ClCompile Include="..\GameUI\BaseUI.cpp" />
