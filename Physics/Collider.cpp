@@ -154,12 +154,12 @@ bool Collider::IntersectAABB(class Collider *A, class Collider *B)
 	float bottomB = world2._42 - halfHeight;
 
 	// 충돌 Check
-	if (rightA < leftB || leftA > rightB)
+
+	if (rightB < leftA || rightA < leftB)
 		return false;
-	if (topA < bottomB || bottomA > topB)
+	if (topB < bottomA || topA < bottomB)
 		return false;
 	return true;
-
 }
 //////////////////////////////////////////////////////////////////////////
 // CCW를 이용한 Line Itersection Check
