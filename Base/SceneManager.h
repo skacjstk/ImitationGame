@@ -37,7 +37,6 @@ private:
 	SceneManager();
 public:
 	~SceneManager();
-	void DisPlayHPandSceneID();
 private:
 	void Display();
 	void ThreadStart();	//여러 Scene이 있는 경우 여기서 Scene 생성

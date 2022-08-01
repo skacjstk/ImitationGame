@@ -55,7 +55,7 @@ void SceneManager::Render()
 void SceneManager::CreateGameObject()
 {
 	// 여긴 미리 만들어 놓는 것. 나중에 씬에서 Add 할때, 여기에 이미 있는 거라면 단순히 Find로 찾아 넘겨주기만 할 뿐 
-
+	// 근데 던그리드구조를 만들면서 이게 맘처럼 안되네
 	// Box Create
 //	for (int i = 0; i < 10; ++i) {
 //		string name = "Box" + to_string(i);
@@ -123,76 +123,6 @@ void SceneManager::Display()
 		DirectWrite::RenderText(str, rect);
 	}
 	DirectWrite::EndDraw();
-	/*
-	if (SCENEMANAGER->GetCurrentScene()->IsDisplay())	// 각 Scene에서 Display값이 참이면 이거 보여줌.
-	{
-		// HP Display를 HS01에 따로 빼려고 시도중. 0526
-		// DisPlayHPandSceneID();
-		// Map Display
-		DirectWrite::BeginDraw();
-		{
-			for (int y = 0; y < HELLTAKERMAP->GetSizeY(); y++)
-			{
-				for (int x = 0; x < HELLTAKERMAP->GetSizeX(); x++)
-				{
-					Vector2 position = HELLTAKERMAP->GetPosition(x, y);
-					int     state = HELLTAKERMAP->GetValue(x, y);
-					CAMERA->VCtoWC(position);
-					wstring  str = to_wstring(state);
-					if (state == 0)
-						DirectWrite::RenderText(str, position, 255, 0, 255, 20.0f);
-					else
-						DirectWrite::RenderText(str, position, 255, 255, 255, 20.0f);
-
-					position.y = position.y - 1;
-					str = L"(" + to_wstring(x) + L"," + to_wstring(y) + L")";
-					//   if (state != 0)
-					DirectWrite::RenderText(str, position, 0, 255, 255, 16.0f);
-				}
-			}
-		}
-		DirectWrite::EndDraw();
-	}//end if(SceneID >= 0)
-	*/
-}
-// Next 
-// HP 표시
-void SceneManager::DisPlayHPandSceneID()
-{
-	/*
-	int SceneID = SCENEMANAGER->GetCurrentScene()->GetSceneID() - 1;
-	if (SceneID >= 0) {
-		DirectWrite::BeginDraw();
-		{
-
-			Helltaker* pObject = (Helltaker*)OBJECTMANAGER->FindObject("Helltaker");
-			float fontSize = 180.0f;
-			if (pObject) {
-				wstring str = to_wstring(pObject->GetHP());
-				if (pObject->GetHP() <= 0)
-					str = L"X";
-
-				Vector2 position = Vector2(-750.0f, -270.0f);	// Windows 좌표 
-				position = position + Vector2(fontSize * -0.5f * str.length(), fontSize * +0.5f);
-				CAMERA->VCtoWC(position);
-
-				if (pObject->GetHP() >= 0)
-					DirectWrite::RenderText(str, position, 255, 255, 255, fontSize);
-				// Scene 명 출력 오른쪽
-				wstring temp = L"ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ00";
-				int SceneID = SCENEMANAGER->GetCurrentScene()->GetSceneID() - 1;
-				if (SceneID < 0) SceneID = 0;
-				str = temp.at(SceneID);
-				position = Vector2(750.0f, -270.0f);	// Windows 좌표 
-				position = position + Vector2(fontSize * -0.5f * str.length(), fontSize * +0.5f);
-				CAMERA->VCtoWC(position);
-				if (pObject->GetHP() >= 0)	// HP 가 0 미만이면 DeadScene이라서
-					DirectWrite::RenderText(str, position, 255, 255, 255, fontSize);
-			}
-		}
-		DirectWrite::EndDraw();
-	}
-	*/
 }
 
 void SceneManager::ThreadStart()
