@@ -56,11 +56,10 @@ void Room::Render()
 	GroundLine_->Render();
 	CeilingLine_->Render();
 	PlatformLine_->Render();
-	OBJECTMANAGER->RenderAll();
-
 	for (const auto& iter : roomObjects) {
 		iter.second->Render();
 	}
+	OBJECTMANAGER->RenderAll();
 }
 
 void Room::ChangeScene()
