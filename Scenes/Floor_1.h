@@ -31,6 +31,7 @@ public:	//override
 	void Render() override;	// 순수 가상함수 : java의 인터페이스와 비슷한데 
 	void ChangeScene() override; // Scene 변경시 변경할 대상 Scene에 이 함수가 호출됨
 	void ExitScene() override;	// 씬 나올 때 따로 설정해야 할 함수
+	void MoveRoom(int x, int y) override;	// 이동해야할 index를 갔다줘
 private:
 	// 딱 한가지로 고정된 맵 형태
 	void ReadStartRoomMinimal();		//테스트: 나중에는 룸 별로 minimal로 값을 가져와야 함(offset)

@@ -33,19 +33,19 @@ void Floor_1::Render()
 {
 	roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->Render();
 }
-
+// 얘는 여기가 시작.
 void Floor_1::ChangeScene()
 {
 	// 절차적 지형 생성 취소, 고정 크기 Room 데이터 읽어오기로 변경
 	ApplyStartRoom();	// 0 0에 start room
+	ApplyOtherRoom();	// 10 20 21 31 41 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
 
 	EnterRoom();
 	Audio->Play("Floor_1BGM", 1.0f);
 	return;	// 일단 시작룸만
 	ApplyEndRoom();	// 5 1에 EndRoom
-	ApplyOtherRoom();	// 10 20 21 31 41 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
 
-	ConnectRoom(currentActiveRoom_[0], currentActiveRoom_[1]);
+//	ConnectRoom(currentActiveRoom_[0], currentActiveRoom_[1]);	// 절차적 지형생성의 잔재: 어차피 지형이 랜덤이 아닌데 이어봤자 뭐해
 
 	EnterRoom();
 	return;
@@ -75,6 +75,43 @@ void Floor_1::ExitScene()
 {
 }
 
+void Floor_1::MoveRoom(int x, int y)
+{
+	roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->SetActive(false);
+	currentActiveRoom_[0] += x;
+	currentActiveRoom_[1] += y;
+	
+	int xy[2] = { currentActiveRoom_[0], currentActiveRoom_[1] };
+	Vector2 setPlayerPos = Vector2(0.0f, 0.0f);
+	switch (x)
+	{
+	case 1:	// Right
+		// Left Stele 위치 가져오기
+		setPlayerPos = roomData_[xy[0]][xy[1]]->GetPosOfDirection(3);
+		break;
+	case -1:	// Left
+		// Right Stele 위치 가져오기
+		setPlayerPos = roomData_[xy[0]][xy[1]]->GetPosOfDirection(1);
+		break;
+	}
+	switch (y)
+	{
+	case 1:	// Up
+		// Down Stele 위치 가져오기
+		setPlayerPos = roomData_[xy[0]][xy[1]]->GetPosOfDirection(0);
+		break;
+	case -1:	// Down
+		// Up Stele 위치 가져오기
+		setPlayerPos = roomData_[xy[0]][xy[1]]->GetPosOfDirection(2);
+		break;
+	}
+	Player* player = (Player*)OBJECTMANAGER->FindObject("player");
+	player->SetPosition(setPlayerPos);
+	roomData_[xy[0]][xy[1]]->Reset();
+
+	// 가져온 좌표를 Player에게 적용시키기
+}
+
 void Floor_1::ReadStartRoomMinimal()
 {
 	TRNMANAGER->SetSceneMap("test", true);
@@ -93,7 +130,7 @@ void Floor_1::ApplyStartRoom()
 	currentActiveRoom_[1] = 0;
 
 	// 테스트코드
-	GameActor* temp = (GameActor *)roomData_[0][0]->FindObject(L"Door1");
+	GameActor* temp = (GameActor*)roomData_[0][0]->FindObject(L"Door1");
 	// 테스트코드
 	GameActor* player = (GameActor*)OBJECTMANAGER->FindObject("player");
 
@@ -110,7 +147,8 @@ void Floor_1::ApplyEndRoom()
 
 void Floor_1::ApplyOtherRoom()
 {
-	int xy[5] = { 10, 20, 21, 31, 41 };
+//	int xy[5] = { 10, 20, 21, 31, 41 };
+	int xy[1] = { 10 };		// 테스트코드: 맵 미완성일때 하나씩
 	int x, y;
 	for (int i = 0; i < _countof(xy); ++i) {
 		x = xy[i] / 10;
@@ -127,8 +165,8 @@ void Floor_1::ReadRoomData(int x, int y)
 {
 	Room* tempRoom = roomData_[x][y];	// 편하게 하려고 포인터 
 
-	string coord = to_string((int)(x  * 0.1))+ to_string(y % 10);
-	wstring coord2 = to_wstring((int)(x * 0.1)) + to_wstring(y % 10);
+	string coord = to_string(x)+ to_string(y);
+	wstring coord2 = to_wstring(x) + to_wstring(y);
 	// terrain 이미지 배치
 	wstring filePath = ROOM_FOLDER_W;
 	filePath += to_wstring(currentFloor_) + L"F/" + coord2 + L"Terrain.png";	// 지형배치
@@ -137,7 +175,6 @@ void Floor_1::ReadRoomData(int x, int y)
 	pos = TRNMANAGER->GetTileSize() * -0.5f;
 	pos.x *= TRNMANAGER->TerrainMagnification_.x;
 	pos.y *= -TRNMANAGER->TerrainMagnification_.y; 
-	// 왜 두번 곱해야 딱맞지? ReadStartRoomMinimal() 시점에서 이미 지형배율에 Wscale 곱을 했는데.
 
 	tempRoom->SetTerrainImage(filePath, pos);
 	ReadLines(tempRoom, coord);
@@ -152,7 +189,6 @@ void Floor_1::ReadLines(Room* tempRoom, string coord)
 	tempRoom->GroundLine_->LoadLine(filePath);
 	filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + coord + "CeilingLine.txt";
 	tempRoom->CeilingLine_->LoadLine(filePath);
-
 	filePath = "../RoomData/" + to_string(currentFloor_) + "F/" + coord + "PlatformLine.txt";
 	tempRoom->PlatformLine_->LoadLine(filePath);
 }
