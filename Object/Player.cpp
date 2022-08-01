@@ -100,9 +100,10 @@ void Player::Update(Matrix V, Matrix P)
 {	
 	RotateToMouse();
 	InputUpdate();
-	GroundCheck();
 	dashCB();
+	GroundCheck();
 	GravityUpdate();
+	Move(moveAmount);	// 최종적으로 정해진 이동량을 반영
 	CycleUpdate();
 
 	_animation->SetPlay(_currentState + _heroType);
@@ -193,6 +194,7 @@ void Player::GroundCheck()
 	Scene* tempScene = SCENEMANAGER->GetCurrentScene();
 	Line* m_pGroundLine = tempScene->GetGroundLines();
 	Line* m_pCeilingLine = tempScene->GetCeilingLines();
+	Line* m_pPlatformLine = tempScene->GetPlatformLines();
 	bool flag = false;
 	isConflicted_ = false;
 	for (UINT i = 0; i < m_pGroundLine->GetCountLine(); i++) {
@@ -210,7 +212,10 @@ void Player::GroundCheck()
 			float fRad = atan2f(end.y - start.y, end.x - start.x);
 			float Slope = (end.y - start.y) / (end.x - start.x);
 			charPos.y = Slope * (charPos.x - start.x) + start.y + _animation->GetTextureRealSize().y * 0.5f;
-			SetY(charPos.y - 1.0f * WSCALEY);
+			if (dashStart_ == false)
+				SetY(charPos.y);
+			else
+				break;
 			flag = true;
 			SetGroundCheck(true);
 			if(_currentState != State::RUN)
@@ -222,6 +227,42 @@ void Player::GroundCheck()
 			isFall = false;
 		}
 	}//end for
+
+	// 플랫폼라인 충돌검사 ( 대시중에는 플랫폼 충돌 불가: 나중에)
+	if (true || isDash == false) {
+		for (int i = 0; i < m_pPlatformLine->GetCountLine(); i++) {
+			Vector2 start = m_pPlatformLine->GetStartPoint(i);
+			Vector2 end = m_pPlatformLine->GetEndPoint(i);
+			Vector2 mStart = pCollider_->GetPosition();
+			Vector2 mEnd;
+			mEnd.x = mStart.x;
+			mEnd.y = mStart.y - pCollider_->GetScale().y * 0.5f;
+			Vector2 result;
+			// 아래와 선 검사
+			if (!isJump && Line::IntersectionLine(start, end, mStart, mEnd, result))
+			{
+				Vector2 charPos = GetPosition();
+				float fRad = atan2f(end.y - start.y, end.x - start.x);
+				float Slope = (end.y - start.y) / (end.x - start.x);
+				charPos.y = Slope * (charPos.x - start.x) + start.y + _animation->GetTextureRealSize().y * 0.5f;
+				if (dashStart_ == false)
+					SetY(charPos.y);
+				else
+					break;
+				flag = true;
+				SetGroundCheck(true);
+				isPlatform_ = true;		// 플랫폼 추가(언더점프에 사용할 예정)
+				if (_currentState != State::RUN)
+					_currentState = State::IDLE;
+				longJumpCount_ = 0.0f;
+				isCanlongJump_ = true;
+				isLongJump_ = false;
+				isJump = false;
+				isFall = false;
+				break;
+			}
+		}//end for
+	}
 	for (UINT i = 0; i < m_pCeilingLine->GetCountLine(); i++)
 	{
 		Vector2 start = m_pCeilingLine->GetStartPoint(i);
@@ -229,34 +270,26 @@ void Player::GroundCheck()
 
 		Vector2 charPos = GetPosition();
 		Vector2 size = pCollider_->GetScale();
-		Vector2 AreaMin = Vector2(pCollider_->GetPosition().x - size.x * 0.5f,
-			pCollider_->GetPosition().y - size.y * 0.5f);
-		Vector2 AreaMax = Vector2(pCollider_->GetPosition().x + size.x * 0.5f,
-			pCollider_->GetPosition().y + size.y * 0.5f);
+		Vector2 left = Vector2(charPos.x - size.x * 0.5f, charPos.y);
+		Vector2 right = Vector2(charPos.x + size.x * 0.5f, charPos.y);
+		Vector2 top = Vector2(charPos.x, charPos.y + (size.y * 0.5f));
+		Vector2 result;
 
-		if (Line::Clipping(start, end, AreaMin, AreaMax))
-		{
-			float fMinX = min(start.x, end.x);
-			float fMaxX = max(start.x, end.x);
-			float fMinY = min(start.y, end.y);
-			float fMaxY = max(start.y, end.y);
-
-			if (fMaxX < charPos.x && fMinX < charPos.x)
-				charPos.x = fMaxX + size.x * 0.5f;
-			else
-				charPos.x = fMinX - size.x * 0.5f;
-
-			if (fMaxY > charPos.y && fMinY > charPos.y)
-			{
-				float Slope = (end.y - start.y) / (end.x - start.x);
-				charPos.y = fMaxY - size.y * 0.5f;
-			}
-			SetPosition(charPos);
-			isConflicted_ = flag;
+		if (isConflicted_ = Collider::InterSectionLine(charPos, right, start, end)) {
+			moveAmount.x = -0.5f * WSCALEX;
+			break;
+		}
+		if (isConflicted_ = Collider::InterSectionLine(charPos, left, start, end)) {
+			moveAmount.x = +0.5f * WSCALEX;
+			break;
+		}
+		if (isConflicted_ = Collider::InterSectionLine(charPos, top, start, end)) {
+			moveAmount.y = -0.5f * WSCALEY;
 			break;
 		}
 	}
 	isGround_ = flag;
+	dashStart_ = false;	// 항상 땅검사 이후엔 false임
 }
 
 
@@ -347,10 +380,13 @@ void Player::Dash()
 	Audio->Play("Dash_Player");
 	// player의 Dash 일련의 과정 
 	playerData_.dashCount--;	// 1. 카운트 감소
-	printf("대시카운트: %d\n", playerData_.dashCount);
 	dashRadian = Mouse->GetAngleRelativeToMouse(this->_position.x, this->_position.y, 1);	// 각도 구하기
+
+	moveAmount = Vector2(cosf(dashRadian) * playerData_.baseSpeed * 2.0f * TIMEMANAGER->Delta() * WSCALEX,
+		sinf(dashRadian) * playerData_.baseSpeed * 2.0f * TIMEMANAGER->Delta() * WSCALEY);
+	dashStart_ = true;
 	if (dashRadian >= 0.0f)
-		gravity_ = 7.0f;
+		moveAmount.y += 5.0f * WSCALEY;
 	dashLifeCycle = 0.5f;	// 라이프사이클 초기화.
 	dashCB = std::bind(&Player::DashDo, this);	// 이 콜백은 Update 쪽에서 실행됨.
 	// 이후 UI 변경
@@ -361,11 +397,10 @@ void Player::Dash()
 void Player::DashDo()
 {
 	isDash = true;
-	this->ModifyPosition(cosf(dashRadian) * playerData_.baseSpeed* 1.5f * TIMEMANAGER->Delta() * WSCALEX,
-		sinf(dashRadian) * playerData_.baseSpeed * 1.5f * TIMEMANAGER->Delta() * WSCALEY);
-	// 위치변경 이후 lifeCycle 관리
+	// 이부분을 Dash() 에서 딱 한번 힘준다는 느낌으로 바꿈
+//	this->ModifyPosition(cosf(dashRadian) * playerData_.baseSpeed* 1.5f * TIMEMANAGER->Delta() * WSCALEX,
+//		sinf(dashRadian) * playerData_.baseSpeed * 1.5f * TIMEMANAGER->Delta() * WSCALEY);
 	dashLifeCycle -= TIMEMANAGER->Delta();
-
 	DashAnimationUpdate();
 
 	if (dashLifeCycle <= 0.0f) {
@@ -431,30 +466,25 @@ void Player::Die()
 // 왼쪽이 x 음수 moveSpeed x speed xy 만큼 이동하는 함수
 void Player::LeftMove()
 {
-	Vector2 position = this->GetPosition();
-
-	position.x -= playerData_.baseSpeed * TIMEMANAGER->Delta() * WSCALEX;
+	if(isDash == false)
+		moveAmount.x = -playerData_.baseSpeed * TIMEMANAGER->Delta() * WSCALEX;
 	if (_currentState != State::JUMP)
 		_currentState = State::RUN;
 
-	Move(position);
 }
-
+//	moveAmout를 변경시키는 방식
 void Player::RightMove()
 {
-	Vector2 position = this->GetPosition();
-
-	position.x += playerData_.baseSpeed * TIMEMANAGER->Delta() * WSCALEX;
-
+	if (isDash == false)
+		moveAmount.x = playerData_.baseSpeed * TIMEMANAGER->Delta() * WSCALEX;
 	if(_currentState != State::JUMP)
 		_currentState = State::RUN;
-	Move(position);
 }
-// 해당 위치로 움직이려고 시도하며 위치가 바뀜( 이 위치는 중력 등 기타 무언가에 의해 바뀔 수 있음)
+// 나중에 써보자.
 void Player::Move(Vector2& position)
 {
 	// Collider 등의 충돌 적용하기
-	SetPosition(position);
+	ModifyPosition(position);
 }
 
 void Player::DashRecharge(int amount)
@@ -514,13 +544,13 @@ void Player::Jump()
 		isJump = true;
 		isGround_ = false;
 		_currentState = State::JUMP;
-		gravity_ = playerData_.baseJumpSpeed * 0.05f * WSCALEY;
+		moveAmount.y = playerData_.baseJumpSpeed * 0.05f * WSCALEY;
 		longJumpCount_ = 0.0f;
 	}
 	else if (isLongJump_ == false && isCanlongJump_ == true) {
 		longJumpCount_ += TIMEMANAGER->Delta();
 		if (longJumpCount_ > 0.16f) {
-			gravity_ += playerData_.baseLongJumpSpeed * 0.05f * WSCALEY;
+			moveAmount.y += playerData_.baseLongJumpSpeed * 0.05f * WSCALEY;
 			isLongJump_ = true;
 			isCanlongJump_ = false;
 		}
@@ -529,6 +559,8 @@ void Player::Jump()
 
 void Player::Idle()
 {
+	if(isDash == false)
+		moveAmount.x = 0.0f;
 	if(_currentState != State::JUMP)
 	_currentState = State::IDLE;
 }

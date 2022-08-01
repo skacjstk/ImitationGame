@@ -47,7 +47,8 @@ private:	// 비공개 인스턴스 변수
 	struct PlayerData playerData_;
 	// Dash 관련
 	std::function<void()> dashCB;
-	float dashRadian = 0.0f;
+	float dashRadian = 0.0f;		// 대쉬 라디안이 0보다 크면 setY 안함. 그 대가로, dashRadian은 dash가 끝나고 0보다 작은 값으로 초기화됨.
+	bool dashStart_ = false;	// 방금 대쉬를 했다면 true 바뀜 (GroundCheck() 에서 false로 바뀜)
 	float dashLifeCycle = 0.5f;
 	Texture* dashEffect_[3] = { nullptr, };
 	bool isDash = false;
