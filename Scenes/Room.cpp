@@ -4,6 +4,7 @@
 #include "Object/Enemy/BigWhiteSkel.h"
 #include "Object/Enemy/LittleGhost.h"
 #include "Scenes/DungeonFactory.h"
+#include "Object/TileObject/Stele.h"
 #include "Room.h"
 
 Room::Room() : roomType_(RoomType::DISABLE)
@@ -75,7 +76,6 @@ bool Room::InitializeRoom()
 	bool value = false;
 	
 //	DungeonFactory::GenerateDungeon(this);
-
 	// 오브젝트 매니저를 통한 배치가 아닌, 자신만의 오브젝트 맵이 있음.
 	GetRoomObjectData();
 
@@ -155,9 +155,9 @@ void Room::LoadObjFile(string strFileName)
 		Vector2 position = Vector2(FX * TRNMANAGER->TerrainMagnification_.x, FY * TRNMANAGER->TerrainMagnification_.y);
 
 		GameObject* pObject;
-
+		Stele* pStele;
 		wstring objName = L"";	// 해당 오브젝트 이름
-		int objIndex = 0;	// 해당 오브젝트의 index 번호: 더미
+		int objIndex = 1;	// 해당 오브젝트의 index 번호: 더미
 
 		pObject = objectDB.FindActor(objectType,objName,objIndex);
 
@@ -166,6 +166,12 @@ void Room::LoadObjFile(string strFileName)
 		pObject->SetPosition(position);
 		pObject->SetScale(scale);
 		pObject->SetRotation(0.0f, 0.0f, nAngle);
+
+		if (objName.compare(L"Stele") == 0)	// 받아온게 Stele와 같으면
+		{
+			pStele = (Stele*)pObject;
+			pStele->SetPath();
+		}
 
 	//	pTile->SetOrder(m_pTexture, nOrder, strImage, offset, offsetSize, nFlip, nAngle, scale, objectType);
 	}
@@ -206,9 +212,55 @@ void Room::GetRoomObjectData()
 	fileName += to_string(myIndex[0]) + to_string(myIndex[1]) + "ObjectDesc.txt";
 	LoadObjFile(fileName);
 
-	//2. switch 문을 통해 해당 객체의 오브젝트 타입에 따라 new 이후 자신만의 맵에 넣어주며, 위치, 크기에 대한 초기화를 수행함
+	//2. Stele 찾아서 sendPos
+	Stele* tempStele = nullptr;
+	//Stele를 1~4번까지 찾아본다. 이름짓는 순서를 생각해보면 못찾을 경우 취소.
 
+	wstring steleName = L"";
+	for (int i = 1; i <= posOfDirection.size(); ++i) {
+		steleName = L"Stele" + to_wstring(i);	// 1 ~ 4 까지
+		auto iter = roomObjects.find(steleName);
+		if (iter != roomObjects.end())
+		{
+			tempStele = (Stele*)iter->second;
+			Stele::StelePath ePath = tempStele->GetPath();
+			PushDirection(ePath, tempStele->GetPosition());
+		}
+		else
+			break;	// 탐색중단: 네이밍 순서 생각해봐.
+	}
 
 	//2-5. 크기에 대한 초기화는 각 옵젝에 기본적으로 있음( 하드코딩 했었잖아 )
+}
+
+void Room::PushDirection(Stele::StelePath ePath, Vector2 position)
+{
+	Vector2 comPosition = Vector2(0.0f, 0.0f);
+	int index = -1;
+	switch (ePath)
+	{
+	case Stele::StelePath::BOTTOM:
+		comPosition = Vector2(0.0f, TRNMANAGER->GetTileSize().y * TRNMANAGER->TerrainMagnification_.y * 3.0f);	// 바텀은 좀 특별해서 3곱
+		index = 0;
+		break;
+	case Stele::StelePath::RIGHT:
+		comPosition = Vector2(TRNMANAGER->GetTileSize().x * TRNMANAGER->TerrainMagnification_.x * -2.0f, 0.0f);
+		index = 1;
+		break;
+	case Stele::StelePath::TOP:
+		comPosition = Vector2(0.0f, TRNMANAGER->GetTileSize().y * TRNMANAGER->TerrainMagnification_.y * -2.0f);
+		index = 2;
+		break;
+	case Stele::StelePath::LEFT:
+		comPosition = Vector2(TRNMANAGER->GetTileSize().x * TRNMANAGER->TerrainMagnification_.x * 2.0f, 0.0f);
+		index = 3;
+		break;
+	}
+	if (index != -1) {
+		canDirection[index] = true;
+		comPosition += position;
+		posOfDirection[index] = comPosition;	// 틀린건 어째서인지 Stele의 좌표. 아니, 10의 좌표가 다 이상함.
+		printf("결국 생성된 위치: %f %f\n", comPosition.x, comPosition.y);
+	}
 }
 
