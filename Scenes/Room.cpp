@@ -153,7 +153,7 @@ void Room::LoadObjFile(string strFileName)
 
 		// 이때쯤 이미 Wscale이 곱해져 있어야 함
 		Vector2 position = Vector2(FX * TRNMANAGER->TerrainMagnification_.x, FY * TRNMANAGER->TerrainMagnification_.y);
-
+	//	Vector2 position = Vector2(FX, FY);
 		GameObject* pObject;
 		Stele* pStele;
 		wstring objName = L"";	// 해당 오브젝트 이름
@@ -172,8 +172,6 @@ void Room::LoadObjFile(string strFileName)
 			pStele = (Stele*)pObject;
 			pStele->SetPath();
 		}
-
-	//	pTile->SetOrder(m_pTexture, nOrder, strImage, offset, offsetSize, nFlip, nAngle, scale, objectType);
 	}
 	fclose(fp);
 }
