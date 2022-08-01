@@ -18,11 +18,14 @@ public:
 	};
 	struct ActorData actorData_;
 	bool isGround_ = false;	// Actor 자신이 땅에 닿았는지 확인할 변수
+	Vector2 moveAmount = Vector2(0.0f, 0.0f);	// Player 이동구조 변경. 이곳에 담아서 모든 충돌처리 후 한번에 보내는 방식으로
 protected:
 	class Collider* pCollider_ = nullptr;
 	class Animation* _animation = nullptr;
 	float gravity_ = 0.0f;	// Actor들에게 적용되는 매 프레임마다 아래로 떨어지는 변화량
-	bool isConflicted_ = false;	// 벽 제외 다른 곳에 부딧혔을 때
+	float beforeGravity_ = 0.0f;
+	bool isConflicted_ = false;	// 다른 곳에 부딧혔을 때
+	bool isPlatform_ = true;	// 바닥인데 platform 일 경우
 	bool isFall = false;
 	bool isJump = false;
 	bool beforeGround_ = false;
