@@ -40,6 +40,7 @@ void Floor_1::ChangeScene()
 	ApplyStartRoom();	// 0 0에 start room
 
 	EnterRoom();
+	Audio->Play("Floor_1BGM", 1.0f);
 	return;	// 일단 시작룸만
 	ApplyEndRoom();	// 5 1에 EndRoom
 	ApplyOtherRoom();	// 10 20 21 31 41 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )

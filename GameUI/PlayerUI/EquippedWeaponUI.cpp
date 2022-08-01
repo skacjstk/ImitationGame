@@ -13,8 +13,6 @@ EquippedWeaponUI::EquippedWeaponUI()
 	imageBase_[0] = new Texture(strImage, strShader);
 	imageBase_[1] = new Texture(strImage, strShader);
 
-	wstring strSound = AUDIO_FOLDER;
-	Audio->AddSound("SwapItem", strSound += L"etc-sound0033_swap.wav", false);
 }
 
 EquippedWeaponUI::~EquippedWeaponUI()

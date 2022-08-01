@@ -11,7 +11,6 @@ public:
 	void Update();
 
 	void AddSound(string name, string file, bool bLoop = false);
-	void AddSound(string name, wstring file, bool bLoop = false);
 	void Play(string name, float volume = 1.0f);
 	void Stop(string name);
 	void Pause(string name);
@@ -19,6 +18,8 @@ public:
 
 	bool Playing(string name);
 	bool Paused(string name);
+
+	void AddSoundAll();	// Update 직전에 호출
 
 	void Volume(string name, float volume);
 	float Volume() { return volume; }
@@ -28,6 +29,7 @@ private:
 	System* system;
 	Sound** sound;
 	Channel** channel;
+	FMOD_RESULT result;
 
 	UINT count;
 

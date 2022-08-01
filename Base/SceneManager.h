@@ -26,7 +26,7 @@ public:
 	void ChangeScene(string name);
 	Scene* GetScene(string name);
 	vector<string> sceneNames_ = {
-		"Intro", "Town"
+		"Intro", "Town" , "Floor_1" , "Floor_2"
 	};
 public:		//Getter
 	Scene* GetCurrentScene() { return currentScene; }

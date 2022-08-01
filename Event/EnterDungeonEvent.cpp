@@ -4,6 +4,6 @@
 
 void EnterDungeonEvent::execute()
 {
-	printf("던전 진입 이벤트 출력됨");
+	SCENEMANAGER->GetCurrentScene()->ExitScene();
 	SCENEMANAGER->ChangeScene("Floor_1");
 }

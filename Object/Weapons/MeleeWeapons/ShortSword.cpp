@@ -47,10 +47,6 @@ ShortSword::ShortSword()
 	// 기본 배율은 6배
 	SetWeaponScale(6.0f * WSCALEY, 6.0f * WSCALEY);
 
-	wstring swing = AUDIO_FOLDER;
-	swing += L"swing.wav";
-	Audio->AddSound("swing", swing, false);
-
 	// 숏소드의 핸드 피벗은 이렇다. ( 만약 윈도우 크기가 변경된다면..? )
 	leftHandPivot_.x = -10.0f * WSCALEX;
 	leftHandPivot_.y = 15.0f * WSCALEY;

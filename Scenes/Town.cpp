@@ -28,9 +28,6 @@ Town::Town()
 	forest_ = new Texture(strImage, strShader);
 	forest_->SetScale(backGround_->GetScale());
 
-	wstring introBGM = AUDIO_FOLDER;
-	introBGM += L"0.Town.wav";
-	Audio->AddSound("Town", introBGM, true);
 
 	m_pGroundLine = new Line();
 	m_pCeilingLine = new Line();

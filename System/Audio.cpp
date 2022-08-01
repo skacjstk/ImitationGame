@@ -1,13 +1,19 @@
 #include "ImitationGame/framework.h"
 #include "Audio.h"
 
+void CheckError(FMOD_RESULT result_)
+{
+	if (result_ != FMOD_OK)
+		MessageBoxW(MAIN->GetWindowHandler(), L"Audio 에러", L"Audio", MB_OK);
+}
 CAudio::CAudio()
 	: count(150)
 	, volume(1.0f)
 {
-	System_Create(&system);
-
-	system->init(count, FMOD_INIT_NORMAL, NULL);
+	result = System_Create(&system);
+	CheckError(result);
+	result = system->init(count, FMOD_INIT_NORMAL, NULL);
+	CheckError(result);
 
 	sound = new Sound*[count];
 	channel = new Channel*[count];
@@ -49,33 +55,11 @@ void CAudio::Update()
 
 void CAudio::AddSound(string name, string file, bool bLoop)
 {
-	if (sounds.find(name) != sounds.end()) {
-		printf("AddSound 내용물 중복 %s\n", name.c_str());
-		return;
-	}
 	if (bLoop == true)
 		system->createStream(file.c_str(), FMOD_LOOP_NORMAL, NULL, &sound[sounds.size()]);
 	else
 		system->createStream(file.c_str(), FMOD_DEFAULT, NULL, &sound[sounds.size()]);
 
-	sounds[name] = &sound[sounds.size()];
-}
-
-void CAudio::AddSound(string name, wstring file, bool bLoop)
-{
-	string cfile;
-	cfile.assign(file.begin(), file.end());
-	
-	if (sounds.find(name) != sounds.end()) {
-		printf("AddSound 내용물 중복 %s\n", name.c_str());
-		return;
-	}
-
-	if (bLoop == true)
-		system->createStream(cfile.c_str(), FMOD_LOOP_NORMAL, NULL, &sound[sounds.size()]);
-	else
-		system->createStream(cfile.c_str(), FMOD_DEFAULT, NULL, &sound[sounds.size()]);
-	
 	sounds[name] = &sound[sounds.size()];
 }
 
@@ -95,8 +79,8 @@ void CAudio::Play(string name, float volume)
 
 void CAudio::Stop(string name)
 {
-	int count = 0;
-	iter = sounds.begin();
+	int count = 0; 
+	iter = sounds.begin();	
 	for (iter; iter != sounds.end(); iter++, count++)
 	{
 		if (name == iter->first)
@@ -105,6 +89,7 @@ void CAudio::Stop(string name)
 			break;
 		}
 	}
+	
 }
 
 void CAudio::Pause(string name)
@@ -167,6 +152,32 @@ bool CAudio::Paused(string name)
 	}
 
 	return bPaused;
+}
+
+void CAudio::AddSoundAll()
+{
+
+	// 사운드를 한번에 넣는 걸로 변경해봄
+	string strSound = "1.JailField.wav";
+	Audio->AddSound("Floor_1BGM", AUDIO_FOLDER + strSound, true);
+
+	strSound = "0.Town.wav";
+	Audio->AddSound("Town", AUDIO_FOLDER + strSound, true);
+
+	strSound = "title.wav";
+	Audio->AddSound("IntroBGM", AUDIO_FOLDER + strSound, true);
+
+	strSound = "etc-sound0033_swap.wav";
+	Audio->AddSound("SwapItem", AUDIO_FOLDER + strSound, false);
+
+	strSound = "Hit_Player.wav";
+	Audio->AddSound("Hit_Player", AUDIO_FOLDER + strSound, false);
+
+	strSound = "ui-sound-13-dash.wav";
+	Audio->AddSound("Dash_Player", AUDIO_FOLDER + strSound, false);
+
+	strSound = "swing.wav";
+	Audio->AddSound("swing", AUDIO_FOLDER + strSound, false);
 }
 
 void CAudio::Volume(string name, float volume)

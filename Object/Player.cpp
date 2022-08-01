@@ -77,10 +77,6 @@ Player::Player(int AnimationID)
 	actorData_.maxHP = 20;
 	actorData_.type = ActorType::Player;
 	// 플레이어 공통 사운드 추가
-	wstring strAudio = AUDIO_FOLDER;
-	Audio->AddSound("Hit_Player", strAudio += L"Hit_Player.wav", false);
-	strAudio = AUDIO_FOLDER;
-	Audio->AddSound("Dash_Player", strAudio += L"ui-sound-13-dash.wav", false);
 
 	// 콜백 설정
 	dashCB = std::bind(&Player::DashWaiting, this);

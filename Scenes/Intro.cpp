@@ -63,10 +63,8 @@ Intro::Intro()
 		introButton_[i]->SetShaderInputType(11);	// alpha값만 받게
 
 	// 오디오 추가
-	wstring introBGM = AUDIO_FOLDER;
-	introBGM += L"title.wav";
-	Audio->AddSound("IntroBGM", introBGM, true);
-	Audio->Play("IntroBGM", 1.0f);
+
+	Audio->Play("IntroBGM", 1.0f);	// 가장 먼저 보여질 Scene은 생성자에 해당 BGM을 넣어준다.
 }
 
 Intro::~Intro()
@@ -76,6 +74,8 @@ Intro::~Intro()
 
 void Intro::Update()
 {
+	if (IsActive() == false)
+		return;
 	Matrix V, P;
 	V = CAMERA->GetViewMatrix();
 	P = CAMERA->GetProjectionMatrix();
@@ -103,6 +103,8 @@ void Intro::Update()
 
 void Intro::Render()
 {
+	if (IsActive() == false)
+		return;
 	backGround_->Render();
 	titleImage_->Render();
 	CAMERA->Render();
@@ -140,12 +142,3 @@ void Intro::OnButton(int id)
 		break;
 	}
 }
-
-/*
-		Scene* scene = (S02_LoadingScene*)SCENEMANAGER->GetScene(HELLTAKERMAP->HelltakerEventScene[0]);	// S02_Loading
-		if (scene) {
-			scene->setNextName(HELLTAKERMAP->HelltakerChapterScene[id - 1]);
-			scene->SetExam(0);
-			SCENEMANAGER->ChangeScene(this->GetNextName());
-		}
-*/

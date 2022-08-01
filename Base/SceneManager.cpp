@@ -10,6 +10,7 @@
 
 SceneManager::SceneManager()
 {
+	Audio->AddSoundAll();
 	m_cvScenes.push_back(new Intro());
 	//스레드를 이용하여 여러 씬을 Loading한다.
 	printf("SceneManager 생성자 호출\n");
