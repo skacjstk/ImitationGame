@@ -60,4 +60,6 @@ public:
 	void SetImmuneFrame(int frame) { ImmuneFrame_ = frame; }
 public:
 	class Collider* GetCollider() { return pCollider_; }
+protected:
+	virtual void Move(Vector2& position);	// 해당 위치로 움직이려고 시도함
 };

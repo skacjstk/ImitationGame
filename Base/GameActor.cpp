@@ -12,7 +12,7 @@ void GameActor::GroundCheck()
 	Line* m_pPlatformLine = tempScene->GetPlatformLines();
 	bool flag = false;
 	isConflicted_ = false;
-	for (int i = 0; i < m_pGroundLine->GetCountLine(); i++) {
+	for (UINT i = 0; i < m_pGroundLine->GetCountLine(); i++) {
 		Vector2 start = m_pGroundLine->GetStartPoint(i);
 		Vector2 end = m_pGroundLine->GetEndPoint(i);
 		Vector2 mStart = pCollider_->GetPosition();
@@ -27,6 +27,7 @@ void GameActor::GroundCheck()
 			float fRad = atan2f(end.y - start.y, end.x - start.x);
 			float Slope = (end.y - start.y) / (end.x - start.x);
 			charPos.y = Slope * (charPos.x - start.x) + start.y + _animation->GetTextureRealSize().y * 0.5f;
+		
 			SetY(charPos.y);
 			flag = true;
 			isJump = false;
@@ -35,32 +36,36 @@ void GameActor::GroundCheck()
 		}
 	}//end for
 
-	// 플랫폼라인 충돌검사 ( 진행중 )
-	for (int i = 0; i < m_pPlatformLine->GetCountLine(); i++) {
-		Vector2 start = m_pPlatformLine->GetStartPoint(i);
-		Vector2 end = m_pPlatformLine->GetEndPoint(i);
-		Vector2 mStart = pCollider_->GetPosition();
-		Vector2 mEnd;
-		mEnd.x = mStart.x;
-		mEnd.y = mStart.y - pCollider_->GetScale().y * 0.5f;
-		Vector2 result;
-		// 아래와 선 검사
-		if (!isJump && Line::IntersectionLine(start, end, mStart, mEnd, result))
-		{
-			Vector2 charPos = GetPosition();
-			float fRad = atan2f(end.y - start.y, end.x - start.x);
-			float Slope = (end.y - start.y) / (end.x - start.x);
-			charPos.y = Slope * (charPos.x - start.x) + start.y + _animation->GetTextureRealSize().y * 0.5f;
-			SetY(charPos.y);
-			flag = true;
-			isPlatform_ = true;
-			isJump = false;
-			isFall = false;
-			break;
-		}
-	}//end for
+	// 플랫폼라인 충돌검사 ( 대시중에는 플랫폼 충돌 불가: 나중에)
 
-	for (int i = 0; i < m_pCeilingLine->GetCountLine(); i++)
+		for (int i = 0; i < m_pPlatformLine->GetCountLine(); i++) {
+			Vector2 start = m_pPlatformLine->GetStartPoint(i);
+			Vector2 end = m_pPlatformLine->GetEndPoint(i);
+			Vector2 mStart = pCollider_->GetPosition();
+			Vector2 mEnd;
+			mEnd.x = mStart.x;
+			mEnd.y = mStart.y - pCollider_->GetScale().y * 0.5f;
+			Vector2 result;
+			// 아래와 선 검사
+			if (!isJump && Line::IntersectionLine(start, end, mStart, mEnd, result))
+			{
+				Vector2 charPos = GetPosition();
+				float fRad = atan2f(end.y - start.y, end.x - start.x);
+				float Slope = (end.y - start.y) / (end.x - start.x);
+				charPos.y = Slope * (charPos.x - start.x) + start.y + _animation->GetTextureRealSize().y * 0.5f;
+			
+				SetY(charPos.y);
+				isGround_ = true;
+				flag = true;
+				isPlatform_ = true;		
+				// isground
+				isJump = false;
+				isFall = false;
+				break;
+			}
+		}//end for
+	
+	for (UINT i = 0; i < m_pCeilingLine->GetCountLine(); i++)
 	{
 		Vector2 start = m_pCeilingLine->GetStartPoint(i);
 		Vector2 end = m_pCeilingLine->GetEndPoint(i);
@@ -70,21 +75,18 @@ void GameActor::GroundCheck()
 		Vector2 left = Vector2(charPos.x - size.x * 0.5f, charPos.y);
 		Vector2 right = Vector2(charPos.x + size.x * 0.5f, charPos.y);
 		Vector2 top = Vector2(charPos.x, charPos.y + (size.y * 0.5f));
+		Vector2 result;
 
-		if (Collider::InterSectionLine(charPos, right, start, end)) {
-			charPos.x = charPos.x - size.x * 0.5f;
-			SetPosition(charPos);
+		if (isConflicted_ = Collider::InterSectionLine(charPos, right, start, end)) {
+			moveAmount.x = -0.5f * WSCALEX;
 			break;
 		}
-		if (Collider::InterSectionLine(charPos, left, start, end)) {
-			charPos.x = charPos.x + size.x * 0.5f;
-			SetPosition(charPos);
+		if (isConflicted_ = Collider::InterSectionLine(charPos, left, start, end)) {
+			moveAmount.x = +0.5f * WSCALEX;
 			break;
 		}
-		if (Collider::InterSectionLine(charPos, top, start, end)) {
-			gravity_ = 0.0f;
-			charPos.y = charPos.y - size.y * 0.5f;
-			SetPosition(charPos);
+		if (isConflicted_ = Collider::InterSectionLine(charPos, top, start, end)) {
+			moveAmount.y = -0.5f * WSCALEY;
 			break;
 		}
 	}
@@ -127,6 +129,10 @@ void GameActor::HPChange()
 	int hp = (int)actorData_.HP;
 	if (hp <= 0)
 		FatalBlow();
+}
+void GameActor::Move(Vector2& position)
+{
+	ModifyPosition(position);
 }
 void GameActor::Die()
 {

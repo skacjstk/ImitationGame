@@ -385,6 +385,7 @@ void Player::Dash()
 		moveAmount.y += 5.0f * WSCALEY;
 	dashLifeCycle = 0.5f;	// 라이프사이클 초기화.
 	dashCB = std::bind(&Player::DashDo, this);	// 이 콜백은 Update 쪽에서 실행됨.
+	_currentState = State::JUMP;	
 	// 이후 UI 변경
 	playerUI->dashUI_->Dash();
 
@@ -475,12 +476,6 @@ void Player::RightMove()
 		moveAmount.x = playerData_.baseSpeed * TIMEMANAGER->Delta() * WSCALEX;
 	if(_currentState != State::JUMP)
 		_currentState = State::RUN;
-}
-// 나중에 써보자.
-void Player::Move(Vector2& position)
-{
-	// Collider 등의 충돌 적용하기
-	ModifyPosition(position);
 }
 
 void Player::DashRecharge(int amount)
