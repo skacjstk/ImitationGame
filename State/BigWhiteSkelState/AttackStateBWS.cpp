@@ -20,5 +20,6 @@ void AttackStateBWS::Action(BigWhiteSkel& actor)
 
 void AttackStateBWS::Enter(BigWhiteSkel& actor)
 {
+	actor.moveAmount = Vector2(0.0f, 0.0f);
 	actor.GetAnimation()->SetPlay(static_cast<int>(actor.stateEnum_));
 }

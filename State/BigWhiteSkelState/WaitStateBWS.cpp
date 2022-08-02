@@ -24,6 +24,7 @@ void WaitStateBWS::Action(BigWhiteSkel& actor)
 
 void WaitStateBWS::Enter(BigWhiteSkel& actor)
 {
+	actor.moveAmount.x = 0.0f;
 	actor.GetAnimation()->SetPlay(static_cast<int>(actor.stateEnum_));
 	time_ = 0.0f;
 }
