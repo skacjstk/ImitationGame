@@ -17,7 +17,7 @@ public:
 	class GameActor* chaseTarget_ = nullptr;	// 이걸 모든 enemy가 가지고 있게 하고싶은데... 공통을 못뽑겠네 Next
 	float moveSpeed = 400.0f;
 	float jumpSpeed = 100.0f;
-	bool attacked_ = false;
+	bool attacked_ = false;	// 공격할 경우 true로.
 private:
 
 public: // 생성자 & 소멸자

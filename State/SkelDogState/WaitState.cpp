@@ -21,5 +21,6 @@ void WaitState::Action(SkelDog& actor)
 
 void WaitState::Enter(SkelDog& actor)
 {
+	actor.moveAmount.x = 0.0f;
 	time_ = 0.0f;
 }

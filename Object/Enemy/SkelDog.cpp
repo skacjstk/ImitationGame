@@ -88,6 +88,7 @@ void SkelDog::Update(Matrix V, Matrix P)
 	StateUpdate();
 	GroundCheck();
 	GravityUpdate();
+	__super::Move(moveAmount);
 	_animation->SetPlay(static_cast<int>(stateEnum_));
 	_animation->SetPosition(GetPosition());
 	_animation->SetRotation(GetRotation());
@@ -159,7 +160,7 @@ void SkelDog::Jump()
 	if (isGround_ == true) {
 		isJump = true;
 		isGround_ = false;
-		gravity_ = jumpSpeed * 0.07f;
+		moveAmount.y = jumpSpeed * 0.07f;
 	}
 }
 
@@ -168,7 +169,10 @@ void SkelDog::Move()
 	// chaseTarget_ 추적
 	float dX = chaseTarget_->GetPosition().x - GetPosition().x;
 	float sign = copysign(1, dX);	// copysign 부호 비트 추출 어쨋든 양수면 1, 음수면 -1
-	ModifyPosition(sign * moveSpeed * TIMEMANAGER->Delta(), 0.0f);	// Next: -1 곱해야 할 수 있음.
+//	ModifyPosition(sign * moveSpeed * TIMEMANAGER->Delta(), 0.0f);	// Next: -1 곱해야 할 수 있음.
+
+
+	moveAmount.x = sign * moveSpeed * TIMEMANAGER->Delta() * WSCALEX;
 
 	sign -= 1.0f;	// 양수 0, 음수 -2
 	SetRotation(0.0f, sign * 90.0f, 0.0f);
@@ -176,6 +180,7 @@ void SkelDog::Move()
 
 void SkelDog::Idle()
 {
+	moveAmount.x = 0.0f;
 	// 하는거 없어서 할당 안함.
 }
 // 애니메이션 자체는 Move와 Jump의 조합.
@@ -189,7 +194,7 @@ void SkelDog::Attack(float& dX)
 {
 	Vector2 tempPosition = GetPosition();
 	float sign = copysign(1, dX);	// copysign 부호 비트 추출 어쨋든 양수면 1, 음수면 -1
-	ModifyPosition(sign * moveSpeed * TIMEMANAGER->Delta(), 0.0f);	// Next: -1 곱해야 할 수 있음.
+	moveAmount.x = sign * moveSpeed * TIMEMANAGER->Delta() * WSCALEX;
 
 	sign -= 1.0f;	// 양수 0, 음수 -2
 	SetRotation(0.0f, sign * 90.0f, 0.0f);
@@ -203,6 +208,6 @@ void SkelDog::AttackJump()
 		attacked_ = true;
 		isJump = true;
 		isGround_ = false;
-		gravity_ = jumpSpeed * 0.05f;
+		moveAmount.y = jumpSpeed * 0.05f;
 	}
 }
