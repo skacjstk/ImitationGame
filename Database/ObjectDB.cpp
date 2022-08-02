@@ -88,8 +88,8 @@ GameActor* ObjectDB::FindActor(int index, wstring& objName, int& outObjIndex)
 		break;
 	}
 	if (temp != nullptr) {
-		objName = enemyDB[size_t(index - 1)];
-		outObjIndex = enemyNum[size_t(index - 1)]++;	// 이러면 넣고 더해지려나
+		objName = enemyDB[index - (size_t)1];
+		outObjIndex = enemyNum[(index - (size_t)1)]++;	// 이러면 넣고 더해지려나
 	}
 
 	return temp;
@@ -152,9 +152,8 @@ GameActor* ObjectDB::FindActorOver100(int index, wstring& objName, int& outObjIn
 	}
 
 	if (temp != nullptr) {
-		objName = NPCDB[size_t(index - 101)];
-		outObjIndex = npcNum[size_t(index - 101)]++;	// 이러면 넣고 더해지려나
-		printf("ObjectDB::FindActorOver100: -1 나와야함: %d\n", outObjIndex - npcNum[size_t(index - 101)]);
+		objName = NPCDB[index - (size_t)101];
+		outObjIndex = npcNum[index - (size_t)101]++;	// 이러면 넣고 더해지려나
 	}
 
 	return temp;
