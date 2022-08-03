@@ -77,7 +77,9 @@ bool Room::InitializeRoom()
 	
 //	DungeonFactory::GenerateDungeon(this);
 	// 오브젝트 매니저를 통한 배치가 아닌, 자신만의 오브젝트 맵이 있음.
-	GetRoomObjectData();
+
+	if(isCleared_ == false)		// 클리어 한적 없을때만 오브젝트 데이터를 가져옴. (Reset 에도 있음)
+		GetRoomObjectData();
 
 	value = true;
 	return value;
@@ -163,6 +165,8 @@ void Room::LoadObjFile(string strFileName)
 
 		roomObjects.insert(std::make_pair(objName + to_wstring(objIndex), pObject));
 
+		if (objectType < 100)		// >=100 부턴 NPC나 따른쪽이니까
+			++currentMonsterNumber_;		// 몬스터 갯수를 하나씩 늘림
 		pObject->SetPosition(position);
 		pObject->SetScale(scale);
 		pObject->SetRotation(0.0f, 0.0f, nAngle);
@@ -196,8 +200,18 @@ GameObject* Room::FindObject(wstring objName)
 
 void Room::Reset()
 {
+//	if (isCleared_ == true)		// 클리어 한적 없을때만 오브젝트를 Reset 함.
+//		return;
 	for (const auto &iter : roomObjects) {
-		iter.second->Reset();
+			iter.second->Reset();
+	}
+}
+
+void Room::DecreaseCurrentMonsterNumber()
+{
+	currentMonsterNumber_ -= 1;
+	if (currentMonsterNumber_ <= 0) {
+		RoomClear();
 	}
 }
 
@@ -227,7 +241,9 @@ void Room::GetRoomObjectData()
 		else
 			break;	// 탐색중단: 네이밍 순서 생각해봐.
 	}
-
+	// 최초 검사: 몹이 없으면 룸 clear 판정
+	if (currentMonsterNumber_ == 0)
+		RoomClear();
 	//2-5. 크기에 대한 초기화는 각 옵젝에 기본적으로 있음( 하드코딩 했었잖아 )
 }
 
@@ -259,6 +275,25 @@ void Room::PushDirection(Stele::StelePath ePath, Vector2 position)
 		comPosition += position;
 		posOfDirection[index] = comPosition;	// 틀린건 어째서인지 Stele의 좌표. 아니, 10의 좌표가 다 이상함.
 		printf("결국 생성된 위치: %f %f\n", comPosition.x, comPosition.y);
+	}
+}
+
+void Room::RoomClear()
+{
+	isCleared_ = true;
+	// 자신의 Room이 가진 Stele 들에게 방이 클리어되었다는 신호를 줌
+	Stele* tempStele = nullptr;
+	wstring steleName = L"";
+	for (int i = 1; i <= posOfDirection.size(); ++i) {
+		steleName = L"Stele" + to_wstring(i);	// 1 ~ 4 까지
+		auto iter = roomObjects.find(steleName);
+		if (iter != roomObjects.end())
+		{
+			tempStele = (Stele*)iter->second;
+			tempStele->roomCleared_ = true;
+		}
+		else
+			break;	// 탐색중단: 네이밍 순서 생각해봐.
 	}
 }
 

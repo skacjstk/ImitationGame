@@ -40,7 +40,7 @@ void Floor_1::ChangeScene()
 	ApplyStartRoom();	// 0 0에 start room
 	ApplyOtherRoom();	// 10 20 21 31 41 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
 
-	EnterRoom();
+	EnterFirstRoom();
 	Audio->Play("Floor_1BGM", 1.0f);
 	return;	// 일단 시작룸만
 	ApplyEndRoom();	// 5 1에 EndRoom
@@ -106,7 +106,7 @@ void Floor_1::MoveRoom(int x, int y)
 	}
 	Player* player = (Player*)OBJECTMANAGER->FindObject("player");
 	player->SetPosition(setPlayerPos);
-	roomData_[xy[0]][xy[1]]->Reset();
+	EnterRoom();
 
 	// 가져온 좌표를 Player에게 적용시키기
 }
@@ -238,7 +238,50 @@ void Floor_1::GenerateRoomData()
 
 void Floor_1::EnterRoom()
 {
-	roomData_[0][0]->Reset();
+	if(roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->IsCleared() == false)
+		roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->Reset();
+	
+	Texture* backImage = roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->terrainImage_;
+
+	// 메인 맵 이미지 위치가 잡히고 나서 좌우 정해주기
+	Vector2 leftDown = backImage->GetPosition();
+	Vector2 rightTop = leftDown;
+
+	leftDown -= backImage->GetTextureRealSize() * 0.5f;
+	rightTop += backImage->GetTextureRealSize() * 0.5f;
+	// 이후 X값만 윈도우 너비만큼 보정해주면 된다.
+	leftDown.x += MAIN->GetWidth() * 0.5f;
+	leftDown.y += MAIN->GetHeight() * 0.5f;
+
+	rightTop.x -= MAIN->GetWidth() * 0.5f;
+	rightTop.y -= MAIN->GetHeight() * 0.5f;
+
+	// y값도 보정해주긴 해야 한다. // 그건 인던에서 하자.
+	CAMERA->SetCornerLeft(leftDown);
+	CAMERA->SetCornerRight(rightTop);
+}
+
+void Floor_1::EnterFirstRoom()
+{
+	roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->Reset();
+	Texture* backImage = roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->terrainImage_;
+
+	// 메인 맵 이미지 위치가 잡히고 나서 좌우 정해주기
+	Vector2 leftDown = backImage->GetPosition();
+	Vector2 rightTop = leftDown;
+
+	leftDown -= backImage->GetTextureRealSize() * 0.5f;
+	rightTop += backImage->GetTextureRealSize() * 0.5f;
+	// 이후 X값만 윈도우 너비만큼 보정해주면 된다.
+	leftDown.x += MAIN->GetWidth() * 0.5f;
+	leftDown.y += MAIN->GetHeight() * 0.5f;
+
+	rightTop.x -= MAIN->GetWidth() * 0.5f;
+	rightTop.y -= MAIN->GetHeight() * 0.5f;
+
+	// y값도 보정해주긴 해야 한다. // 그건 인던에서 하자.
+	CAMERA->SetCornerLeft(leftDown);
+	CAMERA->SetCornerRight(rightTop);
 }
 
 

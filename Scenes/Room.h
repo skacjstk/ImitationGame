@@ -40,7 +40,7 @@ public:
 private:	//private instance variable
 	// 오브젝트 정보
 	bool isCleared_ = false;
-
+	int currentMonsterNumber_ = 0;
 public:	//생 소
 	Room();	// 초기화 리스트
 	Room(RoomType type);
@@ -56,6 +56,7 @@ public:	//override
 	void SetTerrainImage(wstring strFileName, Vector2 pos);
 	GameObject* FindObject(wstring objName);
 	void Reset();
+	void DecreaseCurrentMonsterNumber();
 public:	//public instance method
 	RoomType GetRoomType() { return roomType_; }
 	void SetRoomType(RoomType type) { roomType_ = type; }
@@ -65,6 +66,8 @@ public:	//public instance method
 	// Getter
 	void GetRoomObjectData();
 	Vector2 GetPosOfDirection(int index) { return posOfDirection[index]; }
+	bool IsCleared() { return isCleared_; }
 private:
 	void PushDirection(Stele::StelePath ePath, Vector2 position);	// 헤더 안 헤더 추가함.
+	void RoomClear();
 };
