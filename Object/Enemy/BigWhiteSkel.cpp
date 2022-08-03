@@ -103,6 +103,7 @@ BigWhiteSkel::~BigWhiteSkel()
 
 void BigWhiteSkel::Update(Matrix V, Matrix P)
 {
+	EffectUpdate(V, P);
 	if (IsActive() == false)
 		return;
 	// IDLE, RUN, ATTACK(RUN 0 ¹ø ÀçÅÁÀ¸·Î ¶Ù¾î¿À¸£±â)
@@ -125,6 +126,7 @@ void BigWhiteSkel::Update(Matrix V, Matrix P)
 
 void BigWhiteSkel::Render()
 {
+	EffectRender();
 	if (IsActive() == false)
 		return;
 	_animation->Render();
@@ -140,6 +142,7 @@ void BigWhiteSkel::Reset()
 	actorData_.HP = 18;
 	actorData_.maxHP = 18;
 	actorData_.ImmuneTime = 0;
+	actorData_.living = ActorState::LIVE;
 	SetActive(true);
 }
 

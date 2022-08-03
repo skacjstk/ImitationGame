@@ -8,7 +8,7 @@ public:
 		RUN = 1,
 		ATTACK = 2,
 		JUMP = 3,
-		WAIT = 4	// 모션은 IDLE의 1번을 공유할 예정
+		WAIT = 4,	// 모션은 IDLE의 1번을 공유할 예정
 	};
 	DogState stateEnum_ = DogState::IDLE;	// 이놈은 index 대용. static_cast로 currentState_에 주입함.
 	class SkelDogState* currentState_ = nullptr;

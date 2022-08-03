@@ -54,7 +54,8 @@ LittleGhost::~LittleGhost()
 }
 
 void LittleGhost::Update(Matrix V, Matrix P)
-{
+{	
+	EffectUpdate(V, P);
 	if (IsActive() == false)
 		return;
 	// IDLE, RUN, ATTACK(RUN 0 번 재탕으로 뛰어오르기)
@@ -76,6 +77,7 @@ void LittleGhost::Update(Matrix V, Matrix P)
 
 void LittleGhost::Render()
 {
+	EffectRender();
 	if (IsActive() == false)
 		return;
 	_animation->Render();
@@ -89,9 +91,11 @@ void LittleGhost::Reset()
 	chaseTarget_ = (GameActor*)OBJECTMANAGER->FindObject("player");
 	this->SetPosition(chaseTarget_->GetPosition());
 	currentState_->Enter(*this);
-	actorData_.HP = 12;
-	actorData_.maxHP = 12;
+	actorData_.HP = 8;
+	actorData_.maxHP = 8;
 	actorData_.ImmuneTime = 0;
+	actorData_.armor = 0;
+	actorData_.living = ActorState::LIVE;
 	SetActive(true);
 }
 
@@ -139,4 +143,13 @@ void LittleGhost::Attack(float& radian, float& dX, float& dY)
 		sinf(radian) * moveSpeed * TIMEMANAGER->Delta());	// Next: -1 곱해야 할 수 있음.
 
 	AttackCheck();
-};
+}
+void LittleGhost::Dying()
+{
+	Audio->Play("Explosion");
+	actorData_.living = ActorState::DYING;
+	dieEffect_ = objectPool->GetMonsterDieEffect();
+	(*dieEffect_)->SetPlay(0);
+	(*dieEffect_)->SetPosition(GetPosition());
+	(*dieEffect_)->SetScale(GetScale());
+}

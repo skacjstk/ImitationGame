@@ -27,6 +27,7 @@ public:	// 공개 인스턴스 변수
 	void Move(float& radian);
 	void Attack() override;
 	void Attack(float& radian, float& dX, float& dY);
+	void Dying() override;
 
 public:	//Getter
 	bool IsGround() { return isGround_; }
