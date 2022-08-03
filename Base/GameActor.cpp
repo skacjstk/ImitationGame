@@ -89,6 +89,7 @@ void GameActor::GroundCheck()
 	
 	for (UINT i = 0; i < m_pCeilingLine->GetCountLine(); i++)
 	{
+		isConflicted_ = false;
 		Vector2 start = m_pCeilingLine->GetStartPoint(i);
 		Vector2 end = m_pCeilingLine->GetEndPoint(i);
 
@@ -101,14 +102,17 @@ void GameActor::GroundCheck()
 
 		if (isConflicted_ = Collider::InterSectionLine(charPos, right, start, end)) {
 			moveAmount.x = -0.5f * WSCALEX;
+			isConflicted_ = true;
 			break;
 		}
 		if (isConflicted_ = Collider::InterSectionLine(charPos, left, start, end)) {
 			moveAmount.x = +0.5f * WSCALEX;
+			isConflicted_ = true;
 			break;
 		}
 		if (isConflicted_ = Collider::InterSectionLine(charPos, top, start, end)) {
 			moveAmount.y = -0.5f * WSCALEY;
+			isConflicted_ = true;
 			break;
 		}
 	}
