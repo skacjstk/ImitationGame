@@ -3,6 +3,28 @@
 #include "Physics/Collider.h"
 #include "GameActor.h"
 
+void GameActor::EffectUpdate(Matrix V, Matrix P)
+{
+	// 몬스터 공통 이펙트 전용
+	// 죽어가는 동안 이펙트 출력
+	if (actorData_.living == GameActor::ActorState::DYING) {
+		// 이펙트 가져오는건 Dying()을 호출할때 함.
+//		if (dieEffect_ != nullptr)
+		(*dieEffect_)->Update(V, P);
+		SetActive(false);	// 이렇게 해야 이펙트만 갱신됨.
+		if ((*dieEffect_)->IsPlay() == false) {
+			dieEffect_ = nullptr;	//이걸 null로 바꿔주어야 함. Dying할때 새로 가져오고
+			Die();
+		}
+	}
+}
+
+void GameActor::EffectRender()
+{
+	if (dieEffect_ != nullptr)
+		(*dieEffect_)->Render();
+}
+
 // PlatformLine 추가해야 함. + currentScene뿐만 아니라 Room 변경도....
 void GameActor::GroundCheck()
 {
@@ -115,13 +137,16 @@ void GameActor::GravityUpdate()
 void GameActor::Attacked(float damage)
 {
 	float changed = max(damage - actorData_.armor, 1.0f);
-	actorData_.HP -= changed;
+	actorData_.HP -= (int)changed;
+	Audio->Play("Hit_Monster");
+	// HitEffect 가져와야 함.
 	HPChange();
 }
 void GameActor::FatalBlow()
 {
-	Die();
+	Dying();
 }
+// 그저 신호기 역할.
 void GameActor::HPChange()
 {
 	// 오브젝트마다 만들어줘야 함.
@@ -134,8 +159,19 @@ void GameActor::Move(Vector2& position)
 {
 	ModifyPosition(position);
 }
+void GameActor::Dying()
+{
+	Audio->Play("MonsterDie");
+	actorData_.living = ActorState::DYING;
+	dieEffect_ = objectPool->GetMonsterDieEffect();
+	(*dieEffect_)->SetPlay(0);
+	(*dieEffect_)->SetPosition(GetPosition());
+	(*dieEffect_)->SetScale(GetScale());
+}
 void GameActor::Die()
 {
-	printf("액터 사망\n");
+	actorData_.living = ActorState::DIE;
+	eventHandler->Push(L"EnemyDie");	// 현재 Room 에 속한 적의 수를 -1 하는 것. 0이 되면 맵은 clear 상태가 되고, 그때 문이 열림.
+	SetActive(false);
 }
 

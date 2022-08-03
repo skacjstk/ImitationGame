@@ -5,7 +5,14 @@ public:
 	enum class ActorType
 	{
 		Player,
-		Enemy
+		Enemy,
+		Other
+	};
+	enum class ActorState
+	{
+		LIVE = 0,
+		DYING = 1,
+		DIE = 2
 	};
 	struct ActorData	// 현재 HP와 무적타임만 가지고 있음. ( maxHP 등 나머지는 개별 객체가 가질 수 있음. )
 	{
@@ -13,6 +20,7 @@ public:
 		int maxHP = 10;
 		int ImmuneTime = 0;
 		ActorType type = ActorType::Enemy;
+		ActorState living = ActorState::LIVE;
 		float damage = 5.0f;	// 이건 몬스터용, 플레이어는 무기의 데미지를 인자가 따로 있다.
 		float armor = 5.0f;	// 임시: 아머
 	};
@@ -22,6 +30,7 @@ public:
 protected:
 	class Collider* pCollider_ = nullptr;
 	class Animation* _animation = nullptr;
+	class Animation** dieEffect_ = nullptr;	// pool 에서 가져올 이펙트
 	float gravity_ = 0.0f;	// Actor들에게 적용되는 매 프레임마다 아래로 떨어지는 변화량
 	float beforeGravity_ = 0.0f;
 	bool isConflicted_ = false;	// 다른 곳에 부딧혔을 때
@@ -36,12 +45,15 @@ public:
 	GameActor() {};
 	~GameActor(){};
 	// Command 목록
+	virtual void EffectUpdate(Matrix V, Matrix P);
+	virtual void EffectRender();
 	virtual void GroundCheck();
 	void GravityUpdate();
 	virtual void LeftMove() {};
 	virtual void RightMove() {};
 	virtual void Attacked(float damage);
 	virtual void FatalBlow();	// 치명적인 일격 판정, 이후 뭐가 없으면 사망
+	virtual void Dying();
 	virtual void Die();
 	virtual void Jump() {};
 	virtual void Move() {};	// 파생용: 0630 기준 Left,Right에서 정해준 방향으로 Move를 호출하는 역할. 
