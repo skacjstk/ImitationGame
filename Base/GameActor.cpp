@@ -9,8 +9,8 @@ void GameActor::EffectUpdate(Matrix V, Matrix P)
 	// 죽어가는 동안 이펙트 출력
 	if (actorData_.living == GameActor::ActorState::DYING) {
 		// 이펙트 가져오는건 Dying()을 호출할때 함.
-//		if (dieEffect_ != nullptr)
-		(*dieEffect_)->Update(V, P);
+		if (dieEffect_ != nullptr)
+			(*dieEffect_)->Update(V, P);
 		SetActive(false);	// 이렇게 해야 이펙트만 갱신됨.
 		if ((*dieEffect_)->IsPlay() == false) {
 			dieEffect_ = nullptr;	//이걸 null로 바꿔주어야 함. Dying할때 새로 가져오고
@@ -175,7 +175,7 @@ void GameActor::Dying()
 void GameActor::Die()
 {
 	actorData_.living = ActorState::DIE;
-	eventHandler->Push(L"EnemyDie");	// 현재 Room 에 속한 적의 수를 -1 하는 것. 0이 되면 맵은 clear 상태가 되고, 그때 문이 열림.
+	eventHandler->Push(L"MonsterDie");	// 현재 Room 에 속한 적의 수를 -1 하는 것. 0이 되면 맵은 clear 상태가 되고, 그때 문이 열림.
 	SetActive(false);
 }
 

@@ -34,7 +34,7 @@ protected:
 	float gravity_ = 0.0f;	// Actor들에게 적용되는 매 프레임마다 아래로 떨어지는 변화량
 	float beforeGravity_ = 0.0f;
 	bool isConflicted_ = false;	// 다른 곳에 부딧혔을 때
-	bool isPlatform_ = true;	// 바닥인데 platform 일 경우
+	bool isPlatform_ = false;	// 바닥인데 platform 일 경우
 	bool isFall = false;
 	bool isJump = false;
 	bool beforeGround_ = false;
