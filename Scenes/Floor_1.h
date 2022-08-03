@@ -32,6 +32,7 @@ public:	//override
 	void ChangeScene() override; // Scene 변경시 변경할 대상 Scene에 이 함수가 호출됨
 	void ExitScene() override;	// 씬 나올 때 따로 설정해야 할 함수
 	void MoveRoom(int x, int y) override;	// 이동해야할 index를 갔다줘
+	Room* GetCurrentRoom() { return roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]; }
 private:
 	// 딱 한가지로 고정된 맵 형태
 	void ReadStartRoomMinimal();		//테스트: 나중에는 룸 별로 minimal로 값을 가져와야 함(offset)
@@ -41,12 +42,12 @@ private:
 	void ReadRoomData(int x, int y);	// Start, end는 여기서 구분할 게 아님.
 		void ReadLines(Room* tempRoom, string coord);	// 3개 형태의 Line들 가져와 Room 에 적용하기
 //		void ReadObjects(Room* tempRoom, int& coord);	// 오브젝트 desc 가져와 Room에 new 하기	// Room에 기능 옮김.
-	// connectRoom은 재활용 가능할 듯
+	
 	
 	// 절차적 지형생성 부분: 잠정폐기
-	void GenerateRoom();
-	void SetSRER(int& SX, int& SY, int& EX, int& EY);
-	void ConnectSRER(int& SX, int& SY, int& EX, int& EY);
+//	void GenerateRoom();
+//	void SetSRER(int& SX, int& SY, int& EX, int& EY);
+//	void ConnectSRER(int& SX, int& SY, int& EX, int& EY);
 	void ConnectRoom(int x, int y);
 	void GenerateRoomData();	// 룸의 데이터를 넣어주는 작업
 	class Line* GetGroundLines() override { return roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->GetGroundLines(); }

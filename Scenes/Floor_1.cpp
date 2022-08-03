@@ -51,7 +51,6 @@ void Floor_1::ChangeScene()
 	return;
 	// 1. 방 생성
 	// 2. 시작 위치와 끝 위치 연결
-	GenerateRoom();
 	// 3. 방 유효성 확인 (  시작과 끝이 연결되었는가? )
 	// DFS 를 통해 시작과 끝이 연결되어있는지 확인. ( 0 이 아니면 일단 연결된 것 )
 	// 4. 특수 방 (1개만 있는) 지정(시작, 보스입구 빼고)
@@ -244,7 +243,7 @@ void Floor_1::EnterRoom()
 
 
 ////////폐기된 절차적 지형생성
-
+/*
 void Floor_1::GenerateRoom()
 {
 	// 시작 위치와 끝 위치 지정
@@ -347,3 +346,4 @@ void Floor_1::ConnectSRER(int& SX, int& SY, int& EX, int& EY)
 		} // end if
 	}//end while
 }
+*/

@@ -25,7 +25,7 @@ public:
 	virtual void ChangeScene() = 0; // Scene 변경시 변경할 대상 Scene에 이 함수가 호출됨
 	virtual void ExitScene() = 0;	// 씬 나올 때 따로 설정해야 할 함수
 	virtual void MoveRoom(int x, int y) { printf("재정의되어있지 않다면, 던그리드식 Room 이 아닌 것.\n"); }
-
+	virtual class Room* GetCurrentRoom() { printf("GetCurrentRoom(): 재정의 무조건 해.\n"); return nullptr; }
 	//Setter
 	void SetActive(bool active)			{ _Active = active; };	//옜날에는 inline 함수는 인라인 붙였어야 했음
 	void SetReset(bool value)			{ _Reset = value; }

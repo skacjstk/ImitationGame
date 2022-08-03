@@ -134,7 +134,10 @@ void ShortSword::CheckAttack()
 {
 	GameActor* actor = nullptr;
 	// 참조 전달로 해봤음.
-	for (auto iter = OBJECTMANAGER->GetObjectsMap()->begin(); iter != OBJECTMANAGER->GetObjectsMap()->end(); ++iter) {
+	Room* tempRoom = SCENEMANAGER->GetCurrentScene()->GetCurrentRoom();
+	if (tempRoom == nullptr)	// Town 등 일부 Scene에선 Room 형태가 아닐 수 있음.
+		return;
+	for (auto iter = tempRoom->roomObjects.begin(); iter != tempRoom->roomObjects.end(); ++iter) {
 		actor = (GameActor*)iter->second;
 		// actorType이 enemy가 아니면 애초에 충돌검사를 하지 않음.
 		if (actor->actorData_.type == GameActor::ActorType::Enemy) {
