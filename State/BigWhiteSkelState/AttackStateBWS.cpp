@@ -16,6 +16,7 @@ void AttackStateBWS::SwitchState(BigWhiteSkel& actor)
 
 void AttackStateBWS::Action(BigWhiteSkel& actor)
 {
+	actor.Attack();
 }
 
 void AttackStateBWS::Enter(BigWhiteSkel& actor)

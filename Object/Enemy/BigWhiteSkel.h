@@ -33,7 +33,6 @@ public:	// 공개 인스턴스 변수
 	void Move() override;		// 파생용: 0630 기준 Left,Right에서 정해준 방향으로 Move를 호출하는 역할. 
 	void Idle() override;		// IDLE과 Attack은 꼭 있어야 함.
 	void Attack() override;
-	void Attack(float& dX);
 
 public:	//Getter
 	bool IsGround() { return isGround_; }

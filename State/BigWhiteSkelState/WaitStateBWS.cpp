@@ -7,7 +7,7 @@
 void WaitStateBWS::SwitchState(BigWhiteSkel& actor)
 {
 	// 일정 거리 이내라면, RUN State로 변경
-	if (time_ > 1.0f) {
+	if (time_ > 0.6f) {
 		actor.stateEnum_ = BigWhiteSkel::SkelState::ATTACK;
 		actor.currentState_ = actor.state_[static_cast<int>(actor.stateEnum_)];
 		actor.currentState_->Enter(actor);

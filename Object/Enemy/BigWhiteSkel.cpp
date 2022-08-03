@@ -197,11 +197,5 @@ void BigWhiteSkel::Idle()
 // 애니메이션 자체는 Move와 Jump의 조합.
 void BigWhiteSkel::Attack()
 {
-	printf("BigWhiteSkel는 dX를 받는 개별 Attack을 사용함");
-}
-
-// 점프와 같지만 dX는 딱 한번만 연산함.
-void BigWhiteSkel::Attack(float& dX)
-{
 	AttackCheck();
-};
+}
