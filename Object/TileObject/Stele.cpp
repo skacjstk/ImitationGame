@@ -68,6 +68,7 @@ Stele::Stele()
 	}
 
 	pCollider_ = new Collider();
+	actorData_.type = ActorType::Other;
 }
 
 Stele::~Stele()

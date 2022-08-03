@@ -42,6 +42,7 @@ Door::Door()
 
 	// NPC 코드 설정
 	codeNPC_ = 101;	// DB에서 찾을때만 써.
+	actorData_.type = ActorType::Other;
 }
 
 Door::~Door()
