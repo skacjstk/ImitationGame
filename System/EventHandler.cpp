@@ -6,6 +6,7 @@
 #include "Event/MoveRoomLeft.h"
 #include "Event/MoveRoomUp.h"
 #include "Event/MoveRoomRight.h"
+#include "Event/MonsterDieEvent.h"
 //#include "Event/Event.h"
 #include "EventHandler.h"
 
@@ -18,6 +19,7 @@ EventHandler::EventHandler()
 	eventMap.insert(std::make_pair<wstring, Event*>(L"MR2", new MoveRoomLeft()));
 	eventMap.insert(std::make_pair<wstring, Event*>(L"MR3", new MoveRoomUp()));
 	eventMap.insert(std::make_pair<wstring, Event*>(L"MR4", new MoveRoomRight()));
+	eventMap.insert(std::make_pair<wstring, Event*>(L"MonsterDie", new MonsterDieEvent()));
 }
 void EventHandler::Update()
 {
