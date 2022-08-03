@@ -154,6 +154,7 @@
     <ClInclude Include="..\Base\GameActor.h" />
     <ClInclude Include="..\Base\GameObject.h" />
     <ClInclude Include="..\Base\ObjectManager.h" />
+    <ClInclude Include="..\Base\Pool\ObjectPool.h" />
     <ClInclude Include="..\Base\RoomObjects.h" />
     <ClInclude Include="..\Base\Scene.h" />
     <ClInclude Include="..\Base\SceneManager.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="..\Database\ObjectDB.h" />
     <ClInclude Include="..\Event\EnterDungeonEvent.h" />
     <ClInclude Include="..\Event\Event.h" />
+    <ClInclude Include="..\Event\MonsterDieEvent.h" />
     <ClInclude Include="..\Event\MoveRoomDown.h" />
     <ClInclude Include="..\Event\MoveRoomLeft.h" />
     <ClInclude Include="..\Event\MoveRoomRight.h" />
@@ -265,6 +267,7 @@
     <ClCompile Include="..\Base\GameActor.cpp" />
     <ClCompile Include="..\Base\GameObject.cpp" />
     <ClCompile Include="..\Base\ObjectManager.cpp" />
+    <ClCompile Include="..\Base\Pool\ObjectPool.cpp" />
     <ClCompile Include="..\Base\RoomObjects.cpp" />
     <ClCompile Include="..\Base\Scene.cpp" />
     <ClCompile Include="..\Base\SceneManager.cpp" />
@@ -284,6 +287,7 @@
     <ClCompile Include="..\Database\ObjectDB.cpp" />
     <ClCompile Include="..\Event\EnterDungeonEvent.cpp" />
     <ClCompile Include="..\Event\Event.cpp" />
+    <ClCompile Include="..\Event\MonsterDieEvent.cpp" />
     <ClCompile Include="..\Event\MoveRoomDown.cpp" />
     <ClCompile Include="..\Event\MoveRoomLeft.cpp" />
     <ClCompile Include="..\Event\MoveRoomRight.cpp" />

@@ -142,18 +142,6 @@
     <Filter Include="헤더 파일\UI\PlayerUI">
       <UniqueIdentifier>{8eb97ad4-ff62-4629-a851-5c9dd7caf6ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\UI///////////////">
-      <UniqueIdentifier>{aa119dd0-7c16-4546-84d1-a46c6e1df961}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\UI///////////////\Base">
-      <UniqueIdentifier>{8c297f1a-9a55-4676-a769-d496a86c2f93}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\UI///////////////\PlayerUI">
-      <UniqueIdentifier>{b757a52d-b61d-4428-98a6-2c713a7aa0d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\UI///////////////\EnemyUI">
-      <UniqueIdentifier>{2c3ebaf0-3644-4ee2-836f-4a5aa1364ed9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\DataBase">
       <UniqueIdentifier>{f5917990-5fc0-4681-b35d-3645f0af9346}</UniqueIdentifier>
     </Filter>
@@ -162,6 +150,27 @@
     </Filter>
     <Filter Include="소스 파일\Object\TileObject">
       <UniqueIdentifier>{246db4af-d221-493f-98f0-eea8dcc0b26a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Base\Pool">
+      <UniqueIdentifier>{9bd3dcc1-d207-414b-b082-eaad7afc1d2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Object\TileObject">
+      <UniqueIdentifier>{cfb03d8a-a88e-4b73-93b4-6b697b34c2c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Base\Pool">
+      <UniqueIdentifier>{b9a880c0-0419-46af-ad51-7d9b04dda747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\UI">
+      <UniqueIdentifier>{aa119dd0-7c16-4546-84d1-a46c6e1df961}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\UI\Base">
+      <UniqueIdentifier>{8c297f1a-9a55-4676-a769-d496a86c2f93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\UI\PlayerUI">
+      <UniqueIdentifier>{b757a52d-b61d-4428-98a6-2c713a7aa0d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\UI\EnemyUI">
+      <UniqueIdentifier>{2c3ebaf0-3644-4ee2-836f-4a5aa1364ed9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -324,9 +333,6 @@
     <ClInclude Include="..\Scenes\S04_Extra01.h">
       <Filter>헤더 파일\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Command\Inventory\DragAndDropCommand.h">
-      <Filter>소스 파일\Command</Filter>
-    </ClInclude>
     <ClInclude Include="..\InputHandler\InventoryInputHandler.h">
       <Filter>헤더 파일\InputHandler</Filter>
     </ClInclude>
@@ -436,10 +442,7 @@
       <Filter>헤더 파일\Command</Filter>
     </ClInclude>
     <ClInclude Include="..\GameUI\EnemyUI\EnemyLifeUI.h">
-      <Filter>소스 파일\UI///////////////\EnemyUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Base\RoomObjects.h">
-      <Filter>소스 파일\Base</Filter>
+      <Filter>소스 파일\UI\EnemyUI</Filter>
     </ClInclude>
     <ClInclude Include="..\GameUI\PlayerUI\DashUI.h">
       <Filter>헤더 파일\UI\PlayerUI</Filter>
@@ -452,9 +455,6 @@
     </ClInclude>
     <ClInclude Include="..\GameUI\PlayerUI\PlayerUI.h">
       <Filter>헤더 파일\UI\PlayerUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Object\NPC\Door.h">
-      <Filter>소스 파일\Object\NPC</Filter>
     </ClInclude>
     <ClInclude Include="..\Event\SwapItemEvent.h">
       <Filter>헤더 파일\Event</Filter>
@@ -474,9 +474,6 @@
     <ClInclude Include="..\Object\AStar.h">
       <Filter>헤더 파일\Object</Filter>
     </ClInclude>
-    <ClInclude Include="..\Object\TileObject\Stele.h">
-      <Filter>소스 파일\Object\TileObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\Event\RiseNextFloorEvent.h">
       <Filter>헤더 파일\Event</Filter>
     </ClInclude>
@@ -491,6 +488,24 @@
     </ClInclude>
     <ClInclude Include="..\Event\MoveRoomUp.h">
       <Filter>헤더 파일\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\TileObject\Stele.h">
+      <Filter>헤더 파일\Object\TileObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\Pool\ObjectPool.h">
+      <Filter>헤더 파일\Base\Pool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\RoomObjects.h">
+      <Filter>헤더 파일\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Command\Inventory\DragAndDropCommand.h">
+      <Filter>헤더 파일\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Object\NPC\Door.h">
+      <Filter>헤더 파일\Object\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Event\MonsterDieEvent.h">
+      <Filter>소스 파일\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -741,19 +756,19 @@
       <Filter>소스 파일\State\LittleGhost</Filter>
     </ClCompile>
     <ClCompile Include="..\GameUI\BaseUI.cpp">
-      <Filter>소스 파일\UI///////////////\Base</Filter>
+      <Filter>소스 파일\UI\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\GameUI\PlayerUI\DashUI.cpp">
-      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
+      <Filter>소스 파일\UI\PlayerUI</Filter>
     </ClCompile>
     <ClCompile Include="..\GameUI\PlayerUI\EquippedWeaponUI.cpp">
-      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
+      <Filter>소스 파일\UI\PlayerUI</Filter>
     </ClCompile>
     <ClCompile Include="..\GameUI\PlayerUI\PlayerLifeUI.cpp">
-      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
+      <Filter>소스 파일\UI\PlayerUI</Filter>
     </ClCompile>
     <ClCompile Include="..\GameUI\PlayerUI\PlayerUI.cpp">
-      <Filter>소스 파일\UI///////////////\PlayerUI</Filter>
+      <Filter>소스 파일\UI\PlayerUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Event\SwapItemEvent.cpp">
       <Filter>소스 파일\Event</Filter>
@@ -762,7 +777,7 @@
       <Filter>소스 파일\Command</Filter>
     </ClCompile>
     <ClCompile Include="..\GameUI\EnemyUI\EnemyLifeUI.cpp">
-      <Filter>소스 파일\UI///////////////\EnemyUI</Filter>
+      <Filter>소스 파일\UI\EnemyUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Base\RoomObjects.cpp">
       <Filter>소스 파일\Base</Filter>
@@ -801,6 +816,12 @@
       <Filter>소스 파일\Event</Filter>
     </ClCompile>
     <ClCompile Include="..\Event\MoveRoomUp.cpp">
+      <Filter>소스 파일\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\Pool\ObjectPool.cpp">
+      <Filter>소스 파일\Base\Pool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Event\MonsterDieEvent.cpp">
       <Filter>소스 파일\Event</Filter>
     </ClCompile>
   </ItemGroup>
