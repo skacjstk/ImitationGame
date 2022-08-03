@@ -151,6 +151,7 @@ typedef D3DXCOLOR	Color;
 #include "./Render/AnimationClip.h"
 #include "./Render/Animation.h"
 #include "./Base/Terrain.h"
+#include "Base/Pool/ObjectPool.h"	// 애니메이션 뒤, 오브젝트 앞
 #include "./Base/GameObject.h"
 #include "./Base/GameActor.h"
 #include "./Base/UIObject.h"
@@ -177,3 +178,4 @@ constexpr int MAPX = 30;
 constexpr int MAPY = 30;
 
 extern ObjectDB objectDB;
+extern ObjectPool* objectPool;
