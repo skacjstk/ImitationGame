@@ -153,7 +153,7 @@ bool CAudio::Paused(string name)
 
 	return bPaused;
 }
-
+// SceneManager의 최초 기동 시점에 호출(생성자)
 void CAudio::AddSoundAll()
 {
 
@@ -176,8 +176,8 @@ void CAudio::AddSoundAll()
 	strSound = "ui-sound-13-dash.wav";
 	Audio->AddSound("Dash_Player", AUDIO_FOLDER + strSound, false);
 
-	strSound = "swing.wav";
-	Audio->AddSound("swing", AUDIO_FOLDER + strSound, false);
+	strSound = "swing2 #211045.wav";
+	Audio->AddSound("swing2", AUDIO_FOLDER + strSound, false);
 }
 
 void CAudio::Volume(string name, float volume)

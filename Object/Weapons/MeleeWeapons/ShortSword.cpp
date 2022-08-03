@@ -126,8 +126,8 @@ void ShortSword::Fire()
 	P = CAMERA->GetProjectionMatrix();
 	attackCollider_->Update(V, P);
 	CheckAttack();
-	// 이걸 단 한번만으로 바꿔보자
-	Audio->Play("swing", 1.0f);
+
+	Audio->Play("swing2", 1.0f);
 }
 
 void ShortSword::CheckAttack()
