@@ -16,6 +16,7 @@ CAudio* Audio = NULL;
 EventHandler* eventHandler = nullptr;
 PlayerUI* playerUI = nullptr;
 ObjectDB objectDB;
+ObjectPool* objectPool;
 void LoadFont();
 //Window Create
 //1. 윈도우 클래스를 정의 레지스트리에 등록
@@ -40,6 +41,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     eventHandler = new EventHandler();
     // PlayerUI
     playerUI = new PlayerUI();
+    // ObjectPool
+    objectPool = new ObjectPool();
     // IMGui Setting
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
