@@ -192,6 +192,12 @@ void CAudio::AddSoundAll()
 	strSound = "Explosion_02";	// À¯·É·ù ¸÷ Á×À»¶§
 	Audio->AddSound("Explosion2", AUDIO_FOLDER + strSound + fileType, false);
 
+	strSound = "Jail Metal Door Sound Effect";
+	Audio->AddSound("JailClose", AUDIO_FOLDER + strSound + fileType, false);
+
+	strSound = "stoneDoor";
+	Audio->AddSound("stoneDoor", AUDIO_FOLDER + strSound + fileType, false);
+
 }
 
 void CAudio::Volume(string name, float volume)
