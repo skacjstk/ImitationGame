@@ -127,6 +127,7 @@ void Door::ClosingSwitch()
 
 void Door::ClosingEnter()
 {
+	Audio->Play("JailClose");
 	doorState = DoorState::CLOSING;
 	_animation->SetPlay(doorState);
 }
