@@ -149,8 +149,7 @@ bool Stele::CheckPlayer()
 }
 // 문이 열린 상태에서는 플레이어 위치검사 및
 void Stele::OpenSwitch()
-{
-	
+{	
 	if (CheckPlayer() == true) {
 		// 이동 이벤트 호출.
 		switch (stelePath_)
@@ -168,13 +167,13 @@ void Stele::OpenSwitch()
 			eventHandler->Push(L"MR4");	// 우
 			break;
 		}
-
+		/*
 		SwitchState = std::bind(&Stele::ClosingSwitch, this);
 		Action = std::bind(&Stele::ClosingEnter, this);
 		Enter = std::bind(&Stele::ClosingEnter, this);
 		Enter();
+		*/
 	}
-
 }
 
 void Stele::OpenAction()
@@ -206,6 +205,7 @@ void Stele::OpeningEnter()
 {
 	SteleState_ = SteleState::OPENING;
 	_animation->SetPlay(SteleState_);
+	Audio->Play("stoneDoor");
 }
 
 
@@ -234,11 +234,13 @@ void Stele::ClosingEnter()
 
 void Stele::CloseSwitch()
 {
-	// 던전 클리어 이벤트가 발생할 경우, Next
-	SwitchState = std::bind(&Stele::OpeningSwitch, this);
-	Action = std::bind(&Stele::OpeningEnter, this);
-	Enter = std::bind(&Stele::OpeningEnter, this);
-	Enter();
+	if (roomCleared_ == true) {
+		// 던전 클리어 이벤트가 발생할 경우, Next
+		SwitchState = std::bind(&Stele::OpeningSwitch, this);
+		Action = std::bind(&Stele::OpeningEnter, this);
+		Enter = std::bind(&Stele::OpeningEnter, this);
+		Enter();
+	}
 }
 void Stele::CloseAction()
 {

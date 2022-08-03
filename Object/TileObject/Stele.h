@@ -19,6 +19,7 @@ public:		// 공개 인스턴스 변수
 		LEFT = 3
 	};
 	// 던그리드 캐릭터 변경할때 사용할 것
+	bool roomCleared_ = false;
 private:	// 비공개 인스턴스 변수
 	SteleState SteleState_ = SteleState::CLOSING;
 	StelePath stelePath_ = StelePath::LEFT;
