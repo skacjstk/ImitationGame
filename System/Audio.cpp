@@ -156,28 +156,42 @@ bool CAudio::Paused(string name)
 // SceneManager의 최초 기동 시점에 호출(생성자)
 void CAudio::AddSoundAll()
 {
+	string fileType = ".wav";
 
 	// 사운드를 한번에 넣는 걸로 변경해봄
-	string strSound = "1.JailField.wav";
-	Audio->AddSound("Floor_1BGM", AUDIO_FOLDER + strSound, true);
+	string strSound = "1.JailField";
+	Audio->AddSound("Floor_1BGM", AUDIO_FOLDER + strSound + fileType, true);
 
-	strSound = "0.Town.wav";
-	Audio->AddSound("Town", AUDIO_FOLDER + strSound, true);
+	strSound = "0.Town";
+	Audio->AddSound("Town", AUDIO_FOLDER + strSound + fileType, true);
 
-	strSound = "title.wav";
-	Audio->AddSound("IntroBGM", AUDIO_FOLDER + strSound, true);
+	strSound = "title";
+	Audio->AddSound("IntroBGM", AUDIO_FOLDER + strSound + fileType, true);
 
-	strSound = "etc-sound0033_swap.wav";
-	Audio->AddSound("SwapItem", AUDIO_FOLDER + strSound, false);
+	strSound = "etc-sound0033_swap";
+	Audio->AddSound("SwapItem", AUDIO_FOLDER + strSound + fileType, false);
 
-	strSound = "Hit_Player.wav";
-	Audio->AddSound("Hit_Player", AUDIO_FOLDER + strSound, false);
+	strSound = "Hit_Player";
+	Audio->AddSound("Hit_Player", AUDIO_FOLDER + strSound + fileType, false);
 
-	strSound = "ui-sound-13-dash.wav";
-	Audio->AddSound("Dash_Player", AUDIO_FOLDER + strSound, false);
+	strSound = "ui-sound-13-dash";
+	Audio->AddSound("Dash_Player", AUDIO_FOLDER + strSound + fileType, false);
 
-	strSound = "swing2 #211045.wav";
-	Audio->AddSound("swing2", AUDIO_FOLDER + strSound, false);
+	strSound = "swing2 #211045";
+	Audio->AddSound("swing2", AUDIO_FOLDER + strSound + fileType, false);
+
+	strSound = "Hit_Monster";
+	Audio->AddSound("Hit_Monster", AUDIO_FOLDER + strSound + fileType, false);
+
+	strSound = "MonsterDie";
+	Audio->AddSound("MonsterDie", AUDIO_FOLDER + strSound + fileType, false);
+	
+	strSound = "Explosion";	// 플레이어 죽을때
+	Audio->AddSound("Explosion", AUDIO_FOLDER + strSound + fileType, false);
+
+	strSound = "Explosion_02";	// 유령류 몹 죽을때
+	Audio->AddSound("Explosion2", AUDIO_FOLDER + strSound + fileType, false);
+
 }
 
 void CAudio::Volume(string name, float volume)
