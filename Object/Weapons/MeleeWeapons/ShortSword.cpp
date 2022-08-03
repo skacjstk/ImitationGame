@@ -140,7 +140,7 @@ void ShortSword::CheckAttack()
 	for (auto iter = tempRoom->roomObjects.begin(); iter != tempRoom->roomObjects.end(); ++iter) {
 		actor = (GameActor*)iter->second;
 		// actorType이 enemy가 아니면 애초에 충돌검사를 하지 않음.
-		if (actor->actorData_.type == GameActor::ActorType::Enemy) {
+		if (actor->actorData_.type == GameActor::ActorType::Enemy && actor->IsActive() == true) {
 			if(Collider::Obb(attackCollider_, actor->GetCollider())){// IntersectionOBB 개선판			
 				actor->Attacked(DamageDice());
 			}// end Obb
