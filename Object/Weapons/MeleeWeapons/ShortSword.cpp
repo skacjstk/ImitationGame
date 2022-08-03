@@ -62,6 +62,7 @@ ShortSword::~ShortSword()
 
 void ShortSword::Update(Matrix V, Matrix P)
 {
+	EffectUpdate(V, P);
 	// AnimationUpdate
 	weapon_->SetPlay(0);
 	currentAttackDelay_ -= TIMEMANAGER->Delta();
@@ -82,6 +83,7 @@ void ShortSword::Update(Matrix V, Matrix P)
 
 void ShortSword::Render()
 {
+	EffectRender();
 	weapon_->Render();
 	if (attackFX_->IsPlay()) {
 		attackFX_->Render();
@@ -143,6 +145,23 @@ void ShortSword::CheckAttack()
 		if (actor->actorData_.type == GameActor::ActorType::Enemy && actor->IsActive() == true) {
 			if(Collider::Obb(attackCollider_, actor->GetCollider())){// IntersectionOBB 개선판			
 				actor->Attacked(DamageDice());
+				// 이펙트 반영, 중복시 기존걸 지워버리며 풀 관리
+				if (slashEffect_ != nullptr) {
+					(*slashEffect_)->SetStop();
+					slashEffect_ = nullptr;
+				}
+				slashEffect_ = objectPool->GetSlashEffect();
+				// 액터의 위치에서 내 위치를 뺀 라디안
+				float fdX = actor->GetPosition().x - this->GetWeaponPosition().x;
+				float fdY = actor->GetPosition().y - this->GetWeaponPosition().y;
+				float dRad = atan2f(fdY, fdX);
+				float fAngle = (dRad * 180.0f) / PI;
+				(*slashEffect_)->SetRotation(0.0f,0.0f, fAngle + 90.0f);
+
+				(*slashEffect_)->SetPosition(actor->GetPosition());
+				(*slashEffect_)->SetScale(actor->GetScale().x * WSCALEX * 0.7f, actor->GetScale().y * WSCALEY * 0.7f);
+
+				(*slashEffect_)->SetPlay(0);
 			}// end Obb
 		}// end ifEnemy	
 	}
