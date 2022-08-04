@@ -37,6 +37,7 @@ protected:
 	bool isPlatform_ = false;	// 바닥인데 platform 일 경우
 	bool isFall = false;
 	bool isJump = false;
+	bool isUnderJump_ = false;
 	bool beforeGround_ = false;
 	// Actor의 무적시간을 정해줌 (player 제외 죄다 0, 이뮨프레임은 실질적인 소유자만 프레임마다 -1 하게됨)
 	int ImmuneFrame_ = 0;	
@@ -56,6 +57,7 @@ public:
 	virtual void Dying();
 	virtual void Die();
 	virtual void Jump() {};
+	virtual void UnderJump();
 	virtual void Move() {};	// 파생용: 0630 기준 Left,Right에서 정해준 방향으로 Move를 호출하는 역할. 
 	virtual void Idle() {};		// IDLE과 Attack은 꼭 있어야 함.
 	virtual void Attack() {};
@@ -72,6 +74,9 @@ public:
 	void SetImmuneFrame(int frame) { ImmuneFrame_ = frame; }
 public:
 	class Collider* GetCollider() { return pCollider_; }
+	bool GetIsConflicted() { return isConflicted_; }
+	bool GetIsPlatform() { return isPlatform_; }
+	bool GetIsUnderJump() { return isUnderJump_; }
 protected:
 	virtual void Move(Vector2& position);	// 해당 위치로 움직이려고 시도함
 };

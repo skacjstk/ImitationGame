@@ -214,6 +214,7 @@ void Player::GroundCheck()
 				break;
 			flag = true;
 			SetGroundCheck(true);
+			isPlatform_ = false;
 			if(_currentState != State::RUN)
 				_currentState = State::IDLE;
 			longJumpCount_ = 0.0f;
@@ -225,7 +226,7 @@ void Player::GroundCheck()
 	}//end for
 
 	// 플랫폼라인 충돌검사 ( 대시중에는 플랫폼 충돌 불가: 나중에)
-	if (true || isDash == false) {
+	if (isUnderJump_ == false) {
 		for (int i = 0; i < m_pPlatformLine->GetCountLine(); i++) {
 			Vector2 start = m_pPlatformLine->GetStartPoint(i);
 			Vector2 end = m_pPlatformLine->GetEndPoint(i);
@@ -532,6 +533,7 @@ void Player::Jump()
 {
 	// 점프 수행
 	if (isGround_ == true) {
+		isUnderJump_ = false;
 		isJump = true;
 		isGround_ = false;
 		_currentState = State::JUMP;

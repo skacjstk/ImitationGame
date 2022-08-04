@@ -179,3 +179,9 @@ void GameActor::Die()
 	SetActive(false);
 }
 
+void GameActor::UnderJump()
+{
+	ModifyPosition(0.0f, -((pCollider_->GetScale().y * 0.55f) + 1.0f));
+	isUnderJump_ = true;
+}
+
