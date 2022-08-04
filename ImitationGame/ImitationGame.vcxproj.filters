@@ -507,6 +507,9 @@
     <ClInclude Include="..\Event\MonsterDieEvent.h">
       <Filter>소스 파일\Event</Filter>
     </ClInclude>
+    <ClInclude Include="..\Command\UnderJumpCommand.h">
+      <Filter>소스 파일\Command</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -823,6 +826,9 @@
     </ClCompile>
     <ClCompile Include="..\Event\MonsterDieEvent.cpp">
       <Filter>소스 파일\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Command\UnderJumpCommand.cpp">
+      <Filter>소스 파일\Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

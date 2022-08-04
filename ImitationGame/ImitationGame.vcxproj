@@ -171,6 +171,7 @@
     <ClInclude Include="..\Command\Player\InventoryToggleCommand.h" />
     <ClInclude Include="..\Command\Player\SwapHandFocusCommand.h" />
     <ClInclude Include="..\Command\RightMoveCommand.h" />
+    <ClInclude Include="..\Command\UnderJumpCommand.h" />
     <ClInclude Include="..\Database\ObjectDB.h" />
     <ClInclude Include="..\Event\EnterDungeonEvent.h" />
     <ClInclude Include="..\Event\Event.h" />
@@ -284,6 +285,7 @@
     <ClCompile Include="..\Command\Player\InventoryToggleCommand.cpp" />
     <ClCompile Include="..\Command\Player\SwapHandFocusCommand.cpp" />
     <ClCompile Include="..\Command\RightMoveCommand.cpp" />
+    <ClCompile Include="..\Command\UnderJumpCommand.cpp" />
     <ClCompile Include="..\Database\ObjectDB.cpp" />
     <ClCompile Include="..\Event\EnterDungeonEvent.cpp" />
     <ClCompile Include="..\Event\Event.cpp" />
