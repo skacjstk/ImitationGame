@@ -159,10 +159,9 @@ void Room::LoadObjFile(string strFileName)
 		GameObject* pObject;
 		Stele* pStele;
 		wstring objName = L"";	// 해당 오브젝트 이름
-		int objIndex = 1;	// 해당 오브젝트의 index 번호: 더미
+		int objIndex = 1;	// 해당 오브젝트의 index 번호
 
 		pObject = objectDB.FindActor(objectType,objName,objIndex);
-
 		roomObjects.insert(std::make_pair(objName + to_wstring(objIndex), pObject));
 
 		if (objectType < 100)		// >=100 부턴 NPC나 따른쪽이니까
@@ -176,6 +175,7 @@ void Room::LoadObjFile(string strFileName)
 			pStele = (Stele*)pObject;
 			pStele->SetPath();
 		}
+		pObject = nullptr;
 	}
 	fclose(fp);
 }
@@ -274,7 +274,7 @@ void Room::PushDirection(Stele::StelePath ePath, Vector2 position)
 		canDirection[index] = true;
 		comPosition += position;
 		posOfDirection[index] = comPosition;	// 틀린건 어째서인지 Stele의 좌표. 아니, 10의 좌표가 다 이상함.
-		printf("결국 생성된 위치: %f %f\n", comPosition.x, comPosition.y);
+	//	printf("결국 생성된 위치: %f %f\n", comPosition.x, comPosition.y);
 	}
 }
 
