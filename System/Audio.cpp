@@ -73,6 +73,7 @@ void CAudio::Play(string name, float volume)
 		{
 			system->playSound(FMOD_CHANNEL_FREE, *iter->second, false, &channel[count]);
 			channel[count]->setVolume(volume);
+			break;
 		}
 	}
 }
