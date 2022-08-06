@@ -54,22 +54,21 @@ BigWhiteSkel::BigWhiteSkel()
 		{35.0f,31.0f, -2.0f	* 1.5f * WSCALEX			, 1.0f	* -1.5f * WSCALEY},
 		{36.0f,31.0f, -3.0f * 1.5f * WSCALEX			, 1.0f	* -1.5f * WSCALEY},
 		{61.0f,48.0f, -28.0f * 1.5f * WSCALEX			, 18.0f	* -1.5f * WSCALEY},
-		{57.0f,48.0f, -24.0f * 1.5f * WSCALEX			, 18.0f	* -1.5f * WSCALEY},
-		{58.0f,40.0f, -25.0f * 1.5f * WSCALEX			, 10.0f	* -1.5f * WSCALEY},
-		{58.0f,26.0f, -25.0f * 1.5f * WSCALEX			, -4.0f	* -1.5f * WSCALEY},
-		{45.0f,26.0f, -12.0f * 1.5f * WSCALEX			, -4.0f * -1.5f * WSCALEY},
-		{51.0f,30.0f, -18.0f * 1.5f * WSCALEX	 		, 0.0f	* -1.5f * WSCALEY},
-		{54.0f,48.0f, -21.0f * 1.5f * WSCALEX			, 18.0f	* -1.5f * WSCALEY},
+		{57.0f,48.0f, (- 14.0f -24.0f) * 1.5f * WSCALEX			, 18.0f	* -1.5f * WSCALEY},	//
+		{58.0f,40.0f, (- 14.0f -25.0f) * 1.5f * WSCALEX			, 10.0f	* -1.5f * WSCALEY},
+		{58.0f,26.0f, (- 14.0f -25.0f) * 1.5f * WSCALEX			, -4.0f	* -1.5f * WSCALEY},
+		{45.0f,26.0f, (- 14.0f -12.0f) * 1.5f * WSCALEX			, -4.0f * -1.5f * WSCALEY},
+		{51.0f,30.0f, (- 14.0f -18.0f) * 1.5f * WSCALEX	 		, 0.0f	* -1.5f * WSCALEY},
+		{54.0f,48.0f, (- 14.0f -21.0f) * 1.5f * WSCALEX			, 18.0f	* -1.5f * WSCALEY},	//
 		{65.0f,48.0f, -32.0f * 1.5f * WSCALEX			, 18.0f	* -1.5f * WSCALEY},
 		{62.0f,48.0f, -29.0f * 1.5f * WSCALEX			, 18.0f	* -1.5f * WSCALEY},
 		{36.0f,34.0f, -3.0f * 1.5f * WSCALEX			, 4.0f	* -1.5f * WSCALEY},
-		{33.0f,30.0f, 0.0f, 0.0f}
-		
-		
+		{33.0f,30.0f, 0.0f, 0.0f}	
+		// 중간 프레임에 14는 7 x 2 로써, 모션 진행중 해골 몸체 시작점이 바뀌기 때문		
 		};
 		for (int i = 0; i <= 12; ++i) {
 			strImage = IMAGE_FOLDER; strImage += L"Monster/BigWhiteSkel/BigWhiteSkelAttack" + to_wstring((int)(i * 0.1)) + to_wstring(i % 10) + L".png";
-			pClip->AddFrame(_animation->GetTexture(), strImage, 0, 0, temp[i][0], temp[i][1], 0.1f, temp[i][2], temp[i][3]);
+			pClip->AddFrame(_animation->GetTexture(), strImage, 0, 0, temp[i][0], temp[i][1], 0.075f, temp[i][2], temp[i][3]);
 	//		pClip->AddFrame(_animation->GetTexture(), strImage, 0, 0, 0.1f);
 		}
 		_animation->AddClip(pClip);
