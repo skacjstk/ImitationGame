@@ -38,7 +38,7 @@ void Floor_1::ChangeScene()
 {
 	// 절차적 지형 생성 취소, 고정 크기 Room 데이터 읽어오기로 변경
 	ApplyStartRoom();	// 0 0에 start room
-	ApplyOtherRoom();	// 10 20 21 31 41 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
+	ApplyOtherRoom();	// 10 20 21 31 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
 
 	EnterFirstRoom();
 	Audio->Play("Floor_1BGM", 1.0f);
@@ -146,7 +146,7 @@ void Floor_1::ApplyEndRoom()
 
 void Floor_1::ApplyOtherRoom()
 {
-//	int xy[5] = { 10, 20, 21, 31, 41 };
+//	int xy[4] = { 10, 20, 21, 31 };
 	int xy[1] = { 10 };		// 테스트코드: 맵 미완성일때 하나씩
 	int x, y;
 	for (int i = 0; i < _countof(xy); ++i) {
