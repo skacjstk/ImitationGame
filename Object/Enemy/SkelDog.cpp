@@ -115,9 +115,8 @@ void SkelDog::Reset()
 	_animation->SetScale(GetScale());
 	pCollider_->SetScale(_animation->GetTextureRealSize());
 	chaseTarget_ = (GameActor*)OBJECTMANAGER->FindObject("player");
-	this->SetPosition(chaseTarget_->GetPosition());
-	actorData_.HP = 10;
-	actorData_.maxHP = 10;
+	actorData_.HP = 11;
+	actorData_.maxHP = 11;
 	actorData_.ImmuneTime = 0;
 	actorData_.living = ActorState::LIVE;
 	SetActive(true);

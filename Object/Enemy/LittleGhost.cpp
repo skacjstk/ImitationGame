@@ -89,7 +89,6 @@ void LittleGhost::Reset()
 	SetScale(3.0f * WSCALEX, 3.0f * WSCALEY);
 	_animation->SetScale(GetScale());
 	chaseTarget_ = (GameActor*)OBJECTMANAGER->FindObject("player");
-	this->SetPosition(chaseTarget_->GetPosition());
 	currentState_->Enter(*this);
 	actorData_.HP = 8;
 	actorData_.maxHP = 8;
