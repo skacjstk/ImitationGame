@@ -101,7 +101,6 @@ void ShortSword::Fire()
 		return;
 	// 공격 발사 성공시 아래 재생
 	currentAttackDelay_ = attackDelay_;
-
 	// Event: 공격 성공 이벤트
 	attackCycle_ = -attackCycle_;
 	// 무기의 공격 	// 손 위치 보정 : NExt: 0708 학원에서 용사 손 추가할예정	

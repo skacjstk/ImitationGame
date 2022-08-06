@@ -141,7 +141,11 @@ void GameActor::GravityUpdate()
 void GameActor::Attacked(float damage)
 {
 	float changed = max(damage - actorData_.armor, 1.0f);
+//	printf("GameActor::Attacked===============\n");
+//	printf("변화량: %f\n", changed);
 	actorData_.HP -= (int)changed;
+//	printf("남은 체력량: %d\n", actorData_.HP);
+//	printf("=========================\n\n");
 	Audio->Play("Hit_Monster");
 	// HitEffect 가져와야 함.
 	HPChange();
@@ -155,8 +159,7 @@ void GameActor::HPChange()
 {
 	// 오브젝트마다 만들어줘야 함.
 	//	playerUI->playerLifeUI_->UpdateLifeBar(actorData_.HP, actorData_.maxHP);
-	int hp = (int)actorData_.HP;
-	if (hp <= 0)
+	if (actorData_.HP <= 0)
 		FatalBlow();
 }
 void GameActor::Move(Vector2& position)
