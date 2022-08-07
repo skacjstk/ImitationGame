@@ -62,7 +62,7 @@ void ObjectPool::AddMonsterDieEffect()
 ObjectPool::ObjectPool()
 {
 	// 3개 정도 미리 만들어두기
-	for (int i = 0; i < 3; ++i) {
+	for (int i = 0; i < 10; ++i) {
 		AddMonsterDieEffect();
 		AddSlashEffect();
 	}
