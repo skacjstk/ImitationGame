@@ -8,6 +8,7 @@
 #include "./Command/UnderJumpCommand.h"
 #include "./Command/Player/InventoryToggleCommand.h"
 #include "./Command/Player/SwapHandFocusCommand.h"
+#include "./Command/InteractionCommand.h"
 #include "./Object/Player.h"
 #include "PlayerInputHandler.h"
 
@@ -24,12 +25,13 @@ vector<class Command*> PlayerInputHandler::handleInput()
 	if (KEYBOARD->Press('W')) tempCommand.push_back(buttonW_);
 	if (KEYBOARD->Down('V')) tempCommand.push_back(buttonV_);
 	if (KEYBOARD->Down(VK_OEM_3)) tempCommand.push_back(buttonVK_OEM_3_);
-	if (KEYBOARD->Press(VK_SPACE)) {
+	if (KEYBOARD->Down(VK_SPACE)) {
 		if (KEYBOARD->Press('S'))
 			tempCommand.push_back(buttonS_SPACE);
 		else
 			tempCommand.push_back(buttonW_);
 	}
+	if (KEYBOARD->Down('F')) tempCommand.push_back(buttonF_);
 	if (Mouse->Down(0)) tempCommand.push_back(mouse0_);	// Next: UI 형태에 따라 바뀌어야 할 수 있음.
 	if (Mouse->Down(2)) tempCommand.push_back(mouse2_);	// 2번이 우클릭 맞음.
 	if (tempCommand.size() == 0)
@@ -48,6 +50,7 @@ void PlayerInputHandler::BindActorInput()
 	buttonVK_OEM_3_ = (Command*) new SwapHandFocusCommand();
 	mouse2_ = (Command*)new DashCommand();
 	buttonS_SPACE = (Command*)new UnderJumpCommand();
+	buttonF_ = (Command*)new InteractionCommand();
 	//buttonVK_OEM_3_ = bind(&Player::SwapHandFocus, ); // Player의 인스턴스를 넣어줘야 함.
 
 //	buttonS_;
