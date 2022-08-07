@@ -181,7 +181,7 @@ S04_Extra01::S04_Extra01()
 	m_pPlatformLine->SetColor(Color(0.0f, 0.5f, 0.5f, 1.0f));
 
 	wstring strImage = IMAGE_FOLDER;
-	strImage += L"Button/GameStart.png";
+	strImage += L"LongSword.png";
 	wstring  strShader = SHADER_FOLDER;
 		strShader += L"Texture.hlsl";
 	m_pMoveTexture = new Texture(strImage, strShader);
@@ -351,6 +351,7 @@ void S04_Extra01::ChangeScene()
 	TRNMANAGER->SetSceneMap("test");
 	LoadEditorOption("./Option.txt", true);	// 이 시점에서 Floor, coords도 같이 초기화됨.
 	TRNMANAGER->SetSceneObj(Floor, coords[0], coords[1]);
+	m_pMoveTexture->SetScale(OPT.scaleXY[0], OPT.scaleXY[1]);
 	SetActive(true);
 }
 
@@ -418,7 +419,7 @@ void S04_Extra01::ShowGUI()
 				mapName = objName;
 				objName += coord + "ObjectDesc.txt";
 				mapName += coord + "TileMap.txt";
-				TRNMANAGER->SaveFile("./test.txt", objName);	// 0728 기능추가: object도 같이 저장되게
+				TRNMANAGER->SaveFile("./test.txt", mapName, objName);	// 0728 기능추가: object도 같이 저장되게
 				
 				SaveEditorOption("./Option.txt");	// 중복 저장되지 않게 주의!
 			}
