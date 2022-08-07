@@ -108,12 +108,24 @@ void Terrain::AddTile(int X, int Y, int nOrder, int nType, int nObjectType, wstr
 /// <param name="offsetSize"></param>
 /// <param name="rotation">2D 기준이라 Z 값만 적용된다.</param>
 /// <param name="IsAxisX">m_pMoveTexture가 X축인지 Y축인지 확인할 값</param>
-void Terrain::AddTileHalf(int X, int Y, int half, int nOrder, int nType, int nObjectType, wstring strImageFile, Vector2 offset, Vector2 offsetSize, Vector3 rotation, bool IsAxisX)
+void Terrain::AddTileHalf(int X, int Y, int half1, int half2, int nOrder, int nType, int nObjectType, wstring strImageFile, Vector2 offset, Vector2 offsetSize, Vector3 rotation, int IsAxis)
 {
 	Tile* pTile = nullptr;
 	wstring strMap = to_wstring(X) + L"," + to_wstring(Y);
 	Vector2 position = Vector2(0.0f, 0.0f);	
-	position = Vector2(m_Offset.x + (X * m_Size.x) + (half * (int)IsAxisX),	m_Offset.y - (Y * m_Size.y) - ( half * (int)!IsAxisX));
+//	position = Vector2(m_Offset.x + (X * m_Size.x) + (half * (int)IsAxisX),	m_Offset.y - (Y * m_Size.y) - ( half * (int)!IsAxisX));
+	if (IsAxis == 0)	// X만 움직이기
+	{
+		position = Vector2(m_Offset.x + (X * m_Size.x) + half1, m_Offset.y - (Y * m_Size.y));
+	}
+	else if (IsAxis == 1)	// Y만 움직이기
+	{
+		position = Vector2(m_Offset.x + (X * m_Size.x), m_Offset.y - (Y * m_Size.y) - half2);
+	}
+	else if (IsAxis == 2)	// XY 움직이기
+	{
+		position = Vector2(m_Offset.x + (X * m_Size.x) + half1, m_Offset.y - (Y * m_Size.y) - half2);
+	}
 
 	pTile = FindTile(strMap);
 	if (!pTile)

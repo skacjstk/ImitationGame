@@ -11,7 +11,7 @@
 bool IsDrawingLine = false;		// Tab 키: 라인을 그리느냐 마느냐
 bool DrawDivideLine = true;		// F1 키: 구분선을 그리느냐 마느냐
 bool Div2Position = false;	// F2 키: 포지션 값을 반으로 나눠 마치 0.5 영역에 놓게 함.// 위치점을 반칸 당김
-bool IsAxisX = true;	// 기준이 X축인가?  
+int IsAxis = 0;	// 기준이 X축인가?  X, Y, XY 순으로 옮겨감
 float axisX = 0;
 float axisY = 0;
 	typedef struct MapEditorOption
@@ -215,17 +215,21 @@ void S04_Extra01::Update()
 			CAMERA->WCtoVC(pos);                 // Widow coord --> DirectX coord
 
 			if (Div2Position == true) {
-				if (IsAxisX == true) {
+				if (IsAxis == 0) {
 				//	axisX = OPT.PixelXY[0] * (OPT.scaleXY[0] * 0.5f);
-					axisX = OPT.PixelXY[0] * 0.5f;
+					axisX = OPT.PixelXY[0] * 0.5f * OPT.scaleXY[0];
 					m_pMoveTexture->SetPosition(pos.x + axisX, pos.y);
 					axisY = 0.0f;
 				}
-				else {
-					axisY = OPT.PixelXY[1] * 0.5f;
+				else if (IsAxis == 1){
+					axisY = OPT.PixelXY[1] * 0.5f * OPT.scaleXY[1];
 					m_pMoveTexture->SetPosition(pos.x, pos.y - axisY);
 					axisX = 0.0f;
-
+				}
+				else if (IsAxis == 2) {
+					axisX = OPT.PixelXY[0] * 0.5f * OPT.scaleXY[0];
+					axisY = OPT.PixelXY[1] * 0.5f * OPT.scaleXY[1];
+					m_pMoveTexture->SetPosition(pos.x + axisX, pos.y - axisY);
 				}
 			}else
 				m_pMoveTexture->SetPosition(pos);
@@ -258,14 +262,19 @@ void S04_Extra01::Update()
 					wstring strImageFile = m_pMoveTexture->GetImageFile();
 					Vector2 offset = m_pMoveTexture->GetOffset();
 					Vector2 offsetSize = m_pMoveTexture->GetOffsetSize();
-					int half = 0;
-					if (IsAxisX == true) 
-						half = (int)axisX;					
-					else
-						half = (int)axisY;
+					int half1 = 0;
+					int half2 = 0;
+					if (IsAxis == 0) 
+						half1 = (int)(axisX / OPT.scaleXY[0]);
+					else if(IsAxis == 1)
+						half2 = (int)(axisY / OPT.scaleXY[1]);
+					else if (IsAxis == 2) {
+						half1 = (int)(axisX / OPT.scaleXY[0]);
+						half2 = (int)(axisY / OPT.scaleXY[1]);
+					}
 					// 0728 기능 추가: object일 경우 ObjectDesc 로 분리. 0729Next: int 단위의 개별 배치기능 추가하기
-					TRNMANAGER->AddTileHalf(x, y, half, m_nDisplayOrder, m_nTileType, m_nObjectType,
-						strImageFile, offset, offsetSize, m_pMoveTexture->GetRotation(), IsAxisX);
+					TRNMANAGER->AddTileHalf(x, y, half1, half2, m_nDisplayOrder, m_nTileType, m_nObjectType,
+						strImageFile, offset, offsetSize, m_pMoveTexture->GetRotation(), IsAxis);
 
 					m_nSelectMapX = x;
 					m_nSelectMapY = y;
@@ -374,7 +383,7 @@ void S04_Extra01::CheckOptionKeyboard()
 		m_pMoveTexture->SetRotation(0.0f, 0.0f, z + 90.0f);
 	}
 	if (Mouse->Down(3)) {	// 마우스 4버튼(아래)
-		IsAxisX = !IsAxisX;
+		++IsAxis %= 3;
 	}
 }
 
@@ -774,7 +783,7 @@ void S04_Extra01::SettingMenu()
 				m_pMoveTexture->SetPosition(Mouse->GetPosition());
 				m_pMoveTexture->SetScale(OPT.scaleXY[0], OPT.scaleXY[1]);
 				m_pMoveTexture->SetRotation(0.0f, 0.0f, 0.0f);		// 0729 회전 초기화
-				IsAxisX = true;
+				IsAxis = 0;
 			}
 		}
 	}

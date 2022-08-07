@@ -38,7 +38,7 @@ void Room::Update()
 	Matrix V, P;
 	V = CAMERA->GetViewMatrix();
 	P = CAMERA->GetProjectionMatrix();
-
+	
 	terrainImage_->Update(V, P);
 	GroundLine_->Update(V, P);
 	CeilingLine_->Update(V, P);
@@ -200,8 +200,6 @@ GameObject* Room::FindObject(wstring objName)
 
 void Room::Reset()
 {
-//	if (isCleared_ == true)		// 클리어 한적 없을때만 오브젝트를 Reset 함.
-//		return;
 	for (const auto &iter : roomObjects) {
 			iter.second->Reset();
 	}
