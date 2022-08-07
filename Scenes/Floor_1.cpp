@@ -23,9 +23,6 @@ Floor_1::~Floor_1()
 
 void Floor_1::Update()
 {
-	Matrix abV, P;
-	abV = CAMERA->GetAbsoluteViewMatrix();
-	P = CAMERA->GetProjectionMatrix();
 	roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->Update();
 }
 
@@ -38,12 +35,15 @@ void Floor_1::ChangeScene()
 {
 	// 절차적 지형 생성 취소, 고정 크기 Room 데이터 읽어오기로 변경
 	ApplyStartRoom();	// 0 0에 start room
-	ApplyOtherRoom();	// 10 20 21 31 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
+//	ApplyOtherRoom();	// 10 20 21 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
 
-	EnterFirstRoom();
+	thread t(bind(&Floor_1::ApplyOtherRoom, this));
+	t.detach();
+
+	EnterFirstRoom();	
 	Audio->Play("Floor_1BGM", 1.0f);
 	return;	// 일단 시작룸만
-	ApplyEndRoom();	// 5 1에 EndRoom
+	ApplyEndRoom();	// 31에 끝맵
 
 //	ConnectRoom(currentActiveRoom_[0], currentActiveRoom_[1]);	// 절차적 지형생성의 잔재: 어차피 지형이 랜덤이 아닌데 이어봤자 뭐해
 
@@ -139,15 +139,14 @@ void Floor_1::ApplyStartRoom()
 
 void Floor_1::ApplyEndRoom()
 {
-	roomData_[5][1] = new Room(Room::RoomType::END,5,1,1);
+	roomData_[3][1] = new Room(Room::RoomType::END,3,1,1);
 	// txt 파일 읽어 데이터 넣어주기
-	ReadRoomData(5, 1);
+	ReadRoomData(3, 1);
 }
 
 void Floor_1::ApplyOtherRoom()
 {
-//	int xy[4] = { 10, 20, 21, 31 };
-	int xy[1] = { 10 };		// 테스트코드: 맵 미완성일때 하나씩
+	int xy[3] = { 10, 20, 21 };		// 테스트코드: 맵 미완성일때 하나씩
 	int x, y;
 	for (int i = 0; i < _countof(xy); ++i) {
 		x = xy[i] / 10;
