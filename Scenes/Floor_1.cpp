@@ -35,19 +35,16 @@ void Floor_1::ChangeScene()
 {
 	// 절차적 지형 생성 취소, 고정 크기 Room 데이터 읽어오기로 변경
 	ApplyStartRoom();	// 0 0에 start room
+	ApplyEndRoom();
+	EnterRoom();	// 시작룸 만들자마다 들어가고
+	Audio->Play("Floor_1BGM", 1.0f);
 
+	// 쓰레드로 OtherRoom 과 EndRoom 만들기
 	// 10 20 21 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
 	thread t(bind(&Floor_1::ApplyOtherRoom, this));
 	t.detach();
 
-	EnterRoom();
-	Audio->Play("Floor_1BGM", 1.0f);
-	return;	// 일단 시작룸만
-	ApplyEndRoom();	// 31에 끝맵
-
 //	ConnectRoom(currentActiveRoom_[0], currentActiveRoom_[1]);	// 절차적 지형생성의 잔재: 어차피 지형이 랜덤이 아닌데 이어봤자 뭐해
-
-	EnterRoom();
 	return;
 	// 1. 방 생성
 	// 2. 시작 위치와 끝 위치 연결
@@ -72,6 +69,7 @@ void Floor_1::ChangeScene()
 
 void Floor_1::ExitScene()
 {
+	Audio->Stop("Floor_1BGM");
 }
 
 void Floor_1::MoveRoom(int x, int y)
@@ -146,7 +144,7 @@ void Floor_1::ApplyEndRoom()
 
 void Floor_1::ApplyOtherRoom()
 {
-	int xy[3] = { 10, 20, 21 };		// 테스트코드: 맵 미완성일때 하나씩
+	int xy[3] = { 10, 20, 21 };
 	int x, y;
 	for (int i = 0; i < _countof(xy); ++i) {
 		x = xy[i] / 10;

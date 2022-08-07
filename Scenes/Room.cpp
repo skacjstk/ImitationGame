@@ -251,7 +251,7 @@ void Room::PushDirection(Stele::StelePath ePath, Vector2 position)
 	switch (ePath)
 	{
 	case Stele::StelePath::BOTTOM:
-		comPosition = Vector2(0.0f, TRNMANAGER->GetTileSize().y * TRNMANAGER->TerrainMagnification_.y * 3.0f);	// 바텀은 좀 특별해서 3곱
+		comPosition = Vector2(0.0f, TRNMANAGER->GetTileSize().y * TRNMANAGER->TerrainMagnification_.y * 2.0f);	// 바텀은 좀 특별해서 3곱
 		index = 0;
 		break;
 	case Stele::StelePath::RIGHT:
@@ -270,7 +270,7 @@ void Room::PushDirection(Stele::StelePath ePath, Vector2 position)
 	if (index != -1) {
 		canDirection[index] = true;
 		comPosition += position;
-		posOfDirection[index] = comPosition;	// 틀린건 어째서인지 Stele의 좌표. 아니, 10의 좌표가 다 이상함.
+		posOfDirection[index] = comPosition;
 	//	printf("결국 생성된 위치: %f %f\n", comPosition.x, comPosition.y);
 	}
 }
