@@ -1,6 +1,7 @@
 #include "ImitationGame/framework.h"
 #include "Object/Player.h"
 #include "Object/NPC.h"
+#include "Physics/Collider.h"
 #include "Door.h"
 
 Door::Door()
@@ -43,6 +44,7 @@ Door::Door()
 	// NPC 코드 설정
 	codeNPC_ = 101;	// DB에서 찾을때만 써.
 	actorData_.type = ActorType::Other;
+	pCollider_ = new Collider();
 }
 
 Door::~Door()
@@ -59,6 +61,7 @@ void Door::Update(Matrix V, Matrix P)
 	_animation->SetScale(GetScale());
 	_animation->SetPosition(GetPosition());
 	_animation->Update(V, P);
+	pCollider_->Update(V, P);
 }
 
 void Door::Render()
@@ -66,6 +69,7 @@ void Door::Render()
 	if (IsActive() == false)
 		return;
 	_animation->Render();
+	pCollider_->Render();
 }
 
 void Door::Reset()
@@ -76,36 +80,47 @@ void Door::Reset()
 	this->SetScale(6.0f * WSCALEX, 6.0f * WSCALEY);
 	_animation->SetScale(this->GetScale());
 
-	SwitchState = std::bind(&Door::ClosingSwitch, this);
-	Enter = std::bind(&Door::ClosingEnter, this);
+	pCollider_->SetScale(_animation->GetTextureRealSize());
+	pCollider_->SetPosition(GetPosition());
 
+
+	// Reset이 맵 진입 시점일 때 라고 가정.
+	// 이 시점에서, 만약 자기가 위치한 Room 의 값이 END 일 경우 OPEN으로 변경
+	// 아닐 경우 Closing으로 변경
+	if (SCENEMANAGER->GetCurrentScene()->GetCurrentRoom()->roomType_ == Room::RoomType::END) {
+		SwitchState = std::bind(&Door::OpenSwitch, this);
+		Enter = std::bind(&Door::OpenSwitch, this);
+	}
+	else {
+		SwitchState = std::bind(&Door::ClosingSwitch, this);
+		Enter = std::bind(&Door::ClosingEnter, this);
+	}
+//	SwitchState = std::bind(&Door::ClosingSwitch, this);
+//	Enter = std::bind(&Door::ClosingEnter, this);
 	Enter();
+
 }
 
 void Door::Communicate()
 {
-	eventHandler->Push(L"RiseNextFloor");
-	//	SCENEMANAGER->ChangeScene("Floor_" + to_wstring(currentFloor_ + 1));
+	printf("Door CloseSwitch에 테스트코드 있음\n");
+	// 충돌 검사를 또 하는 이유: 한번 닿아놓고 멀리 간다음에 F 누르면 안되니까.
+	if(CheckPlayer())
+		eventHandler->Push(L"RiseNextFloor");
+
 }
 
 bool Door::CheckPlayer()
 {
-	Vector2 tempPosition = (*ppPlayer).GetPosition();
-	float x = this->_position.x - tempPosition.x;
-	float y = this->_position.y - tempPosition.y;
-
-	if (fabsf(x) < 10.0f * WSCALEX && fabsf(y) < 30.0f * WSCALEY)
-	{
-		return true;
-	}
-	return false;
+	return Collider::IntersectAABB(pCollider_, ppPlayer->GetCollider());
 }
 // 문이 열린 상태에서는 플레이어 위치검사 및
 void Door::OpenSwitch()
 {
 	// 커뮤니케이션 버튼 활성화 누르면 Communicate() 진입
 	if (CheckPlayer() == true) {
-		printf("닿았음\n");
+		// 자신을 상호작용 대상으로 등록
+		ppPlayer->SetInteractionTarget(this);
 	}
 }
 
@@ -134,6 +149,10 @@ void Door::ClosingEnter()
 // 얘는 뭐 닫히면 할게없어. 그냥 Texture 야
 void Door::CloseSwitch()
 {
+	// 테스트코드: Open 으로 바뀜: 다음 층 바로 가려고 Next 삭제
+	SwitchState = std::bind(&Door::OpenSwitch, this);
+	Enter = std::bind(&Door::OpenEnter, this);
+	Enter();
 }
 
 void Door::CloseEnter()
