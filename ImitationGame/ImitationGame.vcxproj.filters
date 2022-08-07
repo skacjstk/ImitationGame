@@ -510,6 +510,12 @@
     <ClInclude Include="..\Command\UnderJumpCommand.h">
       <Filter>소스 파일\Command</Filter>
     </ClInclude>
+    <ClInclude Include="..\Command\InteractionCommand.h">
+      <Filter>헤더 파일\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Scenes\Floor_2.h">
+      <Filter>헤더 파일\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -829,6 +835,12 @@
     </ClCompile>
     <ClCompile Include="..\Command\UnderJumpCommand.cpp">
       <Filter>소스 파일\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Command\InteractionCommand.cpp">
+      <Filter>소스 파일\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Scenes\Floor_2.cpp">
+      <Filter>소스 파일\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
