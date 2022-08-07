@@ -12,6 +12,8 @@ SceneManager::SceneManager()
 {
 	Audio->AddSoundAll();
 	m_cvScenes.push_back(new Intro());
+	currentScene = m_cvScenes[0];	//빈칸인데 당연히 0번에 들어가있겠지?
+
 	//스레드를 이용하여 여러 씬을 Loading한다.
 	printf("SceneManager 생성자 호출\n");
 	//WndProc --> 콜백함수 처럼 
@@ -33,7 +35,6 @@ void SceneManager::Update()
 	CAMERA->Update();	// 카메라의 위치를 고치는 것 Update(V P) 는 카메라의 Texture 좌표를 업데이트 Next
 	for (UINT i = 0; i < m_cvScenes.size(); ++i) {
 		if (m_cvScenes[i]->IsActive()) {
-			currentScene = m_cvScenes[i];	//현재 재생중신 Scene
 			m_cvScenes[i]->Update();
 		}
 	}
@@ -75,6 +76,7 @@ void SceneManager::ChangeScene(string name)
 		m_cvScenes[i]->SetActive(false);
 		if (name == m_cvScenes[i]->GetName()) {
 			m_cvScenes[i]->SetActive(true);
+			currentScene = m_cvScenes[i];	//현재 재생중신 Scene
 			m_cvScenes[i]->ChangeScene();
 		}
 	}
