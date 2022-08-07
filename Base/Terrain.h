@@ -48,7 +48,7 @@ public:  // Setter
 	void    SetTileSize(float x, float y) { m_Size = Vector2(x, y); }
 	void    SetMapXY(int x, int y)        { m_MapXY = POINT{ x,y }; }
 	void    EraseTile(int x, int y);
-	void    SaveFile(string strFileName, string objFileName);
+	void    SaveFile(string strFileName, string tileMapName, string objFileName);
 	void    SetRoomObj(Room* room);
 //	void    LoadObjFile(string strFileName);	// 0728 추가, 바리에이션 있음
 	void    LoadObjFile(string strFileName);	// 0728 추가, 아래쪽 OpenFile 기반

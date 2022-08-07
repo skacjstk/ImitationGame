@@ -167,11 +167,13 @@ void Terrain::EraseTile(int x, int y)
 /////////////////////////////////////////////////////////
 // 파일저장
 /////////////////////////////////////////////////////////
-void Terrain::SaveFile(string strFileName, string objFileName)
+void Terrain::SaveFile(string strFileName, string tileMapName, string objFileName)
 {
 	FILE *op = NULL;
+	FILE* op2 = NULL;
 	FILE* opObj = NULL;
 	op = fopen(strFileName.c_str(), "w");
+	op2 = fopen(strFileName.c_str(), "w");
 	opObj = fopen(objFileName.c_str(), "w");
 	if (op == NULL || opObj == NULL) 
 		return;
@@ -253,14 +255,19 @@ void Terrain::SaveFile(string strFileName, string objFileName)
 	
 	}
 
+	wstring s1, s2;
+	s1.assign(strFileName.begin(), strFileName.end());
+	s2.assign(tileMapName.begin(), tileMapName.end());
 
+	CopyFile(s1.c_str(), s2.c_str(), false);	// 복사파일 덮어쓰기
 
 	fclose(op);
 	fclose(opObj);
 	string t = "NotePad.exe " + objFileName;
+	string t2 = "NotePad.exe " + tileMapName;
 	const char* ptr = t.c_str();
 	system(ptr);
-	system("NotePad.exe ./test.txt");
+	system(t2.c_str());
 
 	// 바이너리 봉인
 	return;
