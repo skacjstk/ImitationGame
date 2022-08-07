@@ -1,0 +1,11 @@
+#X		Y		POSITION		IMAGE		DISPLAYORDER	OFFSET	OFFSETSIZE	SCALEX	SCALEY	Z_ANGLE	OBJECTYPE
+1   2   -192.00 144.00 |../Resources/Image/NPC/Stele/SteleT.png|  2 0.00 0.00 66.00 20.00 1.00 1.00 270.00 102
+15  23  40.00 -184.00 |../Resources/Image/NPC/Stele/SteleT.png|  2 0.00 0.00 66.00 20.00 1.00 1.00 0.00 102
+16  12  48.00 -8.00 |../Resources/Image/Monster/LittleGhost/LittleGhostT.png|  2 0.00 0.00 20.00 20.00 1.00 1.00 0.00 3
+16  6   48.00 88.00 |../Resources/Image/Monster/LittleGhost/LittleGhostT.png|  2 0.00 0.00 20.00 20.00 1.00 1.00 0.00 3
+21  19  128.00 -120.00 |../Resources/Image/Monster/BigWhiteSkel/BigWhiteSkelT.png|  2 0.00 0.00 33.00 30.00 1.00 1.00 0.00 2
+5   4   -128.00 120.00 |../Resources/Image/Monster/SkelDog/SkelDogT.png|  2 0.00 0.00 20.00 18.00 1.00 1.00 0.00 1
+7   4   -96.00 120.00 |../Resources/Image/Monster/SkelDog/SkelDogT.png|  2 0.00 0.00 20.00 18.00 1.00 1.00 0.00 1
+9   16  -64.00 -72.00 |../Resources/Image/Monster/SkelDog/SkelDogT.png|  2 0.00 0.00 20.00 18.00 1.00 1.00 0.00 1
+9   3   -64.00 136.00 |../Resources/Image/Monster/BigWhiteSkel/BigWhiteSkelT.png|  2 0.00 0.00 33.00 30.00 1.00 1.00 0.00 2
+9   9   -64.00 40.00 |../Resources/Image/Monster/LittleGhost/LittleGhostT.png|  2 0.00 0.00 20.00 20.00 1.00 1.00 0.00 3
