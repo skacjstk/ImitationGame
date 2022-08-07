@@ -55,6 +55,5 @@ private:
 	class Line* GetPlatformLines() override { return roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->GetPlatformLines(); }
 private:	// 던전 룸 관련
 	void EnterRoom();	// 어차피 currentActive 좌표가 바뀌니, 그걸 가져와 Reset 하게 하며, CameraLock 을 바꿈
-	void EnterFirstRoom();	// 첫번째 위치는 강제 Reset 빼고 바뀐게 없다.
 
 };

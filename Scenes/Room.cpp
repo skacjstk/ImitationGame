@@ -203,6 +203,8 @@ void Room::Reset()
 	for (const auto &iter : roomObjects) {
 			iter.second->Reset();
 	}
+	if (currentMonsterNumber_ <= 0)
+		RoomClear();	// 리셋 시점에, 몬스터가 하나도 없다면 방을 clear로 변경 ( reset 시점은 들어올 때 )
 }
 
 void Room::DecreaseCurrentMonsterNumber()
@@ -239,9 +241,6 @@ void Room::GetRoomObjectData()
 		else
 			break;	// 탐색중단: 네이밍 순서 생각해봐.
 	}
-	// 최초 검사: 몹이 없으면 룸 clear 판정
-	if (currentMonsterNumber_ == 0)
-		RoomClear();
 	//2-5. 크기에 대한 초기화는 각 옵젝에 기본적으로 있음( 하드코딩 했었잖아 )
 }
 

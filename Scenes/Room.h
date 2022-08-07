@@ -67,6 +67,7 @@ public:	//public instance method
 	void GetRoomObjectData();
 	Vector2 GetPosOfDirection(int index) { return posOfDirection[index]; }
 	bool IsCleared() { return isCleared_; }
+	int NumofMoster() { return currentMonsterNumber_; }
 private:
 	void PushDirection(Stele::StelePath ePath, Vector2 position);	// 헤더 안 헤더 추가함.
 	void RoomClear();

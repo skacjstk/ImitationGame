@@ -35,12 +35,12 @@ void Floor_1::ChangeScene()
 {
 	// 절차적 지형 생성 취소, 고정 크기 Room 데이터 읽어오기로 변경
 	ApplyStartRoom();	// 0 0에 start room
-//	ApplyOtherRoom();	// 10 20 21 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
 
+	// 10 20 21 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
 	thread t(bind(&Floor_1::ApplyOtherRoom, this));
 	t.detach();
 
-	EnterFirstRoom();	
+	EnterRoom();
 	Audio->Play("Floor_1BGM", 1.0f);
 	return;	// 일단 시작룸만
 	ApplyEndRoom();	// 31에 끝맵
@@ -237,6 +237,7 @@ void Floor_1::GenerateRoomData()
 
 void Floor_1::EnterRoom()
 {
+	// 최초 검사: 몹이 없으면 룸 clear 판정
 	if(roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->IsCleared() == false)
 		roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->Reset();
 	
@@ -259,30 +260,6 @@ void Floor_1::EnterRoom()
 	CAMERA->SetCornerLeft(leftDown);
 	CAMERA->SetCornerRight(rightTop);
 }
-
-void Floor_1::EnterFirstRoom()
-{
-	roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->Reset();
-	Texture* backImage = roomData_[currentActiveRoom_[0]][currentActiveRoom_[1]]->terrainImage_;
-
-	// 메인 맵 이미지 위치가 잡히고 나서 좌우 정해주기
-	Vector2 leftDown = backImage->GetPosition();
-	Vector2 rightTop = leftDown;
-
-	leftDown -= backImage->GetTextureRealSize() * 0.5f;
-	rightTop += backImage->GetTextureRealSize() * 0.5f;
-	// 이후 X값만 윈도우 너비만큼 보정해주면 된다.
-	leftDown.x += MAIN->GetWidth() * 0.5f;
-	leftDown.y += MAIN->GetHeight() * 0.5f;
-
-	rightTop.x -= MAIN->GetWidth() * 0.5f;
-	rightTop.y -= MAIN->GetHeight() * 0.5f;
-
-	// y값도 보정해주긴 해야 한다. // 그건 인던에서 하자.
-	CAMERA->SetCornerLeft(leftDown);
-	CAMERA->SetCornerRight(rightTop);
-}
-
 
 ////////폐기된 절차적 지형생성
 /*
