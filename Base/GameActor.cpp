@@ -9,10 +9,11 @@ void GameActor::EffectUpdate(Matrix V, Matrix P)
 	// 죽어가는 동안 이펙트 출력
 	if (actorData_.living == GameActor::ActorState::DYING) {
 		// 이펙트 가져오는건 Dying()을 호출할때 함.
-		if (dieEffect_ != nullptr)
+		if (dieEffect_ != nullptr){
 			(*dieEffect_)->Update(V, P);
-		SetActive(false);	// 이렇게 해야 이펙트만 갱신됨.
-		if ((*dieEffect_)->IsPlay() == false) {
+			SetActive(false);	// 이렇게 해야 이펙트만 갱신됨.
+		}
+		if (dieEffect_ != nullptr && (*dieEffect_)->IsPlay() == false) {
 			dieEffect_ = nullptr;	//이걸 null로 바꿔주어야 함. Dying할때 새로 가져오고
 			Die();
 		}
