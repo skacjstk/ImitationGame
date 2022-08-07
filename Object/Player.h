@@ -1,4 +1,5 @@
 #pragma once
+#include "./Object/NPC.h"
 class Player : public GameActor
 {
 public:		// 공개 인스턴스 변수
@@ -52,6 +53,7 @@ private:	// 비공개 인스턴스 변수
 	float dashLifeCycle = 0.5f;
 	Texture* dashEffect_[3] = { nullptr, };
 	bool isDash = false;
+	NPC* interactionTarget_ = nullptr;
 public:
 	Player(int AnimationID = 0);
 	~Player();
@@ -79,9 +81,11 @@ public:
 	void SetMoveAble(bool moveable) { _moveAble = moveable; }
 	void SetHandedWeapon(Weapon* item, int index);
 	void SetGroundCheck(bool value) { isGround_ = value; }
+	void SetInteractionTarget(NPC* target) { interactionTarget_ = target; }
 	// Getter
 	int GetHP() { return actorData_.HP; }
 	bool IsPlay() { return _animation->IsPlay(); }	
+	NPC* GetInteractionTarget() {	return interactionTarget_;	}
 //	auto GetHandedWeapon(int index);
 	Weapon* GetHandedWeapon(int index);
 	int GetFocusHand() { return currentFocusHand_; }
