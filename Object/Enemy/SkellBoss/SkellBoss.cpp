@@ -121,13 +121,10 @@ void SkellBoss::Update(Matrix V, Matrix P)
 	// IDLE, RUN, ATTACK(RUN 0 번 재탕으로 뛰어오르기)
 	SwitchState();
 	Action(V, P);
-
-	// 따로넣자
 }
 
 void SkellBoss::Render()
 {	
-	EffectRender();
 	if (IsActive() == false)
 		return;
 	back_->Render();
@@ -135,7 +132,6 @@ void SkellBoss::Render()
 	hand_[0]->Render();
 	hand_[1]->Render();
 	pCollider_->Render();
-
 
 	for (int i = 0; i < numOfActiveBullets_; ++i) {
 		bullets_[i]->Render();
@@ -146,7 +142,7 @@ void SkellBoss::Reset()
 {
 	SetScale(6.0f * WSCALEX, 6.0f * WSCALEY);
 	_animation->SetScale(GetScale());
-	pCollider_->SetScale(_animation->GetTextureRealSize());
+	pCollider_->SetScale(_animation->GetTextureRealSize());	// Wait, Hide 때도 한번씩 변화함
 	hand_[0]->SetScale(GetScale());
 	hand_[1]->SetScale(GetScale());
 
@@ -176,6 +172,7 @@ void SkellBoss::Reset()
 
 	pCollider_->SetPosition(GetPosition());
 	pCollider_->SetRotation(GetRotation());
+	Enter();	// HIDE로 진입함
 	SetActive(true);
 }
 
@@ -220,6 +217,7 @@ void SkellBoss::EnterHIDE()
 
 	pCollider_->SetPosition(GetPosition());
 	pCollider_->SetRotation(GetRotation());
+	pCollider_->SetScale(0.0f,0.0f);
 
 	Vector2 handPos = GetPosition();
 	hand_[0]->SetPosition(handPos.x - handGap.x, handPos.y - handGap.y);	// 왼손
@@ -231,7 +229,7 @@ void SkellBoss::EnterHIDE()
 }
 void SkellBoss::ActionHIDE(Matrix V, Matrix P)
 {
-	// Update를 하지 않고 Render 하면 버그가 날까?
+	pCollider_->Update(V, P);	// 숨어있을땐 충돌 불가능하게
 }
 //END HIDE
 /// <summary>
@@ -258,6 +256,7 @@ void SkellBoss::SwitchStateAPPEAR()
 void SkellBoss::EnterAPPEAR()
 {
 	_animation->SetPlay(0);	// IDLE
+	pCollider_->SetScale(_animation->GetTextureRealSize());
 	hand_[0]->SetPlay(0);
 	hand_[1]->SetPlay(0);
 	// Next: 양손 위치 나와야 함.
