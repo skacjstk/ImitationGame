@@ -25,7 +25,7 @@ static MapEditorOption OPT;
 
 static int coords[2] = { 0,0 };
 static int Floor = 1;
-static std::array<int, 2> objCombo;
+static std::array<int, 3> objCombo;
 
 void S04_Extra01::Replace(wstring & str, wstring comp, wstring rep)
 {
@@ -808,7 +808,29 @@ void S04_Extra01::SettingMenu()
 				m_pMoveTexture->SetRotation(0.0f, 0.0f, 0.0f);
 			}
 		}
-	}
+	} //end
+
+	// 오브젝트 Boss 배치 모드
+	{
+		const char* items[] = { "None","Belial"};	// 사실상 SkellBoss
+		// EnemyCombo를 SelectTexture() 내부에서 참조하기 위해 전역 static 화 
+		int  oldcombo = objCombo[2];
+		ImGui::Combo("Boss", &objCombo[2], items, ARRAYSIZE(items));
+
+		if (oldcombo != objCombo[2]) {
+			m_nMousePick = -1;
+			m_nObjectType = objCombo[2];
+			m_nObjectType += 1000;	// 얘는 객체코드가 1001부터임. 그래서 1000을 더해줘야 함.
+			// moveTexture 교체 및 배율적용
+			if (objCombo[2] != 0) {
+				SetOtherComboZero(2, objCombo[2]);
+				m_pMoveTexture = objectDB.FindActorTexture(m_nObjectType);
+				m_pMoveTexture->SetPosition(Mouse->GetPosition());
+				m_pMoveTexture->SetScale(OPT.scaleXY[0], OPT.scaleXY[1]);
+				m_pMoveTexture->SetRotation(0.0f, 0.0f, 0.0f);
+			}
+		}
+	} //end
 }
 
 void S04_Extra01::SelectTexture()
