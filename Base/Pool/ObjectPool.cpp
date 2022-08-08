@@ -23,6 +23,17 @@ Animation** ObjectPool::GetMonsterDieEffect()
 	return &monsterDieEffectPool_[monsterDieEffectPool_.size() - 1];
 }
 
+Animation** ObjectPool::GetBossBulletEffect()
+{
+	for (UINT i = 0; i < bossBulletDisableEffectPool_.size(); ++i) {
+		if (bossBulletDisableEffectPool_[i]->IsPlay() == false)
+			return &bossBulletDisableEffectPool_[i];
+	}
+	// 여기까지 온거면 리턴 못받은거임. 그러니 하나 더 만들어서 끝자락에 push_back 된걸 보내줌
+	AddBossBulletEffect();
+	return &bossBulletDisableEffectPool_[bossBulletDisableEffectPool_.size() - 1];
+}
+
 void ObjectPool::AddSlashEffect()
 {
 	wstring strShader = L"TextureColor.hlsl";
@@ -59,13 +70,34 @@ void ObjectPool::AddMonsterDieEffect()
 	monsterDieEffectPool_.push_back(dieEffect_);
 }
 
+void ObjectPool::AddBossBulletEffect()
+{
+	wstring strShader = L"TextureColor.hlsl";
+	// SlashEffect 대입
+	wstring strImage = L"FX/BossBulletFX/BossBulletFX000.png";
+	Animation* Effect_ = new Animation(IMAGE_FOLDER + strImage, SHADER_FOLDER + strShader);
+	{
+		AnimationClip* pClip = new AnimationClip(AnimationClip::eState::End);
+		for (int i = 1; i <= 7; ++i) {
+			strImage = IMAGE_FOLDER; strImage += L"FX/BossBulletFX/BossBulletFX00" + to_wstring(i) + L".png";
+			pClip->AddFrame(Effect_->GetTexture(), strImage, 0, 0, 0.06f);
+		}
+		Effect_->AddClip(pClip);
+		pClip->SetStop();
+	}
+	bossBulletDisableEffectPool_.push_back(Effect_);
+}
+
 ObjectPool::ObjectPool()
 {
-	// 3개 정도 미리 만들어두기
+	// n개 정도 미리 만들어두기
 	for (int i = 0; i < 10; ++i) {
 		AddMonsterDieEffect();
 		AddSlashEffect();
 	}
+	AddBossBulletEffect();
+	AddBossBulletEffect();
+	AddBossBulletEffect();
 }
 
 ObjectPool::~ObjectPool()
@@ -75,5 +107,8 @@ ObjectPool::~ObjectPool()
 	}
 	for (int i = 0; i < monsterDieEffectPool_.size(); ++i) {
 		SAFE_DELETE(monsterDieEffectPool_[i]);
+	}
+	for (int i = 0; i < bossBulletDisableEffectPool_.size(); ++i) {
+		SAFE_DELETE(bossBulletDisableEffectPool_[i]);
 	}
 }
