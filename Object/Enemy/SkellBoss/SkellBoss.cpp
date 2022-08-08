@@ -1,14 +1,15 @@
 #include "ImitationGame/framework.h"
 #include "Physics/Collider.h"
-#include "State/State.h"/*
-#include "State/SkellBossState/SkellBossState.h"
-#include "State/SkellBossState/IdleState.h"
-#include "State/SkellBossState/RunState.h"
-#include "State/SkellBossState/AttackState.h"
-#include "State/SkellBossState/JumpState.h"
-#include "State/SkellBossState/WaitState.h"
-*/
+#include "State/State.h"
+#include "Object/Bullet/BossBullet.h"
 #include "SkellBoss.h"
+
+void SkellBoss::GenerateBullet()
+{
+	for (UINT i = 0; i < _countof(bullets_); ++i) {
+		bullets_[i] = new BossBullet();	// 18 발 쏠꺼임 10도 옮겨가면서
+	}
+}
 
 SkellBoss::SkellBoss()
 {
@@ -87,7 +88,24 @@ SkellBoss::SkellBoss()
 		hand_[0]->AddClip(pClip);
 		hand_[1]->AddClip(pClip2);
 	}
+
+	// 보스 배경
+	strImage = IMAGE_FOLDER; strImage += L"Particle/SkellBossBack0.png";
+	back_ = new Animation(strImage, strShader);
+	{
+		AnimationClip* pClip = new AnimationClip(AnimationClip::eState::Loop);
+
+		for (int i = 0; i <= 9; ++i) {
+			strImage = IMAGE_FOLDER; strImage += L"Particle/SkellBossBack" + to_wstring(i) + L".png";
+			pClip->AddFrame(back_->GetTexture(), strImage, 0, 0, 0.06f);
+
+		}
+		back_->AddClip(pClip);
+	}
 	pCollider_ = new Collider();
+	thread t(std::bind(&SkellBoss::GenerateBullet, this));
+	t.detach();
+	// 쓰레드화 하기  240개라 오래걸림
 }
 
 SkellBoss::~SkellBoss()
@@ -112,10 +130,16 @@ void SkellBoss::Render()
 	EffectRender();
 	if (IsActive() == false)
 		return;
+	back_->Render();
 	_animation->Render();
 	hand_[0]->Render();
 	hand_[1]->Render();
 	pCollider_->Render();
+
+
+	for (int i = 0; i < numOfActiveBullets_; ++i) {
+		bullets_[i]->Render();
+	}
 }
 
 void SkellBoss::Reset()
@@ -143,12 +167,27 @@ void SkellBoss::Reset()
 	handGap = Vector2(600.0f * WSCALEX, 200.0f * WSCALEY);
 	hand_[0]->SetPosition(handPos.x - handGap.x, handPos.y - handGap.y);	// 왼손
 	hand_[1]->SetPosition(handPos.x + handGap.x, handPos.y + handGap.y);	// 오른손
-
 	hand_[1]->SetRotation(0.0f, 180.0f, 0.0f);	// 이미지가 왼손 기준임
+
+	// 입에서 나오는 에너지 설정
+	back_->SetPosition(GetPosition());
+	back_->SetScale(GetScale());
+	back_->ModifyPosition(7.0f * GetScale().x, -22.0f * GetScale().y);
 
 	pCollider_->SetPosition(GetPosition());
 	pCollider_->SetRotation(GetRotation());
 	SetActive(true);
+}
+
+bool SkellBoss::UpdateBulletCycle()
+{
+	++bulletCycle_;
+	if (bulletCycle_ >= (144 / 9))
+	{
+		bulletCycle_ = 0;
+		return true;
+	}
+	return false;
 }
 
 bool SkellBoss::CheckPlayer()
@@ -185,6 +224,10 @@ void SkellBoss::EnterHIDE()
 	Vector2 handPos = GetPosition();
 	hand_[0]->SetPosition(handPos.x - handGap.x, handPos.y - handGap.y);	// 왼손
 	hand_[1]->SetPosition(handPos.x + handGap.x, handPos.y + handGap.y);	// 오른손
+
+	back_->SetPosition(GetPosition());
+	back_->SetScale(GetScale());
+	back_->ModifyPosition(8.0f * GetScale().x, -24.0f * GetScale().y);
 }
 void SkellBoss::ActionHIDE(Matrix V, Matrix P)
 {
@@ -243,14 +286,20 @@ void SkellBoss::ActionAPPEAR(Matrix V, Matrix P)
 void SkellBoss::SwitchStateWAIT()
 {
 	waitCycle_ += TIMEMANAGER->Delta();
+
 	if (waitCycle_ >= 2.0f) {
 		// 3개의 공격상태 중 하나로 변경
-		MessageBoxW(MAIN->GetWindowHandler(), L"", L"", MB_OK);
 		waitCycle_ = 0.0f;
+		stateEnum_ = eSkellBossState::BULLET;
+		SwitchState = std::bind(&SkellBoss::SwitchStateBULLET, this);
+		Action = std::bind(&SkellBoss::ActionBULLET, this, std::placeholders::_1, std::placeholders::_2);
+		Enter = std::bind(&SkellBoss::EnterBULLET, this);
+		Enter();
 	}
 }
 void SkellBoss::EnterWAIT()
 {
+	_animation->SetPlay(0);
 	_animation->SetPosition(GetPosition());
 	_animation->SetRotation(GetRotation());
 
@@ -264,8 +313,73 @@ void SkellBoss::EnterWAIT()
 
 void SkellBoss::ActionWAIT(Matrix V, Matrix P)
 {
+
+	if (inactiveIndex < numOfActiveBullets_ && UpdateBulletCycle())
+	{
+		inactiveIndex += 4;
+	}
+	_animation->Update(V, P);
+	back_->Update(V, P);
+	hand_[0]->Update(V, P);
+	hand_[1]->Update(V, P);
+	pCollider_->Update(V, P);
+
+	for (int i = numOfActiveBullets_ - 1; i >= inactiveIndex; --i) {
+		bullets_[i]->Update(V, P);
+	}
+}
+
+void SkellBoss::SwitchStateBULLET()
+{
+	if ((numOfActiveBullets_ / 4) >= (_countof(bullets_) / 4)) {
+		stateEnum_ = eSkellBossState::WAIT;
+		SwitchState = std::bind(&SkellBoss::SwitchStateWAIT, this);
+		Action = std::bind(&SkellBoss::ActionWAIT, this, std::placeholders::_1, std::placeholders::_2);
+		Enter = std::bind(&SkellBoss::EnterWAIT, this);
+		Enter();
+	}
+}
+
+void SkellBoss::EnterBULLET()
+{
+	_animation->SetPlay(1); 		
+	bulletCycle_ = 0;
+	inactiveIndex = 0;
+	bulletRadian_ = 0.0f;
+	skelMousePos_ = back_->GetPosition();	// 총알상태 진입할때 skelMousePos 갱신
+	if (bulletDirection_ > 0.0f)
+		bulletDirection_ = -1.0f;
+	else
+		bulletDirection_ = 1.0f;
+}
+
+void SkellBoss::ActionBULLET(Matrix V, Matrix P)
+{
+	// TIMEMANAGER->GetFrame()
+	// 144프레임 기준 14프레임, 60프레임 기준 6 프레임마다
+	if (UpdateBulletCycle() && (numOfActiveBullets_ / 4) < (_countof(bullets_) / 4)) {
+		// 기능 분리
+		bulletRadian_ += PI * 0.04f * bulletDirection_;
+		bullets_[numOfActiveBullets_]->Reset();
+		bullets_[numOfActiveBullets_++]->Fire(bulletRadian_, skelMousePos_, chaseTarget_);	// reset을 대체하는 기능
+		bullets_[numOfActiveBullets_]->Reset();
+		bullets_[numOfActiveBullets_++]->Fire(bulletRadian_ + (PI * 0.5f), skelMousePos_, chaseTarget_);	// reset을 대체하는 기능
+		bullets_[numOfActiveBullets_]->Reset();
+		bullets_[numOfActiveBullets_++]->Fire(bulletRadian_ + PI, skelMousePos_, chaseTarget_);	// reset을 대체하는 기능
+		bullets_[numOfActiveBullets_]->Reset();
+		bullets_[numOfActiveBullets_++]->Fire(bulletRadian_ + (PI * 1.5f), skelMousePos_, chaseTarget_);	// reset을 대체하는 기능
+
+		Audio->Play("BBullet");
+	}
+
+	// bullet 업데이트 시점 추가 (공용: 그러나 Wait 에서 active수 관리
+	for (int i = 0; i < numOfActiveBullets_; ++i) {
+		bullets_[i]->Update(V, P);
+	}
+
 	_animation->Update(V, P);
 	hand_[0]->Update(V, P);
 	hand_[1]->Update(V, P);
+	back_->Update(V, P);
 	pCollider_->Update(V, P);
 }

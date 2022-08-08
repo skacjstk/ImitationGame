@@ -14,8 +14,9 @@ public:
 		DYING = 6,
 		DEAD = 7
 	};
-	Animation* hand_[2] = { nullptr, };	// IDLE, ATTACk ( LASER ) 0번이 왼손
 	eSkellBossState stateEnum_ = eSkellBossState::HIDE;	// 이놈은 index 대용. static_cast로 currentState_에 주입함.
+	Animation* hand_[2] = { nullptr, };	// IDLE, ATTACK ( LASER ) 0번이 왼손
+	Animation* back_ = nullptr;	// 총알 쏠때 뒷배경
 	std::function<void()> SwitchState;
 	std::function<void()> Enter;
 	std::function<void(Matrix, Matrix)> Action;
@@ -24,8 +25,17 @@ public:
 	float waitCycle_ = 0.0f;
 	Vector2 handGap = Vector2(0.0f,0.0f);
 	bool attacked_ = false;	// 공격할 경우 true로.
-private:
+	int bulletCycle_ = 0;	// 얘는 각도 정확성을 위해 int
+	float bulletRadian_ = 0.0f;
+	int numOfActiveBullets_ = 0;
+	int inactiveIndex = 0;
+	float bulletDirection_ = 1.0f;
+	Vector2 skelMousePos_ = Vector2(0.0f, 0.0f);// 총알상태 진입할때 skelMousePos 갱신
+	class BossBullet* bullets_[100];	// 몰라 72개로 해봐
 
+
+private:
+	void GenerateBullet();
 public: // 생성자 & 소멸자
 	SkellBoss();
 	~SkellBoss();
@@ -33,6 +43,7 @@ public:	// 공개 인스턴스 변수
 	void Update(Matrix V, Matrix P) override;
 	void Render() override;
 	void Reset() override;
+	bool UpdateBulletCycle();	// 총알 여분 업데이트때문에 분리
 
 public:	//Getter
 	bool IsGround() { return isGround_; }
@@ -52,18 +63,19 @@ private:	// 상태객체 대신 상태 std::function<void()>
 	void ActionWAIT(Matrix V, Matrix P);
 
 	void SwitchStateBULLET();
+	void EnterBULLET();
+	void ActionBULLET(Matrix V, Matrix P);
+
 	void SwitchStateSWORD();
 	void SwitchStateLASER();
 	void SwitchStateDYING();
 	void SwitchStateDEAD();
 
-	void ActionBULLET(Matrix V, Matrix P);
 	void ActionSWORD(Matrix V, Matrix P);
 	void ActionLASER(Matrix V, Matrix P);
 	void ActionDYING(Matrix V, Matrix P);
 	void ActionDEAD(Matrix V, Matrix P);
 
-	void EnterBULLET();
 	void EnterSWORD();
 	void EnterLASER();
 	void EnterDYING();
