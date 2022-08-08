@@ -9,6 +9,7 @@ public:
 private:
 	Vector2 movePos = Vector2(0.0f, 0.0f);
 	float moveSpeed = 5.0f;
+	float bulletDamage_ = 3.0f;
 public: // 생성자 & 소멸자
 	BossBullet();
 	~BossBullet();
@@ -17,6 +18,9 @@ public:
 	void  Render() override;
 	void  Reset() override;
 	void  Fire(float radian, Vector2& skelMousePos, GameActor* chaseTarget);
+	void  CheckAttack();
+	virtual void EffectUpdate(Matrix V, Matrix P) override;
+	virtual void EffectRender() override;
 
 	void Dying() override;	// 총알이 죽어가며 FX 호출
 	void Die() override;	// 완전히 죽어 false
