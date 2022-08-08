@@ -172,6 +172,9 @@
     <Filter Include="소스 파일\UI\EnemyUI">
       <UniqueIdentifier>{2c3ebaf0-3644-4ee2-836f-4a5aa1364ed9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Object\Enemy\SkellBoss">
+      <UniqueIdentifier>{2cb61536-c30c-413b-b7ed-8cd4bbe45e76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -516,6 +519,9 @@
     <ClInclude Include="..\Scenes\Floor_2.h">
       <Filter>헤더 파일\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="..\Object\Enemy\SkellBoss\SkellBoss.h">
+      <Filter>소스 파일\Object\Enemy\SkellBoss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -841,6 +847,9 @@
     </ClCompile>
     <ClCompile Include="..\Scenes\Floor_2.cpp">
       <Filter>소스 파일\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Enemy\SkellBoss\SkellBoss.cpp">
+      <Filter>소스 파일\Object\Enemy\SkellBoss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

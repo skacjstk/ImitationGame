@@ -206,6 +206,7 @@
     <ClInclude Include="..\Object\Enemy\BigWhiteSkel.h" />
     <ClInclude Include="..\Object\Enemy\LittleGhost.h" />
     <ClInclude Include="..\Object\Enemy\SkelDog.h" />
+    <ClInclude Include="..\Object\Enemy\SkellBoss\SkellBoss.h" />
     <ClInclude Include="..\Object\Inventory.h" />
     <ClInclude Include="..\Object\Item.h" />
     <ClInclude Include="..\Object\Line.h" />
@@ -319,6 +320,7 @@
     <ClCompile Include="..\Object\Enemy\BigWhiteSkel.cpp" />
     <ClCompile Include="..\Object\Enemy\LittleGhost.cpp" />
     <ClCompile Include="..\Object\Enemy\SkelDog.cpp" />
+    <ClCompile Include="..\Object\Enemy\SkellBoss\SkellBoss.cpp" />
     <ClCompile Include="..\Object\Inventory.cpp" />
     <ClCompile Include="..\Object\Item.cpp" />
     <ClCompile Include="..\Object\Line.cpp" />

@@ -169,6 +169,9 @@ void CAudio::AddSoundAll()
 	strSound = "title";
 	Audio->AddSound("IntroBGM", AUDIO_FOLDER + strSound + fileType, true);
 
+	strSound = "1.JailBoss";
+	Audio->AddSound("JailBoss", AUDIO_FOLDER + strSound + fileType, true);
+
 	strSound = "etc-sound0033_swap";
 	Audio->AddSound("SwapItem", AUDIO_FOLDER + strSound + fileType, false);
 
@@ -198,6 +201,14 @@ void CAudio::AddSoundAll()
 
 	strSound = "stoneDoor";
 	Audio->AddSound("stoneDoor", AUDIO_FOLDER + strSound + fileType, false);
+
+	strSound = "beliallaugh_rev";	// SkellBoss 벨리알 웃음소리
+	Audio->AddSound("Blaugh", AUDIO_FOLDER + strSound + fileType, false);
+
+	strSound = "BelialBullet";	// 단 한알 벨리알 총알
+	Audio->AddSound("BBuller", AUDIO_FOLDER + strSound + fileType, false);
+
+	// 레이저 발사 못찾음.
 
 }
 
