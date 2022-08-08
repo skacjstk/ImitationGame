@@ -202,6 +202,7 @@
     <ClInclude Include="..\InputHandler\InventoryInputHandler.h" />
     <ClInclude Include="..\InputHandler\PlayerInputHandler.h" />
     <ClInclude Include="..\Object\AStar.h" />
+    <ClInclude Include="..\Object\Bullet\BossBullet.h" />
     <ClInclude Include="..\Object\Button.h" />
     <ClInclude Include="..\Object\Enemy\BigWhiteSkel.h" />
     <ClInclude Include="..\Object\Enemy\LittleGhost.h" />
@@ -316,6 +317,7 @@
     <ClCompile Include="..\InputHandler\InventoryInputHandler.cpp" />
     <ClCompile Include="..\InputHandler\PlayerInputHandler.cpp" />
     <ClCompile Include="..\Object\AStar.cpp" />
+    <ClCompile Include="..\Object\Bullet\BossBullet.cpp" />
     <ClCompile Include="..\Object\Button.cpp" />
     <ClCompile Include="..\Object\Enemy\BigWhiteSkel.cpp" />
     <ClCompile Include="..\Object\Enemy\LittleGhost.cpp" />
