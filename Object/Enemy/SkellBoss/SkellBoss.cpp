@@ -346,6 +346,7 @@ void SkellBoss::EnterBULLET()
 	bulletCycle_ = 0;
 	inactiveIndex = 0;
 	bulletRadian_ = 0.0f;
+	numOfActiveBullets_ = 0;
 	skelMousePos_ = back_->GetPosition();	// 총알상태 진입할때 skelMousePos 갱신
 	if (bulletDirection_ > 0.0f)
 		bulletDirection_ = -1.0f;
