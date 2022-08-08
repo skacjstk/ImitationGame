@@ -206,7 +206,7 @@ void CAudio::AddSoundAll()
 	Audio->AddSound("Blaugh", AUDIO_FOLDER + strSound + fileType, false);
 
 	strSound = "BelialBullet";	// 단 한알 벨리알 총알
-	Audio->AddSound("BBuller", AUDIO_FOLDER + strSound + fileType, false);
+	Audio->AddSound("BBullet", AUDIO_FOLDER + strSound + fileType, false);
 
 	// 레이저 발사 못찾음.
 
