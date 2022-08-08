@@ -17,6 +17,7 @@ private:	//private instance variable
 	class Line* m_pPlatformLine = nullptr;
 	class NPC* npc = nullptr;
 	class Player* tempPlayer = nullptr;
+	class SkellBoss* skellBoss_ = nullptr;	 // 테스트코드
 	float cameraMoveX = 0.0f;
 	float cameraMoveY = 0.0f;
 public:	//생 소
