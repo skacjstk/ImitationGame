@@ -208,6 +208,8 @@ void CAudio::AddSoundAll()
 	strSound = "BelialBullet";	// 단 한알 벨리알 총알
 	Audio->AddSound("BBullet", AUDIO_FOLDER + strSound + fileType, false);
 
+	strSound = "SpawnMonster";
+	Audio->AddSound("SpawnMonster", AUDIO_FOLDER + strSound + fileType, false);
 	// 레이저 발사 못찾음.
 
 }
