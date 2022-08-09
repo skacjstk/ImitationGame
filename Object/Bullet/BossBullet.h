@@ -8,7 +8,7 @@ public:
 	int lifeframe_ = 0;
 private:
 	Vector2 movePos = Vector2(0.0f, 0.0f);
-	float moveSpeed = 5.0f;
+	float moveSpeed = 720.0f;
 	float bulletDamage_ = 3.0f;
 public: // 持失切 & 社瑚切
 	BossBullet();
