@@ -13,6 +13,6 @@ float Weapon::DamageDice()
     std::random_device rd;
     std::default_random_engine eng(rd());
     std::uniform_real_distribution<> distr(minDamage_, maxDamage_);
-    std::cout << distr(eng) << "\n";
+ //   std::cout << distr(eng) << "\n";
     return distr(eng);
 }
