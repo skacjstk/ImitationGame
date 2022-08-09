@@ -179,7 +179,7 @@ void SkellBoss::Reset()
 bool SkellBoss::UpdateBulletCycle()
 {
 	++bulletCycle_;
-	if (bulletCycle_ >= (144 / 9))
+	if (bulletCycle_ >= (TIMEMANAGER->GetFrame() / 9))
 	{
 		bulletCycle_ = 0;
 		return true;
