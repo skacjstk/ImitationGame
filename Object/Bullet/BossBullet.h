@@ -2,7 +2,7 @@
 class BossBullet : public GameActor
 {
 public:
-	Animation* _animation = nullptr;
+//	Animation* _animation = nullptr;
 	Animation** bulletFX_ = nullptr;
 	class GameActor* chaseTarget_ = nullptr;
 	int lifeframe_ = 0;
