@@ -528,7 +528,7 @@ void Player::DashAnimationUpdate()
 	}
 
 }
-
+// 가변 프레임 지원 실패
 void Player::Jump()
 {
 	// 점프 수행

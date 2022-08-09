@@ -119,7 +119,7 @@ void GameActor::GroundCheck()
 	}
 	isGround_ = flag;
 }
-// moveAmout 변경중
+// 가변 프레임 지원 실패
 void GameActor::GravityUpdate()
 {
 	if (isGround_ == true)
