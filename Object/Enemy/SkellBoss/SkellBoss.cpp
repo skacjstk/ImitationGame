@@ -2,6 +2,7 @@
 #include "Physics/Collider.h"
 #include "State/State.h"
 #include "Object/Bullet/BossBullet.h"
+#include "Object/Bullet/BossSword.h"
 #include "SkellBoss.h"
 
 void SkellBoss::GenerateBullet()
@@ -9,6 +10,8 @@ void SkellBoss::GenerateBullet()
 	for (UINT i = 0; i < _countof(bullets_); ++i) {
 		bullets_[i] = new BossBullet();	// 18 발 쏠꺼임 10도 옮겨가면서
 	}
+	for (UINT i = 0; i < _countof(swords_); ++i)
+		swords_[i] = new BossSword();
 }
 
 SkellBoss::SkellBoss()
@@ -103,9 +106,11 @@ SkellBoss::SkellBoss()
 		back_->AddClip(pClip);
 	}
 	pCollider_ = new Collider();
+	// 보스소드도 여기서 만듬
 	thread t(std::bind(&SkellBoss::GenerateBullet, this));
 	t.detach();
 	// 쓰레드화 하기  240개라 오래걸림
+	myPointer = this;
 }
 
 SkellBoss::~SkellBoss()
@@ -136,6 +141,9 @@ void SkellBoss::Render()
 	for (int i = 0; i < numOfActiveBullets_; ++i) {
 		bullets_[i]->Render();
 	}
+	for (int i = 0; i < numOfActiveSwords_; ++i) {
+		swords_[i]->Render();
+	}	// 야발점
 }
 
 void SkellBoss::Reset()
@@ -289,10 +297,28 @@ void SkellBoss::SwitchStateWAIT()
 	if (waitCycle_ >= 2.0f) {
 		// 3개의 공격상태 중 하나로 변경
 		waitCycle_ = 0.0f;
-		stateEnum_ = eSkellBossState::BULLET;
-		SwitchState = std::bind(&SkellBoss::SwitchStateBULLET, this);
-		Action = std::bind(&SkellBoss::ActionBULLET, this, std::placeholders::_1, std::placeholders::_2);
-		Enter = std::bind(&SkellBoss::EnterBULLET, this);
+		std::random_device rd;
+		std::default_random_engine eng(rd());
+		std::uniform_int_distribution<> distr(1, 1);
+		
+		switch (distr(eng)) {
+		case 0:
+			stateEnum_ = eSkellBossState::BULLET;
+			SwitchState = std::bind(&SkellBoss::SwitchStateBULLET, this);
+			Action = std::bind(&SkellBoss::ActionBULLET, this, std::placeholders::_1, std::placeholders::_2);
+			Enter = std::bind(&SkellBoss::EnterBULLET, this);
+			break;
+		case 1:
+			stateEnum_ = eSkellBossState::SWORD;
+			SwitchState = std::bind(&SkellBoss::SwitchStateSWORD, this);
+			Action = std::bind(&SkellBoss::ActionSWORD, this, std::placeholders::_1, std::placeholders::_2);
+			Enter = std::bind(&SkellBoss::EnterSWORD, this);
+			break;
+		case 2:
+			break;
+		}
+
+
 		Enter();
 	}
 }
@@ -377,6 +403,50 @@ void SkellBoss::ActionBULLET(Matrix V, Matrix P)
 		bullets_[i]->Update(V, P);
 	}
 
+	_animation->Update(V, P);
+	hand_[0]->Update(V, P);
+	hand_[1]->Update(V, P);
+	back_->Update(V, P);
+	pCollider_->Update(V, P);
+}
+
+void SkellBoss::SwitchStateSWORD()
+{	
+	// 칼이 죽을때마다 Event를 호출하고,0이 되면 Wait로 바뀌게 함.
+	if (numOfInactiveSwords_ <= 0) {
+		stateEnum_ = eSkellBossState::WAIT;
+		SwitchState = std::bind(&SkellBoss::SwitchStateWAIT, this);
+		Action = std::bind(&SkellBoss::ActionWAIT, this, std::placeholders::_1, std::placeholders::_2);
+		Enter = std::bind(&SkellBoss::EnterWAIT, this);
+		Enter();
+	}
+}
+
+void SkellBoss::EnterSWORD()
+{
+	_animation->SetPlay(0);
+	bulletCycle_ = 0;
+	bulletRadian_ = 0.0f;
+	numOfActiveSwords_ = 0;
+	numOfInactiveSwords_ = 6;	// 칼이 죽을때마다 Event를 호출하고,0이 되면 Wait로 바뀌게 함.
+}
+
+void SkellBoss::ActionSWORD(Matrix V, Matrix P)
+{
+	// 최초 생성 시기를 Bullet과 공유함.
+	Vector2 summonPos = this->_position;
+	summonPos.y += 300.0f * WSCALEY;
+	if (UpdateBulletCycle() && numOfActiveSwords_ < _countof(swords_)) {
+		summonPos.x += (-300.0f * WSCALEX) + 100.0f * WSCALEX * numOfActiveSwords_;
+		swords_[numOfActiveSwords_]->Reset();
+		swords_[numOfActiveSwords_]->SummonSword(&myPointer, summonPos, 1.5f + ((float)numOfActiveSwords_ * 0.15f), chaseTarget_);
+		++numOfActiveSwords_;
+		Audio->Play("SpawnMonster");
+	}
+	
+	for (int i = 0; i < numOfActiveSwords_; ++i) {
+		swords_[i]->Update(V, P);
+	}
 	_animation->Update(V, P);
 	hand_[0]->Update(V, P);
 	hand_[1]->Update(V, P);

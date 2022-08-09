@@ -28,11 +28,15 @@ public:
 	int bulletCycle_ = 0;	// 얘는 각도 정확성을 위해 int
 	float bulletRadian_ = 0.0f;
 	int numOfActiveBullets_ = 0;
+	int numOfActiveSwords_ = 0;
+	int numOfInactiveSwords_ = 1;		// EnterSWORD 시점에 값 할당
 	int inactiveIndex = 0;
 	float bulletDirection_ = 1.0f;
 	Vector2 skelMousePos_ = Vector2(0.0f, 0.0f);// 총알상태 진입할때 skelMousePos 갱신
 	class BossBullet* bullets_[100];	// 몰라 72개로 해봐
+	class BossSword* swords_[6];
 
+	class SkellBoss* myPointer = nullptr;
 
 private:
 	void GenerateBullet();
@@ -48,6 +52,8 @@ public:	// 공개 인스턴스 변수
 public:	//Getter
 	bool IsGround() { return isGround_; }
 	bool IsConflicted() { return isConflicted_; }
+public://Setter
+	void DecreaseSword() { --numOfInactiveSwords_; }
 private:	// 상태객체 대신 상태 std::function<void()>
 	bool CheckPlayer();	// 거리 측정
 	void SwitchStateHIDE();
@@ -67,16 +73,17 @@ private:	// 상태객체 대신 상태 std::function<void()>
 	void ActionBULLET(Matrix V, Matrix P);
 
 	void SwitchStateSWORD();
+	void EnterSWORD();
+	void ActionSWORD(Matrix V, Matrix P);
+
 	void SwitchStateLASER();
 	void SwitchStateDYING();
 	void SwitchStateDEAD();
 
-	void ActionSWORD(Matrix V, Matrix P);
 	void ActionLASER(Matrix V, Matrix P);
 	void ActionDYING(Matrix V, Matrix P);
 	void ActionDEAD(Matrix V, Matrix P);
 
-	void EnterSWORD();
 	void EnterLASER();
 	void EnterDYING();
 	void EnterDEAD();		
