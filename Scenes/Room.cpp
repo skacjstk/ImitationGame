@@ -166,6 +166,8 @@ void Room::LoadObjFile(string strFileName)
 
 		if (objectType < 100)		// >=100 부턴 NPC나 따른쪽이니까
 			++currentMonsterNumber_;		// 몬스터 갯수를 하나씩 늘림
+		else if (objectType > 1000)	// 벨리알은 1001번
+			++currentMonsterNumber_;
 		pObject->SetPosition(position);
 		pObject->SetScale(scale);
 		pObject->SetRotation(0.0f, 0.0f, nAngle);
