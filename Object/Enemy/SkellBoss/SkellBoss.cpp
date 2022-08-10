@@ -437,7 +437,7 @@ void SkellBoss::ActionSWORD(Matrix V, Matrix P)
 	Vector2 summonPos = this->_position;
 	summonPos.y += 300.0f * WSCALEY;
 	if (UpdateBulletCycle() && numOfActiveSwords_ < _countof(swords_)) {
-		summonPos.x += (-300.0f * WSCALEX) + 100.0f * WSCALEX * numOfActiveSwords_;
+		summonPos.x += (-600.0f * WSCALEX) + 200.0f * WSCALEX * numOfActiveSwords_;
 		swords_[numOfActiveSwords_]->Reset();
 		swords_[numOfActiveSwords_]->SummonSword(&myPointer, summonPos, 1.5f + ((float)numOfActiveSwords_ * 0.15f), chaseTarget_);
 		++numOfActiveSwords_;

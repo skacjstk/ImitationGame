@@ -16,7 +16,7 @@ public:
 private:
 	int swordActiveIndex = 0;	// 0이 기본, 1이 활성화
 	Vector2 movePos = Vector2(0.0f, 0.0f);
-	float moveSpeed = 2000.0f;
+	float moveSpeed = 2400.0f;
 	float bulletDamage_ = 4.0f;
 	float waitTime_ = 0.0f;
 	float chaseRad_ = 0.0f;	// 실제 각도가 아님
@@ -29,6 +29,7 @@ public:
 	void  Render() override;
 	void  Reset() override;
 	void  SummonSword(SkellBoss** owner, Vector2& summonerPos, float waitTime, GameActor* chaseTarget);
+	void  GroundCheck() override;
 private:
 	void Chasing(Matrix V, Matrix P);
 	void Fire(Matrix V, Matrix P);

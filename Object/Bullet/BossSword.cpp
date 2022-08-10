@@ -116,7 +116,7 @@ void BossSword::SummonSword(SkellBoss** owner, Vector2& summonerPos, float waitT
 void BossSword::Fire(Matrix V, Matrix P)
 {
 	swordActiveIndex = 1;
-	movePos = Vector2(cosf(chaseRad_ / 180.0f * PI) * moveSpeed * TIMEMANAGER->Delta(), sinf(chaseRad_ / 180.0f * PI) * moveSpeed * TIMEMANAGER->Delta());
+	movePos = Vector2(cosf(chaseRad_ / 180.0f * PI) * moveSpeed * TIMEMANAGER->Delta() * WSCALEX, sinf(chaseRad_ / 180.0f * PI) * moveSpeed * TIMEMANAGER->Delta() * WSCALEY);
 	ModifyPosition(movePos);
 	bossSword_[swordActiveIndex]->SetPosition(this->_position);
 	bossSword_[swordActiveIndex]->Update(V, P);
@@ -126,8 +126,9 @@ void BossSword::Fire(Matrix V, Matrix P)
 	pCollider_->Update(V, P);
 
 	CheckAttack();
-	GroundCheck();
-	if (isGround_ == true || isConflicted_ == true) {
+	GroundCheck();	// BossSword 전용 추가
+	if (isConflicted_ == true) {
+	//	moveAmount = Vector2(0.0f,0.0f);
 		stateEnum_ = BState::STOP;
 		swordActiveIndex = 0;
 		bossSword_[swordActiveIndex]->SetPosition(this->_position);
@@ -188,7 +189,8 @@ void BossSword::Chasing(Matrix V, Matrix P)
 
 void BossSword::CheckAttack()
 {
-	if (chaseTarget_->GetImmuneFrame() <= 0 && Collider::IntersectAABB(pCollider_, chaseTarget_->GetCollider())) {
+	//각도를 가진 충돌체라 Obb로 
+	if (chaseTarget_->GetImmuneFrame() <= 0 && Collider::Obb(pCollider_, chaseTarget_->GetCollider())) {
 		chaseTarget_->Attacked(bulletDamage_);		
 	}
 }
@@ -222,7 +224,11 @@ void BossSword::Dying()
 	hitGroundFX_->SetPosition(this->_position);
 	// Next: 벽, 천장에 따라 각도 90도 단위로 조절하고, 위치 조절도 그렇게 하기
 
-	hitGroundFX_->ModifyPosition(0.0f, -pCollider_->GetScale().y * 0.4f);
+	hitGroundFX_->ModifyPosition(0.0f, -pCollider_->GetScale().y * 0.3f);
+	Matrix V, P;
+	V = CAMERA->GetViewMatrix();
+	P = CAMERA->GetProjectionMatrix();
+	hitGroundFX_->Update(V, P);
 }
 
 void BossSword::Die()
@@ -230,4 +236,60 @@ void BossSword::Die()
 	actorData_.living = ActorState::DIE;
 	(*owner_)->DecreaseSword();
 	SetActive(false);
+}
+
+
+// platform 충돌을 검사하지 않음. 단, 충돌할경우 moveAmount를 0으로 고정함. ( 이건 GrounCheck 바로 이후 Update에 있음 )
+void BossSword::GroundCheck()
+{
+	Scene* tempScene = SCENEMANAGER->GetCurrentScene();
+	Line* m_pGroundLine = tempScene->GetGroundLines();
+	Line* m_pCeilingLine = tempScene->GetCeilingLines();
+	isGround_ = false;
+	isConflicted_ = false;
+	for (UINT i = 0; i < m_pGroundLine->GetCountLine(); i++) {
+		Vector2 start = m_pGroundLine->GetStartPoint(i);
+		Vector2 end = m_pGroundLine->GetEndPoint(i);
+		Vector2 mStart = pCollider_->GetPosition();
+		Vector2 mEnd;
+		mEnd.x = mStart.x;
+		mEnd.y = mStart.y - pCollider_->GetScale().y * 0.5f;
+		Vector2 result;
+		// 아래와 선 검사
+		if (!isJump && Line::IntersectionLine(start, end, mStart, mEnd, result))
+		{
+			isGround_ = true;
+			isConflicted_ = true;
+			break;
+		}
+	}//end for
+
+	// 충돌했다면 굳이 또 검사할 필요 없다.
+	if (isConflicted_ == false) {
+		for (UINT i = 0; i < m_pCeilingLine->GetCountLine(); i++)
+		{
+			Vector2 start = m_pCeilingLine->GetStartPoint(i);
+			Vector2 end = m_pCeilingLine->GetEndPoint(i);
+
+			Vector2 charPos = GetPosition();
+			Vector2 size = pCollider_->GetScale();
+			Vector2 left = Vector2(charPos.x - size.x * 0.5f, charPos.y);
+			Vector2 right = Vector2(charPos.x + size.x * 0.5f, charPos.y);
+			Vector2 top = Vector2(charPos.x, charPos.y + (size.y * 0.5f));
+			Vector2 result;
+
+			if (isConflicted_ = Collider::InterSectionLine(charPos, right, start, end)) {
+				isConflicted_ = true;
+				break;
+			}
+			if (isConflicted_ = Collider::InterSectionLine(charPos, left, start, end)) {
+				isConflicted_ = true;
+				break;
+			}
+			if (isConflicted_ = Collider::InterSectionLine(charPos, top, start, end)) {
+				isConflicted_ = true;
+				break;
+			}
+		}
+	}// end for
 }
