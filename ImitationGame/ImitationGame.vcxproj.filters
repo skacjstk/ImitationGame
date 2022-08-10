@@ -531,6 +531,9 @@
     <ClInclude Include="..\Object\Bullet\BossSword.h">
       <Filter>소스 파일\Object\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="..\Object\Bullet\BossLaser.h">
+      <Filter>소스 파일\Object\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImitationGame.cpp">
@@ -864,6 +867,9 @@
       <Filter>소스 파일\Object\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\Object\Bullet\BossSword.cpp">
+      <Filter>소스 파일\Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Object\Bullet\BossLaser.cpp">
       <Filter>소스 파일\Object\Bullet</Filter>
     </ClCompile>
   </ItemGroup>

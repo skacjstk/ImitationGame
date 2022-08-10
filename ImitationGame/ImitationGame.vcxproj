@@ -203,6 +203,7 @@
     <ClInclude Include="..\InputHandler\PlayerInputHandler.h" />
     <ClInclude Include="..\Object\AStar.h" />
     <ClInclude Include="..\Object\Bullet\BossBullet.h" />
+    <ClInclude Include="..\Object\Bullet\BossLaser.h" />
     <ClInclude Include="..\Object\Bullet\BossSword.h" />
     <ClInclude Include="..\Object\Button.h" />
     <ClInclude Include="..\Object\Enemy\BigWhiteSkel.h" />
@@ -319,6 +320,7 @@
     <ClCompile Include="..\InputHandler\PlayerInputHandler.cpp" />
     <ClCompile Include="..\Object\AStar.cpp" />
     <ClCompile Include="..\Object\Bullet\BossBullet.cpp" />
+    <ClCompile Include="..\Object\Bullet\BossLaser.cpp" />
     <ClCompile Include="..\Object\Bullet\BossSword.cpp" />
     <ClCompile Include="..\Object\Button.cpp" />
     <ClCompile Include="..\Object\Enemy\BigWhiteSkel.cpp" />
