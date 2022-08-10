@@ -341,9 +341,9 @@ void SkellBoss::EnterWAIT()
 	pCollider_->SetRotation(GetRotation());
 
 	Vector2 handPos = GetPosition();
-	hand_[0]->SetPosition(handPos.x - handGap.x, handPos.y - handGap.y);	// 왼손
-	hand_[1]->SetPosition(handPos.x + handGap.x, handPos.y + handGap.y);	// 오른손
-
+//	hand_[0]->SetPosition(handPos.x - handGap.x, handPos.y - handGap.y);	// 왼손
+//	hand_[1]->SetPosition(handPos.x + handGap.x, handPos.y + handGap.y);	// 오른손
+	// Laser 추가로 Wait 시점에 초기화 할 필요 없어졌음.
 	hand_[0]->SetPlay(0);
 	hand_[1]->SetPlay(0);
 }
@@ -351,7 +351,7 @@ void SkellBoss::EnterWAIT()
 void SkellBoss::ActionWAIT(Matrix V, Matrix P)
 {
 
-	if (inactiveIndex < numOfActiveBullets_ && UpdateBulletCycle(9))
+	if (inactiveIndex < numOfActiveBullets_ && UpdateBulletCycle(8))
 	{
 		inactiveIndex += 4;
 	}
