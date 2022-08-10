@@ -212,7 +212,7 @@ void CAudio::AddSoundAll()
 	Audio->AddSound("SpawnMonster", AUDIO_FOLDER + strSound + fileType, false);
 	// 레이저 발사 못찾음. 대체재임.
 	strSound = "summonBelialHand";
-	Audio->AddSound("Laser", AUDIO_FOLDER + strSound + fileType, false);
+	Audio->AddSound("BossLaser", AUDIO_FOLDER + strSound + fileType, false);
 
 }
 
