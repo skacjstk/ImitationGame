@@ -3,6 +3,7 @@
 #include "State/State.h"
 #include "Object/Bullet/BossBullet.h"
 #include "Object/Bullet/BossSword.h"
+#include "Object/Bullet/BossLaser.h"
 #include "SkellBoss.h"
 
 void SkellBoss::GenerateBullet()
@@ -109,6 +110,9 @@ SkellBoss::SkellBoss()
 	// 보스소드도 여기서 만듬
 	thread t(std::bind(&SkellBoss::GenerateBullet, this));
 	t.detach();
+	// 레이저는 2개밖에 안되고, 2개가 좌우구분이라 귀찮아서 상시 렌더링하거든? 그래서 쓰레드로 빼면 안돼
+	for (UINT i = 0; i < _countof(lasers_); ++i)
+		lasers_[i] = new BossLaser();
 	// 쓰레드화 하기  240개라 오래걸림
 	myPointer = this;
 }
@@ -143,7 +147,10 @@ void SkellBoss::Render()
 	}
 	for (int i = 0; i < numOfActiveSwords_; ++i) {
 		swords_[i]->Render();
-	}	// 야발점
+	}
+	for (UINT i = 0; i < _countof(lasers_); ++i) {
+		lasers_[i]->Render();
+	}
 }
 
 void SkellBoss::Reset()
@@ -159,7 +166,7 @@ void SkellBoss::Reset()
 	actorData_.maxHP = 100;
 	actorData_.ImmuneTime = 0;
 	actorData_.living = ActorState::LIVE;
-
+	actorData_.type = ActorType::Enemy;
 	stateEnum_ = eSkellBossState::HIDE;
 	SwitchState = std::bind(&SkellBoss::SwitchStateHIDE, this);
 	Action = std::bind(&SkellBoss::ActionHIDE, this, std::placeholders::_1, std::placeholders::_2);
@@ -184,10 +191,10 @@ void SkellBoss::Reset()
 	SetActive(true);
 }
 
-bool SkellBoss::UpdateBulletCycle()
+bool SkellBoss::UpdateBulletCycle(int divFrame)
 {
 	++bulletCycle_;
-	if (bulletCycle_ >= (TIMEMANAGER->GetFrame() / 9))
+	if (bulletCycle_ >= (TIMEMANAGER->GetFrame() / divFrame))
 	{
 		bulletCycle_ = 0;
 		return true;
@@ -294,12 +301,12 @@ void SkellBoss::SwitchStateWAIT()
 {
 	waitCycle_ += TIMEMANAGER->Delta();
 
-	if (waitCycle_ >= 2.0f) {
+	if (waitCycle_ >= selectPatternWaitTime_) {
 		// 3개의 공격상태 중 하나로 변경
 		waitCycle_ = 0.0f;
 		std::random_device rd;
 		std::default_random_engine eng(rd());
-		std::uniform_int_distribution<> distr(1, 1);
+		std::uniform_int_distribution<> distr(0, 2);
 		
 		switch (distr(eng)) {
 		case 0:
@@ -315,10 +322,12 @@ void SkellBoss::SwitchStateWAIT()
 			Enter = std::bind(&SkellBoss::EnterSWORD, this);
 			break;
 		case 2:
+			stateEnum_ = eSkellBossState::LASER;
+			SwitchState = std::bind(&SkellBoss::SwitchStateLASER, this);
+			Action = std::bind(&SkellBoss::ActionLASER, this, std::placeholders::_1, std::placeholders::_2);
+			Enter = std::bind(&SkellBoss::EnterLASER, this);
 			break;
 		}
-
-
 		Enter();
 	}
 }
@@ -334,12 +343,15 @@ void SkellBoss::EnterWAIT()
 	Vector2 handPos = GetPosition();
 	hand_[0]->SetPosition(handPos.x - handGap.x, handPos.y - handGap.y);	// 왼손
 	hand_[1]->SetPosition(handPos.x + handGap.x, handPos.y + handGap.y);	// 오른손
+
+	hand_[0]->SetPlay(0);
+	hand_[1]->SetPlay(0);
 }
 
 void SkellBoss::ActionWAIT(Matrix V, Matrix P)
 {
 
-	if (inactiveIndex < numOfActiveBullets_ && UpdateBulletCycle())
+	if (inactiveIndex < numOfActiveBullets_ && UpdateBulletCycle(9))
 	{
 		inactiveIndex += 4;
 	}
@@ -383,7 +395,7 @@ void SkellBoss::ActionBULLET(Matrix V, Matrix P)
 {
 	// TIMEMANAGER->GetFrame()
 	// 144프레임 기준 14프레임, 60프레임 기준 6 프레임마다
-	if (UpdateBulletCycle() && (numOfActiveBullets_ / 4) < (_countof(bullets_) / 4)) {
+	if (UpdateBulletCycle(9) && (numOfActiveBullets_ / 4) < (_countof(bullets_) / 4)) {
 		// 기능 분리
 		bulletRadian_ += PI * 0.04f * bulletDirection_;
 		bullets_[numOfActiveBullets_]->Reset();
@@ -436,7 +448,7 @@ void SkellBoss::ActionSWORD(Matrix V, Matrix P)
 	// 최초 생성 시기를 Bullet과 공유함.
 	Vector2 summonPos = this->_position;
 	summonPos.y += 300.0f * WSCALEY;
-	if (UpdateBulletCycle() && numOfActiveSwords_ < _countof(swords_)) {
+	if (UpdateBulletCycle(9) && numOfActiveSwords_ < _countof(swords_)) {
 		summonPos.x += (-600.0f * WSCALEX) + 200.0f * WSCALEX * numOfActiveSwords_;
 		swords_[numOfActiveSwords_]->Reset();
 		swords_[numOfActiveSwords_]->SummonSword(&myPointer, summonPos, 1.5f + ((float)numOfActiveSwords_ * 0.15f), chaseTarget_);
@@ -447,6 +459,69 @@ void SkellBoss::ActionSWORD(Matrix V, Matrix P)
 	for (int i = 0; i < numOfActiveSwords_; ++i) {
 		swords_[i]->Update(V, P);
 	}
+	_animation->Update(V, P);
+	hand_[0]->Update(V, P);
+	hand_[1]->Update(V, P);
+	back_->Update(V, P);
+	pCollider_->Update(V, P);
+}
+
+void SkellBoss::SwitchStateLASER()
+{
+	// endLaser
+	if (endLaser == true) {
+		stateEnum_ = eSkellBossState::WAIT;
+		SwitchState = std::bind(&SkellBoss::SwitchStateWAIT, this);
+		Action = std::bind(&SkellBoss::ActionWAIT, this, std::placeholders::_1, std::placeholders::_2);
+		Enter = std::bind(&SkellBoss::EnterWAIT, this);
+		Enter();
+	}
+}
+
+void SkellBoss::EnterLASER()
+{
+	bulletCycle_ = 0;
+	bulletRadian_ = 0.0f;
+	std::random_device rd;
+	std::default_random_engine eng(rd());
+	std::uniform_int_distribution<> distr(minLaserCount_, maxLaserCount_);
+	remainLaserCount_ = FireLaserCount_ = distr(eng);
+	// 일정 수 사이
+	std::uniform_int_distribution<> distr2(0, 1);
+	laserDirection_ = distr2(eng);	// 0은 왼쪽발사 시작, 1은 오른쪽 발사 시작
+	// 시작이 왼쪽이면 오른손이 움직여서 "왼쪽"으로 발사해야 함
+	endLaser = false;
+}
+
+void SkellBoss::ActionLASER(Matrix V, Matrix P)
+{
+	// 이 주기 마다
+	if (UpdateBulletCycle(1) && FireLaserCount_ > 0) {
+		if (laserDirection_ == 0)
+			laserDirection_ = 1;
+		else
+			laserDirection_ = 0;
+
+		hand_[laserDirection_]->SetPosition(hand_[laserDirection_]->GetPosition().x, chaseTarget_->GetPosition().y);
+		// 추적이 완료되면, 발사애니메이션 재생
+		hand_[laserDirection_]->SetPlay(1, true);
+		--FireLaserCount_;
+	//	Audio->Play("BossLaser");		// 사운드 호출 시점을 BossLaser SummonLaser로 옮김. 원본사운드 찾으면 다시 옮길수도 있음.
+	}	
+	//	Attack이 Hand의 1번 클립 이 8번 클립일 때
+	if (hand_[laserDirection_]->GetAnimationClip(1)->GetCurrentFrame() == 9 && beforeShootLaser == false) {
+		// 애니메이션 번호에 맞춰 레이저 소환
+		lasers_[laserDirection_]->Reset();
+		lasers_[laserDirection_]->SummonLaser(&myPointer, hand_[laserDirection_]->GetPosition(),
+			static_cast<BossLaser::HandDirection>(laserDirection_), chaseTarget_);
+		beforeShootLaser = true;
+	}
+	else {
+		beforeShootLaser = false;
+	}
+	lasers_[0]->Update(V, P);
+	lasers_[1]->Update(V, P);
+
 	_animation->Update(V, P);
 	hand_[0]->Update(V, P);
 	hand_[1]->Update(V, P);
