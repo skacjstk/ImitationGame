@@ -4,7 +4,6 @@
 #include "./Object/NPCPool.h"
 #include "./Object/NPC/Dungeon.h"
 #include "./Physics/Collider.h"
-#include "./Object/Enemy/SkellBoss/SkellBoss.h"
 #include "./Object/Line.h"
 #include "./Render/Graphic2D.h"
 #include "Town.h"
@@ -38,8 +37,6 @@ Town::Town()
 	strImage = IMAGE_FOLDER; strImage += L"Town/townBase.png";
 	townTerrain_ = new Texture(strImage, strShader);
 	townTerrain_->SetScale(6.0f * WSCALEX, 6.0f * WSCALEY);
-
-	skellBoss_ = new SkellBoss();
 }
 
 Town::~Town()
@@ -67,7 +64,6 @@ void Town::Update()
 	forest_->Update(V, P);
 	m_pGroundLine->Update(V, P);
 	npc->Update(V, P);
-	skellBoss_->Update(V, P);
 }
 
 void Town::Render()
@@ -79,7 +75,6 @@ void Town::Render()
 	townTerrain_->Render();
 	m_pGroundLine->Render();
 	npc->Render();
-	skellBoss_->Render();
 	OBJECTMANAGER->RenderAll();
 }
 
@@ -99,8 +94,6 @@ void Town::ChangeScene()
 	OBJECTMANAGER->AddObject("player" , tempPlayer);
 	OBJECTMANAGER->AddObjectStrings("player");	// 이것도 추가해줘야 함.
 	tempPlayer->Reset();
-	skellBoss_->SetPosition(2450.0f * WSCALEX, -1725.0f * WSCALEY);
-	skellBoss_->Reset();
 
 	mountain_->SetPosition(2250.0f * WSCALEX, -1825.0f * WSCALEY);
 	forest_->SetPosition(2250.0f * WSCALEX, -1225.0f * WSCALEY);
