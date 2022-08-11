@@ -260,6 +260,9 @@ void Player::GroundCheck()
 			}
 		}//end for
 	}
+	else if (isUnderJump_ == true) {
+		isUnderJump_ = false;
+	}
 	for (UINT i = 0; i < m_pCeilingLine->GetCountLine(); i++)
 	{
 		Vector2 start = m_pCeilingLine->GetStartPoint(i);
