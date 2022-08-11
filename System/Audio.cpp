@@ -60,6 +60,8 @@ void CAudio::AddSound(string name, string file, bool bLoop)
 	else
 		system->createStream(file.c_str(), FMOD_DEFAULT, NULL, &sound[sounds.size()]);
 
+
+
 	sounds[name] = &sound[sounds.size()];
 }
 
@@ -216,6 +218,19 @@ void CAudio::AddSoundAll()
 	
 	strSound = "bossDefeat";
 	Audio->AddSound("bossDefeat", AUDIO_FOLDER + strSound + fileType, false);
+
+	strSound = "DungeonOut";
+	Audio->AddSound("DungeonOut", AUDIO_FOLDER + strSound + fileType, false);
+
+	//dramatic earthquake effect SoundEffectsFactory
+	strSound = "dramatic earthquake effect SoundEffectsFactory";
+	Audio->AddSound("earthquake1", AUDIO_FOLDER + strSound + fileType, false);
+	//synthetic_explosion_1
+	strSound = "synthetic_explosion_1";	// 던전 닫히는 소리 추정
+	Audio->AddSound("syExplo1", AUDIO_FOLDER + strSound + fileType, false);
+
+	strSound = "iceball";
+	Audio->AddSound("iceball", AUDIO_FOLDER + strSound + fileType, false);	// 벨리알 광선
 
 }
 
