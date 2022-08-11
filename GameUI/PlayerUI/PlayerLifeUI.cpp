@@ -18,6 +18,7 @@ PlayerLifeUI::~PlayerLifeUI()
 {
 	SAFE_DELETE(imageBase_);
 	SAFE_DELETE(imageBack_);
+	SAFE_DELETE(lifeBar_);
 }
 
 void PlayerLifeUI::Update(Matrix V, Matrix P)
