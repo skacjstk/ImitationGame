@@ -52,13 +52,31 @@ void Dungeon::Update(Matrix V, Matrix P)
 		break;
 	case DungeonState::EAT:
 	{
+		Audio->Stop("Town");
 		_animation->SetPlay(0);
+
+		if (_animation->GetAnimationClip(0)->GetCurrentFrame() == 0 && playSound2_ == false) {	// 처음에 이거
+			Audio->Play("DungeonOut");
+			playSound2_ = true;
+		}
+		else if (_animation->GetAnimationClip(0)->GetCurrentFrame() == 9 && playSound_ == false)	// 던전 닫힐때
+		{
+			ppPlayer->SetState(Player::State::EAT);
+			Audio->Play("syExplo1");
+			Audio->Play("earthquake1");
+			playSound_ = true;
+		}
+
 		Vector2 pos = _animation->GetAnimationClip(0)->GetCurrentFrameRealSize();
 		_animation->SetPosition(this->GetPosition().x, this->GetPosition().y +
 			_animation->GetAnimationClip( _animation->GetClipNo())->GetCurrentFrameRealSize().y * 0.5f  - (85 * GetScale().y * 0.5f));	// 85.는 제일 큰 사진 기준
 		_animation->Update(V, P);
+
+
 		// 애니메이션 종료시 던전 이동 호출
 		if (!_animation->IsPlay()) {
+			ppPlayer->SetState(Player::State::IDLE);
+			Audio->Stop("earthquake1");
 			eventHandler->Push(L"EnterDungeon");	// EatEvent 호출
 			SetActive(false);
 		}
@@ -83,6 +101,8 @@ void Dungeon::Reset()
 	ppPlayer = (Player*)OBJECTMANAGER->FindObject("player");
 	this->SetScale(6.0f * WSCALEX, 6.0f * WSCALEY);
 	_animation->SetScale(this->GetScale());
+	playSound_ = false;
+	playSound2_ = false;
 }
 
 void Dungeon::Communicate()

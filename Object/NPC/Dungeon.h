@@ -11,6 +11,8 @@ public:		// 공개 인스턴스 변수
 private:	// 비공개 인스턴스 변수
 	DungeonState _currentState = DungeonState::HIDE;
 	class Player* ppPlayer = { nullptr, };
+	bool playSound_ = false;
+	bool playSound2_ = false;
 public:
 	Dungeon();
 	~Dungeon();
