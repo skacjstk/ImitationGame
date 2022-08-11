@@ -141,15 +141,18 @@ void GameActor::GravityUpdate()
 // 재정의자 제외 모두 이거 쓰려고.
 void GameActor::Attacked(float damage)
 {
-	float changed = max(damage - actorData_.armor, 1.0f);
-//	printf("GameActor::Attacked===============\n");
-//	printf("변화량: %f\n", changed);
-	actorData_.HP -= (int)changed;
-//	printf("남은 체력량: %d\n", actorData_.HP);
-//	printf("=========================\n\n");
-	Audio->Play("Hit_Monster");
-	// HitEffect 가져와야 함.
-	HPChange();
+	if (actorData_.living == ActorState::LIVE)
+	{
+		float changed = max(damage - actorData_.armor, 1.0f);
+		//	printf("GameActor::Attacked===============\n");
+		//	printf("변화량: %f\n", changed);
+		actorData_.HP -= (int)changed;
+		//	printf("남은 체력량: %d\n", actorData_.HP);
+		//	printf("=========================\n\n");
+		Audio->Play("Hit_Monster");
+		// HitEffect 가져와야 함.
+		HPChange();
+	}
 }
 void GameActor::FatalBlow()
 {

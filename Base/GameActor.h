@@ -58,7 +58,7 @@ public:
 	virtual void Die();
 	virtual void Jump() {};
 	virtual void UnderJump();
-	virtual void Move() {};	// 파생용: 0630 기준 Left,Right에서 정해준 방향으로 Move를 호출하는 역할. 
+	virtual void Move() { ModifyPosition(moveAmount); };	// 파생용: 0630 기준 Left,Right에서 정해준 방향으로 Move를 호출하는 역할. 
 	virtual void Idle() {};		// IDLE과 Attack은 꼭 있어야 함.
 	virtual void Attack() {};
 	virtual void InventoryToggle() {};
