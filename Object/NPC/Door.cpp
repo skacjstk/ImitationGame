@@ -150,9 +150,9 @@ void Door::ClosingEnter()
 void Door::CloseSwitch()
 {
 	// 테스트코드: Open 으로 바뀜: 다음 층 바로 가려고 Next 삭제
-	SwitchState = std::bind(&Door::OpenSwitch, this);
-	Enter = std::bind(&Door::OpenEnter, this);
-	Enter();
+//	SwitchState = std::bind(&Door::OpenSwitch, this);
+//	Enter = std::bind(&Door::OpenEnter, this);
+//	Enter();
 }
 
 void Door::CloseEnter()
