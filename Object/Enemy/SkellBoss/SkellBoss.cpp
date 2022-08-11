@@ -1,6 +1,7 @@
 #include "ImitationGame/framework.h"
 #include "Physics/Collider.h"
 #include "State/State.h"
+#include "GameUI/BossUI/BossLifeUI.h"
 #include "Object/Bullet/BossBullet.h"
 #include "Object/Bullet/BossSword.h"
 #include "Object/Bullet/BossLaser.h"
@@ -115,10 +116,20 @@ SkellBoss::SkellBoss()
 		lasers_[i] = new BossLaser();
 	// 쓰레드화 하기  240개라 오래걸림
 	myPointer = this;
+
+	// UI 생성하기
+	skellBossUI_ = new BossLifeUI();
 }
 
 SkellBoss::~SkellBoss()
 {
+	// 일종의 safe delete 
+	for (UINT i = 0; i < _countof(dieEffect_); ++i) {
+		if (dieEffect_ != nullptr) {
+			(*dieEffect_[i])->GetAnimationClip(0)->SetTime(0.06f);
+			dieEffect_[i] = nullptr;
+		}
+	}
 	SAFE_DELETE(_animation);
 	SAFE_DELETE(pCollider_);
 }
@@ -136,6 +147,25 @@ void SkellBoss::Render()
 {	
 	if (IsActive() == false)
 		return;
+	else if (stateEnum_ == eSkellBossState::DYING)
+	{
+		back_->Render();
+		_animation->Render();
+		hand_[0]->Render();
+		hand_[1]->Render();
+		for (UINT i = 0; i < _countof(dieEffect_); ++i) 
+			(*dieEffect_[i])->Render();
+		return;
+	}
+	else if (stateEnum_ == eSkellBossState::DEAD) {
+		_animation->Render();
+		if(dieEffect_[0] != nullptr){
+			for (UINT i = 0; i < _countof(dieEffect_); ++i)
+				(*dieEffect_[i])->Render();
+		}
+		return;
+	}
+
 	back_->Render();
 	_animation->Render();
 	hand_[0]->Render();
@@ -151,6 +181,7 @@ void SkellBoss::Render()
 	for (UINT i = 0; i < _countof(lasers_); ++i) {
 		lasers_[i]->Render();
 	}
+	skellBossUI_->Render();
 }
 
 void SkellBoss::Reset()
@@ -162,7 +193,7 @@ void SkellBoss::Reset()
 	hand_[1]->SetScale(GetScale());
 
 	chaseTarget_ = (GameActor*)OBJECTMANAGER->FindObject("player");
-	actorData_.HP = 100;
+	actorData_.HP = 1;
 	actorData_.maxHP = 100;
 	actorData_.ImmuneTime = 0;
 	actorData_.living = ActorState::LIVE;
@@ -187,6 +218,10 @@ void SkellBoss::Reset()
 
 	pCollider_->SetPosition(GetPosition());
 	pCollider_->SetRotation(GetRotation());
+
+	//UI 설정하기 y 맨아래 x 중앙에 있음.
+	skellBossUI_->Reset();
+
 	Enter();	// HIDE로 진입함
 	SetActive(true);
 }
@@ -200,6 +235,33 @@ bool SkellBoss::UpdateBulletCycle(int divFrame)
 		return true;
 	}
 	return false;
+}
+
+void SkellBoss::Attacked(float damage)
+{
+	if (actorData_.living == ActorState::LIVE)
+	{
+		float changed = max(damage - actorData_.armor, 1.0f);
+		actorData_.HP -= (int)changed;
+		Audio->Play("Hit_Monster");
+		HPChange();
+	}
+}
+
+void SkellBoss::HPChange()
+{
+	skellBossUI_->UpdateLifeBar(actorData_.HP, actorData_.maxHP);
+	//	playerUI->playerLifeUI_->UpdateLifeBar(actorData_.HP, actorData_.maxHP);
+	if (actorData_.HP <= 0)
+		Die();
+}
+
+void SkellBoss::Die()
+{
+	actorData_.living = ActorState::DIE;
+	EnterDYING();	// 상태 패턴 직접 호출
+	Audio->Stop("JailBoss");	// 배경음: 계속 재생
+	Audio->Play("bossDefeat");
 }
 
 bool SkellBoss::CheckPlayer()
@@ -263,6 +325,7 @@ void SkellBoss::SwitchStateAPPEAR()
 		hand_[0]->GetTexture()->UpdateColorBuffer(0);
 		hand_[1]->GetTexture()->UpdateColorBuffer(0);
 		CAMERA->SetObject(chaseTarget_);
+		skellBossUI_->Update();
 		Enter();
 	}
 }
@@ -304,9 +367,14 @@ void SkellBoss::SwitchStateWAIT()
 	if (waitCycle_ >= selectPatternWaitTime_) {
 		// 3개의 공격상태 중 하나로 변경
 		waitCycle_ = 0.0f;
+		
 		std::random_device rd;
 		std::default_random_engine eng(rd());
-		std::uniform_int_distribution<> distr(0, 2);
+		std::uniform_int_distribution<> distr(0, 2);		
+		if (beforePatternNum_ == distr(eng)) {
+			std::default_random_engine eng(rd());
+			beforePatternNum_ = distr(eng);	//한번만 더 돌려봐: 이번에도 같은거뜨면 어쩔수없고
+		}
 		
 		switch (distr(eng)) {
 		case 0:
@@ -350,7 +418,6 @@ void SkellBoss::EnterWAIT()
 
 void SkellBoss::ActionWAIT(Matrix V, Matrix P)
 {
-
 	if (inactiveIndex < numOfActiveBullets_ && UpdateBulletCycle(8))
 	{
 		inactiveIndex += 4;
@@ -527,4 +594,141 @@ void SkellBoss::ActionLASER(Matrix V, Matrix P)
 	hand_[1]->Update(V, P);
 	back_->Update(V, P);
 	pCollider_->Update(V, P);
+}
+
+void SkellBoss::SwitchStateDYING()
+{
+	if (explosionNum_ <= 0) {
+		stateEnum_ = eSkellBossState::DEAD;
+		SwitchState = std::bind(&SkellBoss::SwitchStateDEAD, this);
+		Action = std::bind(&SkellBoss::ActionDEAD, this, std::placeholders::_1, std::placeholders::_2);
+		Enter = std::bind(&SkellBoss::EnterDEAD, this);
+		Enter();
+	}
+}
+//	 DYING은 상태 패턴에서 움직이는게 아닌, 외부에서 호출하는 기능: 그래서 SwitchState의 일부 기능이 옮겨짐.
+void SkellBoss::EnterDYING()
+{
+	CAMERA->SetObject(this);		
+	stateEnum_ = eSkellBossState::DYING;
+	SwitchState = std::bind(&SkellBoss::SwitchStateDYING, this);
+	Action = std::bind(&SkellBoss::ActionDYING, this, std::placeholders::_1, std::placeholders::_2);
+	Enter = std::bind(&SkellBoss::EnterDYING, this);
+	isPlatform_ = false;
+	isGround_ = false;
+	isConflicted_ = false;
+	dyingTime_ = 0.0f;
+	_animation->SetPlay(2);
+	back_->SetStop();
+	hand_[0]->SetStop();
+	hand_[1]->SetStop();
+	firstDyingDelay_ = 3.0f;
+	explosionNum_ = 10;
+
+	for (UINT i = 0; i < _countof(dieEffect_); ++i) {
+		dieEffect_[i] = objectPool->GetMonsterDieEffect();
+		(*dieEffect_[i])->SetPlay(0);
+		(*dieEffect_[i])->GetAnimationClip(0)->SetTime(0.06f);	// DEAD 에서 시간을 바꾸기에, 원상태로 복귀시킴 일단
+		(*dieEffect_[i])->SetPosition(GetPosition());
+		(*dieEffect_[i])->SetScale(GetScale());
+	}
+}
+
+void SkellBoss::ActionDYING(Matrix V, Matrix P)
+{
+	firstDyingDelay_ -= TIMEMANAGER->Delta();
+	if (firstDyingDelay_ < 0.0f){
+	dyingTime_ += TIMEMANAGER->Delta();
+		if (dyingTime_ >= 0.4f && explosionNum_ > 0) {
+			dyingTime_ = 0.2f;
+			--explosionNum_;
+			for (UINT i = 0; i < _countof(dieEffect_); ++i) {
+				// 랜덤을 줘야 함.
+				Vector2 range = _animation->GetTextureRealSize();
+	
+				std::random_device rd;
+				std::default_random_engine eng(rd());
+				std::uniform_real_distribution<> distr((double)-range.x * 0.5, (double)range.x * 0.5);
+	
+				std::uniform_real_distribution<> distr2((double)-range.y * 0.5, (double)range.y * 0.5);
+				range = Vector2(distr(eng), distr2(eng));
+				(*dieEffect_[i])->SetPosition(GetPosition() + range);
+				(*dieEffect_[i])->SetPlay(0, true);
+			}
+			Audio->Play("MonsterDie");	// 파바바바박 해야함.
+		}
+	}
+	hand_[0]->Update(V, P);
+	hand_[1]->Update(V, P);
+	back_->Update(V, P);
+	_animation->Update(V, P);
+	pCollider_->Update(V, P);
+	if (dyingTime_ >= 0.2f) {
+		for (UINT i = 0; i < _countof(dieEffect_); ++i)
+			(*dieEffect_[i])->Update(V, P);
+	}
+}
+
+void SkellBoss::SwitchStateDEAD()
+{	// die x time
+	if (dyingTime_ >= 1.0f) {
+		CAMERA->SetObject(chaseTarget_);
+		eventHandler->Push(L"MonsterDie");
+		for (UINT i = 0; i < _countof(dieEffect_); ++i)	{
+			if(dieEffect_[i] != nullptr)
+				(*dieEffect_[i])->GetAnimationClip(0)->SetTime(0.06f);	// nullptr로 바꾸기 전에 정상화
+			dieEffect_[i] = nullptr;
+		}
+	}
+	if (dyingTime_ >= 5.0f) {
+		SetActive(false);
+	}
+}
+
+void SkellBoss::ActionDEAD(Matrix V, Matrix P)
+{
+	dyingTime_ += TIMEMANAGER->Delta();
+	if (dyingTime_ >= 0.1f && explosionNum_ > 0) {
+		dyingTime_ = 0.0f;
+		--explosionNum_;
+		for (UINT i = 0; i < _countof(dieEffect_); ++i) {
+			// 랜덤을 줘야 함.
+			Vector2 range;
+			Vector2 expolsize = (*dieEffect_[i])->GetTextureRealSize() * 0.1f;
+				// 1.0472 = 60도의 라디안
+			range = Vector2(cosf(i * 1.0472f) * expolsize.x, sinf(i * 1.0472f) * expolsize.y);
+
+			// Modify 전 Enter 에서 무너지기 전 위치로 초기화를 수행했음.
+			(*dieEffect_[i])->ModifyPosition(range * (maxNum_ - explosionNum_));
+			(*dieEffect_[i])->SetPlay(0, true);
+			(*dieEffect_[i])->GetAnimationClip(0)->SetTime(0.02f);	// 원래 0.06초, 소멸자 및 상태변경에서 돌려줘야함.
+		}
+		Audio->Play("MonsterDie");	// 파바바바박 해야함.
+	}
+	moveAmount.x = 0.0f;
+	GravityUpdate();
+	__super::GroundCheck();
+	Move();
+
+	if (dieEffect_[0] != nullptr) {
+		for (UINT i = 0; i < _countof(dieEffect_); ++i)
+			(*dieEffect_[i])->Update(V, P);
+	}
+
+	_animation->SetPosition(GetPosition());
+	pCollider_->SetPosition(GetPosition());
+	pCollider_->Update(V, P);
+	_animation->Update(V, P);
+}
+
+void SkellBoss::EnterDEAD()
+{
+	CAMERA->Update();
+	CAMERA->SetObject(nullptr);
+	for (UINT i = 0; i < _countof(dieEffect_); ++i) {
+		(*dieEffect_[i])->SetPosition(GetPosition());	// 무너지기 직전 위치로 조정함.
+	}
+	dyingTime_ = 0.0f; 
+	maxNum_ = explosionNum_ = 6;
+	_animation->SetPlay(3);
 }

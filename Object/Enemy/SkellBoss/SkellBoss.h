@@ -17,6 +17,9 @@ public:
 	eSkellBossState stateEnum_ = eSkellBossState::HIDE;	// 이놈은 index 대용. static_cast로 currentState_에 주입함.
 	Animation* hand_[2] = { nullptr, };	// IDLE, ATTACK ( LASER ) 0번이 왼손
 	Animation* back_ = nullptr;	// 총알 쏠때 뒷배경
+	Animation** dieEffect_[6] = { nullptr, };
+	int explosionNum_ = 10;	// 죽을때 폭발소리 들리는 횟수
+	int maxNum_ = 5;	// 이건 Dead에서 퍼져나가는 폭발 구현하기 위한 이펙트
 	std::function<void()> SwitchState;
 	std::function<void()> Enter;
 	std::function<void(Matrix, Matrix)> Action;
@@ -26,7 +29,10 @@ public:
 	float waitCycle_ = 0.0f;
 	Vector2 handGap = Vector2(0.0f,0.0f);
 	bool attacked_ = false;	// 공격할 경우 true로.
+	// UI
+	class BossLifeUI* skellBossUI_ = nullptr;		// 상대적 UI들은 있을수도, 없을수도 있어서 클래스 멤버 변수
 	// 얘내둘은 공통
+	int beforePatternNum_ = -1;	// 이전에 했던 행동의 code
 	float selectPatternWaitTime_ = 2.0f;	// 더 줄이면 bullet 버그남.
 	int bulletCycle_ = 0;	// 얘는 각도 정확성을 위해 int
 	float bulletRadian_ = 0.0f;
@@ -51,6 +57,11 @@ public:
 	int remainLaserCount_ = 1;	// 레이저가 완전히 소모될 때 -1 되어 wait상태로 진입하기 위한 remain 변수
 	UINT laserDirection_ = 1;	// 0번이 왼손, 그러니 기본값은 반대가 되어야 0번이 왼쪽
 
+	// DYING 기능
+	float dyingTime_ = 0.0f;
+	float explosionDelay_ = 0.2f;
+	float firstDyingDelay_ = 3.0f;
+
 
 private:
 	void GenerateBullet();
@@ -62,7 +73,9 @@ public:	// 공개 인스턴스 변수
 	void Render() override;
 	void Reset() override;
 	bool UpdateBulletCycle(int divFrame);	// 총알 여분 업데이트때문에 분리
-
+	void Attacked(float damage) override;
+	void HPChange() override;
+	void Die() override;
 public:	//Getter
 	bool IsGround() { return isGround_; }
 	bool IsConflicted() { return isConflicted_; }
@@ -96,11 +109,10 @@ private:	// 상태객체 대신 상태 std::function<void()>
 	void ActionLASER(Matrix V, Matrix P);
 
 	void SwitchStateDYING();
-	void SwitchStateDEAD();
-
-	void ActionDYING(Matrix V, Matrix P);
-	void ActionDEAD(Matrix V, Matrix P);
-
 	void EnterDYING();
+	void ActionDYING(Matrix V, Matrix P);
+
+	void SwitchStateDEAD();
+	void ActionDEAD(Matrix V, Matrix P);
 	void EnterDEAD();		
 };
