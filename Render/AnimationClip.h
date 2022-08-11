@@ -37,6 +37,7 @@ public: // Setter	Texture 에서 템플릿 써보도록 하자
 	void  SetPlay()   { m_nCurrentFrame = 0; m_bPlay = true; m_PlayTime = 0.0f;}
 	void  SetClipPivot(Vector3 pivot) { m_ClipPivot = pivot; }
 	void  SetOffsetSize(float x, float y);
+	void  SetTime(float time) { m_cvFrames[m_nCurrentFrame]->m_Time = time; }
 private:
 	struct Frame
 	{
