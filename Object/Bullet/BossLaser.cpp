@@ -133,7 +133,7 @@ void BossLaser::SummonLaser(SkellBoss** owner, Vector2 handPos, HandDirection di
 
 	// 상태 바꿔주기
 	stateEnum_ = BLState::FIRE;
-	Audio->Play("BossLaser");
+	Audio->Play("iceball");
 	SetActive(true);
 }
 
