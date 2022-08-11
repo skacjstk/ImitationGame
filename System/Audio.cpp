@@ -213,6 +213,9 @@ void CAudio::AddSoundAll()
 	// 레이저 발사 못찾음. 대체재임.
 	strSound = "summonBelialHand";
 	Audio->AddSound("BossLaser", AUDIO_FOLDER + strSound + fileType, false);
+	
+	strSound = "bossDefeat";
+	Audio->AddSound("bossDefeat", AUDIO_FOLDER + strSound + fileType, false);
 
 }
 
