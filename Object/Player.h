@@ -10,7 +10,8 @@ public:		// 공개 인스턴스 변수
 		JUMP = 2,
 		ATTACK = 4,
 		DASH = 8,	// 0725 추가했지만 모션은 Jump를 씀
-		DIE	= 16
+		EAT = 16,
+		DIE	= 32
 	};
 	// 던그리드 캐릭터 변경할때 사용할 것
 	enum objectType

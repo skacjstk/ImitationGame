@@ -93,7 +93,10 @@ Player::~Player()
 
 
 void Player::Update(Matrix V, Matrix P)
-{	
+{
+	// ¸ÔÈú¶© ¸ğ¾ç ¾Èº¸ÀÌ°Ô ( Ä¿ÇÃ¸µ: Dungeon )
+	if (_currentState == State::EAT)
+		return;
 	RotateToMouse();
 	InputUpdate();
 	dashCB();
@@ -153,6 +156,9 @@ void Player::RotateToMouse()
 
 void Player::Render()
 {
+	// ¸ÔÈú¶© ¸ğ¾ç ¾Èº¸ÀÌ°Ô ( Ä¿ÇÃ¸µ: Dungeon )
+	if (_currentState == State::EAT)
+		return;
 	dashEffect_[0]->Render();
 	dashEffect_[1]->Render();
 	dashEffect_[2]->Render();
