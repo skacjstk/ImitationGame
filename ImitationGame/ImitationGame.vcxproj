@@ -185,6 +185,7 @@
     <ClInclude Include="..\Event\SwapItemEvent.h" />
     <ClInclude Include="..\FMOD\fmod.hpp" />
     <ClInclude Include="..\GameUI\BaseUI.h" />
+    <ClInclude Include="..\GameUI\BossUI\BossLifeUI.h" />
     <ClInclude Include="..\GameUI\EnemyUI\EnemyLifeUI.h" />
     <ClInclude Include="..\GameUI\PlayerUI\DashUI.h" />
     <ClInclude Include="..\GameUI\PlayerUI\EquippedWeaponUI.h" />
@@ -304,6 +305,7 @@
     <ClCompile Include="..\Event\RiseNextFloorEvent.cpp" />
     <ClCompile Include="..\Event\SwapItemEvent.cpp" />
     <ClCompile Include="..\GameUI\BaseUI.cpp" />
+    <ClCompile Include="..\GameUI\BossUI\BossLifeUI.cpp" />
     <ClCompile Include="..\GameUI\EnemyUI\EnemyLifeUI.cpp" />
     <ClCompile Include="..\GameUI\PlayerUI\DashUI.cpp" />
     <ClCompile Include="..\GameUI\PlayerUI\EquippedWeaponUI.cpp" />
