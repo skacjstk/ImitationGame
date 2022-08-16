@@ -12,9 +12,11 @@ public:		// 공개 인스턴스 변수
 private:	// 비공개 인스턴스 변수
 	DoorState doorState = DoorState::CLOSING;
 	class Player* ppPlayer = { nullptr, };
-	std::function<void()> SwitchState;
+	std::function<void()> SwitchState;	
 	std::function<void()> Enter;
 	// 상태패턴때 사용할 것
+	float fadeTimeCheck_ = 0.0f;
+	bool isRise_ = false;
 public:
 	Door();
 	~Door();
@@ -24,6 +26,7 @@ public:
 	void Reset() override;
 	void Communicate() override;
 	bool CheckPlayer();
+	void RiseNextFloor();
 	// 상태 패턴을 std::function으로 객체 내부에 구현해보기
 	// Open 상태
 	void OpenSwitch();

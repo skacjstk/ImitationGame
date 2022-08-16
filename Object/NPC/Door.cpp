@@ -57,6 +57,12 @@ void Door::Update(Matrix V, Matrix P)
 		return;
 
 	SwitchState();
+	if (isRise_ == true) {
+		fadeTimeCheck_ += TIMEMANAGER->Delta();
+		if (fadeTimeCheck_ >= 1.0f) {
+			RiseNextFloor();
+		}
+	}
 
 	_animation->SetScale(GetScale());
 	_animation->SetPosition(GetPosition());
@@ -105,14 +111,20 @@ void Door::Communicate()
 {
 	printf("Door CloseSwitch에 테스트코드 있음\n");
 	// 충돌 검사를 또 하는 이유: 한번 닿아놓고 멀리 간다음에 F 누르면 안되니까.
-	if(CheckPlayer())
-		eventHandler->Push(L"RiseNextFloor");
+	if (CheckPlayer()) {
+		CAMERA->FadeOut(1.0f);
+		isRise_ = true;	// FadeOut때 지정해준 시간이 끝나면 fade 이벤트를 호출할 예정
+	}
 
 }
 
 bool Door::CheckPlayer()
 {
 	return Collider::IntersectAABB(pCollider_, ppPlayer->GetCollider());
+}
+void Door::RiseNextFloor()
+{
+	eventHandler->Push(L"RiseNextFloor");
 }
 // 문이 열린 상태에서는 플레이어 위치검사 및
 void Door::OpenSwitch()

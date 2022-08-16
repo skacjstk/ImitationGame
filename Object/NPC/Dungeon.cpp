@@ -64,6 +64,7 @@ void Dungeon::Update(Matrix V, Matrix P)
 			ppPlayer->SetState(Player::State::EAT);
 			Audio->Play("syExplo1");
 			Audio->Play("earthquake1");
+			CAMERA->FadeOut(1.5f);
 			playSound_ = true;
 		}
 
@@ -75,7 +76,6 @@ void Dungeon::Update(Matrix V, Matrix P)
 
 		// 애니메이션 종료시 던전 이동 호출
 		if (!_animation->IsPlay()) {
-			ppPlayer->SetState(Player::State::IDLE);
 			Audio->Stop("earthquake1");
 			eventHandler->Push(L"EnterDungeon");	// EatEvent 호출
 			SetActive(false);
