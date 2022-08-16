@@ -70,13 +70,13 @@ void Floor_2::MoveRoom(int x, int y)
 	}
 	switch (y)
 	{
-	case 1:	// Up
+	case 1:	// Down
+		// UP Stele 위치 가져오기
+		setPlayerPos = roomData_[xy[0]][xy[1]]->GetPosOfDirection(2);
+		break;
+	case -1:	// Up
 		// Down Stele 위치 가져오기
 		setPlayerPos = roomData_[xy[0]][xy[1]]->GetPosOfDirection(0);
-		break;
-	case -1:	// Down
-		// Up Stele 위치 가져오기
-		setPlayerPos = roomData_[xy[0]][xy[1]]->GetPosOfDirection(2);
 		break;
 	}
 	Player* player = (Player*)OBJECTMANAGER->FindObject("player");
