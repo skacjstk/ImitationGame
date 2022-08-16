@@ -33,6 +33,9 @@ void Floor_1::Render()
 // 얘는 여기가 시작.
 void Floor_1::ChangeScene()
 {
+	Player* pplayer = (Player*)OBJECTMANAGER->FindObject("player");
+	pplayer->SetState(Player::State::IDLE);
+
 	// 절차적 지형 생성 취소, 고정 크기 Room 데이터 읽어오기로 변경
 	ApplyStartRoom();	// 0 0에 start room
 	ApplyEndRoom();
@@ -44,6 +47,7 @@ void Floor_1::ChangeScene()
 	thread t(bind(&Floor_1::ApplyOtherRoom, this));
 	t.detach();
 
+	CAMERA->FadeIn(2.0f);
 //	ConnectRoom(currentActiveRoom_[0], currentActiveRoom_[1]);	// 절차적 지형생성의 잔재: 어차피 지형이 랜덤이 아닌데 이어봤자 뭐해
 	return;
 	// 1. 방 생성

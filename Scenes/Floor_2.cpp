@@ -33,6 +33,8 @@ void Floor_2::Render()
 // 얘는 여기가 시작.
 void Floor_2::ChangeScene()
 {
+	Player* pplayer = (Player*)OBJECTMANAGER->FindObject("player");
+	pplayer->SetState(Player::State::IDLE);
 	// 절차적 지형 생성 취소, 고정 크기 Room 데이터 읽어오기로 변경
 	ApplyStartRoom();	// 0 0에 start room
 //	ApplyEndRoom();		// 2층 endRoom은 나중에 만들자: Next
@@ -43,6 +45,7 @@ void Floor_2::ChangeScene()
 	// 10 20 21 에 그냥 잡몹 룸 ( NPC식당같은거 일단 빼고 )
 	thread t(bind(&Floor_2::ApplyOtherRoom, this));
 	t.detach();
+	CAMERA->FadeIn(2.0f);
 }
 
 void Floor_2::ExitScene()
