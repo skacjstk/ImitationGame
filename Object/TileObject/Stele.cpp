@@ -167,12 +167,6 @@ void Stele::OpenSwitch()
 			eventHandler->Push(L"MR4");	// ¿ì
 			break;
 		}
-		/*
-		SwitchState = std::bind(&Stele::ClosingSwitch, this);
-		Action = std::bind(&Stele::ClosingEnter, this);
-		Enter = std::bind(&Stele::ClosingEnter, this);
-		Enter();
-		*/
 	}
 }
 
