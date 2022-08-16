@@ -95,6 +95,9 @@ void Camera::Update()
 		else if (position.y > cornerRight.y)	// »ó´Ü
 			position.y = cornerRight.y;
 			
+		if (shake_)
+			Shake(position);
+
 		SetPosition(position);
 	}
 	cameraAfter = m_Position;
@@ -187,4 +190,26 @@ void Camera::WCtoVC(Vector2& position)
 	position.y = -((position.y / MAIN->GetHeight()) * 2.0f - 1.0f);
 
 	D3DXVec2TransformCoord(&position, &position, &vp);
+}
+
+void Camera::Shake(Vector2& position)
+{
+	const float delayTime = 0.5f;
+
+	time_ += TIMEMANAGER->Delta();
+	if (time_ <= delayTime)
+	{
+		position.y += (sinf(2.0f * (PI * time_) * 3.0f * 30.0f) +
+			sinf(2.0f * (PI * time_) * 7.0f + 0.2f) +
+			sinf(2.0f * (PI * time_) * 15.0f + 0.5f) * 5.0f * WSCALEY) * (delayTime - time_);
+
+		position.x += (sinf(2.0f * (PI * time_) * 3.0f * 30.0f) +
+			sinf(2.0f * (PI * time_) * 7.0f + 0.2f) +
+			sinf(2.0f * (PI * time_) * 15.0f + 0.5f) * 5.0f * WSCALEX) * (delayTime - time_);
+	}
+	else
+	{
+		time_ = 0.0f;
+		this->shake_ = false;
+	}
 }

@@ -455,6 +455,7 @@ void Player::IncreaseHP(int amount)
 void Player::DecreaseHP(int amount)
 {
 	actorData_.HP = max(0, actorData_.HP - amount);
+	CAMERA->SetShake(true);
 	HPChange();
 }
 

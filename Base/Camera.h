@@ -42,8 +42,12 @@ public:   // Getter
 	Matrix GetAbsoluteViewMatrix() { return m_abView; }
 	Matrix GetProjectionMatrix() { return m_Projection; }
 	Vector2 GetPosition() { return m_Position; }
+	// Setter
+	void SetShake(bool flag) { this->shake_ = flag; }
 
 
+private:	//비공개 함수
+	void Shake(Vector2& position);
 
 private:
 	Vector2 m_Position = Vector2(0.0f, 0.0f);
@@ -55,7 +59,9 @@ private:
 	class   GameObject* m_pGameObject = nullptr;
 	Vector2 m_Offset = Vector2(0.0f, 0.0f);
 	int     CenterXLock = 1;
-
+	// 카메라 쉐이크 효과
+	bool	shake_ = false;
+	float time_ = 0.0f;
 private:
 	Camera();
 public:
