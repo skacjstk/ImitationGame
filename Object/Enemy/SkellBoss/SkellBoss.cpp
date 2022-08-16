@@ -193,7 +193,7 @@ void SkellBoss::Reset()
 	hand_[1]->SetScale(GetScale());
 
 	chaseTarget_ = (GameActor*)OBJECTMANAGER->FindObject("player");
-	actorData_.HP = 1;
+	actorData_.HP = 100;
 	actorData_.maxHP = 100;
 	actorData_.ImmuneTime = 0;
 	actorData_.living = ActorState::LIVE;
