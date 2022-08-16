@@ -11,7 +11,14 @@ Camera::Camera()
 	wstring shaderFile = SHADER_FOLDER;
 	shaderFile += L"Texture.hlsl";
 	m_pTexture = new Texture(imgFile, shaderFile);
+	imgFile = IMAGE_FOLDER; imgFile += L"FX/Fade.png";
+	shaderFile = SHADER_FOLDER; shaderFile += L"TextureColor.hlsl";
 
+	// Fade 효과 텍스쳐 
+	fadeTexture_ = new Texture(imgFile, shaderFile);
+	fadeTexture_->SetScale(WSCALEX, WSCALEY);
+	fadeTexture_->SetPosition(0.0f, 0.0f);
+	fadeTexture_->UpdateColorBuffer(Color(0.0f, 0.0f, 0.0f, 0.0f), 4);
 	// 기본
 
 	Vector3 eye = Vector3(0.0f, 0.0f, 0.0f);	// 눈이 보는 위치
@@ -31,7 +38,8 @@ Camera::Camera()
 		(float)MAIN->GetHeight() * 0.5f,
 		-1.0f, 1.0f);
 
-
+	EffectUpdate =std::bind(&Camera::WaitingUpdate, this);
+	EffectRender = std::bind(&Camera::WaitingRender, this);
 }
 
 Camera::~Camera()
@@ -131,6 +139,7 @@ void Camera::Update()
 	//
 	//	m_Projection = m_Projection * S;
 
+	EffectUpdate();
 }
 
 void Camera::Update(Matrix V, Matrix P)
@@ -140,7 +149,7 @@ void Camera::Update(Matrix V, Matrix P)
 
 void Camera::Render()
 {
-	m_pTexture->Render();
+	EffectRender();
 }
 /////////////////////////////////////////////////////////
 // View(실제좌표) Window좌표로 변환
@@ -213,3 +222,65 @@ void Camera::Shake(Vector2& position)
 		this->shake_ = false;
 	}
 }
+
+void Camera::FadeIn(float duringTime, bool immediately)
+{
+	duringTime_ = duringTime;
+	fadeAmount_ = 1.0f / duringTime;
+	currentFade_ = 1.0f;
+	fadeTexture_->UpdateColorBuffer(Color(0.0f, 0.0f, 0.0f, currentFade_), 4);	// 이건 그거반대
+	EffectUpdate = std::bind(&Camera::FadeInUpdate, this);
+	EffectRender = std::bind(&Camera::FadeRender, this);
+}
+
+void Camera::FadeOut(float duringTime, bool immediately)
+{
+	duringTime_ = duringTime;
+	fadeAmount_ = 1.0f / duringTime;
+	currentFade_ = 0.0f;
+	fadeTexture_->UpdateColorBuffer(Color(0.0f, 0.0f, 0.0f, currentFade_), 4);	// 불꺼지려면 가리개 켜져야지
+	EffectUpdate = std::bind(&Camera::FadeOutUpdate, this);
+	EffectRender = std::bind(&Camera::FadeRender, this);
+}
+
+void Camera::FadeRender()
+{
+	fadeTexture_->Render();
+}
+
+void Camera::FadeInUpdate()
+{
+	currentFade_ -= TIMEMANAGER->Delta() * fadeAmount_;
+	fadeTexture_->UpdateColorBuffer(Color(0.0f, 0.0f, 0.0f, max(0.0f, currentFade_)), 4);
+	fadeTexture_->Update(m_abView, m_Projection);
+	if (0.1f >= currentFade_) {
+		// 대기 전환
+		EffectUpdate = std::bind(&Camera::WaitingUpdate, this);
+		EffectRender = std::bind(&Camera::WaitingRender, this);
+	}
+}
+
+void Camera::FadeOutUpdate()
+{
+	currentFade_ += TIMEMANAGER->Delta() * fadeAmount_;
+	fadeTexture_->UpdateColorBuffer(Color(0.0f, 0.0f, 0.0f, min(currentFade_, 1.0f)), 4);
+	fadeTexture_->Update(m_abView, m_Projection);
+	if (1.0f <= currentFade_) {
+		// 대기 전환
+		EffectUpdate = std::bind(&Camera::WaitingUpdate, this);
+	//	EffectRender = std::bind(&Camera::WaitingRender, this);
+	}
+}
+
+void Camera::SetFadeIn()
+{
+}
+
+void Camera::SetFadeOut()
+{
+}
+
+void Camera::SetWaiting()
+{
+}
+

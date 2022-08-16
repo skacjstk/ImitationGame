@@ -49,25 +49,8 @@ void SceneManager::Render()
 		}
 	}
 	playerUI->Render();	// UI 테스트코드.
+	CAMERA->Render();	// 카메라에 등록된 이펙트 출력
 	Display();
-}
-/*
-앞으로 만들 오브젝트는 여기서
-*/
-void SceneManager::CreateGameObject()
-{
-	// 여긴 미리 만들어 놓는 것. 나중에 씬에서 Add 할때, 여기에 이미 있는 거라면 단순히 Find로 찾아 넘겨주기만 할 뿐 
-	// 근데 던그리드구조를 만들면서 이게 맘처럼 안되네
-	// Box Create
-//	for (int i = 0; i < 10; ++i) {
-//		string name = "Box" + to_string(i);
-//		Box* pObject = (Box*)OBJECTMANAGER->FindObject(name);
-//		if (!pObject) {
-//			pObject = new Box();
-//			OBJECTMANAGER->AddObject(name, pObject);
-//		}
-//	}
-
 }
 
 void SceneManager::ChangeScene(string name)

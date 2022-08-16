@@ -44,10 +44,22 @@ public:   // Getter
 	Vector2 GetPosition() { return m_Position; }
 	// Setter
 	void SetShake(bool flag) { this->shake_ = flag; }
-
-
+	void FadeIn(float duringTime = 0.5f, bool immediately = false);	// 얘를 호출하면 내부에서 stdFunction 포인터가 바뀜
+	void FadeOut(float duringTime = 0.5f, bool immediately = false);
+private:
+	void SetWaiting();
+	void SetFadeIn();
+	void SetFadeOut();
 private:	//비공개 함수
 	void Shake(Vector2& position);
+	std::function<void()> EffectUpdate;	// 카메라 전체효과
+	std::function<void()> EffectRender;	// 카메라 전체효과 ( fade out, in 등)
+
+	void FadeRender();
+	void FadeInUpdate();
+	void FadeOutUpdate();
+	void WaitingUpdate() {};
+	void WaitingRender() {};
 
 private:
 	Vector2 m_Position = Vector2(0.0f, 0.0f);
@@ -56,12 +68,17 @@ private:
 	Matrix  m_View;
 	Matrix m_abView;
 	class   Texture* m_pTexture = nullptr;
+	class Texture* fadeTexture_ = nullptr;
 	class   GameObject* m_pGameObject = nullptr;
 	Vector2 m_Offset = Vector2(0.0f, 0.0f);
 	int     CenterXLock = 1;
 	// 카메라 쉐이크 효과
 	bool	shake_ = false;
 	float time_ = 0.0f;
+	// 카메라 fade 효과
+	float duringTime_ = 0.0f;
+	float fadeAmount_ = 0.0f;	// 실질적인 fade 변화량
+	float currentFade_ = 0.0f;
 private:
 	Camera();
 public:

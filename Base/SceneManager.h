@@ -22,7 +22,6 @@ public:
 //	}
 	void Update();
 	void Render();
-	void CreateGameObject();
 	void ChangeScene(string name);
 	Scene* GetScene(string name);
 	vector<string> sceneNames_ = {
