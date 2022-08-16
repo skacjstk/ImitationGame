@@ -253,7 +253,7 @@ void Room::PushDirection(Stele::StelePath ePath, Vector2 position)
 	switch (ePath)
 	{
 	case Stele::StelePath::BOTTOM:
-		comPosition = Vector2(0.0f, TRNMANAGER->GetTileSize().y * TRNMANAGER->TerrainMagnification_.y * 2.0f);	// ¹ÙÅÒÀº Á» Æ¯º°ÇØ¼­ 3°ö
+		comPosition = Vector2(0.0f, TRNMANAGER->GetTileSize().y * TRNMANAGER->TerrainMagnification_.y * 2.0f);
 		index = 0;
 		break;
 	case Stele::StelePath::RIGHT:
