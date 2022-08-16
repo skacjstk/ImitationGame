@@ -13,6 +13,9 @@ private:	// 비공개 인스턴스 변수
 	class Player* ppPlayer = { nullptr, };
 	bool playSound_ = false;
 	bool playSound2_ = false;
+	// 올라가기
+	float fadeTimeCheck_ = 0.0f;
+	bool isRise_ = false;
 public:
 	Dungeon();
 	~Dungeon();
@@ -22,4 +25,5 @@ public:
 	void Reset() override;
 	void Communicate() override;
 	void CheckPlayer();
+	void FadeEffect();
 };

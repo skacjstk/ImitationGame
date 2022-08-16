@@ -43,6 +43,11 @@ void Dungeon::Update(Matrix V, Matrix P)
 {
 	if (IsActive() == false)
 		return;
+
+	if (isRise_ == true) {
+		FadeEffect();
+		return;
+	}
 	// Player와 충돌하면 바로 Communicate()
 	switch (_currentState)
 	{
@@ -64,7 +69,6 @@ void Dungeon::Update(Matrix V, Matrix P)
 			ppPlayer->SetState(Player::State::EAT);
 			Audio->Play("syExplo1");
 			Audio->Play("earthquake1");
-			CAMERA->FadeOut(1.5f);
 			playSound_ = true;
 		}
 
@@ -76,9 +80,10 @@ void Dungeon::Update(Matrix V, Matrix P)
 
 		// 애니메이션 종료시 던전 이동 호출
 		if (!_animation->IsPlay()) {
+			isRise_ = true;
 			Audio->Stop("earthquake1");
-			eventHandler->Push(L"EnterDungeon");	// EatEvent 호출
-			SetActive(false);
+			fadeTimeCheck_ = 0.0f;
+			CAMERA->FadeOut(1.5f);
 		}
 	}
 		break;
@@ -119,5 +124,14 @@ void Dungeon::CheckPlayer()
 	{
 		_currentState = DungeonState::EAT;
 		this->_position.x = tempPosition.x;
+	}
+}
+
+void Dungeon::FadeEffect()
+{
+	fadeTimeCheck_ += TIMEMANAGER->Delta();
+	if (fadeTimeCheck_ >= 1.5f) {
+		eventHandler->Push(L"EnterDungeon");	// EatEvent 호출
+		SetActive(false);
 	}
 }
