@@ -38,8 +38,16 @@ Camera::Camera()
 		(float)MAIN->GetHeight() * 0.5f,
 		-1.0f, 1.0f);
 
+	// 절대좌표 뷰 매트릭스 생성
+	Vector3 abEye = Vector3(0.0f, 0.0f, 0.0f);
+	up = Vector3(0.0f, 1.0f, 0.0f);
+	at = Vector3(0.0f, 0.0f, 0.1f);
+	Vector3 abEye_at = abEye + at;
+	D3DXMatrixLookAtLH(&m_abView, &abEye, &abEye_at, &up);
+
 	EffectUpdate =std::bind(&Camera::WaitingUpdate, this);
 	EffectRender = std::bind(&Camera::WaitingRender, this);
+
 }
 
 Camera::~Camera()
@@ -118,13 +126,6 @@ void Camera::Update()
 	Vector3 at = Vector3(0.0f, 0.0f, 0.1f);
 	Vector3 eye_at = eye + at;
 	D3DXMatrixLookAtLH(&m_View, &eye, &eye_at, &up);
-
-	// 절대좌표 뷰 매트릭스 생성
-	Vector3 abEye = Vector3(0.0f, 0.0f, 0.0f);
-	up = Vector3(0.0f, 1.0f, 0.0f);
-	at = Vector3(0.0f, 0.0f, 0.1f);
-	Vector3 abEye_at = abEye + at;
-	D3DXMatrixLookAtLH(&m_abView, &abEye, &abEye_at, &up);
 
 	// Window가 크기 변경
 	D3DXMatrixOrthoOffCenterLH(&m_Projection,
