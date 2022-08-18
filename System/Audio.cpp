@@ -232,6 +232,12 @@ void CAudio::AddSoundAll()
 	strSound = "iceball";
 	Audio->AddSound("iceball", AUDIO_FOLDER + strSound + fileType, false);	// 벨리알 광선
 
+	strSound = "PickUpItem";
+	Audio->AddSound("pickUpItem", AUDIO_FOLDER + strSound + fileType, false);	// 아이템 픽업
+
+	strSound = "OpenInventory";
+	Audio->AddSound("openInventory", AUDIO_FOLDER + strSound + fileType, false);	// 아이템 픽업
+
 }
 
 void CAudio::Volume(string name, float volume)
