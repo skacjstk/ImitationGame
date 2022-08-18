@@ -154,7 +154,7 @@ void SkelDog::Jump()
 	Vector2 tempPosition = GetPosition();
 	float dX = chaseTarget_->GetPosition().x - GetPosition().x;
 	float sign = copysign(1, dX);	// copysign 부호 비트 추출 어쨋든 양수면 1, 음수면 -1
-	ModifyPosition(sign * moveSpeed * TIMEMANAGER->Delta(), 0.0f);	// Next: -1 곱해야 할 수 있음.
+	ModifyPosition(sign * moveSpeed * TIMEMANAGER->Delta() * WSCALEY, 0.0f);	// Next: -1 곱해야 할 수 있음.
 
 	sign -= 1.0f;	// 양수 0, 음수 -2
 	SetRotation(0.0f, sign * 90.0f, 0.0f);
@@ -210,6 +210,6 @@ void SkelDog::AttackJump()
 		attacked_ = true;
 		isJump = true;
 		isGround_ = false;
-		moveAmount.y = jumpSpeed * 0.05f;
+		moveAmount.y = jumpSpeed * 0.04f * WSCALEY;
 	}
 }

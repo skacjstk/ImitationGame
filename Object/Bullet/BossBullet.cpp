@@ -77,7 +77,7 @@ void BossBullet::Fire(float radian, Vector2& skelMousePos, GameActor* chaseTarge
 	SetPosition(skelMousePos);
 	_animation->SetPosition(skelMousePos);	// 포인터 사라지면 이거 바꾸지 뭐
 	_animation->SetPlay(0);
-	movePos = Vector2(cosf(radian) * moveSpeed * TIMEMANAGER->Delta(), sinf(radian) * moveSpeed * TIMEMANAGER->Delta());
+	movePos = Vector2(cosf(radian) * moveSpeed * TIMEMANAGER->Delta() * WSCALEX, sinf(radian) * moveSpeed * TIMEMANAGER->Delta() * WSCALEY);
 
 	lifeframe_ = TIMEMANAGER->GetFrame() * 2;
 	SetActive(true);
