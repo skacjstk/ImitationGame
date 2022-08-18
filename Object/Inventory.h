@@ -28,6 +28,9 @@ public:	// 공개 인스턴스 변수
 	// ChangeSlot에서 장비 아이템에 변화가 생겼을 경우(악세포함) 장비를 다시 업데이트하는 함수
 	void UpdateEquip(Slot** UpdateSlot);
 	void SetInventoryOwner(GameActor* actor) { inventoryOwner_ = actor; }	// 플레이어와 인벤토리간의 연결고리를 위한 작업
+
+	void  OpenInventory();
+	void  CloseInventory();
 	// Setter
 	void SetFocusHand(int index) { currentFocusHand_ = index; }
 	void SetFocusPosition();

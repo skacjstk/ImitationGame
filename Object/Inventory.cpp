@@ -21,8 +21,6 @@ Inventory::Inventory()
 	for (int i = 0; i < _countof(itemSlots_); ++i) {
 		itemSlots_[i] = new Slot();
 	}
-	for (int i = 0; i < _countof(equipSlots_); ++i) {
-	}
 	// 인벤토리, Slot 크기위치 초기화
 
 	// 인벤토리 크기위치 초기화
@@ -131,6 +129,7 @@ void Inventory::Reset()
 // 슬롯 간 교체가 일어났을 때 수행함.
 void Inventory::ChangeSlot(Slot** dragSlot, Slot** dropSlot)
 {
+	// Next: 아이템 타입에 따른 (weapon에 작업할게 또 있음) 장착 및 교환 검사 추가
 	Item* temp = (*dragSlot)->GetItem();
 	(*dragSlot)->SetItem((*dropSlot)->GetItem());
 	(*dropSlot)->SetItem(temp);
@@ -140,6 +139,19 @@ void Inventory::FocusImageUpdate(Matrix V, Matrix P)
 	focusHandImage_->Update(V, P);
 }
 //void Inventory::UpdateEquip(){} 는 맨아래에
+
+void Inventory::OpenInventory()
+{
+	dropSlot_ = nullptr;
+	dragSlot_ = nullptr;
+	Audio->Play("openInventory");
+	SetActive(true);
+}
+
+void Inventory::CloseInventory()
+{
+	SetActive(false);
+}
 
 // 변경된 currentFocusHand_ 의 값을 기반으로 Image ( 하얀 다각형 ) 의 위치값을 바꿔줌.
 void Inventory::SetFocusPosition()
@@ -189,35 +201,74 @@ void Inventory::SetInvenTabGroup()
 	for (int i = itemCount - 1; i > 0; --i) {
 		itemSlots_[i]->GetSlotButton()->SetLeftTabGroup(itemSlots_[i - 1]->GetSlotButton());
 	}
-	// Next: 상하 설정
+	// 상하 설정
+	for (UINT i = 0; i < equipCount / 2; ++i) {
+		equipSlots_[i]->GetSlotButton()->SetTopTabGroup(itemSlots_[_countof(itemSlots_) - 1 - (equipCount / 2) + i]->GetSlotButton());
+		equipSlots_[i]->GetSlotButton()->SetBottomTabGroup(equipSlots_[i+4]->GetSlotButton());
 
+		equipSlots_[i + 4]->GetSlotButton()->SetTopTabGroup(equipSlots_[i]->GetSlotButton());
+		equipSlots_[i + 4]->GetSlotButton()->SetBottomTabGroup(itemSlots_[i]->GetSlotButton());
+
+		itemSlots_[i]->GetSlotButton()->SetTopTabGroup(equipSlots_[i + 4]->GetSlotButton());
+		itemSlots_[_countof(itemSlots_) - 1 - (equipCount / 2) + i]->GetSlotButton()
+			->SetBottomTabGroup(equipSlots_[i]->GetSlotButton());
+	}
+	// 끝자락은 하드코딩
+	itemSlots_[slotX_ - 1]->GetSlotButton()->SetTopTabGroup(equipSlots_[_countof(equipSlots_) - 1]->GetSlotButton());
+	itemSlots_[_countof(itemSlots_) - 1]->GetSlotButton()->SetBottomTabGroup(equipSlots_[_countof(equipSlots_)/2 - 1]->GetSlotButton());
+
+	for (UINT i = 0; i < slotX_; ++i) {
+		itemSlots_[i]->GetSlotButton()->SetBottomTabGroup(itemSlots_[i + slotX_]->GetSlotButton());
+		itemSlots_[i + slotX_]->GetSlotButton()->SetBottomTabGroup(itemSlots_[i + slotX_ + slotX_]->GetSlotButton());
+
+		itemSlots_[i + slotX_ + slotX_]->GetSlotButton()->SetTopTabGroup(itemSlots_[i + slotX_]->GetSlotButton());
+		itemSlots_[i + slotX_]->GetSlotButton()->SetTopTabGroup(itemSlots_[i]->GetSlotButton());
+	}
 	itemSlots_[0]->GetSlotButton()->SetActivate(true);
 }
-// 클릭한 아이템이 없으면 드래그, 있으면 드롭 후 SlotChange 호출. Next: 이 무식한 방법을 해결하기
+// 클릭한 아이템이 없으면 드래그, 있으면 드롭 후 SlotChange 호출.
 void Inventory::ItemDragAndDrop()
 {
 	if (dragSlot_ == nullptr)
 		Drag();	
 	else 
 		Drop();
+	// 	Audio->Play("pickUpItem"); 은 Drag의 경우 성공했을 때, Drop은 그냥 호출하게 되어있음.
 }
 void Inventory::Drag()
 {
 	int itemCount = _countof(itemSlots_);
 	int equipCount = _countof(equipSlots_);
-	
+
+	// 일단 활성화된 버튼의 슬롯을 dragSlot에 넣음.
+	bool isSelectSuccess = false;
 	for (int i = 0; i < itemCount; ++i) {
 		if (itemSlots_[i]->GetSlotButton()->IsActivate()) {
 			dragSlot_ = &itemSlots_[i];
-			return;
+			isSelectSuccess = true; 
+			break;
 		}
 	}
-	for (int i = 0; i < equipCount; ++i) {
-		if (equipSlots_[i]->GetSlotButton()->IsActivate()) {
-			dragSlot_ = &equipSlots_[i];
-			return;
+	// 위에서 슬롯 선택이 성공했으면 이건 안함.
+	if (isSelectSuccess == false) {
+		for (int i = 0; i < equipCount; ++i) {
+			if (equipSlots_[i]->GetSlotButton()->IsActivate()) {
+				dragSlot_ = &equipSlots_[i];
+				isSelectSuccess = true;
+				break;
+			}
 		}
 	}
+	// 기껏 찾은 슬롯에 아이템이 없으면
+	if (isSelectSuccess == true) {
+		if ((*dragSlot_)->GetItem() == nullptr) {
+			isSelectSuccess = false;	// 아이템 못찾은취급 하고 nullptr로 바꾸기
+			dragSlot_ = nullptr;
+		}
+		else 
+			Audio->Play("pickUpItem");		
+	}
+
 	// 대충 뭔가를 지정해주기
 }
 void Inventory::Drop()
@@ -258,4 +309,5 @@ void Inventory::Drop()
 		inventoryOwner_->UpdateHandedWeapon();
 
 	dragSlot_ = dropSlot_ = nullptr;	// 교체 다했으니 
+	Audio->Play("pickUpItem");
 }

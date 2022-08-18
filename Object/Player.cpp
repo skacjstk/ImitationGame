@@ -582,9 +582,9 @@ void Player::Attack()
 void Player::InventoryToggle()
 {
 	if(Inventory_->IsActive())
-		Inventory_->SetActive(false);
+		Inventory_->CloseInventory();
 	else{
-		Inventory_->SetActive(true);
+		Inventory_->OpenInventory();
 	}
 }
 
